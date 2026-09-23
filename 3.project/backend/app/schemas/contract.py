@@ -17,6 +17,45 @@ class ContractCreate(ContractBase):
     pass
 
 
+class ContractUpdate(BaseModel):
+    title: Optional[str] = None
+    vendor_name: Optional[str] = None
+    business_number: Optional[str] = None
+    contract_amount: Optional[float] = None
+
+
+class ParsedContractResponse(BaseModel):
+    title: Optional[str] = None
+    vendor_name: Optional[str] = None
+    business_number: Optional[str] = None
+    contract_amount: Optional[float] = None
+    issue_date: Optional[str] = None
+    document_type: Optional[str] = None
+    raw_text_snippet: Optional[str] = None
+
+
+class AutoContractParseItem(BaseModel):
+    file_name: str
+    document_type: str
+    confidence: float
+    title: Optional[str] = None
+    company_name: Optional[str] = None
+    business_registration_no: Optional[str] = None
+    amount: Optional[float] = None
+    issue_date: Optional[str] = None
+
+
+class AutoContractSynthesisResponse(BaseModel):
+    title: str
+    vendor_name: str
+    business_number: str
+    contract_amount: float
+    issue_date: Optional[str] = None
+    documents: List[AutoContractParseItem]
+
+
+
+
 class ContractListItem(BaseModel):
     contract_id: int
     title: str

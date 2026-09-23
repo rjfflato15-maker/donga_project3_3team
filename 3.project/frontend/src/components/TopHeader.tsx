@@ -5,6 +5,7 @@ import { NavigationTab } from './Sidebar';
 interface TopHeaderProps {
   activeTab: NavigationTab;
   onOpenNewContract: () => void;
+  onOpenAutoBatchContract?: () => void;
   onSeedDemo: () => void;
   onOpenUpload: () => void;
   onOpenSimulator: () => void;
@@ -14,6 +15,7 @@ interface TopHeaderProps {
 export const TopHeader: React.FC<TopHeaderProps> = ({
   activeTab,
   onOpenNewContract,
+  onOpenAutoBatchContract,
   onSeedDemo,
   onOpenUpload,
   onOpenSimulator,
@@ -84,6 +86,17 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
               <FileText className="w-3.5 h-3.5 text-blue-600" />
               <span>증빙 업로드</span>
             </button>
+
+            {onOpenAutoBatchContract && (
+              <button
+                onClick={onOpenAutoBatchContract}
+                className="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-black text-amber-900 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-300 hover:from-amber-400 hover:to-amber-500 shadow-md shadow-amber-400/20 border border-amber-300 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 animate-pulse"
+                title="6종 서류를 업로드하여 계약 내용, 금액, 사업자번호, 날짜 자동 생성"
+              >
+                <Sparkles className="w-4 h-4 text-amber-950" />
+                <span>⚡ 6종 서류로 계약 자동 생성</span>
+              </button>
+            )}
 
             <button
               onClick={onOpenNewContract}

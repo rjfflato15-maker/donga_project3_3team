@@ -121,3 +121,24 @@ export interface PipelineSimulationResponse {
   simulated_at: string;
   steps: PipelineStep[];
 }
+
+export interface AutoContractParseItem {
+  file_name: string;
+  document_type: DocumentType;
+  confidence: number;
+  title?: string | null;
+  company_name?: string | null;
+  business_registration_no?: string | null;
+  amount?: number | null;
+  issue_date?: string | null;
+}
+
+export interface AutoContractSynthesisResponse {
+  title: string;
+  vendor_name: string;
+  business_number: string;
+  contract_amount: number;
+  issue_date?: string | null;
+  documents: AutoContractParseItem[];
+}
+

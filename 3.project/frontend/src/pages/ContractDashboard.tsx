@@ -17,7 +17,9 @@ import { DocumentViewerModal } from '../components/DocumentViewerModal';
 import { UploadModal } from '../components/UploadModal';
 import { PipelineSimulator } from '../components/PipelineSimulator';
 import { NewContractModal } from '../components/NewContractModal';
-import { Loader2, RefreshCw, AlertCircle } from 'lucide-react';
+import { EditContractModal } from '../components/EditContractModal';
+import { AutoBatchContractModal } from '../components/AutoBatchContractModal';
+import { Loader2, RefreshCw, AlertCircle, Edit3, Trash2 } from 'lucide-react';
 
 export const ContractDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
@@ -32,20 +34,20 @@ export const ContractDashboard: React.FC = () => {
   const [uploadTargetType, setUploadTargetType] = useState<string | null>(null);
   const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
   const [isNewContractOpen, setIsNewContractOpen] = useState(false);
+  const [isAutoBatchOpen, setIsAutoBatchOpen] = useState(false);
+  const [isEditContractOpen, setIsEditContractOpen] = useState(false);
+  const [editingContractTarget, setEditingContractTarget] = useState<ContractDetail | ContractListItem | null>(null);
 
   const fetchContracts = async () => {
     try {
       setLoading(true);
       setError(null);
-      let list = await api.listContracts();
-      if (list.length === 0) {
-        // Automatically seed demo contract
-        const demo = await api.seedDemoContract();
-        list = await api.listContracts();
-        setCurrentContract(demo);
-      } else {
+      const list = await api.listContracts();
+      if (list.length > 0) {
         const detail = await api.getContract(list[0].contract_id);
         setCurrentContract(detail);
+      } else {
+        setCurrentContract(null);
       }
       setContracts(list);
     } catch (err: any) {
@@ -133,6 +135,62 @@ export const ContractDashboard: React.FC = () => {
     }
   };
 
+  const handleOpenEditModal = (target?: ContractDetail | ContractListItem | null) => {
+    const itemToEdit = target || currentContract;
+    if (!itemToEdit) return;
+    setEditingContractTarget(itemToEdit);
+    setIsEditContractOpen(true);
+  };
+
+  const handleUpdateContract = async (
+    contractId: number,
+    data: {
+      title?: string;
+      vendor_name?: string;
+      business_number?: string;
+      contract_amount?: number;
+    }
+  ) => {
+    try {
+      setActionLoading(true);
+      const updated = await api.updateContract(contractId, data);
+      const list = await api.listContracts();
+      setContracts(list);
+      setCurrentContract(updated);
+    } catch (err) {
+      console.error(err);
+      alert('계약 정보 수정 실패');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleDeleteContract = async (contractId: number, title?: string) => {
+    const confirmMessage = title
+      ? `'${title}' 계약 및 포함된 모든 증빙서류를 삭제하시겠습니까?`
+      : '이 계약 정보 및 포함된 모든 증빙서류를 정말 삭제하시겠습니까?';
+
+    if (!window.confirm(confirmMessage)) return;
+
+    try {
+      setActionLoading(true);
+      await api.deleteContract(contractId);
+      const list = await api.listContracts();
+      setContracts(list);
+      if (list.length > 0) {
+        const nextDetail = await api.getContract(list[0].contract_id);
+        setCurrentContract(nextDetail);
+      } else {
+        setCurrentContract(null);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('계약 삭제 중 오류가 발생했습니다.');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   const handleRevalidate = async () => {
     if (!currentContract) return;
     try {
@@ -182,6 +240,9 @@ export const ContractDashboard: React.FC = () => {
             contracts={contracts}
             onSelectContract={(id) => handleSelectContract(id, 'contracts')}
             onViewAllContracts={() => setActiveTab('contracts')}
+            onEditContract={(item) => handleOpenEditModal(item)}
+            onDeleteContract={(id, title) => handleDeleteContract(id, title)}
+            onOpenAutoBatchContract={() => setIsAutoBatchOpen(true)}
           />
         );
 
@@ -191,7 +252,7 @@ export const ContractDashboard: React.FC = () => {
             {/* Contract Selector Header Bar */}
             {contracts.length > 0 && (
               <div className="flex items-center justify-between bg-white p-3 px-4 rounded-xl border border-slate-200/80 text-xs shadow-2xs">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3">
                   <span className="font-extrabold text-slate-700">관리 대상 계약 선택:</span>
                   <select
                     value={currentContract?.contract_id || ''}
@@ -204,6 +265,28 @@ export const ContractDashboard: React.FC = () => {
                       </option>
                     ))}
                   </select>
+
+                  {currentContract && (
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => handleOpenEditModal(currentContract)}
+                        className="inline-flex items-center space-x-1 px-3 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg font-bold text-xs transition-colors"
+                        title="선택된 계약 정보 수정"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                        <span>계약 정보 수정</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleDeleteContract(currentContract.contract_id, currentContract.title)}
+                        className="inline-flex items-center space-x-1 px-3 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg font-bold text-xs transition-colors"
+                        title="선택된 계약 삭제"
+                      >
+                        <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                        <span>계약 삭제</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <button
@@ -219,7 +302,11 @@ export const ContractDashboard: React.FC = () => {
 
             {currentContract && (
               <>
-                <MetricsSummary contract={currentContract} />
+                <MetricsSummary
+                  contract={currentContract}
+                  onEditContract={() => handleOpenEditModal(currentContract)}
+                  onDeleteContract={() => handleDeleteContract(currentContract.contract_id, currentContract.title)}
+                />
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <Checklist
                     documents={currentContract.documents}
@@ -267,6 +354,7 @@ export const ContractDashboard: React.FC = () => {
         <TopHeader
           activeTab={activeTab}
           onOpenNewContract={() => setIsNewContractOpen(true)}
+          onOpenAutoBatchContract={() => setIsAutoBatchOpen(true)}
           onSeedDemo={handleSeedDemo}
           onOpenUpload={() => handleOpenUploadModal()}
           onOpenSimulator={() => setIsSimulatorOpen(true)}
@@ -305,6 +393,17 @@ export const ContractDashboard: React.FC = () => {
             onClose={() => setIsSimulatorOpen(false)}
             onCompleted={() => handleSelectContract(currentContract.contract_id)}
           />
+
+          <EditContractModal
+            contract={editingContractTarget || currentContract}
+            isOpen={isEditContractOpen}
+            onClose={() => {
+              setIsEditContractOpen(false);
+              setEditingContractTarget(null);
+            }}
+            onUpdate={handleUpdateContract}
+            loading={actionLoading}
+          />
         </>
       )}
 
@@ -313,6 +412,16 @@ export const ContractDashboard: React.FC = () => {
         onClose={() => setIsNewContractOpen(false)}
         onCreate={handleCreateContract}
         loading={actionLoading}
+      />
+
+      <AutoBatchContractModal
+        isOpen={isAutoBatchOpen}
+        onClose={() => setIsAutoBatchOpen(false)}
+        onSuccess={async (newContractId) => {
+          const list = await api.listContracts();
+          setContracts(list);
+          await handleSelectContract(newContractId, 'contracts');
+        }}
       />
     </div>
   );

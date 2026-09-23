@@ -19,6 +19,12 @@ PERIOD_PATTERNS = [
     re.compile(r"(\d{4}[년\.\-]\s*\d{1,2}[월\.\-]\s*\d{1,2}일?)\s*(?:부터|~)\s*(\d{4}[년\.\-]\s*\d{1,2}[월\.\-]\s*\d{1,2}일?)"),
 ]
 
+TITLE_PATTERNS = [
+    re.compile(r"(?:계약명|건명|프로젝트명|계약제목|용역명|서류명)\s*[:=]?\s*([가-힣A-Za-z0-9\(\)\[\]\s\-]{2,100})"),
+    re.compile(r"\[([가-힣A-Za-z0-9\s\-]+계약[가-힣A-Za-z0-9\s\-]*)\]"),
+    re.compile(r"([가-힣A-Za-z0-9\s\-]{3,60}(?:외주\s*계약|용역\s*계약|구축\s*계약|계약서))"),
+]
+
 COMPANY_PATTERNS = [
     re.compile(r"(?:상호|법인명\(단체명\)|법인명|상호명|공급자|제출자|계약\s*상대자|예금주명|예금주)\s*[:=]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s+대표|\s*\(대표|\n|\r|대표자|성명)"),
     re.compile(r"\(을\)\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)\s+대표"),
@@ -29,6 +35,7 @@ COMPANY_PATTERNS = [
 def extract_fields(text: str) -> AnalysisFields:
     """
     Extracts core structured fields:
+    - title
     - company_name
     - business_registration_no
     - amount
@@ -36,6 +43,25 @@ def extract_fields(text: str) -> AnalysisFields:
     - contract_period_start
     - contract_period_end
     """
+    # 0. Title
+    title: Optional[str] = None
+    for pattern in TITLE_PATTERNS:
+        match = pattern.search(text)
+        if match:
+            candidate = match.group(1).strip()
+            # Clean up candidate
+            candidate = re.sub(r"[\r\n]+", " ", candidate).strip()
+            if candidate and len(candidate) >= 3 and not candidate.startswith("파일명"):
+                title = candidate
+                break
+
+    if not title:
+        # Fallback from first line or filename header if present
+        for line in text.splitlines():
+            clean_line = line.strip()
+            if "계약" in clean_line and not clean_line.startswith("[파일명"):
+                title = re.sub(r"^[#\*\s\-]+", "", clean_line).strip()
+                break
     # 1. Business Registration Number
     biz_no: Optional[str] = None
     biz_matches = BIZ_REG_NO_PATTERN.findall(text)
@@ -113,6 +139,7 @@ def extract_fields(text: str) -> AnalysisFields:
             break
 
     return AnalysisFields(
+        title=title,
         company_name=company_name,
         business_registration_no=biz_no,
         amount=amount,

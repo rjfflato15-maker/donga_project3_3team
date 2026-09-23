@@ -21,6 +21,7 @@ from ..schemas.common import (
 )
 from ..schemas.contract import (
     ContractCreate,
+    ContractUpdate,
     ContractListItem,
     ContractDetailResponse,
 )
@@ -183,6 +184,75 @@ class ContractService:
         self.pipeline_service.revalidate_contract(db, contract.contract_id)
         db.refresh(contract)
         return contract
+
+    def update_contract(self, db: Session, contract_id: int, req: ContractUpdate) -> Optional[ContractDetailResponse]:
+        contract = db.query(Contract).filter(Contract.contract_id == contract_id).first()
+        if not contract:
+            return None
+
+        if req.title is not None:
+            contract.title = req.title
+        if req.vendor_name is not None:
+            contract.vendor_name = req.vendor_name
+        if req.business_number is not None:
+            contract.business_number = req.business_number
+        if req.contract_amount is not None:
+            contract.contract_amount = req.contract_amount
+
+        contract.updated_at = datetime.utcnow()
+        db.commit()
+        db.refresh(contract)
+
+        # Also update DocumentExtract for attached 'contract' document if present
+        contract_docs = db.query(Document).filter(
+            Document.contract_id == contract_id,
+            Document.document_type == "contract"
+        ).all()
+        for cdoc in contract_docs:
+            if cdoc.extract:
+                if req.vendor_name is not None:
+                    cdoc.extract.extracted_vendor_name = req.vendor_name
+                if req.business_number is not None:
+                    cdoc.extract.extracted_vendor_reg_no = req.business_number
+                if req.contract_amount is not None:
+                    cdoc.extract.extracted_amount = req.contract_amount
+
+                fields_dict = {
+                    "company_name": cdoc.extract.extracted_vendor_name,
+                    "business_registration_no": cdoc.extract.extracted_vendor_reg_no,
+                    "amount": cdoc.extract.extracted_amount,
+                    "issue_date": cdoc.extract.extracted_date,
+                }
+                cdoc.extract.raw_fields = json.dumps(fields_dict, ensure_ascii=False)
+        db.commit()
+
+        # Re-run rule engine validation with updated contract info
+        self.pipeline_service.revalidate_contract(db, contract_id)
+        db.refresh(contract)
+
+        return self.get_contract_detail(db, contract_id)
+
+    def delete_contract(self, db: Session, contract_id: int) -> bool:
+        contract = db.query(Contract).filter(Contract.contract_id == contract_id).first()
+        if not contract:
+            return False
+
+        # Clean up physical document files
+        for doc in contract.documents:
+            if doc.storage_path and os.path.exists(doc.storage_path):
+                try:
+                    os.remove(doc.storage_path)
+                except Exception:
+                    pass
+            if doc.masking and doc.masking.masked_file_path and os.path.exists(doc.masking.masked_file_path):
+                try:
+                    os.remove(doc.masking.masked_file_path)
+                except Exception:
+                    pass
+
+        db.delete(contract)
+        db.commit()
+        return True
 
     def seed_demo_contract(self, db: Session) -> Contract:
         """

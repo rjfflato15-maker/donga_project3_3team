@@ -4,6 +4,7 @@ from .common import DocumentType, ProcessingStatus, MaskStatus
 
 
 class AnalysisFields(BaseModel):
+    title: Optional[str] = None
     company_name: Optional[str] = None
     business_registration_no: Optional[str] = None
     amount: Optional[float] = None

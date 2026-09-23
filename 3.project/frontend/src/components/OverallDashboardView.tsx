@@ -9,18 +9,26 @@ import {
   FileCheck2,
   PieChart,
   TrendingUp,
+  Edit3,
+  Trash2,
 } from 'lucide-react';
 
 interface OverallDashboardViewProps {
   contracts: ContractListItem[];
   onSelectContract: (contractId: number) => void;
   onViewAllContracts: () => void;
+  onEditContract?: (contract: ContractListItem) => void;
+  onDeleteContract?: (contractId: number, title: string) => void;
+  onOpenAutoBatchContract?: () => void;
 }
 
 export const OverallDashboardView: React.FC<OverallDashboardViewProps> = ({
   contracts,
   onSelectContract,
   onViewAllContracts,
+  onEditContract,
+  onDeleteContract,
+  onOpenAutoBatchContract,
 }) => {
   const totalCount = contracts.length;
 
@@ -101,15 +109,27 @@ export const OverallDashboardView: React.FC<OverallDashboardViewProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center space-x-3 bg-white/10 backdrop-blur-md border border-white/15 p-4 rounded-2xl shrink-0">
-            <div className="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-lg shadow-md shadow-indigo-600/30">
-              {totalCount > 0 ? `${Math.round((passCount / totalCount) * 100)}%` : '0%'}
-            </div>
-            <div>
-              <div className="text-xs font-bold text-slate-300">전체 검수 통과율</div>
-              <div className="text-sm font-black text-white flex items-center space-x-1 mt-0.5">
-                <span>{passCount} / {totalCount} 건 통과</span>
-                <TrendingUp className="w-3.5 h-3.5 text-emerald-400 inline ml-1" />
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            {onOpenAutoBatchContract && (
+              <button
+                onClick={onOpenAutoBatchContract}
+                className="px-4 py-3 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-2xl shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.02] flex items-center justify-center space-x-2 border border-amber-300"
+              >
+                <span className="text-base">⚡</span>
+                <span>6종 서류로 계약 자동 생성</span>
+              </button>
+            )}
+
+            <div className="flex items-center space-x-3 bg-white/10 backdrop-blur-md border border-white/15 p-4 rounded-2xl shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-lg shadow-md shadow-indigo-600/30">
+                {totalCount > 0 ? `${Math.round((passCount / totalCount) * 100)}%` : '0%'}
+              </div>
+              <div>
+                <div className="text-xs font-bold text-slate-300">전체 검수 통과율</div>
+                <div className="text-sm font-black text-white flex items-center space-x-1 mt-0.5">
+                  <span>{passCount} / {totalCount} 건 통과</span>
+                  <TrendingUp className="w-3.5 h-3.5 text-emerald-400 inline ml-1" />
+                </div>
               </div>
             </div>
           </div>
@@ -209,13 +229,24 @@ export const OverallDashboardView: React.FC<OverallDashboardViewProps> = ({
             </div>
           </div>
 
-          <button
-            onClick={onViewAllContracts}
-            className="flex items-center space-x-1.5 text-xs font-extrabold text-indigo-700 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100/80 px-3.5 py-1.5 rounded-xl transition-all duration-200 border border-indigo-100 shadow-2xs"
-          >
-            <span>전체 목록 보기</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          <div className="flex items-center space-x-2">
+            {onOpenAutoBatchContract && (
+              <button
+                onClick={onOpenAutoBatchContract}
+                className="flex items-center space-x-1.5 text-xs font-extrabold text-amber-900 bg-amber-300 hover:bg-amber-400 px-3 py-1.5 rounded-xl transition-all border border-amber-400 shadow-2xs"
+              >
+                <span>⚡ 6종 서류로 계약 생성</span>
+              </button>
+            )}
+
+            <button
+              onClick={onViewAllContracts}
+              className="flex items-center space-x-1.5 text-xs font-extrabold text-indigo-700 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100/80 px-3.5 py-1.5 rounded-xl transition-all duration-200 border border-indigo-100 shadow-2xs"
+            >
+              <span>전체 목록 보기</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         {/* Table View */}
@@ -261,15 +292,43 @@ export const OverallDashboardView: React.FC<OverallDashboardViewProps> = ({
                       {getStatusBadge(c.review_status, c.completeness_rate)}
                     </td>
                     <td className="py-4 px-5 text-center">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onSelectContract(c.contract_id);
-                        }}
-                        className="px-3.5 py-1.5 bg-white hover:bg-indigo-600 hover:text-white border border-slate-200 hover:border-indigo-600 rounded-xl font-bold text-slate-700 shadow-2xs transition-all duration-200 text-[11px]"
-                      >
-                        리포트 확인
-                      </button>
+                      <div className="flex items-center justify-center space-x-2">
+                        {onEditContract && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onEditContract(c);
+                            }}
+                            className="inline-flex items-center space-x-1 px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 border border-slate-200 hover:border-indigo-300 rounded-xl font-bold text-slate-700 shadow-2xs transition-all duration-200 text-[11px]"
+                            title="계약 정보 수정"
+                          >
+                            <Edit3 className="w-3 h-3 text-slate-500" />
+                            <span>수정</span>
+                          </button>
+                        )}
+                        {onDeleteContract && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onDeleteContract(c.contract_id, c.title);
+                            }}
+                            className="inline-flex items-center space-x-1 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl font-bold shadow-2xs transition-all duration-200 text-[11px]"
+                            title="계약 정보 삭제"
+                          >
+                            <Trash2 className="w-3 h-3 text-rose-600" />
+                            <span>삭제</span>
+                          </button>
+                        )}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectContract(c.contract_id);
+                          }}
+                          className="px-3.5 py-1.5 bg-white hover:bg-indigo-600 hover:text-white border border-slate-200 hover:border-indigo-600 rounded-xl font-bold text-slate-700 shadow-2xs transition-all duration-200 text-[11px]"
+                        >
+                          리포트 확인
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
