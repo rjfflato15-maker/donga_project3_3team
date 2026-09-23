@@ -14,7 +14,7 @@ from .database import Base
 
 
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "app_users"
 
     user_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     email = Column(String(255), unique=True, nullable=False, index=True)
@@ -27,7 +27,7 @@ class Contract(Base):
     __tablename__ = "contracts"
 
     contract_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey("users.user_id"), nullable=True)
+    user_id = Column(Integer, ForeignKey("app_users.user_id"), nullable=True)
     title = Column(String(200), nullable=False)
     vendor_name = Column(String(200), nullable=False)
     business_number = Column(String(50), nullable=False)
