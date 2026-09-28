@@ -12,7 +12,8 @@ from ..schemas.contract import (
     ContractCreate,
 )
 from ..schemas.common import DocumentType
-from ..ai import analyze_document
+import re
+from ..ai import analyze_document, is_generic_title
 from ..services.contract_service import ContractService
 from ..services.pipeline_service import PipelineService
 
@@ -37,26 +38,31 @@ def synthesize_extracted_fields(items: List[AutoContractParseItem]) -> AutoContr
     issue_date: Optional[str] = None
 
     # Priority maps for each field based on document reliability
-    # 1. Title priority: CONTRACT > ESTIMATE > TAX_INVOICE > others
+    # 1. Title priority: CONTRACT > ESTIMATE > TAX_INVOICE > others (filtering generic template names)
     title_priority = [DocumentType.CONTRACT.value, DocumentType.ESTIMATE.value, DocumentType.TAX_INVOICE.value]
     for doc_type in title_priority:
         for item in items:
-            if item.document_type == doc_type and item.title:
+            if item.document_type == doc_type and item.title and not is_generic_title(item.title):
                 title = item.title
                 break
         if title:
             break
     if not title:
         for item in items:
-            if item.title:
+            if item.title and not is_generic_title(item.title):
                 title = item.title
                 break
 
     if not title and items:
-        # Fallback based on first file name
+        # Fallback based on first file name (cleaning document type & index prefixes)
         base_name = os.path.splitext(items[0].file_name)[0]
-        clean_base = base_name.replace("_", " ").replace("-", " ").strip()
-        title = f"{clean_base} 외주 계약" if clean_base else "AI 자동 생성 계약"
+        clean_base = re.sub(r"^[\d\.\-_]+", "", base_name)
+        clean_base = re.sub(r"^(?:계약서|견적서|세금계산서|사업자등록증|통장사본|검수확인서)[\._\-\s]*", "", clean_base)
+        clean_base = clean_base.replace("_", " ").replace("-", " ").strip()
+        if clean_base and not is_generic_title(clean_base):
+            title = f"{clean_base} 외주 계약" if "계약" not in clean_base else clean_base
+        else:
+            title = "AI 자동 생성 외주 계약"
 
     # 2. Vendor Name priority: BUSINESS_REGISTRATION > TAX_INVOICE > BANK_ACCOUNT > CONTRACT > others
     vendor_priority = [

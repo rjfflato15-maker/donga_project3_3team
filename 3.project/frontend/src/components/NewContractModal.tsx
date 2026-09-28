@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Plus, FileText, Upload, Loader2, Sparkles, CheckCircle2 } from 'lucide-react';
 import { api } from '../api/client';
 
@@ -33,6 +33,18 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
   const [parseSuccessMessage, setParseSuccessMessage] = useState<string | null>(null);
   const [parseError, setParseError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setTitle('');
+      setVendorName('');
+      setBusinessNumber('');
+      setContractAmount('');
+      setSelectedFile(null);
+      setParseSuccessMessage(null);
+      setParseError(null);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,6 +53,7 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
 
     const file = files[0];
     setSelectedFile(file);
+    e.target.value = '';
     setParsingLoading(true);
     setParseError(null);
     setParseSuccessMessage(null);

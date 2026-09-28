@@ -22,6 +22,201 @@ PERIOD_PATTERNS = [
     re.compile(r"(\d{4}[년\.\-]\s*\d{1,2}[월\.\-]\s*\d{1,2}일?)\s*(?:부터|~)\s*(\d{4}[년\.\-]\s*\d{1,2}[월\.\-]\s*\d{1,2}일?)"),
 ]
 
+GENERIC_TITLE_TERMS = {
+    "계약서",
+    "표준계약서",
+    "표준 계약서",
+    "용역계약서",
+    "용역 계약서",
+    "외주용역계약서",
+    "외주 용역 계약서",
+    "외주용역 표준계약서",
+    "외주 용역 표준 계약서",
+    "외주계약서",
+    "외주 계약서",
+    "물품계약서",
+    "물품 계약서",
+    "물품구매계약서",
+    "물품 구매 계약서",
+    "물품공급계약서",
+    "물품 공급 계약서",
+    "위탁계약서",
+    "위탁 계약서",
+    "업무위탁계약서",
+    "업무 위탁 계약서",
+    "위탁관리계약서",
+    "위탁 관리 계약서",
+    "개발계약서",
+    "개발 계약서",
+    "소프트웨어개발계약서",
+    "소프트웨어 개발 계약서",
+    "소프트웨어개발표준계약서",
+    "소프트웨어 개발 표준 계약서",
+    "SW개발계약서",
+    "S/W 개발 계약서",
+    "시스템개발계약서",
+    "비밀유지계약서",
+    "비밀 유지 계약서",
+    "NDA",
+    "기본계약서",
+    "기본 계약서",
+    "약정서",
+    "합의서",
+    "협약서",
+    "MOU",
+    "서식",
+    "표준서식",
+    "견적서",
+    "세금계산서",
+    "검수확인서",
+    "납품확인서",
+    "사업자등록증",
+    "통장사본",
+}
+
+
+def clean_title_str(t: str) -> str:
+    if not t:
+        return ""
+    cleaned = re.sub(r"^[#\*\s\-\[\(\<『「“'\"`추천양식표준]+", "", t)
+    cleaned = re.sub(r"[\]\)\>』」”'\"`]+$", "", cleaned)
+    return cleaned.strip()
+
+
+def is_generic_title(title: str) -> bool:
+    if not title:
+        return True
+
+    clean = clean_title_str(title)
+    if not clean:
+        return True
+
+    norm = re.sub(r"[\s\-_\[\]\(\)\{\}\"\'「」『』＜＞<>추천양식표준]", "", clean)
+
+    for term in GENERIC_TITLE_TERMS:
+        term_norm = re.sub(r"[\s\-_\[\]\(\)\{\}\"\'「」『』＜＞<>추천양식표준]", "", term)
+        if norm == term_norm:
+            return True
+
+    if re.fullmatch(r"(?:외주|용역|표준|위탁|개발|물품|기본|업무|소프트웨어|시스템|구매|공급|관리)*계약서", norm):
+        return True
+
+    if re.fullmatch(r"(?:표준|기본|외주|일반)?(?:서식|양식|서류)", norm):
+        return True
+
+    return False
+
+
+def extract_contract_title(text: str) -> Optional[str]:
+    """
+    Generic contract title extractor:
+    1. Rejects standalone generic template titles (표준계약서, 외주용역계약서, 위탁계약서, etc.).
+    2. Searches header, preamble, intro, and Article 1 (Purpose) for actual task/project name:
+       - Explicit labels (계약명, 건명, 과업명, 사업명, 프로젝트명, 용역명, 목적물 등)
+       - Header line subtitles/parentheses/brackets e.g. "표준계약서 (ABC 홈페이지 구축)"
+       - Quoted titles in preamble/intro e.g. "ABC 홈페이지 구축 외주 계약"
+       - Article 1 (Purpose clause) task/subject phrases
+    3. Fallback: Combines body core objects (e.g., "홈페이지 구축", "서버 장비 공급") with contract type.
+    """
+    if not text:
+        return None
+
+    # Step 1: Explicit field labels (계약명, 건명, 과업명, 사업명, 프로젝트명, 용역명, 목적물, 계약제목 등)
+    label_pattern = re.compile(
+        r"(?:계약명|건\s*명|과업명|사업명|프로젝트명|용역명|목적물|계약제목|서류명)\s*[:=·\.]?\s*[\"\'「」『』]?([가-힣A-Za-z0-9\(\)\[\]\s\-_]{2,100})[\"\'「」『』]?"
+    )
+    for match in label_pattern.finditer(text):
+        val = clean_title_str(match.group(1))
+        val = re.sub(r"[\r\n]+", " ", val).strip()
+        if val and not is_generic_title(val) and len(val) >= 2 and not val.startswith("파일명"):
+            return val
+
+    # Split text into lines for header inspection (first 20 lines)
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    top_lines = lines[:20]
+
+    # Step 2: Check header lines with subtitles, parentheses, brackets, or colon/dash splits
+    for line in top_lines:
+        if line.startswith("[파일명") or "금액" in line:
+            continue
+
+        bracket_match = re.search(r"[\(\[\<『「“]([가-힣A-Za-z0-9\s\-_]{3,80})[\)\]\>』」”]", line)
+        if bracket_match:
+            candidate = clean_title_str(bracket_match.group(1))
+            if candidate and not is_generic_title(candidate) and len(candidate) >= 3:
+                return candidate
+
+        if "-" in line or ":" in line:
+            parts = re.split(r"[\-:\=]", line)
+            for part in parts:
+                candidate = clean_title_str(part)
+                if candidate and not is_generic_title(candidate) and len(candidate) >= 4:
+                    return candidate
+
+    # Step 3: Quoted titles in Preamble / Intro text (top 35 lines or before Article 2)
+    intro_text = "\n".join(lines[:35])
+    quote_patterns = [
+        re.compile(r"[\"\'『「“]([가-힣A-Za-z0-9\s\-_]{3,80}(?:계약|용역|구축|개발|위탁|사업|프로젝트|구매|공급|시스템|리뉴얼|고도화|운영|컨설팅|유지보수))[\"\'』」”]", re.UNICODE),
+        re.compile(r"(?:체결하는|위하여|관하여|대하여|선정하여|위탁하여)\s+[\"\'『「“]([가-힣A-Za-z0-9\s\-_]{3,80})[\"\'』」”]", re.UNICODE),
+        re.compile(r"[\"\'『「“]([가-힣A-Za-z0-9\s\-_]{3,80})[\"\'』」”]\s*(?:에\s*관한|에\s*대한|을\s*체결|를\s*체결|계약)", re.UNICODE),
+    ]
+    for q_pat in quote_patterns:
+        for match in q_pat.finditer(intro_text):
+            candidate = clean_title_str(match.group(1))
+            if candidate and not is_generic_title(candidate) and len(candidate) >= 3:
+                return candidate
+
+    # Step 4: Article 1 (Purpose clause) inspection
+    purpose_match = re.search(
+        r"(?:제\s*1\s*조|제1조)\s*[\(\[\<]?\s*목적\s*[\)\]\>]?\s*(.*?)(?=제\s*2\s*조|제2조|\n\n|\Z)",
+        text,
+        re.DOTALL
+    )
+    if purpose_match:
+        p_text = purpose_match.group(1)
+        for q_pat in quote_patterns:
+            for match in q_pat.finditer(p_text):
+                candidate = clean_title_str(match.group(1))
+                if candidate and not is_generic_title(candidate) and len(candidate) >= 3:
+                    return candidate
+
+        task_match = re.search(
+            r"([가-힣A-Za-z0-9\s]{3,60}(?:구축|개발|용역|위탁|운영|컨설팅|리뉴얼|공급|구매|설치|고도화|마이그레이션|유지보수))\s*(?:에\s*관한|에\s*대한|을\s*목적으로|의\s*수행|를\s*위하여)",
+            p_text
+        )
+        if task_match:
+            candidate = clean_title_str(task_match.group(1))
+            if candidate and not is_generic_title(candidate) and len(candidate) >= 3:
+                if "계약" not in candidate:
+                    candidate = f"{candidate} 계약"
+                return candidate
+
+    # Step 5: Check top lines for non-generic headline
+    for line in top_lines:
+        clean_line = clean_title_str(line)
+        if clean_line and not clean_line.startswith("파일명") and not is_generic_title(clean_line):
+            if len(clean_line) >= 3 and any(k in clean_line for k in ["계약", "용역", "건", "사업", "프로젝트", "구축", "개발", "위탁", "공급"]):
+                return clean_line
+
+    # Step 6: Fallback - Combine body core objects with document type
+    body_object_match = re.search(
+        r"([가-힣A-Za-z0-9\s]{2,30}(?:구축|개발|위탁|공급|제작|운영|컨설팅|리뉴얼|개선|고도화|시스템|플랫폼|솔루션|마이그레이션))",
+        text
+    )
+    if body_object_match:
+        core_obj = clean_title_str(body_object_match.group(1))
+        if core_obj and len(core_obj) >= 3 and not is_generic_title(core_obj):
+            return f"{core_obj} 용역 계약"
+
+    # Step 7: Final fallback - Clean first line or standard title
+    for line in top_lines:
+        clean_line = clean_title_str(line)
+        if clean_line and not clean_line.startswith("파일명") and len(clean_line) >= 3:
+            return clean_line
+
+    return "외주 용역 계약"
+
+
 TITLE_PATTERNS = [
     re.compile(r"(?:계약명|건명|프로젝트명|계약제목|용역명|서류명)\s*[:=·\.]?\s*([가-힣A-Za-z0-9\(\)\[\]\s\-]{2,100})"),
     re.compile(r"\[([가-힣A-Za-z0-9\s\-]+계약[가-힣A-Za-z0-9\s\-]*)\]"),
@@ -46,25 +241,9 @@ def extract_fields(text: str) -> AnalysisFields:
     - contract_period_start
     - contract_period_end
     """
-    # 0. Title
-    title: Optional[str] = None
-    for pattern in TITLE_PATTERNS:
-        match = pattern.search(text)
-        if match:
-            candidate = match.group(1).strip()
-            # Clean up candidate
-            candidate = re.sub(r"[\r\n]+", " ", candidate).strip()
-            if candidate and len(candidate) >= 3 and not candidate.startswith("파일명"):
-                title = candidate
-                break
+    # 0. Title (generic title filtering & project name resolution)
+    title: Optional[str] = extract_contract_title(text)
 
-    if not title:
-        # Fallback from first line or filename header if present
-        for line in text.splitlines():
-            clean_line = line.strip()
-            if "계약" in clean_line and not clean_line.startswith("[파일명") and "금액" not in clean_line:
-                title = re.sub(r"^[#\*\s\-]+", "", clean_line).strip()
-                break
     # 1. Business Registration Number
     biz_no: Optional[str] = None
     biz_matches = BIZ_REG_NO_PATTERN.findall(text)

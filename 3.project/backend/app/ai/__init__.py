@@ -3,7 +3,7 @@ from typing import Dict, Any, Tuple
 from .preprocessor import extract_text_from_file
 from .masking import mask_sensitive_information
 from .classifier import classify_document
-from .extractor import extract_fields
+from .extractor import extract_fields, is_generic_title, extract_contract_title
 from ..schemas.document import (
     DocumentAnalysisResponse,
     MaskInfo,
@@ -61,5 +61,8 @@ __all__ = [
     "mask_sensitive_information",
     "classify_document",
     "extract_fields",
+    "is_generic_title",
+    "extract_contract_title",
     "analyze_document",
 ]
+

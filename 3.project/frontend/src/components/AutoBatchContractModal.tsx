@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
   Sparkles,
@@ -50,6 +50,25 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
   const [issueDate, setIssueDate] = useState('');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  const resetForm = () => {
+    setSelectedFiles([]);
+    setParsing(false);
+    setSubmitting(false);
+    setSynthesis(null);
+    setTitle('');
+    setVendorName('');
+    setBusinessNumber('');
+    setContractAmount('');
+    setIssueDate('');
+    setErrorMsg(null);
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      resetForm();
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleFilesSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,13 +76,14 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
     if (!files || files.length === 0) return;
 
     const fileArray = Array.from(files);
-    setSelectedFiles((prev) => [...prev, ...fileArray]);
+    const updatedFiles = [...selectedFiles, ...fileArray];
+    setSelectedFiles(updatedFiles);
+    e.target.value = '';
     setErrorMsg(null);
     setParsing(true);
 
     try {
-      const allFiles = [...selectedFiles, ...fileArray];
-      const res = await api.autoParseBatchDocuments(allFiles);
+      const res = await api.autoParseBatchDocuments(updatedFiles);
       setSynthesis(res);
 
       if (res.title) setTitle(res.title);
@@ -99,6 +119,11 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
       }
     } else {
       setSynthesis(null);
+      setTitle('');
+      setVendorName('');
+      setBusinessNumber('');
+      setContractAmount('');
+      setIssueDate('');
     }
   };
 
@@ -128,6 +153,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
         selectedFiles
       );
 
+      resetForm();
       onSuccess(createdContract.contract_id);
       onClose();
     } catch (err: any) {

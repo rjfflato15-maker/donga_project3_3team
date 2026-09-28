@@ -25,9 +25,14 @@ export const UploadModal: React.FC<UploadModalProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (initialTargetType) {
-      setTargetType(initialTargetType);
+    if (isOpen) {
+      if (initialTargetType) {
+        setTargetType(initialTargetType);
+      } else {
+        setTargetType('');
+      }
     } else {
+      setSelectedFiles([]);
       setTargetType('');
     }
   }, [initialTargetType, isOpen]);
