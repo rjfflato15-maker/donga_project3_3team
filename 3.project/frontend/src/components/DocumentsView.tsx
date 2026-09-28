@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { ContractDetail, DocumentResponse } from '../types';
-import { Eye, FileText, Lock } from 'lucide-react';
+import { Eye, FileText, Lock, ExternalLink, Trash2 } from 'lucide-react';
 
 interface DocumentsViewProps {
   currentContract: ContractDetail | null;
   onSelectDocument: (doc: DocumentResponse) => void;
   onOpenUpload: () => void;
+  onDeleteDocument?: (documentId: number, fileName: string) => void;
 }
 
 export const DocumentsView: React.FC<DocumentsViewProps> = ({
   currentContract,
   onSelectDocument,
   onOpenUpload,
+  onDeleteDocument,
 }) => {
   const [filterType, setFilterType] = useState<string>('all');
 
@@ -152,13 +154,31 @@ export const DocumentsView: React.FC<DocumentsViewProps> = ({
               </div>
 
               <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-[11px] text-slate-400 font-medium">상세 대조 지원</span>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => window.open(`/api/documents/${doc.document_id}/file`, '_blank', 'noopener,noreferrer')}
+                    className="flex items-center space-x-1 text-[11px] font-semibold text-slate-500 hover:text-blue-600 transition-colors"
+                    title="브라우저 새 창에서 원본 열기"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    <span>새 창</span>
+                  </button>
+                  {onDeleteDocument && (
+                    <button
+                      onClick={() => onDeleteDocument(doc.document_id, doc.original_file_name)}
+                      className="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition-colors"
+                      title="증빙서류 삭제"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
                 <button
                   onClick={() => onSelectDocument(doc)}
                   className="flex items-center space-x-1 px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-bold transition-colors"
                 >
                   <Eye className="w-3.5 h-3.5" />
-                  <span>서류 보기 & 마스킹</span>
+                  <span>더보기</span>
                 </button>
               </div>
             </div>

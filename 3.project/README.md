@@ -32,9 +32,14 @@
 
 ## 3. 실행 방법 (Quick Start)
 
-### 3-1. 백엔드 서버 실행
+### 3-1. 백엔드 가상환경 활성화 및 서버 실행
 ```powershell
 cd c:\project
+
+# 가상환경 활성화 (PowerShell)
+.\backend\.venv\Scripts\Activate.ps1
+
+# 서버 실행
 python -m uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 - Swagger API 문서: `http://localhost:8000/docs`

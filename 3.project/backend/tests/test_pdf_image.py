@@ -84,3 +84,29 @@ def test_image_document_extraction_and_classification():
 
         analysis_res, raw_text, masked_text = analyze_document(jpg_path, file_name="04_통장사본.jpg")
         assert analysis_res.document_type == DocumentType.BANK_ACCOUNT
+
+
+def test_korean_ocr_image_recognition():
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        img_path = os.path.join(tmp_dir, "03_사업자등록증.png")
+        img = Image.new("RGB", (900, 450), color=(255, 255, 255))
+        d = ImageDraw.Draw(img)
+        try:
+            font = ImageFont.truetype(r"C:\Windows\Fonts\malgun.ttf", 24)
+            font_title = ImageFont.truetype(r"C:\Windows\Fonts\malgunbd.ttf", 34)
+        except Exception:
+            font = font_title = ImageFont.load_default()
+
+        d.text((300, 30), "사 업 자 등 록 증", fill=(0, 0, 0), font=font_title)
+        d.text((50, 110), "등록번호 : 123-45-67890", fill=(0, 0, 0), font=font)
+        d.text((50, 160), "법인명(단체명) : 주식회사 에이비씨 (대표자: 홍길동)", fill=(0, 0, 0), font=font)
+        d.text((50, 210), "개업연월일 : 2024년 01월 15일", fill=(0, 0, 0), font=font)
+        d.text((50, 260), "총계약금액 : 11,000,000 원", fill=(0, 0, 0), font=font)
+        img.save(img_path)
+
+        analysis_res, raw_text, masked_text = analyze_document(img_path, file_name="03_사업자등록증.png")
+        assert analysis_res.document_type == DocumentType.BUSINESS_REGISTRATION
+        assert analysis_res.confidence >= 0.85
+        assert analysis_res.fields.business_registration_no == "123-45-67890"
+        assert analysis_res.fields.company_name == "주식회사 에이비씨"
+

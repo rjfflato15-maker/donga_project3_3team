@@ -2,37 +2,78 @@ import os
 from typing import Tuple, Any
 
 
+def _to_pil_image(image_input: Any):
+    """Safely converts various image input types to a PIL Image with proper orientation."""
+    from PIL import Image, ImageOps
+    import io
+
+    img = None
+    if isinstance(image_input, str):
+        if os.path.exists(image_input):
+            img = Image.open(image_input)
+    elif isinstance(image_input, (bytes, bytearray)):
+        img = Image.open(io.BytesIO(image_input))
+    elif hasattr(image_input, "read"):
+        img = Image.open(image_input)
+    elif isinstance(image_input, Image.Image):
+        img = image_input
+    else:
+        # Numpy array or similar
+        try:
+            img = Image.fromarray(image_input)
+        except Exception:
+            pass
+
+    if img is not None:
+        try:
+            img = ImageOps.exif_transpose(img)
+        except Exception:
+            pass
+        if img.mode not in ("RGB", "L"):
+            img = img.convert("RGB")
+    return img
+
+
 def run_ocr_on_image(image_input: Any) -> str:
     """
-    Runs OCR on PIL Image, file path, or numpy array.
-    Uses RapidOCR as primary engine, with fallbacks to pytesseract/easyocr.
+    Runs high-accuracy OCR on image (file path, bytes, PIL Image, or numpy array).
+    Uses Windows Native OCR (WinOCR) with auto-rescaling for superior Korean & English recognition.
+    Falls back to PyTesseract if available.
     """
-    # 1. RapidOCR (Fast, local ONNX model)
-    try:
-        from rapidocr_onnxruntime import RapidOCR
-        engine = RapidOCR()
-        result, _ = engine(image_input)
-        if result:
-            lines = [item[1] for item in result if len(item) > 1 and item[1]]
-            ocr_text = "\n".join(lines).strip()
-            if ocr_text:
-                return ocr_text
-    except Exception:
-        pass
+    from PIL import Image
+
+    pil_img = _to_pil_image(image_input)
+
+    # 1. WinOCR (Windows 10/11 native Media.Ocr Engine)
+    if pil_img is not None:
+        try:
+            import winocr
+
+            target_img = pil_img
+            w, h = target_img.size
+            if w < 1200 or h < 600:
+                scale = max(2, min(4, 1600 // max(w, 1)))
+                target_img = target_img.resize((w * scale, h * scale), Image.Resampling.LANCZOS)
+
+            res = winocr.recognize_pil_sync(target_img, lang="ko")
+            if res:
+                lines = [l.get("text", "").strip() for l in res.get("lines", []) if l.get("text", "").strip()]
+                if lines:
+                    return "\n".join(lines).strip()
+                elif res.get("text", "").strip():
+                    return res.get("text", "").strip()
+        except Exception:
+            pass
 
     # 2. PyTesseract fallback
-    try:
-        from PIL import Image
-        import pytesseract
-        if isinstance(image_input, str):
-            img = Image.open(image_input)
-        else:
-            img = image_input
-        ocr_text = pytesseract.image_to_string(img, lang="kor+eng").strip()
-        if ocr_text:
-            return ocr_text
-    except Exception:
-        pass
+    if pil_img is not None:
+        try:
+            import pytesseract
+            ocr_text = pytesseract.image_to_string(pil_img, lang="kor+eng").strip()
+            if ocr_text:
+                return ocr_text
+        except Exception:
+            pass
 
     return ""
 

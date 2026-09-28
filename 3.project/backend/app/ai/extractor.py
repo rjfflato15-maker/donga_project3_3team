@@ -4,30 +4,33 @@ from ..schemas.document import AnalysisFields
 
 
 # Regular expressions for key fields
-BIZ_REG_NO_PATTERN = re.compile(r"\b(\d{3}-\d{2}-\d{5})\b")
+# Regular expressions for key fields (enhanced for OCR resilience)
+BIZ_REG_NO_PATTERN = re.compile(r"\b(\d{3})\s*-\s*(\d{2})\s*-\s*(\d{5})\b")
+BIZ_LABEL_PATTERN = re.compile(r"(?:등록번호|사업자(?:등록)?번호|등록\s*번호)\s*[:=·\.]?\s*(\d{3})[\s\-]*(\d{2})[\s\-]*(\d{5})")
+
 AMOUNT_PATTERNS = [
-    re.compile(r"(?:총\s*계약금액|계약금액|견적\s*금액|견적금액|총\s*합계금액|합계금액|공급가액|금액)\s*[:=]?\s*(?:금)?\s*([0-9,]+)\s*원"),
+    re.compile(r"(?:총\s*계약금액|계약금액|견적\s*금액|견적금액|총\s*합계금액|합계금액|공급가액|청구금액|금액)\s*[:=·\.]?\s*(?:금)?\s*([0-9,]+)\s*(?:원)?"),
     re.compile(r"금\s*([0-9,]+)\s*원"),
     re.compile(r"([0-9,]{4,})\s*원"),
 ]
 DATE_PATTERNS = [
-    re.compile(r"(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일"),
-    re.compile(r"(\d{4})-(\d{2})-(\d{2})"),
-    re.compile(r"(\d{4})\.(\d{2})\.(\d{2})"),
+    re.compile(r"(\d{4})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일"),
+    re.compile(r"(\d{4})\s*-\s*(\d{1,2})\s*-\s*(\d{1,2})"),
+    re.compile(r"(\d{4})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})"),
 ]
 PERIOD_PATTERNS = [
     re.compile(r"(\d{4}[년\.\-]\s*\d{1,2}[월\.\-]\s*\d{1,2}일?)\s*(?:부터|~)\s*(\d{4}[년\.\-]\s*\d{1,2}[월\.\-]\s*\d{1,2}일?)"),
 ]
 
 TITLE_PATTERNS = [
-    re.compile(r"(?:계약명|건명|프로젝트명|계약제목|용역명|서류명)\s*[:=]?\s*([가-힣A-Za-z0-9\(\)\[\]\s\-]{2,100})"),
+    re.compile(r"(?:계약명|건명|프로젝트명|계약제목|용역명|서류명)\s*[:=·\.]?\s*([가-힣A-Za-z0-9\(\)\[\]\s\-]{2,100})"),
     re.compile(r"\[([가-힣A-Za-z0-9\s\-]+계약[가-힣A-Za-z0-9\s\-]*)\]"),
     re.compile(r"([가-힣A-Za-z0-9\s\-]{3,60}(?:외주\s*계약|용역\s*계약|구축\s*계약|계약서))"),
 ]
 
 COMPANY_PATTERNS = [
-    re.compile(r"(?:상호|법인명\(단체명\)|법인명|상호명|공급자|제출자|계약\s*상대자|예금주명|예금주)\s*[:=]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s+대표|\s*\(대표|\n|\r|대표자|성명)"),
-    re.compile(r"\(을\)\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)\s+대표"),
+    re.compile(r"(?:상호(?:명)?|법인명(?:\([^\)]*\))?|공급자|제출자|계약\s*상대자|예금주명|예금주)\s*[:=·\.]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(]?\s*(?:대표자?|성명)|\n|\r|$)"),
+    re.compile(r"\(을\)\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s+대표|\n|\r|$)"),
     re.compile(r"\[을\s*-\s*수주사\]\s*\n\s*-\s*상호\s*[:=]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30})"),
 ]
 
@@ -59,7 +62,7 @@ def extract_fields(text: str) -> AnalysisFields:
         # Fallback from first line or filename header if present
         for line in text.splitlines():
             clean_line = line.strip()
-            if "계약" in clean_line and not clean_line.startswith("[파일명"):
+            if "계약" in clean_line and not clean_line.startswith("[파일명") and "금액" not in clean_line:
                 title = re.sub(r"^[#\*\s\-]+", "", clean_line).strip()
                 break
     # 1. Business Registration Number
@@ -68,10 +71,15 @@ def extract_fields(text: str) -> AnalysisFields:
     if biz_matches:
         # If there are multiple (e.g. 갑 & 을 in a contract), pick the vendor (을) if distinguishable
         # Typically the second one in contract, or the first one in vendor's own certificate/estimate
-        if len(biz_matches) > 1 and "수주사" in text:
-            biz_no = biz_matches[1]
+        chosen = biz_matches[1] if (len(biz_matches) > 1 and "수주사" in text) else biz_matches[0]
+        if isinstance(chosen, tuple):
+            biz_no = f"{chosen[0]}-{chosen[1]}-{chosen[2]}"
         else:
-            biz_no = biz_matches[0]
+            biz_no = chosen
+    else:
+        label_match = BIZ_LABEL_PATTERN.search(text)
+        if label_match:
+            biz_no = f"{label_match.group(1)}-{label_match.group(2)}-{label_match.group(3)}"
 
     # 2. Company Name
     company_name: Optional[str] = None

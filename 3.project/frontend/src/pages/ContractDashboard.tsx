@@ -191,6 +191,29 @@ export const ContractDashboard: React.FC = () => {
     }
   };
 
+  const handleDeleteDocument = async (documentId: number, fileName: string) => {
+    if (!window.confirm(`'${fileName}' 증빙서류를 삭제하시겠습니까?\n삭제 시 검수 결과가 자동으로 재계산됩니다.`)) {
+      return;
+    }
+    if (!currentContract) return;
+    try {
+      setActionLoading(true);
+      await api.deleteDocument(documentId);
+      const updated = await api.getContract(currentContract.contract_id);
+      setCurrentContract(updated);
+      const list = await api.listContracts();
+      setContracts(list);
+      if (selectedDoc && selectedDoc.document_id === documentId) {
+        setSelectedDoc(null);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('증빙서류 삭제에 실패했습니다.');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   const handleRevalidate = async () => {
     if (!currentContract) return;
     try {
@@ -312,6 +335,8 @@ export const ContractDashboard: React.FC = () => {
                     documents={currentContract.documents}
                     onSelectDocument={(doc) => setSelectedDoc(doc)}
                     onUploadSpecific={(type) => handleOpenUploadModal(type)}
+                    onOpenUploadAll={() => handleOpenUploadModal()}
+                    onDeleteDocument={handleDeleteDocument}
                   />
                   <RuleValidationCard checks={currentContract.checks} />
                 </div>
@@ -326,6 +351,7 @@ export const ContractDashboard: React.FC = () => {
             currentContract={currentContract}
             onSelectDocument={(doc) => setSelectedDoc(doc)}
             onOpenUpload={() => handleOpenUploadModal()}
+            onDeleteDocument={handleDeleteDocument}
           />
         );
 
@@ -374,6 +400,7 @@ export const ContractDashboard: React.FC = () => {
       <DocumentViewerModal
         document={selectedDoc}
         onClose={() => setSelectedDoc(null)}
+        onDelete={handleDeleteDocument}
       />
 
       {currentContract && (

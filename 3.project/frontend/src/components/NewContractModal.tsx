@@ -134,7 +134,7 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
               </div>
               <input
                 type="file"
-                accept=".pdf,.png,.jpg,.jpeg,.txt"
+                accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.txt"
                 onChange={handleFileSelect}
                 className="hidden"
               />

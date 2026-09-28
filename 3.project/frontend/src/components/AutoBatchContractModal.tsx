@@ -195,7 +195,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
                 <input
                   type="file"
                   multiple
-                  accept=".pdf,.png,.jpg,.jpeg,.txt"
+                  accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.txt"
                   onChange={handleFilesSelect}
                   className="hidden"
                 />

@@ -12,12 +12,18 @@ import {
   FileCheck2,
   Eye,
   Upload,
+  ExternalLink,
+  Plus,
+  Trash2,
+  File,
 } from 'lucide-react';
 
 interface ChecklistProps {
   documents: DocumentResponse[];
   onSelectDocument: (doc: DocumentResponse) => void;
   onUploadSpecific: (docType: DocumentType) => void;
+  onOpenUploadAll?: () => void;
+  onDeleteDocument?: (documentId: number, fileName: string) => void;
 }
 
 const CHECKLIST_ITEMS: {
@@ -68,17 +74,41 @@ export const Checklist: React.FC<ChecklistProps> = ({
   documents,
   onSelectDocument,
   onUploadSpecific,
+  onOpenUploadAll,
+  onDeleteDocument,
 }) => {
+  // Collect IDs of primary matched documents to find extra/additional documents
+  const primaryDocIds = new Set<number>();
+  CHECKLIST_ITEMS.forEach((item) => {
+    const matched = documents.find((d) => d.document_type === item.type);
+    if (matched) primaryDocIds.add(matched.document_id);
+  });
+  const additionalDocs = documents.filter((d) => !primaryDocIds.has(d.document_id));
+
   return (
     <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm">
+      {/* Header */}
       <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
         <div className="flex items-center space-x-2">
           <FileCheck2 className="w-5 h-5 text-blue-600" />
           <h2 className="text-lg font-bold text-slate-900">증빙 Checklist</h2>
         </div>
-        <span className="text-xs text-slate-400 font-medium">핵심 6종 문서</span>
+        <div className="flex items-center space-x-2">
+          {onOpenUploadAll && (
+            <button
+              onClick={onOpenUploadAll}
+              className="flex items-center space-x-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
+              title="신규 증빙 서류 추가 업로드"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>증빙서류 추가</span>
+            </button>
+          )}
+          <span className="text-xs text-slate-400 font-medium hidden sm:inline">핵심 6종 문서</span>
+        </div>
       </div>
 
+      {/* 6 Core Documents List */}
       <div className="space-y-3">
         {CHECKLIST_ITEMS.map((item) => {
           const doc = documents.find((d) => d.document_type === item.type);
@@ -110,16 +140,16 @@ export const Checklist: React.FC<ChecklistProps> = ({
               }`}
             >
               {/* Left: Icon & Name */}
-              <div className="flex items-center space-x-3.5">
+              <div className="flex items-center space-x-3.5 min-w-0 flex-1 mr-2">
                 <div
-                  className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                  className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
                     doc ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-400'
                   }`}
                 >
                   <Icon className="w-5 h-5" />
                 </div>
-                <div>
-                  <div className="flex items-center space-x-2">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center space-x-2 flex-wrap">
                     <span className="text-sm font-bold text-slate-900">{item.title}</span>
                     {doc && doc.analysis.fields.amount && (
                       <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
@@ -127,9 +157,11 @@ export const Checklist: React.FC<ChecklistProps> = ({
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-500 mt-0.5 hidden sm:block">
+                  <p className="text-xs text-slate-500 mt-0.5 truncate hidden sm:block">
                     {doc ? (
-                      <span>{doc.original_file_name} • 신뢰도 {Math.round(doc.confidence * 100)}%</span>
+                      <span>
+                        {doc.original_file_name} • 신뢰도 {Math.round(doc.confidence * 100)}%
+                      </span>
                     ) : (
                       item.description
                     )}
@@ -137,36 +169,75 @@ export const Checklist: React.FC<ChecklistProps> = ({
                 </div>
               </div>
 
-              {/* Right: Status Pill & Action */}
-              <div className="flex items-center space-x-2">
-                <span
-                  className={`px-3 py-1 rounded-full text-xs font-bold border ${statusStyle}`}
-                >
+              {/* Right: Status Pill & Action Buttons */}
+              <div className="flex items-center space-x-1.5 shrink-0">
+                <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusStyle}`}>
                   {statusLabel}
                 </span>
 
                 {doc ? (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onSelectDocument(doc);
-                    }}
-                    className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                    title="문서 상세 대조 확인"
-                  >
-                    <Eye className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center space-x-1">
+                    {/* 브라우저 새 창에서 원본 열기 */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(`/api/documents/${doc.document_id}/file`, '_blank', 'noopener,noreferrer');
+                      }}
+                      className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      title="브라우저 새 창에서 원본 열기"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </button>
+
+                    {/* 더보기 / 상세 대조 확인 */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSelectDocument(doc);
+                      }}
+                      className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      title="더보기 (AI 구조화 필드 및 원본 미리보기)"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+
+                    {/* 교체 / 추가 업로드 */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onUploadSpecific(item.type);
+                      }}
+                      className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                      title="해당 서류 다시 올리기 (교체/추가)"
+                    >
+                      <Upload className="w-4 h-4" />
+                    </button>
+
+                    {/* 서류 삭제 */}
+                    {onDeleteDocument && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeleteDocument(doc.document_id, doc.original_file_name);
+                        }}
+                        className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                        title="증빙서류 삭제"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 ) : (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       onUploadSpecific(item.type);
                     }}
-                    className="flex items-center space-x-1 px-2.5 py-1 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
-                    title="서류 업로드"
+                    className="flex items-center space-x-1 px-2.5 py-1 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors cursor-pointer"
+                    title="서류 추가 업로드"
                   >
-                    <Upload className="w-3 h-3" />
-                    <span>업로드</span>
+                    <Plus className="w-3 h-3" />
+                    <span>추가</span>
                   </button>
                 )}
               </div>
@@ -174,6 +245,76 @@ export const Checklist: React.FC<ChecklistProps> = ({
           );
         })}
       </div>
+
+      {/* Additional / Other submitted evidence documents */}
+      {additionalDocs.length > 0 && (
+        <div className="mt-4 pt-4 border-t border-slate-100 space-y-2">
+          <div className="flex items-center justify-between text-xs font-bold text-slate-500 mb-1">
+            <span>기타 / 추가 제출 증빙 ({additionalDocs.length}건)</span>
+          </div>
+          {additionalDocs.map((extraDoc) => (
+            <div
+              key={extraDoc.document_id}
+              onClick={() => onSelectDocument(extraDoc)}
+              className="flex items-center justify-between p-3 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-blue-50/40 hover:border-blue-200 cursor-pointer transition-all"
+            >
+              <div className="flex items-center space-x-3 min-w-0 flex-1 mr-2">
+                <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
+                  <File className="w-4 h-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xs font-bold text-slate-800 truncate">
+                      {extraDoc.original_file_name}
+                    </span>
+                    <span className="text-[10px] font-bold text-slate-500 bg-slate-200/70 px-1.5 py-0.2 rounded">
+                      {extraDoc.document_type}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-0.5">
+                    신뢰도 {Math.round(extraDoc.confidence * 100)}%
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-1 shrink-0">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(`/api/documents/${extraDoc.document_id}/file`, '_blank', 'noopener,noreferrer');
+                  }}
+                  className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  title="브라우저 새 창에서 원본 열기"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelectDocument(extraDoc);
+                  }}
+                  className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  title="더보기"
+                >
+                  <Eye className="w-4 h-4" />
+                </button>
+                {onDeleteDocument && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteDocument(extraDoc.document_id, extraDoc.original_file_name);
+                    }}
+                    className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                    title="증빙서류 삭제"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

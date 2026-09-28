@@ -1,14 +1,15 @@
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 # Root directory: c:\project
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
-# Load .env file
-ENV_PATH = PROJECT_ROOT / "backend" / ".env"
-if ENV_PATH.exists():
-    load_dotenv(dotenv_path=ENV_PATH)
+# Load .env or env file
+for p in [PROJECT_ROOT / "backend" / ".env", PROJECT_ROOT / "backend" / "env", PROJECT_ROOT / ".env"]:
+    if p.exists():
+        load_dotenv(dotenv_path=p, override=True)
 
 STORAGE_DIR = PROJECT_ROOT / "storage"
 RAW_STORAGE_DIR = STORAGE_DIR / "raw"
@@ -28,4 +29,3 @@ dbname = os.getenv("DB_NAME", "postgres")
 DEFAULT_PG_URL = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{dbname}" if (user and password and host) else f"sqlite:///{DB_PATH}"
 
 DATABASE_URL = os.getenv("DATABASE_URL", DEFAULT_PG_URL)
-
