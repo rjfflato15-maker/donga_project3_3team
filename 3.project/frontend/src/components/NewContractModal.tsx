@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X, Plus, FileText, Upload, Loader2, Sparkles, CheckCircle2 } from 'lucide-react';
 import { api } from '../api/client';
 
@@ -33,18 +33,6 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
   const [parseSuccessMessage, setParseSuccessMessage] = useState<string | null>(null);
   const [parseError, setParseError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!isOpen) {
-      setTitle('');
-      setVendorName('');
-      setBusinessNumber('');
-      setContractAmount('');
-      setSelectedFile(null);
-      setParseSuccessMessage(null);
-      setParseError(null);
-    }
-  }, [isOpen]);
-
   if (!isOpen) return null;
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +41,6 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
 
     const file = files[0];
     setSelectedFile(file);
-    e.target.value = '';
     setParsingLoading(true);
     setParseError(null);
     setParseSuccessMessage(null);
@@ -110,7 +97,7 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
             </div>
             <div>
               <h3 className="text-base font-extrabold text-slate-900">새 계약 등록</h3>
-              <p className="text-[11px] text-slate-500 font-semibold">PDF 계약서를 선택하면 정보가 자동으로 입력됩니다.</p>
+              <p className="text-[11px] text-slate-500 font-semibold">PDF, 워드, 한글, 이미지, 엑셀 계약서를 선택하면 정보가 자동으로 입력됩니다.</p>
             </div>
           </div>
           <button
@@ -123,12 +110,12 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {/* PDF File Auto-parsing Section */}
+          {/* File Auto-parsing Section */}
           <div className="bg-gradient-to-r from-indigo-50/80 via-blue-50/60 to-slate-50 rounded-2xl p-4 border border-indigo-100 shadow-2xs space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black text-indigo-900 flex items-center space-x-1.5">
                 <Sparkles className="w-4 h-4 text-indigo-600" />
-                <span>PDF / 계약서 파일로 자동 입력</span>
+                <span>계약서 파일로 자동 입력 (PDF/워드/한글/이미지/엑셀)</span>
               </span>
               {parsingLoading && (
                 <span className="inline-flex items-center space-x-1 text-xs font-bold text-indigo-600 animate-pulse">
@@ -142,12 +129,12 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
               <div className="flex items-center justify-center space-x-2 border-2 border-dashed border-indigo-300 hover:border-indigo-500 bg-white/80 hover:bg-white rounded-xl py-3 px-4 transition-all">
                 <Upload className="w-4 h-4 text-indigo-600" />
                 <span className="text-xs font-bold text-slate-700">
-                  {selectedFile ? `선택된 파일: ${selectedFile.name}` : 'PDF / 이미지 계약서 파일 선택'}
+                  {selectedFile ? `선택된 파일: ${selectedFile.name}` : '계약서 파일 선택 (PDF, 워드, 한글, 이미지, 엑셀)'}
                 </span>
               </div>
               <input
                 type="file"
-                accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.txt"
+                accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.tiff,.tif,.gif,.txt,.docx,.doc,.hwp,.hwpx,.xlsx,.xls,.csv"
                 onChange={handleFileSelect}
                 className="hidden"
               />

@@ -1,12 +1,14 @@
 import React from 'react';
 import { ValidationCheck, ValidationStatus } from '../types';
 import { CheckCircle, AlertTriangle, XCircle, Info, ShieldCheck } from 'lucide-react';
+import { maskBusinessNumber } from '../utils/masking';
 
 interface RuleValidationCardProps {
   checks: ValidationCheck[];
+  isMaskingEnabled?: boolean;
 }
 
-export const RuleValidationCard: React.FC<RuleValidationCardProps> = ({ checks }) => {
+export const RuleValidationCard: React.FC<RuleValidationCardProps> = ({ checks, isMaskingEnabled = true }) => {
   const getStatusIcon = (status: ValidationStatus) => {
     switch (status) {
       case 'PASS':
@@ -91,16 +93,32 @@ export const RuleValidationCard: React.FC<RuleValidationCardProps> = ({ checks }
                       {getStatusBadge(check.status)}
                     </div>
                     <p className="text-xs font-medium text-slate-700 mt-1">
-                      {check.message}
+                      {isMaskingEnabled && check.rule_id === 'BUSINESS_NO_MATCH'
+                        ? maskBusinessNumber(check.message)
+                        : check.message}
                     </p>
 
                     {(check.expected || check.actual) && (
                       <div className="mt-2.5 pt-2 border-t border-slate-200/60 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-slate-600">
                         {check.expected && (
-                          <span>기준값: <strong className="text-slate-800">{check.expected}</strong></span>
+                          <span>
+                            기준값:{' '}
+                            <strong className="text-slate-800">
+                              {isMaskingEnabled && check.rule_id === 'BUSINESS_NO_MATCH'
+                                ? maskBusinessNumber(check.expected)
+                                : check.expected}
+                            </strong>
+                          </span>
                         )}
                         {check.actual && (
-                          <span>추출값: <strong className={isError ? 'text-rose-600 font-bold' : 'text-slate-800'}>{check.actual}</strong></span>
+                          <span>
+                            추출값:{' '}
+                            <strong className={isError ? 'text-rose-600 font-bold' : 'text-slate-800'}>
+                              {isMaskingEnabled && check.rule_id === 'BUSINESS_NO_MATCH'
+                                ? maskBusinessNumber(check.actual)
+                                : check.actual}
+                            </strong>
+                          </span>
                         )}
                       </div>
                     )}

@@ -29,3 +29,10 @@ dbname = os.getenv("DB_NAME", "postgres")
 DEFAULT_PG_URL = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{dbname}" if (user and password and host) else f"sqlite:///{DB_PATH}"
 
 DATABASE_URL = os.getenv("DATABASE_URL", DEFAULT_PG_URL)
+
+# Fallback to SQLite if PostgreSQL is specified but psycopg2 driver is not available
+if DATABASE_URL.startswith("postgresql"):
+    try:
+        import psycopg2
+    except ImportError:
+        DATABASE_URL = f"sqlite:///{DB_PATH}"

@@ -11,6 +11,7 @@ import {
   TrendingUp,
   Edit3,
   Trash2,
+  Sparkles,
 } from 'lucide-react';
 
 interface OverallDashboardViewProps {
@@ -113,9 +114,9 @@ export const OverallDashboardView: React.FC<OverallDashboardViewProps> = ({
             {onOpenAutoBatchContract && (
               <button
                 onClick={onOpenAutoBatchContract}
-                className="px-4 py-3 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-2xl shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.02] flex items-center justify-center space-x-2 border border-amber-300"
+                className="px-4 py-3 bg-white/10 hover:bg-white/15 text-slate-200 font-bold text-xs rounded-2xl border border-white/20 transition-all hover:scale-[1.02] flex items-center justify-center space-x-2 shadow-sm whitespace-nowrap shrink-0"
               >
-                <span className="text-base">⚡</span>
+                <Sparkles className="w-4 h-4 text-amber-400 fill-amber-400" />
                 <span>6종 서류로 계약 자동 생성</span>
               </button>
             )}
@@ -233,15 +234,16 @@ export const OverallDashboardView: React.FC<OverallDashboardViewProps> = ({
             {onOpenAutoBatchContract && (
               <button
                 onClick={onOpenAutoBatchContract}
-                className="flex items-center space-x-1.5 text-xs font-extrabold text-amber-900 bg-amber-300 hover:bg-amber-400 px-3 py-1.5 rounded-xl transition-all border border-amber-400 shadow-2xs"
+                className="flex items-center space-x-1.5 text-xs font-bold text-indigo-700 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100/80 px-3.5 py-1.5 rounded-xl transition-all duration-200 border border-indigo-100 shadow-2xs whitespace-nowrap shrink-0"
               >
-                <span>⚡ 6종 서류로 계약 생성</span>
+                <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
+                <span>6종 서류로 계약 생성</span>
               </button>
             )}
 
             <button
               onClick={onViewAllContracts}
-              className="flex items-center space-x-1.5 text-xs font-extrabold text-indigo-700 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100/80 px-3.5 py-1.5 rounded-xl transition-all duration-200 border border-indigo-100 shadow-2xs"
+              className="flex items-center space-x-1.5 text-xs font-extrabold text-indigo-700 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100/80 px-3.5 py-1.5 rounded-xl transition-all duration-200 border border-indigo-100 shadow-2xs whitespace-nowrap shrink-0"
             >
               <span>전체 목록 보기</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -251,7 +253,7 @@ export const OverallDashboardView: React.FC<OverallDashboardViewProps> = ({
 
         {/* Table View */}
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
+          <table className="min-w-[950px] w-full text-left text-xs border-collapse">
             <thead>
               <tr className="bg-slate-50/90 border-b border-slate-200/60 text-slate-500 font-extrabold uppercase tracking-wider text-[11px]">
                 <th className="py-3.5 px-5">계약 코드</th>
@@ -266,7 +268,7 @@ export const OverallDashboardView: React.FC<OverallDashboardViewProps> = ({
               {contracts.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="py-12 text-center text-slate-400 font-semibold">
-                    등록된 계약이 없습니다. 상단 '새 계약 등록' 버튼을 눌러 추가하세요.
+                    등록된 계약이 없습니다. '6종 서류로 계약 자동 생성' 버튼을 눌러 계약을 추가하세요.
                   </td>
                 </tr>
               ) : (

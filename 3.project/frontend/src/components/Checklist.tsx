@@ -17,6 +17,7 @@ import {
   Trash2,
   File,
 } from 'lucide-react';
+import { maskFileName } from '../utils/masking';
 
 interface ChecklistProps {
   documents: DocumentResponse[];
@@ -24,6 +25,7 @@ interface ChecklistProps {
   onUploadSpecific: (docType: DocumentType) => void;
   onOpenUploadAll?: () => void;
   onDeleteDocument?: (documentId: number, fileName: string) => void;
+  isMaskingEnabled?: boolean;
 }
 
 const CHECKLIST_ITEMS: {
@@ -76,6 +78,7 @@ export const Checklist: React.FC<ChecklistProps> = ({
   onUploadSpecific,
   onOpenUploadAll,
   onDeleteDocument,
+  isMaskingEnabled = true,
 }) => {
   // Collect IDs of primary matched documents to find extra/additional documents
   const primaryDocIds = new Set<number>();
@@ -150,7 +153,9 @@ export const Checklist: React.FC<ChecklistProps> = ({
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center space-x-2 flex-wrap">
-                    <span className="text-sm font-bold text-slate-900">{item.title}</span>
+                    <span className="text-sm font-bold text-slate-900">
+                      {item.title}
+                    </span>
                     {doc && doc.analysis.fields.amount && (
                       <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
                         {doc.analysis.fields.amount.toLocaleString()}원
@@ -160,7 +165,7 @@ export const Checklist: React.FC<ChecklistProps> = ({
                   <p className="text-xs text-slate-500 mt-0.5 truncate hidden sm:block">
                     {doc ? (
                       <span>
-                        {doc.original_file_name} • 신뢰도 {Math.round(doc.confidence * 100)}%
+                        {maskFileName(doc.original_file_name, isMaskingEnabled)} • 신뢰도 {Math.round(doc.confidence * 100)}%
                       </span>
                     ) : (
                       item.description
@@ -265,7 +270,7 @@ export const Checklist: React.FC<ChecklistProps> = ({
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center space-x-2">
                     <span className="text-xs font-bold text-slate-800 truncate">
-                      {extraDoc.original_file_name}
+                      {maskFileName(extraDoc.original_file_name, isMaskingEnabled)}
                     </span>
                     <span className="text-[10px] font-bold text-slate-500 bg-slate-200/70 px-1.5 py-0.2 rounded">
                       {extraDoc.document_type}

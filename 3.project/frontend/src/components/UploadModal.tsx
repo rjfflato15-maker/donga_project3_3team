@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, UploadCloud, File, Trash2, Tag } from 'lucide-react';
+import { X, UploadCloud, File, Trash2, Tag, Shield } from 'lucide-react';
 import { DocumentType } from '../types';
 
 interface UploadModalProps {
@@ -21,18 +21,14 @@ export const UploadModal: React.FC<UploadModalProps> = ({
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [targetType, setTargetType] = useState<string>('');
+  const [maskingOption, setMaskingOption] = useState<boolean>(true);
   const [dragActive, setDragActive] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      if (initialTargetType) {
-        setTargetType(initialTargetType);
-      } else {
-        setTargetType('');
-      }
+    if (initialTargetType) {
+      setTargetType(initialTargetType);
     } else {
-      setSelectedFiles([]);
       setTargetType('');
     }
   }, [initialTargetType, isOpen]);
@@ -133,7 +129,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
               ref={inputRef}
               type="file"
               multiple
-              accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.txt"
+              accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.tiff,.tif,.gif,.txt,.docx,.doc,.hwp,.hwpx,.xlsx,.xls,.csv"
               className="hidden"
               onChange={(e) => handleFiles(e.target.files)}
             />
@@ -143,9 +139,31 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             <p className="text-sm font-bold text-slate-800">
               클릭하여 파일을 선택하거나 여기로 드래그하세요
             </p>
-            <p className="text-xs text-slate-400 mt-1">
-              지원 형식: PDF, PNG, JPG, JPEG, WEBP, TXT (외주용역계약서, 견적서, 세금계산서, 사업자등록증, 통장사본, 검수확인서 등)
+            <p className="text-xs text-slate-500 mt-1 text-center">
+              PDF, 이미지, 워드, 한글, 엑셀 문서를 자동으로 인식하고 텍스트 및 정보를 추출합니다
             </p>
+
+            {/* Supported Format Badges */}
+            <div className="mt-3.5 flex flex-wrap items-center justify-center gap-1.5 max-w-md">
+              <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200">
+                PDF
+              </span>
+              <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-purple-50 text-purple-700 border border-purple-200">
+                이미지 (PNG/JPG)
+              </span>
+              <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200">
+                워드 (DOCX/DOC)
+              </span>
+              <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-cyan-50 text-cyan-700 border border-cyan-200">
+                한글 (HWP/HWPX)
+              </span>
+              <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                엑셀 (XLSX/XLS/CSV)
+              </span>
+              <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-slate-100 text-slate-600 border border-slate-200">
+                TXT
+              </span>
+            </div>
           </div>
 
           {/* File list */}
@@ -154,31 +172,78 @@ export const UploadModal: React.FC<UploadModalProps> = ({
               <div className="text-xs font-bold text-slate-600 px-1">
                 선택된 파일 ({selectedFiles.length}개)
               </div>
-              {selectedFiles.map((file, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs"
-                >
-                  <div className="flex items-center space-x-2 truncate">
-                    <File className="w-4 h-4 text-indigo-600 shrink-0" />
-                    <span className="font-semibold text-slate-800 truncate">{file.name}</span>
-                    <span className="text-slate-400 shrink-0">
-                      ({(file.size / 1024).toFixed(1)} KB)
-                    </span>
-                  </div>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeFile(idx);
-                    }}
-                    className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors"
+              {selectedFiles.map((file, idx) => {
+                const ext = file.name.split('.').pop()?.toLowerCase();
+                let badgeClass = 'bg-slate-100 text-slate-700 border-slate-200';
+                let badgeLabel = ext?.toUpperCase() || 'FILE';
+                if (ext === 'pdf') {
+                  badgeClass = 'bg-rose-100 text-rose-700 border-rose-200';
+                  badgeLabel = 'PDF';
+                } else if (['png', 'jpg', 'jpeg', 'webp', 'bmp', 'gif'].includes(ext || '')) {
+                  badgeClass = 'bg-purple-100 text-purple-700 border-purple-200';
+                  badgeLabel = '이미지';
+                } else if (['docx', 'doc'].includes(ext || '')) {
+                  badgeClass = 'bg-blue-100 text-blue-700 border-blue-200';
+                  badgeLabel = '워드';
+                } else if (['hwp', 'hwpx'].includes(ext || '')) {
+                  badgeClass = 'bg-cyan-100 text-cyan-800 border-cyan-200';
+                  badgeLabel = '한글';
+                } else if (['xlsx', 'xls', 'csv'].includes(ext || '')) {
+                  badgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                  badgeLabel = '엑셀';
+                }
+
+                return (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              ))}
+                    <div className="flex items-center space-x-2 truncate">
+                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-extrabold border shrink-0 ${badgeClass}`}>
+                        {badgeLabel}
+                      </span>
+                      <File className="w-4 h-4 text-indigo-600 shrink-0" />
+                      <span className="font-semibold text-slate-800 truncate">{file.name}</span>
+                      <span className="text-slate-400 shrink-0">
+                        ({(file.size / 1024).toFixed(1)} KB)
+                      </span>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeFile(idx);
+                      }}
+                      className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           )}
+
+          {/* Masking Option */}
+          <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 flex items-center justify-between text-xs">
+            <div className="flex items-center space-x-2">
+              <Shield className={`w-4 h-4 ${maskingOption ? 'text-indigo-600' : 'text-slate-400'}`} />
+              <div>
+                <span className="font-bold text-slate-800">개인정보(PII) 자동 마스킹</span>
+                <p className="text-[10px] text-slate-400">주민등록번호, 은행 계좌번호, 전화번호 자동 비식별화</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setMaskingOption(!maskingOption)}
+              className={`px-3 py-1 rounded-lg text-xs font-black transition-colors ${
+                maskingOption
+                  ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                  : 'bg-slate-200 text-slate-600'
+              }`}
+            >
+              {maskingOption ? 'ON (적용)' : 'OFF (미적용)'}
+            </button>
+          </div>
         </div>
 
         {/* Footer */}

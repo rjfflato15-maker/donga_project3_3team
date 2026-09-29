@@ -54,10 +54,17 @@ class PipelineService:
             raw_file_path, file_name=file_name, target_document_type=target_document_type
         )
 
-        # 3. Save masked file to storage/masked
+        # 3. Save masked file to storage/masked and raw extracted text to storage/raw
         masked_file_path = os.path.join(MASKED_STORAGE_DIR, f"masked_{safe_filename}")
         with open(masked_file_path, "w", encoding="utf-8") as f:
             f.write(masked_text)
+
+        raw_text_path = os.path.join(RAW_STORAGE_DIR, f"extracted_raw_{safe_filename}.txt")
+        try:
+            with open(raw_text_path, "w", encoding="utf-8") as f:
+                f.write(raw_text)
+        except Exception:
+            pass
 
         # 4. Create or update Document record
         doc_record = Document(

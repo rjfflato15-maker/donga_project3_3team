@@ -12,7 +12,6 @@ from ..schemas.contract import (
     ContractCreate,
 )
 from ..schemas.common import DocumentType
-import re
 from ..ai import analyze_document, is_generic_title
 from ..services.contract_service import ContractService
 from ..services.pipeline_service import PipelineService
@@ -59,10 +58,7 @@ def synthesize_extracted_fields(items: List[AutoContractParseItem]) -> AutoContr
         clean_base = re.sub(r"^[\d\.\-_]+", "", base_name)
         clean_base = re.sub(r"^(?:계약서|견적서|세금계산서|사업자등록증|통장사본|검수확인서)[\._\-\s]*", "", clean_base)
         clean_base = clean_base.replace("_", " ").replace("-", " ").strip()
-        if clean_base and not is_generic_title(clean_base):
-            title = f"{clean_base} 외주 계약" if "계약" not in clean_base else clean_base
-        else:
-            title = "AI 자동 생성 외주 계약"
+        title = f"{clean_base} 외주 계약" if clean_base else "AI 자동 생성 계약"
 
     # 2. Vendor Name priority: BUSINESS_REGISTRATION > TAX_INVOICE > BANK_ACCOUNT > CONTRACT > others
     vendor_priority = [

@@ -33,7 +33,7 @@ async def parse_contract_file(file: UploadFile = File(...)):
 
         raw_text, _ = extract_text_from_file(temp_path, file.filename)
         fields = extract_fields(raw_text)
-        doc_type, confidence = classify_document(raw_text, file.filename)
+        doc_type, confidence, _ = classify_document(raw_text)
 
         title = fields.title
         if not title:

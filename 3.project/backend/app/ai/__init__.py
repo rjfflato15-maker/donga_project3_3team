@@ -65,4 +65,3 @@ __all__ = [
     "extract_contract_title",
     "analyze_document",
 ]
-

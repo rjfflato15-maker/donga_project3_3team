@@ -105,6 +105,7 @@ export interface ContractListItem {
   completeness_rate: number;
   submitted_docs_count: number;
   total_docs_count: number;
+  submitted_document_types?: string[];
   created_at: string;
 }
 

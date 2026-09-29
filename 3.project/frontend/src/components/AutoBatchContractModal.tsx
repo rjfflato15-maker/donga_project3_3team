@@ -49,7 +49,6 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
   const [contractAmount, setContractAmount] = useState('');
   const [issueDate, setIssueDate] = useState('');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
   const resetForm = () => {
     setSelectedFiles([]);
     setParsing(false);
@@ -76,14 +75,13 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
     if (!files || files.length === 0) return;
 
     const fileArray = Array.from(files);
-    const updatedFiles = [...selectedFiles, ...fileArray];
-    setSelectedFiles(updatedFiles);
-    e.target.value = '';
+    setSelectedFiles((prev) => [...prev, ...fileArray]);
     setErrorMsg(null);
     setParsing(true);
 
     try {
-      const res = await api.autoParseBatchDocuments(updatedFiles);
+      const allFiles = [...selectedFiles, ...fileArray];
+      const res = await api.autoParseBatchDocuments(allFiles);
       setSynthesis(res);
 
       if (res.title) setTitle(res.title);
@@ -119,11 +117,6 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
       }
     } else {
       setSynthesis(null);
-      setTitle('');
-      setVendorName('');
-      setBusinessNumber('');
-      setContractAmount('');
-      setIssueDate('');
     }
   };
 
@@ -153,7 +146,6 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
         selectedFiles
       );
 
-      resetForm();
       onSuccess(createdContract.contract_id);
       onClose();
     } catch (err: any) {
@@ -211,17 +203,22 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
           {/* File Upload Slot Cards */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h4 className="text-xs font-black text-slate-800 flex items-center space-x-2">
-                <Upload className="w-4 h-4 text-indigo-600" />
-                <span>6종 증빙 서류 업로드 ({selectedFiles.length}/6개 등록됨)</span>
-              </h4>
+              <div>
+                <h4 className="text-xs font-black text-slate-800 flex items-center space-x-2">
+                  <Upload className="w-4 h-4 text-indigo-600" />
+                  <span>6종 증빙 서류 업로드 ({selectedFiles.length}/6개 등록됨)</span>
+                </h4>
+                <p className="text-[11px] text-slate-400 mt-0.5 font-medium">
+                  PDF, 이미지, 워드(DOCX), 한글(HWP/HWPX), 엑셀(XLSX) 자동 인식
+                </p>
+              </div>
               <label className="cursor-pointer inline-flex items-center space-x-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold rounded-xl shadow-sm transition-all hover:scale-[1.02]">
                 <Upload className="w-3.5 h-3.5" />
                 <span>서류 추가 / 일괄 선택</span>
                 <input
                   type="file"
                   multiple
-                  accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.txt"
+                  accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.tiff,.tif,.gif,.txt,.docx,.doc,.hwp,.hwpx,.xlsx,.xls,.csv"
                   onChange={handleFilesSelect}
                   className="hidden"
                 />

@@ -1,10 +1,10 @@
 import React from 'react';
-import { RefreshCw, FileText, Plus, Sparkles } from 'lucide-react';
+import { RefreshCw, FileText, Sparkles } from 'lucide-react';
 import { NavigationTab } from './Sidebar';
 
 interface TopHeaderProps {
   activeTab: NavigationTab;
-  onOpenNewContract: () => void;
+  onOpenNewContract?: () => void;
   onOpenAutoBatchContract?: () => void;
   onSeedDemo: () => void;
   onOpenUpload: () => void;
@@ -14,7 +14,6 @@ interface TopHeaderProps {
 
 export const TopHeader: React.FC<TopHeaderProps> = ({
   activeTab,
-  onOpenNewContract,
   onOpenAutoBatchContract,
   onSeedDemo,
   onOpenUpload,
@@ -27,8 +26,6 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
         return '종합 검수 대시보드';
       case 'contracts':
         return '외주/용역 계약 관리';
-      case 'documents':
-        return '증빙서류 관리';
       case 'reports':
         return 'AI 교차검수 리포트';
       default:
@@ -90,21 +87,13 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
             {onOpenAutoBatchContract && (
               <button
                 onClick={onOpenAutoBatchContract}
-                className="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-black text-amber-900 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-300 hover:from-amber-400 hover:to-amber-500 shadow-md shadow-amber-400/20 border border-amber-300 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 animate-pulse"
+                className="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200/80 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
                 title="6종 서류를 업로드하여 계약 내용, 금액, 사업자번호, 날짜 자동 생성"
               >
-                <Sparkles className="w-4 h-4 text-amber-950" />
-                <span>⚡ 6종 서류로 계약 자동 생성</span>
+                <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
+                <span>6종 서류로 계약 자동 생성</span>
               </button>
             )}
-
-            <button
-              onClick={onOpenNewContract}
-              className="flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-extrabold text-white bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/35 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
-            >
-              <Plus className="w-4 h-4" />
-              <span className="hidden sm:inline">새 계약 등록</span>
-            </button>
           </div>
         </div>
       </div>

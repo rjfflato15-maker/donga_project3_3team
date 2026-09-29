@@ -42,12 +42,6 @@ def get_document_response(doc: Document) -> DocumentResponse:
     # Read raw and masked text if exists
     raw_text = ""
     masked_text = ""
-    if doc.storage_path and os.path.exists(doc.storage_path):
-        try:
-            with open(doc.storage_path, "r", encoding="utf-8", errors="ignore") as f:
-                raw_text = f.read()
-        except Exception:
-            pass
 
     if doc.masking and doc.masking.masked_file_path and os.path.exists(doc.masking.masked_file_path):
         try:
@@ -55,6 +49,48 @@ def get_document_response(doc: Document) -> DocumentResponse:
                 masked_text = f.read()
         except Exception:
             pass
+
+    # 1. Check if dedicated raw text file exists in storage/raw
+    if doc.storage_path:
+        dir_name = os.path.dirname(doc.storage_path)
+        base_name = os.path.basename(doc.storage_path)
+        extracted_raw_path = os.path.join(dir_name, f"extracted_raw_{base_name}.txt")
+        if os.path.exists(extracted_raw_path):
+            try:
+                with open(extracted_raw_path, "r", encoding="utf-8", errors="ignore") as f:
+                    raw_text = f.read()
+            except Exception:
+                pass
+
+    # 2. Check storage_path for text files
+    if not raw_text and doc.storage_path and os.path.exists(doc.storage_path):
+        ext = os.path.splitext(doc.storage_path)[1].lower()
+        if ext in [".txt", ".json", ".md", ".csv"]:
+            try:
+                with open(doc.storage_path, "r", encoding="utf-8", errors="ignore") as f:
+                    raw_text = f.read()
+            except Exception:
+                pass
+        else:
+            # For binary files (PDF, DOCX, HWP, XLSX, images), dynamically extract full original unmasked text
+            try:
+                from ..ai.preprocessor import extract_text_from_file
+                extracted, _ = extract_text_from_file(doc.storage_path, file_name=doc.file_name)
+                if extracted:
+                    raw_text = extracted
+            except Exception:
+                pass
+
+    if not raw_text and masked_text:
+        raw_text = masked_text
+
+    # If masked_text was not on disk but raw_text is available, create masked_text on the fly
+    if not masked_text and raw_text:
+        try:
+            from ..ai.masking import mask_sensitive_information
+            masked_text, _, _, _ = mask_sensitive_information(raw_text)
+        except Exception:
+            masked_text = raw_text
 
     # Fields
     fields = AnalysisFields()
@@ -105,6 +141,8 @@ class ContractService:
             submitted_cnt = len([t for t in CORE_6_DOCUMENT_TYPES if t.value in submitted_types])
             completeness = round((submitted_cnt / 6.0) * 100.0, 1)
 
+            valid_submitted_types = [t.value for t in CORE_6_DOCUMENT_TYPES if t.value in submitted_types]
+
             result.append(
                 ContractListItem(
                     contract_id=c.contract_id,
@@ -116,6 +154,7 @@ class ContractService:
                     completeness_rate=completeness,
                     submitted_docs_count=submitted_cnt,
                     total_docs_count=6,
+                    submitted_document_types=valid_submitted_types,
                     created_at=c.created_at,
                 )
             )
@@ -270,10 +309,8 @@ class ContractService:
         from ..config import SAMPLE_DIR
 
         if existing:
-            if len(existing.documents) >= 5:
-                return existing
-            db.delete(existing)
-            db.commit()
+            # Delete existing contract and associated docs to ensure a true clean reset
+            self.delete_contract(db, existing.contract_id)
 
         contract = Contract(
             title="ABC 홈페이지 구축 외주 계약",

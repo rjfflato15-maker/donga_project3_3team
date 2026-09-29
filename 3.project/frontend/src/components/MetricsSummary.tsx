@@ -10,17 +10,20 @@ import {
   Clock,
   Trash2,
 } from 'lucide-react';
+import { maskBusinessNumber, maskVendorName } from '../utils/masking';
 
 interface MetricsSummaryProps {
   contract: ContractDetail;
   onEditContract?: () => void;
   onDeleteContract?: () => void;
+  isMaskingEnabled?: boolean;
 }
 
 export const MetricsSummary: React.FC<MetricsSummaryProps> = ({
   contract,
   onEditContract,
   onDeleteContract,
+  isMaskingEnabled = true,
 }) => {
   const { summary } = contract;
   const reviewNeededCount = summary.fail_count + summary.missing_count + summary.review_count;
@@ -67,16 +70,36 @@ export const MetricsSummary: React.FC<MetricsSummaryProps> = ({
               <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-xs px-3 py-2 rounded-xl border border-white/10">
                 <Building2 className="w-4 h-4 text-indigo-300 shrink-0" />
                 <div className="truncate">
-                  <span className="text-slate-400 block text-[10px] font-semibold">거래처명</span>
-                  <strong className="text-white font-bold">{contract.vendor_name}</strong>
+                  <div className="flex items-center space-x-1">
+                    <span className="text-slate-400 block text-[10px] font-semibold">거래처명</span>
+                    {isMaskingEnabled && (
+                      <span className="text-[9px] px-1 py-0.2 rounded font-bold bg-indigo-500/30 text-indigo-200 border border-indigo-400/30">
+                        비식별화
+                      </span>
+                    )}
+                  </div>
+                  <strong className="text-white font-bold">{maskVendorName(contract.vendor_name, isMaskingEnabled)}</strong>
                 </div>
               </div>
 
               <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-xs px-3 py-2 rounded-xl border border-white/10">
                 <CreditCard className="w-4 h-4 text-indigo-300 shrink-0" />
                 <div className="truncate">
-                  <span className="text-slate-400 block text-[10px] font-semibold">사업자등록번호</span>
-                  <strong className="text-white font-mono font-bold">{contract.business_number}</strong>
+                  <div className="flex items-center space-x-1">
+                    <span className="text-slate-400 block text-[10px] font-semibold">사업자등록번호</span>
+                    <span
+                      className={`text-[9px] px-1 py-0.2 rounded font-bold ${
+                        isMaskingEnabled
+                          ? 'bg-indigo-500/30 text-indigo-200 border border-indigo-400/30'
+                          : 'bg-amber-500/30 text-amber-200 border border-amber-400/30'
+                      }`}
+                    >
+                      {isMaskingEnabled ? '마스킹' : '원본'}
+                    </span>
+                  </div>
+                  <strong className="text-white font-mono font-bold">
+                    {isMaskingEnabled ? maskBusinessNumber(contract.business_number) : contract.business_number}
+                  </strong>
                 </div>
               </div>
 

@@ -6,10 +6,10 @@ from ..schemas.document import AnalysisFields
 # Regular expressions for key fields
 # Regular expressions for key fields (enhanced for OCR resilience)
 BIZ_REG_NO_PATTERN = re.compile(r"\b(\d{3})\s*-\s*(\d{2})\s*-\s*(\d{5})\b")
-BIZ_LABEL_PATTERN = re.compile(r"(?:등록번호|사업자(?:등록)?번호|등록\s*번호)\s*[:=·\.]?\s*(\d{3})[\s\-]*(\d{2})[\s\-]*(\d{5})")
+BIZ_LABEL_PATTERN = re.compile(r"(?:등록번호|사업자(?:등록)?번호|등록\s*번호)\s*[:=·\.\t]?\s*(\d{3})[\s\-]*(\d{2})[\s\-]*(\d{5})")
 
 AMOUNT_PATTERNS = [
-    re.compile(r"(?:총\s*계약금액|계약금액|견적\s*금액|견적금액|총\s*합계금액|합계금액|공급가액|청구금액|금액)\s*[:=·\.]?\s*(?:금)?\s*([0-9,]+)\s*(?:원)?"),
+    re.compile(r"(?:총\s*계약금액|계약금액|견적\s*금액|견적금액|총\s*합계금액|합계금액|공급가액|청구금액|금액)\s*[:=·\.\t]?\s*(?:금)?\s*([0-9,]+)\s*(?:원)?"),
     re.compile(r"금\s*([0-9,]+)\s*원"),
     re.compile(r"([0-9,]{4,})\s*원"),
 ]
@@ -123,7 +123,7 @@ def extract_contract_title(text: str) -> Optional[str]:
 
     # Step 1: Explicit field labels (계약명, 건명, 과업명, 사업명, 프로젝트명, 용역명, 목적물, 계약제목 등)
     label_pattern = re.compile(
-        r"(?:계약명|건\s*명|과업명|사업명|프로젝트명|용역명|목적물|계약제목|서류명)\s*[:=·\.]?\s*[\"\'「」『』]?([가-힣A-Za-z0-9\(\)\[\]\s\-_]{2,100})[\"\'「」『』]?"
+        r"(?:계약명|건\s*명|과업명|사업명|프로젝트명|용역명|목적물|계약제목|서류명)\s*[:=·\.\t]?\s*[\"\'「」『』]?([가-힣A-Za-z0-9\(\)\[\] \t\-_]{2,100})[\"\'「」『』]?"
     )
     for match in label_pattern.finditer(text):
         val = clean_title_str(match.group(1))
@@ -218,14 +218,14 @@ def extract_contract_title(text: str) -> Optional[str]:
 
 
 TITLE_PATTERNS = [
-    re.compile(r"(?:계약명|건명|프로젝트명|계약제목|용역명|서류명)\s*[:=·\.]?\s*([가-힣A-Za-z0-9\(\)\[\]\s\-]{2,100})"),
+    re.compile(r"(?:계약명|건명|프로젝트명|계약제목|용역명|서류명)\s*[:=·\.\t]?\s*([가-힣A-Za-z0-9\(\)\[\]\s\-]{2,100})"),
     re.compile(r"\[([가-힣A-Za-z0-9\s\-]+계약[가-힣A-Za-z0-9\s\-]*)\]"),
     re.compile(r"([가-힣A-Za-z0-9\s\-]{3,60}(?:외주\s*계약|용역\s*계약|구축\s*계약|계약서))"),
 ]
 
 COMPANY_PATTERNS = [
-    re.compile(r"(?:상호(?:명)?|법인명(?:\([^\)]*\))?|공급자|제출자|계약\s*상대자|예금주명|예금주)\s*[:=·\.]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(]?\s*(?:대표자?|성명)|\n|\r|$)"),
-    re.compile(r"\(을\)\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s+대표|\n|\r|$)"),
+    re.compile(r"(?:상호(?:명)?|법인명(?:\([^\)]*\))?|공급자|제출자|계약\s*상대자|예금주명|예금주)\s*[:=·\.\t]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(]?\s*(?:대표자?|성명)|\n|\r|\t|$)"),
+    re.compile(r"\(을\)\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s+대표|\n|\r|\t|$)"),
     re.compile(r"\[을\s*-\s*수주사\]\s*\n\s*-\s*상호\s*[:=]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30})"),
 ]
 
@@ -243,7 +243,6 @@ def extract_fields(text: str) -> AnalysisFields:
     """
     # 0. Title (generic title filtering & project name resolution)
     title: Optional[str] = extract_contract_title(text)
-
     # 1. Business Registration Number
     biz_no: Optional[str] = None
     biz_matches = BIZ_REG_NO_PATTERN.findall(text)

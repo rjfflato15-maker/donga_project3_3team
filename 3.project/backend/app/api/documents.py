@@ -102,9 +102,35 @@ def resolve_document_path(storage_path: str) -> Optional[str]:
     return None
 
 
+def _extract_sensitive_dict(doc: Document) -> dict:
+    """Extracts known sensitive information terms for visual masking."""
+    import json
+    sensitive: dict = {}
+    if doc.contract:
+        if doc.contract.vendor_name:
+            sensitive["vendor_name"] = doc.contract.vendor_name
+        if doc.contract.business_number:
+            sensitive["business_number"] = doc.contract.business_number
+    if doc.extract:
+        if doc.extract.extracted_vendor_name:
+            sensitive["extracted_vendor_name"] = doc.extract.extracted_vendor_name
+        if doc.extract.extracted_vendor_reg_no:
+            sensitive["extracted_vendor_reg_no"] = doc.extract.extracted_vendor_reg_no
+        if doc.extract.raw_fields:
+            try:
+                rf = json.loads(doc.extract.raw_fields)
+                if isinstance(rf, dict):
+                    for k, v in rf.items():
+                        if v is not None and isinstance(v, (str, int, float)):
+                            sensitive[k] = str(v)
+            except Exception:
+                pass
+    return sensitive
+
+
 @router.get("/api/documents/{document_id}/file")
-def get_document_file(document_id: int, db: Session = Depends(get_db)):
-    """Serve the original file (e.g. for image or PDF preview) inline for browser viewing"""
+def get_document_file(document_id: int, masked: bool = False, db: Session = Depends(get_db)):
+    """Serve the original or visually masked file inline for browser viewing."""
     doc = db.query(Document).filter(Document.document_id == document_id).first()
     resolved_path = resolve_document_path(doc.storage_path) if doc else None
     if not doc or not resolved_path:
@@ -112,9 +138,58 @@ def get_document_file(document_id: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Document file with ID {document_id} not found",
         )
+
+    lower_p = resolved_path.lower()
+    sensitive_dict = _extract_sensitive_dict(doc) if masked else {}
+
+    # If visual masking is requested on PDF or Image
+    if masked:
+        if lower_p.endswith(".pdf"):
+            try:
+                from backend.app.ai.visual_masking import render_masked_pdf_bytes
+                pdf_bytes = render_masked_pdf_bytes(resolved_path, sensitive_dict=sensitive_dict, scale=2)
+                return Response(
+                    content=pdf_bytes,
+                    media_type="application/pdf",
+                    headers={"Content-Disposition": f'inline; filename="masked_{doc.file_name}"'},
+                )
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                print(f"[get_document_file] Masking error: {e}")
+        elif any(lower_p.endswith(im_ext) for im_ext in [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif", ".tiff"]):
+            try:
+                from PIL import Image
+                from backend.app.ai.visual_masking import mask_image_with_ocr
+                pil_image = Image.open(resolved_path).convert("RGB")
+                masked_image = mask_image_with_ocr(pil_image, sensitive_dict=sensitive_dict)
+                buf = io.BytesIO()
+                masked_image.save(buf, format="PNG")
+                return Response(
+                    content=buf.getvalue(),
+                    media_type="image/png",
+                    headers={"Content-Disposition": f'inline; filename="masked_{doc.file_name}"'},
+                )
+            except Exception:
+                pass
+
     media_type, _ = mimetypes.guess_type(resolved_path)
-    if resolved_path.lower().endswith(".pdf"):
+    if lower_p.endswith(".pdf"):
         media_type = "application/pdf"
+    elif lower_p.endswith(".docx"):
+        media_type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    elif lower_p.endswith(".doc"):
+        media_type = "application/msword"
+    elif lower_p.endswith(".xlsx"):
+        media_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    elif lower_p.endswith(".xls"):
+        media_type = "application/vnd.ms-excel"
+    elif lower_p.endswith(".csv"):
+        media_type = "text/csv; charset=utf-8"
+    elif lower_p.endswith(".hwp"):
+        media_type = "application/x-hwp"
+    elif lower_p.endswith(".hwpx"):
+        media_type = "application/hwp+zip"
 
     return FileResponse(
         resolved_path,
@@ -126,7 +201,7 @@ def get_document_file(document_id: int, db: Session = Depends(get_db)):
 
 @router.get("/api/documents/{document_id}/pages-info")
 def get_document_pages_info(document_id: int, db: Session = Depends(get_db)):
-    """Get page count and file type info for PDF / Image documents"""
+    """Get page count and file type info for all document types (PDF, Image, Word, Hancom, Excel, Text)"""
     doc = db.query(Document).filter(Document.document_id == document_id).first()
     resolved_path = resolve_document_path(doc.storage_path) if doc else None
     if not doc or not resolved_path:
@@ -138,6 +213,10 @@ def get_document_pages_info(document_id: int, db: Session = Depends(get_db)):
     ext = os.path.splitext(resolved_path)[1].lower()
     is_pdf = ext == ".pdf"
     is_image = ext in [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif", ".tiff", ".tif"]
+    is_word = ext in [".docx", ".doc"]
+    is_hwp = ext in [".hwp", ".hwpx"]
+    is_excel = ext in [".xlsx", ".xlsm", ".xls", ".csv"]
+    is_text = ext in [".txt", ".json", ".md"]
     total_pages = 1
 
     if is_pdf:
@@ -148,20 +227,40 @@ def get_document_pages_info(document_id: int, db: Session = Depends(get_db)):
         except Exception:
             total_pages = 1
 
+    format_category = "other"
+    if is_pdf:
+        format_category = "pdf"
+    elif is_image:
+        format_category = "image"
+    elif is_word:
+        format_category = "word"
+    elif is_hwp:
+        format_category = "hwp"
+    elif is_excel:
+        format_category = "excel"
+    elif is_text:
+        format_category = "text"
+
     return {
         "document_id": document_id,
         "is_pdf": is_pdf,
         "is_image": is_image,
+        "is_word": is_word,
+        "is_hwp": is_hwp,
+        "is_excel": is_excel,
+        "is_text": is_text,
+        "format_category": format_category,
+        "extension": ext.replace(".", "").upper(),
         "total_pages": total_pages,
         "file_name": doc.file_name,
     }
 
 
 @router.get("/api/documents/{document_id}/preview-image")
-def get_document_preview_image(document_id: int, page: int = 0, db: Session = Depends(get_db)):
+def get_document_preview_image(document_id: int, page: int = 0, masked: bool = False, db: Session = Depends(get_db)):
     """
     Render a PDF page or return an image file as a high-resolution PNG image.
-    Allows PDF documents to be viewed directly as crisp images just like PNG/JPG files.
+    When masked=True, automatically detects and applies visual redaction badges to sensitive personal/business information.
     """
     doc = db.query(Document).filter(Document.document_id == document_id).first()
     resolved_path = resolve_document_path(doc.storage_path) if doc else None
@@ -172,7 +271,21 @@ def get_document_preview_image(document_id: int, page: int = 0, db: Session = De
         )
     
     ext = os.path.splitext(resolved_path)[1].lower()
-    if ext in [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif", ".tiff", ".tif"]:
+    is_image = ext in [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif", ".tiff", ".tif"]
+    sensitive_dict = _extract_sensitive_dict(doc) if masked else {}
+
+    if is_image:
+        if masked:
+            try:
+                from PIL import Image
+                from backend.app.ai.visual_masking import mask_image_with_ocr
+                pil_image = Image.open(resolved_path).convert("RGB")
+                masked_img = mask_image_with_ocr(pil_image, sensitive_dict=sensitive_dict)
+                buf = io.BytesIO()
+                masked_img.save(buf, format="PNG")
+                return Response(content=buf.getvalue(), media_type="image/png")
+            except Exception:
+                pass
         media_type, _ = mimetypes.guess_type(resolved_path)
         return FileResponse(
             resolved_path,
@@ -187,7 +300,11 @@ def get_document_preview_image(document_id: int, page: int = 0, db: Session = De
             total_pages = len(pdf)
             if page < 0 or page >= total_pages:
                 page = 0
-            pil_image = pdf[page].render(scale=2).to_pil()
+            page_obj = pdf[page]
+            pil_image = page_obj.render(scale=2).to_pil()
+            if masked:
+                from backend.app.ai.visual_masking import mask_pdf_page_image
+                pil_image = mask_pdf_page_image(page_obj, pil_image, scale=2, sensitive_dict=sensitive_dict)
             buf = io.BytesIO()
             pil_image.save(buf, format="PNG")
             return Response(content=buf.getvalue(), media_type="image/png")
