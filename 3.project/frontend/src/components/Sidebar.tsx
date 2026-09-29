@@ -13,7 +13,9 @@ import {
   PanelLeftClose,
 } from 'lucide-react';
 
-export type NavigationTab = 'dashboard' | 'contracts' | 'documents' | 'reports';
+import { useAuth } from '../context/AuthContext';
+
+export type NavigationTab = 'dashboard' | 'contracts' | 'documents' | 'reports' | 'account-settings';
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -40,6 +42,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSeedDemo,
   loading = false,
 }) => {
+  const { user, logout } = useAuth();
   const menuItems: { id: NavigationTab; label: string; icon: React.ReactNode; badge?: string }[] = [
     {
       id: 'dashboard',
@@ -248,20 +251,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </button>
         )}
 
-        <div className="flex items-center justify-between pt-1">
-          <div className="flex items-center space-x-3">
-            <div className="relative">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-violet-600 text-white font-extrabold text-xs flex items-center justify-center shadow-xs">
-                S
-              </div>
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white absolute -bottom-0.5 -right-0.5"></span>
+        <div
+          onClick={() => onTabChange('account-settings')}
+          className={`flex items-center justify-between p-2 rounded-xl cursor-pointer transition-all duration-200 ${
+            activeTab === 'account-settings'
+              ? 'bg-indigo-50/90 border border-indigo-200/90 shadow-2xs'
+              : 'hover:bg-slate-100/80 border border-transparent'
+          }`}
+          title="계정 보안 및 비밀번호 변경"
+        >
+          <div className="relative shrink-0">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-violet-600 text-white font-extrabold text-xs flex items-center justify-center shadow-xs">
+              {user?.email ? user.email.charAt(0).toUpperCase() : 'S'}
             </div>
-            <div className="text-left">
-              <p className="text-xs font-extrabold text-slate-800 leading-tight">System Admin</p>
-              <p className="text-[10px] text-slate-400 font-semibold">IT Compliance</p>
-            </div>
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white absolute -bottom-0.5 -right-0.5"></span>
           </div>
-          <button className="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-1.5 rounded-lg transition-colors" title="로그아웃">
+          <div className="flex-1 text-center min-w-0 px-2">
+            <p className="text-xs font-extrabold text-slate-800 leading-tight truncate">
+              {user?.email || 'System Admin'}
+            </p>
+          </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              logout();
+            }}
+            className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 p-1.5 rounded-lg transition-colors shrink-0"
+            title="로그아웃"
+          >
             <LogOut className="w-4 h-4" />
           </button>
         </div>

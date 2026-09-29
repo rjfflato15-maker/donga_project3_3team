@@ -23,6 +23,20 @@ class User(Base):
     contracts = relationship("Contract", back_populates="user", cascade="all, delete-orphan")
 
 
+class EmailVerification(Base):
+    __tablename__ = "email_verifications"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    email = Column(String(255), nullable=False, index=True)
+    code = Column(String(10), nullable=False)
+    verification_token = Column(String(255), nullable=True)
+    expires_at = Column(DateTime, nullable=False)
+    is_verified = Column(Boolean, default=False)
+    attempt_count = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+
 class Contract(Base):
     __tablename__ = "contracts"
 
