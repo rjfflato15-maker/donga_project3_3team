@@ -30,6 +30,7 @@ storage/raw/*
 !storage/raw/.gitkeep
 storage/masked/*
 !storage/masked/.gitkeep
+storage/*.png
 
 # Environment variables & secrets
 .env

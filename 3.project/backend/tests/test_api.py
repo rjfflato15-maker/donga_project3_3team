@@ -202,5 +202,73 @@ def test_document_masking_on_off_api():
     assert "중구 세종대로 100" in raw_text
 
 
+def test_auth_login_and_password_reset():
+    # 1. Login with seeded demo credentials
+    login_res = client.post(
+        "/api/auth/login",
+        json={"email": "nj445325@gmail.com", "password": "admin123!"},
+    )
+    assert login_res.status_code == 200
+    data = login_res.json()
+    assert data["success"] is True
+    assert data["user"]["email"] == "nj445325@gmail.com"
+
+    # 2. Login with wrong password
+    bad_login = client.post(
+        "/api/auth/login",
+        json={"email": "nj445325@gmail.com", "password": "wrong_password"},
+    )
+    assert bad_login.status_code == 401
+
+    # 3. Request verification code
+    code_res = client.post(
+        "/api/auth/send-verification-code",
+        json={"email": "nj445325@gmail.com", "password": "admin123!"},
+    )
+    assert code_res.status_code == 200
+    code_data = code_res.json()
+    assert code_data["success"] is True
+    demo_code = code_data["demo_code"]
+    assert demo_code is not None
+
+    # 4. Verify the code
+    verify_res = client.post(
+        "/api/auth/verify-code",
+        json={"email": "nj445325@gmail.com", "code": demo_code},
+    )
+    assert verify_res.status_code == 200
+    verify_data = verify_res.json()
+    assert verify_data["success"] is True
+    verif_token = verify_data["verification_token"]
+    assert verif_token is not None
+
+    # 5. Change password
+    change_res = client.post(
+        "/api/auth/change-password",
+        json={
+            "email": "nj445325@gmail.com",
+            "verification_token": verif_token,
+            "new_password": "new_secret_password_123!",
+        },
+    )
+    assert change_res.status_code == 200
+    assert change_res.json()["success"] is True
+
+    # 6. Verify new password login succeeds, old fails
+    old_login = client.post(
+        "/api/auth/login",
+        json={"email": "nj445325@gmail.com", "password": "admin123!"},
+    )
+    assert old_login.status_code == 401
+
+    new_login = client.post(
+        "/api/auth/login",
+        json={"email": "nj445325@gmail.com", "password": "new_secret_password_123!"},
+    )
+    assert new_login.status_code == 200
+    assert new_login.json()["success"] is True
+
+
+
 
 

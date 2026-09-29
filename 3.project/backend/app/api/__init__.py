@@ -4,6 +4,7 @@ from .documents import router as documents_router
 from .validations import router as validations_router
 from .pipeline import router as pipeline_router
 from .auto_contract import router as auto_contract_router
+from .auth import router as auth_router
 
 api_router = APIRouter()
 api_router.include_router(contracts_router)
@@ -11,6 +12,7 @@ api_router.include_router(auto_contract_router)
 api_router.include_router(documents_router)
 api_router.include_router(validations_router)
 api_router.include_router(pipeline_router)
+api_router.include_router(auth_router)
 
 __all__ = ["api_router"]
 
