@@ -21,19 +21,19 @@ contract_service = ContractService()
 
 
 @router.post("/parse-file", response_model=ParsedContractResponse)
-async def parse_contract_file(file: UploadFile = File(...)):
+def parse_contract_file(file: UploadFile = File(...)):
     """Parse contract PDF/text/image file and auto-extract title, vendor, business number, amount, date"""
     temp_dir = tempfile.gettempdir()
     temp_path = os.path.join(temp_dir, file.filename)
 
     try:
-        content = await file.read()
+        content = file.file.read()
         with open(temp_path, "wb") as f:
             f.write(content)
 
         raw_text, _ = extract_text_from_file(temp_path, file.filename)
-        fields = extract_fields(raw_text)
         doc_type, confidence, _ = classify_document(raw_text)
+        fields = extract_fields(raw_text, doc_type=doc_type)
 
         title = fields.title
         if not title:

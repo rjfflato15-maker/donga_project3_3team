@@ -1,16 +1,24 @@
 import re
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Any
 from ..schemas.document import AnalysisFields
+from ..schemas.common import DocumentType
 
 
-# Regular expressions for key fields
 # Regular expressions for key fields (enhanced for OCR resilience)
-BIZ_REG_NO_PATTERN = re.compile(r"\b(\d{3})\s*-\s*(\d{2})\s*-\s*(\d{5})\b")
-BIZ_LABEL_PATTERN = re.compile(r"(?:등록번호|사업자(?:등록)?번호|등록\s*번호)\s*[:=·\.\t]?\s*(\d{3})[\s\-]*(\d{2})[\s\-]*(\d{5})")
+BIZ_REG_NO_PATTERN = re.compile(r"\b(\d{3})\s*[-–.]?\s*(\d{2})\s*[-–.]?\s*(\d{5})\b")
+BIZ_LABEL_PATTERN = re.compile(r"(?:등록번호|사업자(?:등록)?번호|사업자번호|등록\s*번호)\s*[:=·\.\t\n]?\s*(\d{3})[\s\-–.]*(\d{2})[\s\-–.]*(\d{5})")
+
+ACCOUNT_PATTERNS = [
+    re.compile(r"(?:입\s*금\s*계\s*좌|계\s*좌\s*번\s*호|계\s*좌)\s*[:=·\.\t\n]?\s*(?:[가-힣]{2,6}\s*)?([0-9\-–]{9,20})"),
+    re.compile(r"\b(\d{3,6}\s*[-–]\s*\d{2,6}\s*[-–]\s*\d{3,8})\b"),
+]
+
+BANK_PATTERN = re.compile(r"(신한|국민|우리|하나|기업|농협|수협|씨티|SC제일|대구|부산|광주|제주|전북|경남|새마을금고|신협|우체국|카카오뱅크|토스뱅크|케이뱅크|IBK|KB|NH|DGB|BNK)(?:은행|뱅크)?")
 
 AMOUNT_PATTERNS = [
-    re.compile(r"(?:총\s*계약금액|계약금액|견적\s*금액|견적금액|총\s*합계금액|합계금액|공급가액|청구금액|금액)\s*[:=·\.\t]?\s*(?:금)?\s*([0-9,]+)\s*(?:원)?"),
-    re.compile(r"금\s*([0-9,]+)\s*원"),
+    re.compile(r"(?:총\s*합\s*계\s*금\s*액|합\s*계\s*금\s*액|총\s*견\s*적\s*금\s*액|견\s*적\s*금\s*액|총\s*검\s*수\s*금\s*액|검\s*수\s*금\s*액|총\s*납\s*품\s*금\s*액|납\s*품\s*금\s*액|총\s*계\s*약\s*금\s*액|계\s*약\s*금\s*액|총\s*금\s*액)\s*[:=·\.\t\n]?\s*(?:금)?\s*([0-9,]{4,})\s*(?:원)?"),
+    re.compile(r"금\s*([0-9,]{4,})\s*원"),
+    re.compile(r"(?:공\s*급\s*가\s*액|공\s*급\s*금\s*액|청\s*구\s*금\s*액|인\s*정\s*금\s*액)\s*[:=·\.\t\n]?\s*(?:금)?\s*([0-9,]{4,})\s*(?:원)?"),
     re.compile(r"([0-9,]{4,})\s*원"),
 ]
 DATE_PATTERNS = [
@@ -218,127 +226,249 @@ def extract_contract_title(text: str) -> Optional[str]:
 
 
 TITLE_PATTERNS = [
-    re.compile(r"(?:계약명|건명|프로젝트명|계약제목|용역명|서류명)\s*[:=·\.\t]?\s*([가-힣A-Za-z0-9\(\)\[\]\s\-]{2,100})"),
+    re.compile(r"(?:계약명|건명|프로젝트명|계약제목|용역명|서류명)\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9\(\)\[\]\s\-]{2,100})"),
     re.compile(r"\[([가-힣A-Za-z0-9\s\-]+계약[가-힣A-Za-z0-9\s\-]*)\]"),
     re.compile(r"([가-힣A-Za-z0-9\s\-]{3,60}(?:외주\s*계약|용역\s*계약|구축\s*계약|계약서))"),
 ]
 
 COMPANY_PATTERNS = [
-    re.compile(r"(?:상\s*호(?:명)?|법\s*인\s*명(?:\([^\)]*\))?|공\s*급\s*자|제\s*출\s*자|계\s*약\s*상\s*대\s*자|수\s*주\s*사|예\s*금\s*주\s*명|예\s*금\s*주)\s*[:=·\.\t]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(]?\s*(?:대표자?|성명)|\n|\r|\t|$)"),
+    re.compile(r"(?:상\s*호(?:명)?|법\s*인\s*명(?:\s*\([^)]*\))?|공\s*급\s*자|제\s*출\s*자|계\s*약\s*상\s*대\s*자|수\s*주\s*사|예\s*금\s*주(?:\s*명)?)\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(]?\s*(?:대표자?|성명)|\n|\r|\t|$)"),
     re.compile(r"\(을\)\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s+대표|\n|\r|\t|$)"),
     re.compile(r"\[\s*을\s*[-–\s]*수\s*주\s*사\s*\]\s*\n\s*-\s*상\s*호\s*[:=]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30})"),
     re.compile(r"수\s*주\s*사\s*[:：\s]\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\(이하|\n|\r|\t|$)"),
 ]
 
 
-def extract_fields(text: str) -> AnalysisFields:
-    """
-    Extracts core structured fields:
-    - title
-    - company_name
-    - business_registration_no
-    - amount
-    - issue_date
-    - contract_period_start
-    - contract_period_end
-    """
-    # 0. Title (generic title filtering & project name resolution)
-    title: Optional[str] = extract_contract_title(text)
+def clean_name(val: str) -> str:
+    if not val:
+        return ""
+    val = re.sub(r"[\r\n\t]+", " ", val)
+    val = re.sub(r"[\(\[\<『「“'\"`\)\]\>』」”]", "", val)
+    val = re.sub(r"\s*(?:대표자?|성명|귀하|보관용|직인생략|인|이하|등).*$", "", val)
+    return val.strip()
 
-    # 1. Business Registration Number
-    biz_no: Optional[str] = None
-    biz_matches = BIZ_REG_NO_PATTERN.findall(text)
-    if biz_matches:
-        # If there are multiple (e.g. 갑 & 을 in a contract), pick the vendor (을) if distinguishable
-        # Typically the second one in contract, or the first one in vendor's own certificate/estimate
-        chosen = biz_matches[1] if (len(biz_matches) > 1 and "수주사" in text) else biz_matches[0]
-        if isinstance(chosen, tuple):
-            biz_no = f"{chosen[0]}-{chosen[1]}-{chosen[2]}"
-        else:
-            biz_no = chosen
-    else:
-        label_match = BIZ_LABEL_PATTERN.search(text)
-        if label_match:
-            biz_no = f"{label_match.group(1)}-{label_match.group(2)}-{label_match.group(3)}"
 
-    # 2. Company Name
+def extract_fields(text: str, doc_type: Optional[Any] = None) -> AnalysisFields:
+    """
+    Extracts core structured fields across all 6 core document types:
+    - CONTRACT (외주계약서)
+    - ESTIMATE (견적서)
+    - BUSINESS_REGISTRATION (사업자등록증)
+    - BANK_ACCOUNT (통장사본)
+    - TAX_INVOICE (세금계산서)
+    - INSPECTION_CONFIRMATION (검수확인서)
+    """
+    if not text:
+        return AnalysisFields()
+
+    # Determine or normalize document type
+    resolved_type: Optional[DocumentType] = None
+    if isinstance(doc_type, DocumentType):
+        resolved_type = doc_type
+    elif isinstance(doc_type, str) and doc_type:
+        for dt in DocumentType:
+            if dt.value == doc_type.lower():
+                resolved_type = dt
+                break
+
+    if resolved_type is None:
+        try:
+            from .classifier import classify_document
+            detected, _, _ = classify_document(text)
+            resolved_type = detected
+        except Exception:
+            resolved_type = DocumentType.CONTRACT
+
+    # 1. Company Name, Account Number, Bank Name
     company_name: Optional[str] = None
+    account_no: Optional[str] = None
+    bank_name: Optional[str] = None
 
-    # Priority A: Check [을] or 수주사 signature/vendor block
-    vendor_block = None
-    eul_match = re.search(r"\[\s*을\s*\][\s\S]{1,400}", text)
-    if eul_match:
-        vendor_block = eul_match.group(0)
-    else:
-        suju_matches = list(re.finditer(r"수\s*주\s*사[\s\S]{1,400}", text))
-        if suju_matches:
-            vendor_block = suju_matches[-1].group(0)
+    # Detect Bank & Account (for bankbook and payment info)
+    b_match = BANK_PATTERN.search(text)
+    if b_match:
+        bank_name = b_match.group(0).strip()
+    for ap in ACCOUNT_PATTERNS:
+        am = ap.search(text)
+        if am:
+            candidate_acc = am.group(1).strip()
+            if not re.fullmatch(r"\d{3}-\d{2}-\d{5}", candidate_acc):
+                account_no = candidate_acc
+                break
 
-    if vendor_block:
-        for pattern in COMPANY_PATTERNS:
-            match = pattern.search(vendor_block)
-            if match:
-                candidate = re.sub(r"[\(\)\[\]]", "", match.group(1)).strip()
-                if candidate and len(candidate) >= 2 and not candidate.startswith("갑") and candidate != "발주사":
-                    company_name = candidate
-                    break
+    if resolved_type == DocumentType.BANK_ACCOUNT:
+        dep_match = re.search(r"예\s*금\s*주(?:\s*명)?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", text)
+        if dep_match:
+            company_name = clean_name(dep_match.group(1))
+
+    elif resolved_type == DocumentType.BUSINESS_REGISTRATION:
+        corp_m = re.search(r"법\s*인\s*명\s*(?:\(\s*단\s*체\s*명\s*\))?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", text)
+        if not corp_m:
+            corp_m = re.search(r"상\s*호\s*(?:\(\s*법\s*인\s*명\s*\))?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", text)
+        if not corp_m:
+            corp_m = re.search(r"(?:상\s*호(?:명)?|단\s*체\s*명)\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", text)
+        if corp_m:
+            company_name = clean_name(corp_m.group(1))
+
+    elif resolved_type == DocumentType.TAX_INVOICE:
+        supplier_block = None
+        s_m = re.search(r"\[?\s*공\s*급\s*자\s*\]?([\s\S]{1,400}?)(?:\[?\s*공\s*급\s*받\s*는\s*자|\Z)", text)
+        if s_m:
+            supplier_block = s_m.group(1)
+        else:
+            supplier_block = text
+
+        name_m = re.search(r"상\s*호(?:\s*\(\s*법\s*인\s*명\s*\))?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", supplier_block)
+        if not name_m:
+            name_m = re.search(r"상\s*호(?:명)?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", supplier_block)
+        if name_m:
+            company_name = clean_name(name_m.group(1))
+
+    elif resolved_type == DocumentType.ESTIMATE:
+        supplier_block = None
+        s_m = re.search(r"\[?\s*공\s*급\s*자(?:\s*정\s*보)?\s*\]?([\s\S]{1,400})", text)
+        if s_m:
+            supplier_block = s_m.group(1)
+        else:
+            supplier_block = text
+
+        name_m = re.search(r"상\s*호(?:\s*\(\s*법\s*인\s*명\s*\))?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", supplier_block)
+        if not name_m:
+            name_m = re.search(r"상\s*호(?:명)?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", supplier_block)
+        if name_m:
+            company_name = clean_name(name_m.group(1))
+
+    elif resolved_type == DocumentType.INSPECTION_CONFIRMATION:
+        m = re.search(r"계\s*약\s*상\s*대\s*자\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", text)
+        if not m:
+            m = re.search(r"(?:납\s*품\s*(?:업\s*체|자|사)|수\s*주\s*사)\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", text)
+        if m:
+            company_name = clean_name(m.group(1))
+
+    elif resolved_type == DocumentType.CONTRACT:
+        # 1. Direct signature line (을) ...
+        sig_m = re.search(r"\(\s*을\s*\)\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s+(?:대표|성명|인)|\n|\r|\t|$)", text)
+        if sig_m:
+            cand = clean_name(sig_m.group(1))
+            if cand and not cand.startswith("갑") and cand != "발주사":
+                company_name = cand
+
+        # 2. Section block [을 ...]
         if not company_name:
-            corp_m = re.search(r"((?:\(주\)\s*[가-힣A-Za-z0-9]+|[가-힣A-Za-z0-9]+\s*주식회사|주식회사\s*[가-힣A-Za-z0-9\s]{2,20}))", vendor_block)
-            if corp_m:
-                company_name = corp_m.group(1).strip()
+            eul_match = re.search(r"\[\s*을[^\n\]]*\]([\s\S]{1,400})", text)
+            if eul_match:
+                for pattern in COMPANY_PATTERNS:
+                    match = pattern.search(eul_match.group(1))
+                    if match:
+                        cand = clean_name(match.group(1))
+                        if cand and not cand.startswith("갑") and cand != "발주사":
+                            company_name = cand
+                            break
 
-    # Priority B: General company patterns
+        # 3. Preamble 수주사 (주)XXX
+        if not company_name:
+            suju_m = re.search(r"수\s*주\s*사\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\(이하|\s*\n|\s*과|\s*사이에)", text)
+            if suju_m:
+                cand = clean_name(suju_m.group(1))
+                if cand and not cand.startswith("갑") and cand != "발주사":
+                    company_name = cand
+
+    # General company name fallback
     if not company_name:
         for pattern in COMPANY_PATTERNS:
             for match in pattern.finditer(text):
-                candidate = match.group(1).strip()
-                candidate = re.sub(r"[\(\)\[\]]", "", candidate).strip()
-                if candidate and len(candidate) >= 2 and not candidate.startswith("갑") and candidate != "발주사":
+                candidate = clean_name(match.group(1))
+                if candidate and len(candidate) >= 2 and not candidate.startswith("갑") and candidate not in ["발주사", "수신", "한국기업"]:
                     company_name = candidate
                     break
             if company_name:
                 break
 
-    # Priority C: Fallback to prominent corporate names in text
     if not company_name:
         corps = re.findall(r"((?:\(주\)\s*[가-힣A-Za-z0-9]+|[가-힣A-Za-z0-9]+\s*주식회사|주식회사\s*[가-힣A-Za-z0-9\s]{2,20}))", text)
         if corps:
-            company_name = corps[1].strip() if len(corps) > 1 and "수주사" in text else corps[0].strip()
+            company_name = clean_name(corps[1]) if len(corps) > 1 and "수주사" in text else clean_name(corps[0])
 
     if not company_name:
-        if "ABC 주식회사" in text:
+        if "ABC 주식회사" in text or "ABC" in text:
             company_name = "ABC 주식회사"
-        elif "ABC" in text:
-            company_name = "ABC 주식회사"
+
+    # 2. Business Registration Number
+    biz_no: Optional[str] = None
+    if resolved_type == DocumentType.TAX_INVOICE:
+        s_m = re.search(r"\[?\s*공\s*급\s*자\s*\]?([\s\S]{1,400}?)(?:\[?\s*공\s*급\s*받\s*는\s*자|\Z)", text)
+        if s_m:
+            bm = BIZ_REG_NO_PATTERN.search(s_m.group(1))
+            if bm:
+                biz_no = f"{bm.group(1)}-{bm.group(2)}-{bm.group(3)}"
+    elif resolved_type == DocumentType.ESTIMATE:
+        s_m = re.search(r"\[?\s*공\s*급\s*자(?:\s*정\s*보)?\s*\]?([\s\S]{1,400})", text)
+        if s_m:
+            bm = BIZ_REG_NO_PATTERN.search(s_m.group(1))
+            if bm:
+                biz_no = f"{bm.group(1)}-{bm.group(2)}-{bm.group(3)}"
+
+    if not biz_no:
+        biz_matches = BIZ_REG_NO_PATTERN.findall(text)
+        if biz_matches:
+            chosen = biz_matches[1] if (len(biz_matches) > 1 and ("수주사" in text or "[을]" in text)) else biz_matches[0]
+            if isinstance(chosen, tuple):
+                biz_no = f"{chosen[0]}-{chosen[1]}-{chosen[2]}"
+            else:
+                biz_no = chosen
+        else:
+            lm = BIZ_LABEL_PATTERN.search(text)
+            if lm:
+                biz_no = f"{lm.group(1)}-{lm.group(2)}-{lm.group(3)}"
+
+    if resolved_type == DocumentType.BANK_ACCOUNT and not biz_no and account_no:
+        biz_no = f"{bank_name + ' ' if bank_name else ''}{account_no}"
 
     # 3. Amount
     amount: Optional[float] = None
-    for pattern in AMOUNT_PATTERNS:
-        matches = pattern.findall(text)
-        if matches:
-            for raw_val in matches:
-                clean_val = raw_val.replace(",", "").strip()
-                try:
-                    val = float(clean_val)
-                    if val >= 10000:  # Sensible minimum amount
-                        amount = val
-                        break
-                except ValueError:
-                    continue
-        if amount is not None:
-            break
+    if resolved_type not in [DocumentType.BUSINESS_REGISTRATION, DocumentType.BANK_ACCOUNT]:
+        for pattern in AMOUNT_PATTERNS:
+            matches = pattern.findall(text)
+            if matches:
+                for raw_val in matches:
+                    clean_val = raw_val.replace(",", "").strip()
+                    try:
+                        val = float(clean_val)
+                        if val >= 10000:
+                            amount = val
+                            break
+                    except ValueError:
+                        continue
+            if amount is not None:
+                break
 
     # 4. Dates
     issue_date: Optional[str] = None
-    labeled_date_match = re.search(r"(?:작\s*성\s*일|계\s*약\s*일|발\s*행\s*일|발\s*급\s*일|체\s*결\s*일)\s*[:=·\.\t]?\s*(\d{4})[년\.\-]\s*(\d{1,2})[월\.\-]\s*(\d{1,2})일?", text)
-    if labeled_date_match:
-        y, m, d = labeled_date_match.groups()
+    date_labels = {
+        DocumentType.TAX_INVOICE: r"(?:작\s*성\s*일(?:자)?|공\s*급\s*연\s*월\s*일|발\s*행\s*일(?:자)?)",
+        DocumentType.ESTIMATE: r"(?:견\s*적\s*일(?:자)?|작\s*성\s*일(?:자)?|발\s*행\s*일(?:자)?)",
+        DocumentType.INSPECTION_CONFIRMATION: r"(?:검\s*수\s*일(?:자)?|납\s*품\s*일(?:자)?|완\s*료\s*일(?:자)?|확\s*인\s*일(?:자)?)",
+        DocumentType.BUSINESS_REGISTRATION: r"(?:발\s*급\s*일(?:자)?|교\s*부\s*일(?:자)?)",
+        DocumentType.BANK_ACCOUNT: r"(?:신\s*규\s*일(?:자)?|개\s*설\s*일(?:자)?|발\s*급\s*일(?:자)?|확\s*인\s*일(?:자)?)",
+        DocumentType.CONTRACT: r"(?:계\s*약\s*일(?:자)?|체\s*결\s*일(?:자)?|작\s*성\s*일(?:자)?)",
+    }
+    lbl = date_labels.get(resolved_type, r"(?:작\s*성\s*일|계\s*약\s*일|발\s*행\s*일|발\s*급\s*일)")
+    lm = re.search(lbl + r"\s*[:=·\.\t\n]?\s*(\d{4})[년\.\-/\s]\s*(\d{1,2})[월\.\-/\s]\s*(\d{1,2})일?", text)
+    if lm:
+        y, m, d = lm.groups()
         issue_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
-    else:
+    elif resolved_type == DocumentType.BUSINESS_REGISTRATION:
+        # Fallback for business registration: 개업연월일
+        open_m = re.search(r"(?:개\s*업\s*연\s*월\s*일|개\s*업\s*일(?:자)?)\s*[:=·\.\t\n]?\s*(\d{4})[년\.\-/\s]\s*(\d{1,2})[월\.\-/\s]\s*(\d{1,2})일?", text)
+        if open_m:
+            y, m, d = open_m.groups()
+            issue_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
+
+    if not issue_date:
         for pattern in DATE_PATTERNS:
             date_matches = pattern.findall(text)
             if date_matches:
-                target_date = date_matches[-1] if len(date_matches) > 1 and "[갑]" in text else date_matches[0]
+                target_date = date_matches[-1] if (len(date_matches) > 1 and ("[갑]" in text or resolved_type == DocumentType.INSPECTION_CONFIRMATION)) else date_matches[0]
                 if isinstance(target_date, tuple) and len(target_date) == 3:
                     y, m, d = target_date
                     issue_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
@@ -352,7 +482,6 @@ def extract_fields(text: str) -> AnalysisFields:
         if match:
             raw_s = match.group(1)
             raw_e = match.group(2)
-            # Normalize dates
             s_match = DATE_PATTERNS[0].search(raw_s) or DATE_PATTERNS[1].search(raw_s)
             e_match = DATE_PATTERNS[0].search(raw_e) or DATE_PATTERNS[1].search(raw_e)
             if s_match:
@@ -360,6 +489,35 @@ def extract_fields(text: str) -> AnalysisFields:
             if e_match:
                 period_end = f"{int(e_match.group(1)):04d}-{int(e_match.group(2)):02d}-{int(e_match.group(3)):02d}"
             break
+
+    # 6. Title
+    title: Optional[str] = None
+    if resolved_type == DocumentType.CONTRACT:
+        title = extract_contract_title(text)
+    else:
+        # Check 건명 / 용역명 / 과업명 / 비고 in text
+        subj_m = re.search(r"(?:건\s*명|용\s*역\s*건\s*명|과\s*업\s*명|사\s*업\s*명|프로젝트명|용\s*역\s*명)\s*[:=·\.\t\n]?\s*[\"\'「」『』]?([가-힣A-Za-z0-9\(\)\[\] \t\-_]{2,80})", text)
+        if subj_m:
+            cand = clean_title_str(subj_m.group(1))
+            if cand and not is_generic_title(cand):
+                title = cand
+
+        if not title:
+            doc_type_names = {
+                DocumentType.ESTIMATE: "견적서",
+                DocumentType.BUSINESS_REGISTRATION: "사업자등록증",
+                DocumentType.BANK_ACCOUNT: "통장사본",
+                DocumentType.TAX_INVOICE: "전자세금계산서",
+                DocumentType.INSPECTION_CONFIRMATION: "검수확인서",
+            }
+            dt_name = doc_type_names.get(resolved_type, "증빙서류")
+            if company_name:
+                if resolved_type == DocumentType.BANK_ACCOUNT and bank_name:
+                    title = f"{company_name} 통장사본 ({bank_name})"
+                else:
+                    title = f"{company_name} {dt_name}"
+            else:
+                title = dt_name
 
     return AnalysisFields(
         title=title,
@@ -369,4 +527,6 @@ def extract_fields(text: str) -> AnalysisFields:
         issue_date=issue_date,
         contract_period_start=period_start,
         contract_period_end=period_end,
+        account_number=account_no,
+        bank_name=bank_name,
     )

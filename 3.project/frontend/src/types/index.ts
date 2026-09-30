@@ -34,6 +34,8 @@ export interface AnalysisFields {
   issue_date?: string | null;
   contract_period_start?: string | null;
   contract_period_end?: string | null;
+  account_number?: string | null;
+  bank_name?: string | null;
 }
 
 export interface DocumentResponse {

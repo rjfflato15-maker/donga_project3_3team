@@ -31,7 +31,7 @@ def analyze_document(file_path: str, file_name: str = "", target_document_type: 
     doc_type, confidence, breakdown = classify_document(raw_text, target_type=target_document_type)
 
     # Step 4: Extraction
-    fields = extract_fields(raw_text)
+    fields = extract_fields(raw_text, doc_type=doc_type)
 
     warnings = []
     if doc_type == DocumentType.UNKNOWN:

@@ -314,10 +314,16 @@ def mask_image_with_ocr(
     draw = ImageDraw.Draw(image_copy)
     font = get_korean_font(size=13)
 
+    scale = 1.0
     try:
-        import winocr
-        res = winocr.recognize_pil_sync(image_copy, lang="ko")
-        lines = res.get("lines", [])
+        from .preprocessor import _safe_winocr_recognize
+        target_img = image_copy
+        w_img, h_img = target_img.size
+        if max(w_img, h_img) > 2400:
+            scale = 2400.0 / max(w_img, h_img)
+            target_img = target_img.resize((int(w_img * scale), int(h_img * scale)), Image.Resampling.LANCZOS)
+        res = _safe_winocr_recognize(target_img, lang="ko")
+        lines = res.get("lines", []) if res else []
     except Exception:
         lines = []
 
@@ -339,10 +345,10 @@ def mask_image_with_ocr(
             if not txt or not rect:
                 continue
 
-            x = int(rect.get("x", 0))
-            y = int(rect.get("y", 0))
-            w = int(rect.get("width", 0))
-            h = int(rect.get("height", 0))
+            x = int(rect.get("x", 0) / scale)
+            y = int(rect.get("y", 0) / scale)
+            w = int(rect.get("width", 0) / scale)
+            h = int(rect.get("height", 0) / scale)
 
             should_mask = False
             masked_val = "***"

@@ -28,6 +28,16 @@ import {
   maskAllSensitiveInfo,
 } from '../utils/masking';
 
+const DOC_TYPE_LABELS: Record<string, string> = {
+  contract: '외주표준계약서',
+  estimate: '견적서',
+  business_registration: '사업자등록증',
+  bank_account: '통장사본',
+  tax_invoice: '세금계산서',
+  inspection_confirmation: '검수확인서',
+  unknown: '기타증빙',
+};
+
 interface DocumentViewerModalProps {
   document: DocumentResponse | null;
   onClose: () => void;
@@ -49,6 +59,13 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
+
+  const docTypeKey = document?.document_type || 'unknown';
+  const isBankAccount = docTypeKey === 'bank_account';
+  const isBizReg = docTypeKey === 'business_registration';
+  const isEstimate = docTypeKey === 'estimate';
+  const isTaxInvoice = docTypeKey === 'tax_invoice';
+  const isInspection = docTypeKey === 'inspection_confirmation';
 
   const isImage = document ? /\.(png|jpe?g|webp|bmp|gif|tiff?)$/i.test(document.original_file_name) : false;
   const isPdf = document ? /\.pdf$/i.test(document.original_file_name) : false;
@@ -322,7 +339,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                   {maskFileName(document.original_file_name, isMasked)}
                 </h3>
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
-                  {document.document_type}
+                  {DOC_TYPE_LABELS[document.document_type] || document.document_type}
                 </span>
                 {isImage && (
                   <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800">
@@ -470,16 +487,23 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
           {activeTab === 'fields' ? (
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Company Name */}
+                {/* 1. Company Name / Vendor / Account Holder */}
                 <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                   <div className="flex items-center space-x-2 text-xs font-semibold text-slate-500 mb-1">
                     <Building className="w-3.5 h-3.5 text-blue-600" />
-                    <span>추출 상호 / 업체명</span>
-                    {/*{isMasked && (
-                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
-                        {비식별화 적용}
-                      </span>
-                    )}*/}
+                    <span>
+                      {isBankAccount
+                        ? '추출 예금주 / 계좌 소유자'
+                        : isBizReg
+                        ? '추출 법인명 / 상호'
+                        : isTaxInvoice
+                        ? '추출 공급자 상호 (발행처)'
+                        : isEstimate
+                        ? '추출 공급자 / 업체명'
+                        : isInspection
+                        ? '추출 계약상대자 (수주사)'
+                        : '추출 상호 / 업체명'}
+                    </span>
                   </div>
                   <div className="text-base font-bold text-slate-900">
                     {fields.company_name ? (
@@ -490,22 +514,28 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                   </div>
                 </div>
 
-                {/* Business Reg No */}
+                {/* 2. Business Reg No or Bank Account Number */}
                 <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                   <div className="flex items-center space-x-2 text-xs font-semibold text-slate-500 mb-1">
                     <CreditCard className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>사업자등록번호</span>
-                    {/*
-                    <span
-                      className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
-                        isMasked ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' : 'bg-amber-50 text-amber-800 border border-amber-200'
-                      }`}
-                    >
-                      {isMasked ? '마스킹 적용 (123-**-*****)' : '원본 노출'}
-                    </span>*/}
+                    <span>
+                      {isBankAccount
+                        ? fields.bank_name
+                          ? `계좌번호 (${fields.bank_name})`
+                          : '계좌번호 / 통장정보'
+                        : isTaxInvoice
+                        ? '공급자 사업자등록번호'
+                        : '사업자등록번호'}
+                    </span>
                   </div>
                   <div className="text-base font-bold text-slate-900 font-mono">
-                    {fields.business_registration_no ? (
+                    {isBankAccount ? (
+                      (fields.account_number || fields.business_registration_no) ? (
+                        formatSensitiveField(fields.account_number || fields.business_registration_no, 'account', isMasked)
+                      ) : (
+                        <span className="text-slate-400 font-sans">계좌번호 미추출</span>
+                      )
+                    ) : fields.business_registration_no ? (
                       formatSensitiveField(fields.business_registration_no, 'business_number', isMasked)
                     ) : (
                       <span className="text-slate-400 font-sans">미추출</span>
@@ -513,26 +543,50 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                   </div>
                 </div>
 
-                {/* Amount */}
+                {/* 3. Amount */}
                 <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                   <div className="flex items-center space-x-2 text-xs font-semibold text-slate-500 mb-1">
                     <DollarSign className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>추출 금액 (VAT 포함 여부 확인)</span>
+                    <span>
+                      {isEstimate
+                        ? '추출 견적금액 (총 합계)'
+                        : isTaxInvoice
+                        ? '추출 총 합계금액 (세금계산서)'
+                        : isInspection
+                        ? '추출 검수금액 (계약금액)'
+                        : '추출 금액 (VAT 포함 여부 확인)'}
+                    </span>
                   </div>
                   <div className="text-base font-bold text-slate-900">
                     {fields.amount !== null && fields.amount !== undefined ? (
                       <span className="text-blue-700">{fields.amount.toLocaleString()} 원</span>
+                    ) : isBizReg ? (
+                      <span className="text-slate-400">금액 무관 (사업자 증빙)</span>
+                    ) : isBankAccount ? (
+                      <span className="text-slate-400">금액 무관 (계좌 확인용)</span>
                     ) : (
                       <span className="text-slate-400">금액 정보 없음</span>
                     )}
                   </div>
                 </div>
 
-                {/* Date */}
+                {/* 4. Date */}
                 <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                   <div className="flex items-center space-x-2 text-xs font-semibold text-slate-500 mb-1">
                     <Calendar className="w-3.5 h-3.5 text-amber-600" />
-                    <span>작성일 / 발급일자</span>
+                    <span>
+                      {isEstimate
+                        ? '견적일자 / 작성일'
+                        : isBizReg
+                        ? '발급일자 / 개업연월일'
+                        : isBankAccount
+                        ? '신규(개설)일자 / 발급일'
+                        : isTaxInvoice
+                        ? '작성일자 / 공급연월일'
+                        : isInspection
+                        ? '검수 완료일자'
+                        : '작성일 / 발급일자'}
+                    </span>
                   </div>
                   <div className="text-base font-bold text-slate-900">
                     {fields.issue_date || <span className="text-slate-400">일자 미기재</span>}

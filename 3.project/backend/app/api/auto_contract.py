@@ -158,7 +158,7 @@ def synthesize_extracted_fields(items: List[AutoContractParseItem]) -> AutoContr
 
 
 @router.post("/auto-parse-batch", response_model=AutoContractSynthesisResponse)
-async def auto_parse_batch_documents(files: List[UploadFile] = File(...)):
+def auto_parse_batch_documents(files: List[UploadFile] = File(...)):
     """
     Parses multiple evidence documents (up to 6 core types), classifies them,
     extracts key metadata, and synthesizes title, amount, business number, vendor, and date.
@@ -175,7 +175,7 @@ async def auto_parse_batch_documents(files: List[UploadFile] = File(...)):
     for file in files:
         temp_path = os.path.join(temp_dir, f"auto_parse_{int(datetime.utcnow().timestamp())}_{file.filename}")
         try:
-            content = await file.read()
+            content = file.file.read()
             with open(temp_path, "wb") as f:
                 f.write(content)
 
@@ -212,7 +212,7 @@ async def auto_parse_batch_documents(files: List[UploadFile] = File(...)):
 
 
 @router.post("/auto-create-batch", response_model=ContractDetailResponse, status_code=status.HTTP_201_CREATED)
-async def auto_create_batch_contract(
+def auto_create_batch_contract(
     title: str = Form(...),
     vendor_name: str = Form(...),
     business_number: str = Form(...),
@@ -235,7 +235,7 @@ async def auto_create_batch_contract(
 
     # 2. Upload and process all evidence documents
     for file in files:
-        content = await file.read()
+        content = file.file.read()
         try:
             pipeline_service.process_document_upload(
                 db=db,

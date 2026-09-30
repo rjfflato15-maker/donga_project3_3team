@@ -11,6 +11,8 @@ class AnalysisFields(BaseModel):
     issue_date: Optional[str] = None
     contract_period_start: Optional[str] = None
     contract_period_end: Optional[str] = None
+    account_number: Optional[str] = None
+    bank_name: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
 

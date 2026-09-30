@@ -110,10 +110,10 @@ def get_document_response(doc: Document) -> DocumentResponse:
             )
 
     # Dynamic fallback: if fields are empty/partial but raw_text is available, extract fields
-    if raw_text and len(raw_text.strip().splitlines()) > 1 and (not fields.company_name or not fields.business_registration_no or not fields.amount):
+    if raw_text and len(raw_text.strip().splitlines()) > 1 and (not fields.company_name or not fields.business_registration_no or (fields.amount is None and doc.document_type not in ["business_registration", "bank_account"])):
         try:
             from ..ai.extractor import extract_fields
-            dynamic_fields = extract_fields(raw_text)
+            dynamic_fields = extract_fields(raw_text, doc_type=doc.document_type)
             if not fields.company_name and dynamic_fields.company_name:
                 fields.company_name = dynamic_fields.company_name
             if not fields.business_registration_no and dynamic_fields.business_registration_no:
@@ -128,6 +128,10 @@ def get_document_response(doc: Document) -> DocumentResponse:
                 fields.contract_period_start = dynamic_fields.contract_period_start
             if not fields.contract_period_end and dynamic_fields.contract_period_end:
                 fields.contract_period_end = dynamic_fields.contract_period_end
+            if not fields.account_number and dynamic_fields.account_number:
+                fields.account_number = dynamic_fields.account_number
+            if not fields.bank_name and dynamic_fields.bank_name:
+                fields.bank_name = dynamic_fields.bank_name
         except Exception:
             pass
 
