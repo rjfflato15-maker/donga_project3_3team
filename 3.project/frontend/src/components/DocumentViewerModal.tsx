@@ -87,8 +87,8 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
   if (!document) return null;
 
   const fields = document.analysis?.fields || {};
-  const fileUrl = `/api/documents/${document.document_id}/file`;
-  const previewImageUrl = `/api/documents/${document.document_id}/preview-image?page=${currentPage}&v=${document.document_id}`;
+  const fileUrl = `/api/documents/${document.document_id}/file?masked=${isMasked}`;
+  const previewImageUrl = `/api/documents/${document.document_id}/preview-image?page=${currentPage}&masked=${isMasked}&v=${document.document_id}_${isMasked}`;
 
   const getDisplayContent = () => {
     if (!document) return '';
@@ -364,8 +364,11 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
           {/* Top Header Actions: Dual Masking Toggles + Browser New Window button + Close */}
           <div className="flex items-center space-x-2 flex-wrap gap-y-1">
             <button
-              onClick={() => setIsMasked(!isMasked)}
-              className={`inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-xl text-xs font-black border transition-all shadow-2xs ${
+              onClick={() => {
+                setImageLoaded(false);
+                setIsMasked(!isMasked);
+              }}
+              className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-black border transition-all cursor-pointer shadow-2xs ${
                 isMasked
                   ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-300'
                   : 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300'
@@ -373,7 +376,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
               title="클릭 시 주민등록번호, 계좌번호, 전화번호, 상호명 마스킹 처리 ON/OFF 전환"
             >
               <Shield className={`w-3.5 h-3.5 ${isMasked ? 'text-emerald-600' : 'text-amber-600'}`} />
-              <span>개인정보: {isMasked ? 'ON' : 'OFF'}</span>
+              <span>개인정보·사업자 마스킹: {isMasked ? 'ON' : 'OFF'}</span>
             </button>
 
 
@@ -603,7 +606,44 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
             <div className="space-y-4">
               {isPdf || isImage ? (
                 <>
-                  {/* Preview Toolbar (no duplicate new window button) */}
+                  {/* Masking Status Notice Banner */}
+                  <div
+                    className={`px-4 py-2.5 rounded-xl text-xs flex items-center justify-between border transition-all ${
+                      isMasked
+                        ? 'bg-emerald-50/90 text-emerald-900 border-emerald-200'
+                        : 'bg-amber-50/90 text-amber-900 border-amber-200'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <Shield className={`w-4 h-4 shrink-0 ${isMasked ? 'text-emerald-600' : 'text-amber-600'}`} />
+                      <span>
+                        {isMasked ? (
+                          <>
+                            <strong className="font-extrabold text-emerald-950">개인정보·사업자 비식별화 마스킹 보호 중:</strong>{' '}
+                            사업자등록번호, 법인등록번호, 대표자명, 연락처, 입금계좌, 상세주소가 안전하게 마스킹 처리되어 표시됩니다.
+                          </>
+                        ) : (
+                          <>
+                            <strong className="font-extrabold text-amber-950">원본 노출 모드 (마스킹 해제):</strong>{' '}
+                            모든 사업자 및 개인정보가 원본 그대로 표시됩니다.
+                          </>
+                        )}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setImageLoaded(false);
+                        setIsMasked(!isMasked);
+                      }}
+                      className={`font-extrabold underline cursor-pointer text-xs ml-3 shrink-0 ${
+                        isMasked ? 'text-emerald-800 hover:text-emerald-950' : 'text-amber-800 hover:text-amber-950'
+                      }`}
+                    >
+                      {isMasked ? '원본(마스킹 해제) 보기' : '개인정보 마스킹 켜기'}
+                    </button>
+                  </div>
+
+                  {/* Preview Toolbar */}
                   <div className="flex flex-wrap items-center justify-between gap-2 bg-white px-4 py-3 rounded-xl border border-slate-200 shadow-sm">
                     <div className="flex items-center space-x-2 text-xs text-slate-700 font-semibold">
                       {isPdf ? (
@@ -618,31 +658,50 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                       </span>
                     </div>
 
-                    {/* For PDF: Toggle between Image View and Embedded PDF viewer */}
-                    {isPdf && (
-                      <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
-                        <button
-                          onClick={() => setPdfViewMode('image')}
-                          className={`px-2.5 py-1 rounded-md font-bold transition-all cursor-pointer ${
-                            pdfViewMode === 'image'
-                              ? 'bg-white text-indigo-700 shadow-xs'
-                              : 'text-slate-600 hover:text-slate-900'
-                          }`}
-                        >
-                          🖼️ 이미지 뷰
-                        </button>
-                        <button
-                          onClick={() => setPdfViewMode('embedded')}
-                          className={`px-2.5 py-1 rounded-md font-bold transition-all cursor-pointer ${
-                            pdfViewMode === 'embedded'
-                              ? 'bg-white text-indigo-700 shadow-xs'
-                              : 'text-slate-600 hover:text-slate-900'
-                          }`}
-                        >
-                          📄 내장 PDF 뷰어
-                        </button>
-                      </div>
-                    )}
+                    <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+                      {/* Masking Toggle inside Preview Toolbar */}
+                      <button
+                        onClick={() => {
+                          setImageLoaded(false);
+                          setIsMasked(!isMasked);
+                        }}
+                        className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-black border transition-all cursor-pointer shadow-xs ${
+                          isMasked
+                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600'
+                            : 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300'
+                        }`}
+                        title="사업자등록번호, 법인등록번호, 계좌번호, 연락처, 대표자명, 상세주소 마스킹 토글"
+                      >
+                        <Shield className={`w-3.5 h-3.5 ${isMasked ? 'text-white' : 'text-amber-600'}`} />
+                        <span>마스킹: {isMasked ? 'ON (보호 중)' : 'OFF (원본 노출)'}</span>
+                      </button>
+
+                      {/* For PDF: Toggle between Image View and Embedded PDF viewer */}
+                      {isPdf && (
+                        <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
+                          <button
+                            onClick={() => setPdfViewMode('image')}
+                            className={`px-2.5 py-1 rounded-md font-bold transition-all cursor-pointer ${
+                              pdfViewMode === 'image'
+                                ? 'bg-white text-indigo-700 shadow-xs'
+                                : 'text-slate-600 hover:text-slate-900'
+                            }`}
+                          >
+                            🖼️ 이미지 뷰
+                          </button>
+                          <button
+                            onClick={() => setPdfViewMode('embedded')}
+                            className={`px-2.5 py-1 rounded-md font-bold transition-all cursor-pointer ${
+                              pdfViewMode === 'embedded'
+                                ? 'bg-white text-indigo-700 shadow-xs'
+                                : 'text-slate-600 hover:text-slate-900'
+                            }`}
+                          >
+                            📄 내장 PDF 뷰어
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   {/* Main Content Area */}
@@ -660,7 +719,10 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                       {isPdf && totalPages > 1 && (
                         <div className="flex items-center justify-between w-full max-w-sm mb-3 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs text-xs">
                           <button
-                            onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
+                            onClick={() => {
+                              setImageLoaded(false);
+                              setCurrentPage((p) => Math.max(0, p - 1));
+                            }}
                             disabled={currentPage === 0}
                             className="flex items-center space-x-1 px-2.5 py-1 rounded font-bold bg-slate-100 hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed text-slate-700 transition-colors"
                           >
@@ -671,7 +733,10 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                             {currentPage + 1} / {totalPages} 페이지
                           </span>
                           <button
-                            onClick={() => setCurrentPage((p) => Math.min(totalPages - 1, p + 1))}
+                            onClick={() => {
+                              setImageLoaded(false);
+                              setCurrentPage((p) => Math.min(totalPages - 1, p + 1));
+                            }}
                             disabled={currentPage >= totalPages - 1}
                             className="flex items-center space-x-1 px-2.5 py-1 rounded font-bold bg-slate-100 hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed text-slate-700 transition-colors"
                           >
@@ -698,12 +763,14 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                           <div className="absolute inset-0 flex items-center justify-center min-h-[300px]">
                             <div className="flex items-center space-x-2 text-xs text-slate-500 font-semibold bg-white/90 px-4 py-2 rounded-xl shadow-xs border border-slate-200">
                               <span className="w-2 h-2 rounded-full bg-blue-600 animate-ping"></span>
-                              <span>고화질 원본 파일 렌더링 중...</span>
+                              <span>
+                                {isMasked ? '비식별화 마스킹 처리 렌더링 중...' : '고화질 원본 파일 렌더링 중...'}
+                              </span>
                             </div>
                           </div>
                         )}
                         <img
-                          key={`${document.document_id}-${currentPage}`}
+                          key={`${document.document_id}-${currentPage}-${isMasked}`}
                           src={previewImageUrl}
                           alt={document.original_file_name}
                           onLoad={() => setImageLoaded(true)}
