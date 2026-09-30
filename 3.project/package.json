@@ -1,0 +1,29 @@
+{
+  "name": "ai-contract-evidence-manager",
+  "version": "1.0.0",
+  "description": "계약 증빙서류 누락·불일치 자동 검수 시스템 (통합 패키지)",
+  "private": true,
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "dev": "node scripts/dev.js",
+    "dev:concurrently": "concurrently -n \"BACKEND,FRONTEND\" -c \"cyan,green\" \"node scripts/backend.js\" \"npm --prefix frontend run dev\"",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "node scripts/backend.js",
+    "build": "npm --prefix frontend run build",
+    "start": "node scripts/start.js",
+    "serve": "node scripts/start.js",
+    "test": "node scripts/test.js"
+  },
+  "keywords": [
+    "contract-evidence",
+    "fastapi",
+    "react",
+    "b2b",
+    "ocr"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

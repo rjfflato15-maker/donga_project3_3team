@@ -9,7 +9,6 @@ import {
   DollarSign,
   CreditCard,
   Image as ImageIcon,
-  ExternalLink,
   ChevronLeft,
   ChevronRight,
   Maximize2,
@@ -99,11 +98,6 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
     }
     // When masking is OFF, show full raw unmasked original text
     return document.raw_text || document.masked_text || '';
-  };
-
-  const handleOpenInNewBrowserWindow = (e?: React.MouseEvent) => {
-    if (e) e.preventDefault();
-    window.open(fileUrl, '_blank', 'noopener,noreferrer');
   };
 
   const handleCopyText = (text: string) => {
@@ -382,14 +376,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
               <span>개인정보: {isMasked ? 'ON' : 'OFF'}</span>
             </button>
 
-            <button
-              onClick={handleOpenInNewBrowserWindow}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
-              title="브라우저 새 창(새 탭)에서 원본 파일 열기"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>새 창 열기</span>
-            </button>
+
             <button
               onClick={onClose}
               className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 rounded-xl transition-colors"
@@ -743,10 +730,11 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
         <div className="p-4 bg-white border-t border-slate-200 flex items-center justify-between">
           {onDelete ? (
             <button
+              type="button"
               onClick={() => {
                 onDelete(document.document_id, document.original_file_name);
               }}
-              className="inline-flex items-center space-x-1 px-3 py-1.5 text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-xl text-xs font-bold transition-colors"
+              className="inline-flex items-center space-x-1.5 px-3.5 py-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 active:bg-rose-100 rounded-xl text-xs font-bold transition-all cursor-pointer border border-rose-200/80 shadow-2xs hover:shadow-xs active:scale-95"
               title="증빙서류 삭제"
             >
               <Trash2 className="w-3.5 h-3.5" />

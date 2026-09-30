@@ -12,7 +12,6 @@ import {
   FileCheck2,
   Eye,
   Upload,
-  ExternalLink,
   Plus,
   Trash2,
   File,
@@ -182,17 +181,6 @@ export const Checklist: React.FC<ChecklistProps> = ({
 
                 {doc ? (
                   <div className="flex items-center space-x-1">
-                    {/* 브라우저 새 창에서 원본 열기 */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        window.open(`/api/documents/${doc.document_id}/file`, '_blank', 'noopener,noreferrer');
-                      }}
-                      className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                      title="브라우저 새 창에서 원본 열기"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </button>
 
                     {/* 더보기 / 상세 대조 확인 */}
                     <button
@@ -221,11 +209,12 @@ export const Checklist: React.FC<ChecklistProps> = ({
                     {/* 서류 삭제 */}
                     {onDeleteDocument && (
                       <button
+                        type="button"
                         onClick={(e) => {
                           e.stopPropagation();
                           onDeleteDocument(doc.document_id, doc.original_file_name);
                         }}
-                        className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                        className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                         title="증빙서류 삭제"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -286,16 +275,6 @@ export const Checklist: React.FC<ChecklistProps> = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    window.open(`/api/documents/${extraDoc.document_id}/file`, '_blank', 'noopener,noreferrer');
-                  }}
-                  className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                  title="브라우저 새 창에서 원본 열기"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
                     onSelectDocument(extraDoc);
                   }}
                   className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
@@ -305,11 +284,12 @@ export const Checklist: React.FC<ChecklistProps> = ({
                 </button>
                 {onDeleteDocument && (
                   <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       onDeleteDocument(extraDoc.document_id, extraDoc.original_file_name);
                     }}
-                    className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                     title="증빙서류 삭제"
                   >
                     <Trash2 className="w-4 h-4" />

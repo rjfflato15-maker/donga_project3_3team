@@ -1,18 +1,19 @@
 import React from 'react';
 import { ContractDetail } from '../types';
 import { RuleValidationCard } from './RuleValidationCard';
-import { Activity, RefreshCw } from 'lucide-react';
+import { Sparkles, RefreshCw } from 'lucide-react';
 
 interface ValidationReportViewProps {
   currentContract: ContractDetail | null;
-  onOpenSimulator: () => void;
+  onRunPipeline: () => void;
+  onOpenSimulator?: () => void;
   onRevalidate: () => void;
   loading: boolean;
 }
 
 export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
   currentContract,
-  onOpenSimulator,
+  onRunPipeline,
   onRevalidate,
   loading,
 }) => {
@@ -43,18 +44,21 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
           <button
             onClick={onRevalidate}
             disabled={loading}
-            className="flex items-center space-x-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+            className="flex items-center space-x-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors active:scale-95 disabled:bg-slate-200"
+            title="룰 엔진 재검수 실행"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             <span>룰 엔진 재검수</span>
           </button>
 
           <button
-            onClick={onOpenSimulator}
-            className="flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm rounded-xl transition-colors"
+            onClick={onRunPipeline}
+            disabled={loading}
+            className="flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm rounded-xl transition-all active:scale-95 disabled:bg-slate-300"
+            title="화면 노출 없이 백그라운드 5단계 파이프라인(업로드·마스킹·OCR·정규화·대조검수) 자동 실행"
           >
-            <Activity className="w-4 h-4" />
-            <span>5단계 파이프라인 시뮬레이션</span>
+            <Sparkles className={`w-4 h-4 ${loading ? 'animate-spin text-amber-300' : 'text-amber-400'}`} />
+            <span>{loading ? '5단계 파이프라인 실행 중...' : '5단계 파이프라인 검수 실행'}</span>
           </button>
         </div>
       </div>

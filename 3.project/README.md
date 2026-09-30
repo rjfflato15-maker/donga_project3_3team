@@ -30,32 +30,51 @@
 
 ---
 
-## 3. 실행 방법 (Quick Start)
+## 3. 실행 방법 (Quick Start - VS Code 없이 실행 가능)
 
-### 3-1. 백엔드 가상환경 활성화 및 서버 실행
-```powershell
-cd c:\project
+### 3-1. [추천 1] 윈도우 탐색기 원클릭 실행 (배치 파일)
+VS Code나 터미널 입력 없이, 파일 탐색기에서 더블클릭만으로 즉시 구동할 수 있습니다:
+- **`start_dev.bat`**: 더블클릭 시 백엔드(FastAPI 8000)와 프론트엔드(Vite 5173)를 동시 실행하고 브라우저를 자동 엽니다. (개발/수정용)
+- **`start_server.bat`**: 더블클릭 시 프론트엔드를 빌드하여 포트 8000 하나로 통합 구동하고 브라우저를 엽니다. (배포/데모용)
+- **`setup.bat`**: 파이썬 가상환경 생성 및 백엔드/프론트엔드 라이브러리 전체 자동 설치.
 
-# 가상환경 활성화 (PowerShell)
-.\backend\.venv\Scripts\Activate.ps1
+### 3-2. [추천 2] 루트 패키지 명령어 (`npm` 기반 통합 패키지)
+터미널(PowerShell, CMD, Git Bash 등) 어디서든 프로젝트 루트 경로에서 실행할 수 있습니다:
+```bash
+# 최초 1회: 가상환경 및 모든 의존성 자동 설치
+npm run setup
 
-# 서버 실행
-python -m uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
-```
-- Swagger API 문서: `http://localhost:8000/docs`
-- 통합 SPA 대시보드: `http://localhost:8000/`
-
-### 3-2. 프론트엔드 개발 서버 실행 (선택 사항)
-```powershell
-cd c:\project\frontend
+# 개발 서버 실행 (백엔드 + 프론트엔드 동시 실행 & 핫 리로드)
 npm run dev
-```
-- 프론트엔드 Dev URL: `http://localhost:5173`
 
-### 3-3. 단위 및 통합 테스트 실행
+# 프로덕션 통합 단일 서버 실행 (포트 8000 하나로 API + 웹 화면 서빙)
+npm start
+
+# 프론트엔드 단독 빌드
+npm run build
+
+# 백엔드 단위/통합 테스트 (pytest 29개 테스트)
+npm test
+```
+- 프론트엔드 UI: `http://localhost:5173` (개발 모드) 또는 `http://localhost:8000` (프로덕션 모드)
+- 백엔드 Swagger API 문서: `http://localhost:8000/docs`
+
+### 3-3. [추천 3] Docker 컨테이너 패키징
+로컬에 Python이나 Node.js가 설치되어 있지 않아도 Docker만 있으면 한 줄로 구동 가능합니다:
+```bash
+docker compose up --build
+```
+- 접속 주소: `http://localhost:8000`
+
+### 3-4. 수동 실행 방식 (전통적 방식)
 ```powershell
-cd c:\project
-python -m pytest backend/tests -v
+# 백엔드 실행
+.\backend\.venv\Scripts\Activate.ps1
+python -m uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
+
+# 프론트엔드 실행 (별도 터미널)
+cd frontend
+npm run dev
 ```
 
 ---

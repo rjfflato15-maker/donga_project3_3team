@@ -7,13 +7,8 @@ import {
   FileText,
   Search,
   Sparkles,
-  Building2,
-  CheckCircle2,
-  AlertTriangle,
-  Clock,
   Trash2,
   Edit3,
-  ExternalLink,
   RefreshCw,
   ShieldCheck,
   Calendar,
@@ -108,35 +103,36 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
     return `CT-${year}-${padded}`;
   };
 
-  const getStatusBadge = (status: string, completeness: number) => {
-    if (status === 'PASS' && completeness >= 100) {
+  const getStatusBadge = (reviewStatus: string, completenessRate: number) => {
+    const status = reviewStatus?.toUpperCase();
+    if (status === 'PASS' && completenessRate >= 100) {
       return (
-        <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+        <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-black bg-emerald-50 text-emerald-700 border border-emerald-200/80 shadow-2xs whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
           <span>검수 통과 (PASS)</span>
         </span>
       );
     }
-    if (status === 'FLAGGED') {
+    if (completenessRate < 100 || status === 'INCOMPLETE') {
       return (
-        <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300">
-          <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-          <span>불일치 주의 (FLAGGED)</span>
+        <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-black bg-purple-50 text-purple-700 border border-purple-200/80 shadow-2xs whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+          <span>증빙 누락 (MISSING)</span>
         </span>
       );
     }
-    if (completeness < 100 || status === 'INCOMPLETE') {
+    if (status === 'REVIEW' || status === 'FLAGGED') {
       return (
-        <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-indigo-100 text-indigo-900 border border-indigo-300">
-          <Clock className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-          <span>서류 미흡 ({completeness}%)</span>
+        <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-black bg-amber-50 text-amber-700 border border-amber-200/80 shadow-2xs whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+          <span>재확인 필요 (REVIEW)</span>
         </span>
       );
     }
     return (
-      <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-slate-100 text-slate-700 border border-slate-300">
-        <Clock className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-        <span>대기 중</span>
+      <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-black bg-rose-50 text-rose-700 border border-rose-200/80 shadow-2xs whitespace-nowrap">
+        <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+        <span>검수 부적격 (FAIL)</span>
       </span>
     );
   };
@@ -331,17 +327,17 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
       {/* Main Contracts Table */}
       <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-[1050px] w-full text-left text-xs border-collapse">
+          <table className="min-w-[1100px] w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50/90 border-b border-slate-200/80 text-slate-500 font-extrabold uppercase tracking-wider text-[11px]">
-                <th className="py-4 px-5 w-24">계약 코드</th>
-                <th className="py-4 px-5">외주/용역 계약 정보</th>
-                <th className="py-4 px-5">협력 업체</th>
-                <th className="py-4 px-5">계약 금액</th>
-                <th className="py-4 px-5">6종 필수 서류 현황</th>
-                <th className="py-4 px-5">AI 검수 판정</th>
-                <th className="py-4 px-5 w-28">등록일</th>
-                <th className="py-4 px-5 text-center w-36">관리 동작</th>
+              <tr className="bg-slate-50/90 border-b border-slate-200/60 text-slate-500 font-extrabold uppercase tracking-wider text-[11px] whitespace-nowrap">
+                <th className="py-3.5 px-5">계약 코드</th>
+                <th className="py-3.5 px-5">계약 명칭</th>
+                <th className="py-3.5 px-5">상대 업체명</th>
+                <th className="py-3.5 px-5">계약 금액</th>
+                <th className="py-3.5 px-5">6종 필수 서류 현황</th>
+                <th className="py-3.5 px-5">검수 상태</th>
+                <th className="py-3.5 px-5">등록일</th>
+                <th className="py-3.5 px-5 text-center">동작</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -406,46 +402,32 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
                       }`}
                     >
                       {/* Contract Code */}
-                      <td className="py-4 px-5">
-                        <span className="font-mono font-black text-indigo-600 bg-indigo-50 group-hover:bg-indigo-100 px-2 py-1 rounded-md text-[11px] transition-colors border border-indigo-200/60">
-                          {getContractCode(c.contract_id)}
-                        </span>
+                      <td className="py-4 px-5 font-bold text-indigo-600 whitespace-nowrap group-hover:underline">
+                        {getContractCode(c.contract_id)}
                       </td>
 
                       {/* Title & Info */}
-                      <td className="py-4 px-5">
-                        <div className="font-black text-slate-900 group-hover:text-indigo-600 text-sm transition-colors flex items-center space-x-1.5">
-                          <span>{c.title}</span>
-                          {isSelected && (
-                            <span className="text-[10px] bg-indigo-600 text-white px-1.5 py-0.2 rounded font-bold">
-                              선택됨
-                            </span>
-                          )}
+                      <td className="py-4 px-5 whitespace-nowrap">
+                        <div className="font-extrabold text-slate-900 group-hover:text-indigo-600 text-sm transition-colors">
+                          {c.title}
                         </div>
-                        <div className="text-[11px] text-slate-400 font-medium mt-0.5 flex items-center space-x-2">
-                          <span>
-                            사업자등록번호: {c.business_number ? (isMaskingEnabled ? maskBusinessNumber(c.business_number) : c.business_number) : '미등록'}
-                          </span>
+                        <div className="text-[11px] text-slate-400 font-medium mt-0.5">
+                          사업자등록번호: {c.business_number ? (isMaskingEnabled ? maskBusinessNumber(c.business_number) : c.business_number) : '미등록'}
                         </div>
                       </td>
 
                       {/* Vendor */}
-                      <td className="py-4 px-5">
-                        <div className="flex items-center space-x-1.5 font-bold text-slate-800">
-                          <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                          <span>{maskVendorName(c.vendor_name, isMaskingEnabled)}</span>
-                        </div>
+                      <td className="py-4 px-5 font-semibold text-slate-600 whitespace-nowrap">
+                        {maskVendorName(c.vendor_name, isMaskingEnabled)}
                       </td>
 
                       {/* Amount */}
-                      <td className="py-4 px-5">
-                        <div className="font-black text-slate-900 text-sm">
-                          ₩{c.contract_amount.toLocaleString()}
-                        </div>
+                      <td className="py-4 px-5 font-black text-slate-900 whitespace-nowrap">
+                        ₩{c.contract_amount.toLocaleString()}
                       </td>
 
                       {/* 6 Core Docs Status */}
-                      <td className="py-4 px-5">
+                      <td className="py-4 px-5 whitespace-nowrap">
                         <div className="space-y-1.5">
                           <div className="flex items-center justify-between text-[11px]">
                             <span className="font-extrabold text-slate-700">
@@ -455,7 +437,7 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
                           </div>
 
                           {/* Progress Bar */}
-                          <div className="w-32 bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                          <div className="w-28 bg-slate-100 h-1.5 rounded-full overflow-hidden">
                             <div
                               className={`h-full rounded-full transition-all duration-300 ${
                                 c.completeness_rate >= 100
@@ -469,7 +451,7 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
                           </div>
 
                           {/* 6 Document Type Mini Badges */}
-                          <div className="flex items-center space-x-1 pt-1">
+                          <div className="flex items-center space-x-1 pt-0.5">
                             {CORE_DOCS.map((doc) => {
                               const isSubmitted = submittedTypes.includes(doc.type);
                               return (
@@ -491,12 +473,12 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
                       </td>
 
                       {/* AI Review Status */}
-                      <td className="py-4 px-5">
+                      <td className="py-4 px-5 whitespace-nowrap">
                         {getStatusBadge(c.review_status, c.completeness_rate)}
                       </td>
 
                       {/* Created At */}
-                      <td className="py-4 px-5 text-slate-500 font-semibold text-[11px]">
+                      <td className="py-4 px-5 text-slate-500 font-semibold text-[11px] whitespace-nowrap">
                         <div className="flex items-center space-x-1">
                           <Calendar className="w-3 h-3 text-slate-400 shrink-0" />
                           <span>{formatDate(c.created_at)}</span>
@@ -504,41 +486,46 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
                       </td>
 
                       {/* Action Buttons */}
-                      <td className="py-4 px-5 text-center">
-                        <div className="flex items-center justify-center space-x-1.5">
+                      <td className="py-4 px-5 text-center whitespace-nowrap">
+                        <div className="flex items-center justify-center space-x-1.5 whitespace-nowrap">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               onSelectContract(c.contract_id);
                             }}
-                            className="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold text-[11px] shadow-xs transition-all flex items-center space-x-1"
-                            title="상세 서류 검수 워크스페이스 열기"
+                            className="px-3.5 py-1.5 bg-white hover:bg-indigo-600 hover:text-white border border-slate-200 hover:border-indigo-600 rounded-xl font-bold text-slate-700 shadow-2xs transition-all duration-200 text-[11px] whitespace-nowrap"
+                            title="계약 상세 서류 및 정보 확인"
                           >
-                            <span>검수/상세</span>
-                            <ExternalLink className="w-3 h-3" />
+                            <span>상세보기</span>
                           </button>
 
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onEditContract(c);
-                            }}
-                            className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 rounded-lg transition-colors"
-                            title="계약 정보 수정"
-                          >
-                            <Edit3 className="w-3.5 h-3.5" />
-                          </button>
+                          {onEditContract && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onEditContract(c);
+                              }}
+                              className="p-1.5 bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 border border-slate-200 hover:border-indigo-300 rounded-xl shadow-2xs transition-all duration-200"
+                              title="계약 정보 수정"
+                              aria-label="계약 정보 수정"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
 
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onDeleteContract(c.contract_id, c.title);
-                            }}
-                            className="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-800 rounded-lg transition-colors"
-                            title="계약 삭제"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
+                          {onDeleteContract && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onDeleteContract(c.contract_id, c.title);
+                              }}
+                              className="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-700 border border-rose-200 rounded-xl shadow-2xs transition-all duration-200"
+                              title="계약 정보 삭제"
+                              aria-label="계약 정보 삭제"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
