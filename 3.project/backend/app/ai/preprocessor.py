@@ -34,46 +34,76 @@ def _to_pil_image(image_input: Any):
     return img
 
 
+def _safe_winocr_recognize(target_img, lang: str = "ko"):
+    """
+    Safely executes WinOCR recognize_pil_sync.
+    If called within a running asyncio event loop (e.g. FastAPI route),
+    delegates execution to a worker thread to prevent:
+    'RuntimeError: asyncio.run() cannot be called from a running event loop'
+    """
+    import winocr
+    import asyncio
+    from concurrent.futures import ThreadPoolExecutor
+
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        loop = None
+
+    if loop is not None and loop.is_running():
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            future = executor.submit(winocr.recognize_pil_sync, target_img, lang)
+            return future.result(timeout=45)
+    else:
+        return winocr.recognize_pil_sync(target_img, lang=lang)
+
+
 def run_ocr_on_image(image_input: Any) -> str:
     """
     Runs high-accuracy OCR on image (file path, bytes, PIL Image, or numpy array).
     Uses Windows Native OCR (WinOCR) with auto-rescaling for superior Korean & English recognition.
-    Falls back to PyTesseract if available.
+    Safe to call from both synchronous code and active asyncio event loops.
     """
     from PIL import Image
 
     pil_img = _to_pil_image(image_input)
+    if pil_img is None:
+        return ""
 
     # 1. WinOCR (Windows 10/11 native Media.Ocr Engine)
-    if pil_img is not None:
-        try:
-            import winocr
+    try:
+        target_img = pil_img
+        w, h = target_img.size
 
-            target_img = pil_img
-            w, h = target_img.size
-            if w < 1200 or h < 600:
-                scale = max(2, min(4, 1600 // max(w, 1)))
-                target_img = target_img.resize((w * scale, h * scale), Image.Resampling.LANCZOS)
+        # Rescale small images for high OCR accuracy, but keep dimensions under 2500 (Windows OCR max limit)
+        if (w < 1200 or h < 600) and max(w, h) * 2 <= 2500:
+            scale = max(2, min(3, 1600 // max(w, 1)))
+            new_w = min(2400, w * scale)
+            new_h = min(2400, h * scale)
+            target_img = target_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+        elif max(w, h) > 2500:
+            # Downscale overly large images so WinOCR does not reject them
+            ratio = 2400.0 / max(w, h)
+            target_img = target_img.resize((int(w * ratio), int(h * ratio)), Image.Resampling.LANCZOS)
 
-            res = winocr.recognize_pil_sync(target_img, lang="ko")
-            if res:
-                lines = [l.get("text", "").strip() for l in res.get("lines", []) if l.get("text", "").strip()]
-                if lines:
-                    return "\n".join(lines).strip()
-                elif res.get("text", "").strip():
-                    return res.get("text", "").strip()
-        except Exception:
-            pass
+        res = _safe_winocr_recognize(target_img, lang="ko")
+        if res:
+            lines = [l.get("text", "").strip() for l in res.get("lines", []) if l.get("text", "").strip()]
+            if lines:
+                return "\n".join(lines).strip()
+            elif res.get("text", "").strip():
+                return res.get("text", "").strip()
+    except Exception as e:
+        print(f"[Warning] WinOCR attempt failed: {e}")
 
     # 2. PyTesseract fallback
-    if pil_img is not None:
-        try:
-            import pytesseract
-            ocr_text = pytesseract.image_to_string(pil_img, lang="kor+eng").strip()
-            if ocr_text:
-                return ocr_text
-        except Exception:
-            pass
+    try:
+        import pytesseract
+        ocr_text = pytesseract.image_to_string(pil_img, lang="kor+eng").strip()
+        if ocr_text:
+            return ocr_text
+    except Exception:
+        pass
 
     return ""
 

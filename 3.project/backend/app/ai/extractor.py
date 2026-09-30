@@ -224,9 +224,10 @@ TITLE_PATTERNS = [
 ]
 
 COMPANY_PATTERNS = [
-    re.compile(r"(?:상호(?:명)?|법인명(?:\([^\)]*\))?|공급자|제출자|계약\s*상대자|예금주명|예금주)\s*[:=·\.\t]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(]?\s*(?:대표자?|성명)|\n|\r|\t|$)"),
+    re.compile(r"(?:상\s*호(?:명)?|법\s*인\s*명(?:\([^\)]*\))?|공\s*급\s*자|제\s*출\s*자|계\s*약\s*상\s*대\s*자|수\s*주\s*사|예\s*금\s*주\s*명|예\s*금\s*주)\s*[:=·\.\t]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(]?\s*(?:대표자?|성명)|\n|\r|\t|$)"),
     re.compile(r"\(을\)\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s+대표|\n|\r|\t|$)"),
-    re.compile(r"\[을\s*-\s*수주사\]\s*\n\s*-\s*상호\s*[:=]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30})"),
+    re.compile(r"\[\s*을\s*[-–\s]*수\s*주\s*사\s*\]\s*\n\s*-\s*상\s*호\s*[:=]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30})"),
+    re.compile(r"수\s*주\s*사\s*[:：\s]\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\(이하|\n|\r|\t|$)"),
 ]
 
 
@@ -243,6 +244,7 @@ def extract_fields(text: str) -> AnalysisFields:
     """
     # 0. Title (generic title filtering & project name resolution)
     title: Optional[str] = extract_contract_title(text)
+
     # 1. Business Registration Number
     biz_no: Optional[str] = None
     biz_matches = BIZ_REG_NO_PATTERN.findall(text)
@@ -261,18 +263,49 @@ def extract_fields(text: str) -> AnalysisFields:
 
     # 2. Company Name
     company_name: Optional[str] = None
-    for pattern in COMPANY_PATTERNS:
-        match = pattern.search(text)
-        if match:
-            candidate = match.group(1).strip()
-            # Clean up candidate
-            candidate = re.sub(r"[\(\)\[\]]", "", candidate).strip()
-            if candidate and len(candidate) >= 2 and not candidate.startswith("갑"):
-                company_name = candidate
+
+    # Priority A: Check [을] or 수주사 signature/vendor block
+    vendor_block = None
+    eul_match = re.search(r"\[\s*을\s*\][\s\S]{1,400}", text)
+    if eul_match:
+        vendor_block = eul_match.group(0)
+    else:
+        suju_matches = list(re.finditer(r"수\s*주\s*사[\s\S]{1,400}", text))
+        if suju_matches:
+            vendor_block = suju_matches[-1].group(0)
+
+    if vendor_block:
+        for pattern in COMPANY_PATTERNS:
+            match = pattern.search(vendor_block)
+            if match:
+                candidate = re.sub(r"[\(\)\[\]]", "", match.group(1)).strip()
+                if candidate and len(candidate) >= 2 and not candidate.startswith("갑") and candidate != "발주사":
+                    company_name = candidate
+                    break
+        if not company_name:
+            corp_m = re.search(r"((?:\(주\)\s*[가-힣A-Za-z0-9]+|[가-힣A-Za-z0-9]+\s*주식회사|주식회사\s*[가-힣A-Za-z0-9\s]{2,20}))", vendor_block)
+            if corp_m:
+                company_name = corp_m.group(1).strip()
+
+    # Priority B: General company patterns
+    if not company_name:
+        for pattern in COMPANY_PATTERNS:
+            for match in pattern.finditer(text):
+                candidate = match.group(1).strip()
+                candidate = re.sub(r"[\(\)\[\]]", "", candidate).strip()
+                if candidate and len(candidate) >= 2 and not candidate.startswith("갑") and candidate != "발주사":
+                    company_name = candidate
+                    break
+            if company_name:
                 break
 
+    # Priority C: Fallback to prominent corporate names in text
     if not company_name:
-        # Fallback keyword match
+        corps = re.findall(r"((?:\(주\)\s*[가-힣A-Za-z0-9]+|[가-힣A-Za-z0-9]+\s*주식회사|주식회사\s*[가-힣A-Za-z0-9\s]{2,20}))", text)
+        if corps:
+            company_name = corps[1].strip() if len(corps) > 1 and "수주사" in text else corps[0].strip()
+
+    if not company_name:
         if "ABC 주식회사" in text:
             company_name = "ABC 주식회사"
         elif "ABC" in text:
@@ -283,7 +316,6 @@ def extract_fields(text: str) -> AnalysisFields:
     for pattern in AMOUNT_PATTERNS:
         matches = pattern.findall(text)
         if matches:
-            # Find the largest plausible contract amount or the one labeled with '총' or '합계'
             for raw_val in matches:
                 clean_val = raw_val.replace(",", "").strip()
                 try:
@@ -298,14 +330,19 @@ def extract_fields(text: str) -> AnalysisFields:
 
     # 4. Dates
     issue_date: Optional[str] = None
-    for pattern in DATE_PATTERNS:
-        date_matches = pattern.findall(text)
-        if date_matches:
-            first_date = date_matches[0]
-            if isinstance(first_date, tuple) and len(first_date) == 3:
-                y, m, d = first_date
-                issue_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
-                break
+    labeled_date_match = re.search(r"(?:작\s*성\s*일|계\s*약\s*일|발\s*행\s*일|발\s*급\s*일|체\s*결\s*일)\s*[:=·\.\t]?\s*(\d{4})[년\.\-]\s*(\d{1,2})[월\.\-]\s*(\d{1,2})일?", text)
+    if labeled_date_match:
+        y, m, d = labeled_date_match.groups()
+        issue_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
+    else:
+        for pattern in DATE_PATTERNS:
+            date_matches = pattern.findall(text)
+            if date_matches:
+                target_date = date_matches[-1] if len(date_matches) > 1 and "[갑]" in text else date_matches[0]
+                if isinstance(target_date, tuple) and len(target_date) == 3:
+                    y, m, d = target_date
+                    issue_date = f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
+                    break
 
     # 5. Contract Period
     period_start: Optional[str] = None

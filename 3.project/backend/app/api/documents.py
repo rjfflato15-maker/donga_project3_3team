@@ -16,7 +16,7 @@ pipeline_service = PipelineService()
 
 
 @router.post("/api/contracts/{contract_id}/documents", response_model=List[DocumentResponse])
-async def upload_contract_documents(
+def upload_contract_documents(
     contract_id: int,
     files: List[UploadFile] = File(...),
     target_document_type: Optional[str] = Form(None),
@@ -32,7 +32,7 @@ async def upload_contract_documents(
     """
     results = []
     for file in files:
-        content = await file.read()
+        content = file.file.read()
         try:
             doc_record = pipeline_service.process_document_upload(
                 db=db,

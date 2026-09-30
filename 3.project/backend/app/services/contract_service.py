@@ -58,12 +58,15 @@ def get_document_response(doc: Document) -> DocumentResponse:
         if os.path.exists(extracted_raw_path):
             try:
                 with open(extracted_raw_path, "r", encoding="utf-8", errors="ignore") as f:
-                    raw_text = f.read()
+                    content = f.read()
+                    # Only accept if it has actual content beyond just a 1-line file name header
+                    if len(content.strip().splitlines()) > 1:
+                        raw_text = content
             except Exception:
                 pass
 
-    # 2. Check storage_path for text files
-    if not raw_text and doc.storage_path and os.path.exists(doc.storage_path):
+    # 2. Check storage_path for text or binary files (PDF, Image, Word, Hancom, Excel)
+    if (not raw_text or len(raw_text.strip().splitlines()) <= 1) and doc.storage_path and os.path.exists(doc.storage_path):
         ext = os.path.splitext(doc.storage_path)[1].lower()
         if ext in [".txt", ".json", ".md", ".csv"]:
             try:
@@ -76,7 +79,7 @@ def get_document_response(doc: Document) -> DocumentResponse:
             try:
                 from ..ai.preprocessor import extract_text_from_file
                 extracted, _ = extract_text_from_file(doc.storage_path, file_name=doc.file_name)
-                if extracted:
+                if extracted and len(extracted.strip().splitlines()) > 1:
                     raw_text = extracted
             except Exception:
                 pass
@@ -105,6 +108,28 @@ def get_document_response(doc: Document) -> DocumentResponse:
                 amount=doc.extract.extracted_amount,
                 issue_date=doc.extract.extracted_date,
             )
+
+    # Dynamic fallback: if fields are empty/partial but raw_text is available, extract fields
+    if raw_text and len(raw_text.strip().splitlines()) > 1 and (not fields.company_name or not fields.business_registration_no or not fields.amount):
+        try:
+            from ..ai.extractor import extract_fields
+            dynamic_fields = extract_fields(raw_text)
+            if not fields.company_name and dynamic_fields.company_name:
+                fields.company_name = dynamic_fields.company_name
+            if not fields.business_registration_no and dynamic_fields.business_registration_no:
+                fields.business_registration_no = dynamic_fields.business_registration_no
+            if fields.amount is None and dynamic_fields.amount is not None:
+                fields.amount = dynamic_fields.amount
+            if not fields.issue_date and dynamic_fields.issue_date:
+                fields.issue_date = dynamic_fields.issue_date
+            if not fields.title and dynamic_fields.title:
+                fields.title = dynamic_fields.title
+            if not fields.contract_period_start and dynamic_fields.contract_period_start:
+                fields.contract_period_start = dynamic_fields.contract_period_start
+            if not fields.contract_period_end and dynamic_fields.contract_period_end:
+                fields.contract_period_end = dynamic_fields.contract_period_end
+        except Exception:
+            pass
 
     mask_categories = []
     if doc.masking and doc.masking.masked_types:
