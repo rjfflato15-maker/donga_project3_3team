@@ -110,7 +110,13 @@ def get_document_response(doc: Document) -> DocumentResponse:
             )
 
     # Dynamic fallback: if fields are empty/partial but raw_text is available, extract fields
-    if raw_text and len(raw_text.strip().splitlines()) > 1 and (not fields.company_name or not fields.business_registration_no or (fields.amount is None and doc.document_type not in ["business_registration", "bank_account"])):
+    if raw_text and len(raw_text.strip().splitlines()) > 1 and (
+        not fields.company_name
+        or not fields.business_registration_no
+        or not fields.issue_date
+        or (fields.amount is None and doc.document_type not in ["business_registration", "bank_account"])
+        or (doc.document_type == "bank_account" and not fields.account_number)
+    ):
         try:
             from ..ai.extractor import extract_fields
             dynamic_fields = extract_fields(raw_text, doc_type=doc.document_type)

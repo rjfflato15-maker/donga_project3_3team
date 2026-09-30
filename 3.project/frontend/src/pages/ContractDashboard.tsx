@@ -270,6 +270,23 @@ export const ContractDashboard: React.FC = () => {
     }
   };
 
+  const handleOpenDocumentModal = async (doc: DocumentResponse) => {
+    setSelectedDoc(doc);
+    try {
+      const freshDoc = await api.getDocument(doc.document_id);
+      setSelectedDoc(freshDoc);
+      setCurrentContract((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          documents: prev.documents.map((d) => (d.document_id === freshDoc.document_id ? freshDoc : d)),
+        };
+      });
+    } catch (err) {
+      console.error('Failed to fetch fresh document detail:', err);
+    }
+  };
+
   const handleDeleteDocument = (documentId: number, fileName: string) => {
     setDocumentToDelete({ documentId, fileName });
   };
@@ -508,7 +525,7 @@ export const ContractDashboard: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Checklist
                 documents={currentContract.documents}
-                onSelectDocument={(doc) => setSelectedDoc(doc)}
+                onSelectDocument={handleOpenDocumentModal}
                 onUploadSpecific={(type) => handleOpenUploadModal(type)}
                 onOpenUploadAll={() => handleOpenUploadModal()}
                 onDeleteDocument={handleDeleteDocument}

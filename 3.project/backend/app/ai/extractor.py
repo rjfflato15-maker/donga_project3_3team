@@ -16,9 +16,10 @@ ACCOUNT_PATTERNS = [
 BANK_PATTERN = re.compile(r"(신한|국민|우리|하나|기업|농협|수협|씨티|SC제일|대구|부산|광주|제주|전북|경남|새마을금고|신협|우체국|카카오뱅크|토스뱅크|케이뱅크|IBK|KB|NH|DGB|BNK)(?:은행|뱅크)?")
 
 AMOUNT_PATTERNS = [
-    re.compile(r"(?:총\s*합\s*계\s*금\s*액|합\s*계\s*금\s*액|총\s*견\s*적\s*금\s*액|견\s*적\s*금\s*액|총\s*검\s*수\s*금\s*액|검\s*수\s*금\s*액|총\s*납\s*품\s*금\s*액|납\s*품\s*금\s*액|총\s*계\s*약\s*금\s*액|계\s*약\s*금\s*액|총\s*금\s*액)\s*[:=·\.\t\n]?\s*(?:금)?\s*([0-9,]{4,})\s*(?:원)?"),
+    re.compile(r"(?:총\s*합\s*계\s*금\s*액|합\s*계\s*금\s*액|총\s*견\s*적\s*금\s*액|견\s*적\s*금\s*액|총\s*검\s*수\s*금\s*액|검\s*수\s*금\s*액|총\s*납\s*품\s*금\s*액|납\s*품\s*금\s*액|총\s*계\s*약\s*금\s*액|계\s*약\s*금\s*액|총\s*금\s*액)[\s\S]{0,100}?[₩￦\\금]?\s*([0-9,]{4,})\s*(?:원)?"),
+    re.compile(r"[₩￦\\]\s*([0-9,]{4,})"),
     re.compile(r"금\s*([0-9,]{4,})\s*원"),
-    re.compile(r"(?:공\s*급\s*가\s*액|공\s*급\s*금\s*액|청\s*구\s*금\s*액|인\s*정\s*금\s*액)\s*[:=·\.\t\n]?\s*(?:금)?\s*([0-9,]{4,})\s*(?:원)?"),
+    re.compile(r"(?:공\s*급\s*가\s*액|공\s*급\s*금\s*액|청\s*구\s*금\s*액|인\s*정\s*금\s*액)[\s\S]{0,50}?[₩￦\\금]?\s*([0-9,]{4,})\s*(?:원)?"),
     re.compile(r"([0-9,]{4,})\s*원"),
 ]
 DATE_PATTERNS = [
@@ -243,8 +244,18 @@ def clean_name(val: str) -> str:
     if not val:
         return ""
     val = re.sub(r"[\r\n\t]+", " ", val)
-    val = re.sub(r"[\(\[\<『「“'\"`\)\]\>』」”]", "", val)
-    val = re.sub(r"\s*(?:대표자?|성명|귀하|보관용|직인생략|인|이하|등).*$", "", val)
+    # Remove leading labels if captured
+    val = re.sub(r"^(?:상\s*호(?:\s*\(\s*법\s*인\s*명\s*\))?|법\s*인\s*명(?:\s*\(\s*단\s*체\s*명\s*\))?|단\s*체\s*명|상\s*호\s*명|업\s*체\s*명)\s*[:=·\.\s]*", "", val)
+    # Normalize ( 주 ) to (주)
+    val = re.sub(r"\(\s*주\s*\)", "(주)", val)
+    val = re.sub(r"㈜", "(주)", val)
+    # Remove trailing metadata like 대표자, 성명, etc.
+    val = re.sub(r"\s*(?:대\s*표\s*자?|대\s*표\s*이\s*사|성\s*명|귀\s*하|보\s*관\s*용|직\s*인\s*생\s*략|인|이\s*하|등).*$", "", val)
+    val = re.sub(r"[\[\<『「“'\"`\]\>』」”]", "", val)
+    # Reconnect broken OCR syllable at the end (e.g. '뉴로비전랩 스' -> '뉴로비전랩스')
+    val = re.sub(r"([가-힣]{2,})\s+([가-힣])$", r"\1\2", val.strip())
+    # Collapse multiple spaces
+    val = re.sub(r"\s+", " ", val)
     return val.strip()
 
 
@@ -302,27 +313,21 @@ def extract_fields(text: str, doc_type: Optional[Any] = None) -> AnalysisFields:
             company_name = clean_name(dep_match.group(1))
 
     elif resolved_type == DocumentType.BUSINESS_REGISTRATION:
-        corp_m = re.search(r"법\s*인\s*명\s*(?:\(\s*단\s*체\s*명\s*\))?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", text)
+        corp_m = re.search(r"법\s*인\s*명\s*(?:\(\s*단\s*체\s*명\s*\))?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,40}?)(?:\s*대\s*표\s*자|\s*[\(\[]|\n|\r|\t|$)", text)
         if not corp_m:
-            corp_m = re.search(r"상\s*호\s*(?:\(\s*법\s*인\s*명\s*\))?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", text)
+            corp_m = re.search(r"상\s*호\s*(?:\(\s*법\s*인\s*명\s*\))?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,40}?)(?:\s*대\s*표\s*자|\s*[\(\[]|\n|\r|\t|$)", text)
         if not corp_m:
-            corp_m = re.search(r"(?:상\s*호(?:명)?|단\s*체\s*명)\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", text)
+            corp_m = re.search(r"(?:상\s*호(?:명)?|단\s*체\s*명)\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,40}?)(?:\s*대\s*표\s*자|\s*[\(\[]|\n|\r|\t|$)", text)
         if corp_m:
             company_name = clean_name(corp_m.group(1))
 
     elif resolved_type == DocumentType.TAX_INVOICE:
-        supplier_block = None
-        s_m = re.search(r"\[?\s*공\s*급\s*자\s*\]?([\s\S]{1,400}?)(?:\[?\s*공\s*급\s*받\s*는\s*자|\Z)", text)
-        if s_m:
-            supplier_block = s_m.group(1)
-        else:
-            supplier_block = text
-
-        name_m = re.search(r"상\s*호(?:\s*\(\s*법\s*인\s*명\s*\))?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", supplier_block)
-        if not name_m:
-            name_m = re.search(r"상\s*호(?:명)?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\n|\r|\t|$)", supplier_block)
-        if name_m:
-            company_name = clean_name(name_m.group(1))
+        t_clean = re.sub(r"[\r\n\t]+", " ", text)
+        names = re.findall(r"상\s*호(?:\s*\(\s*법\s*인\s*명\s*\))?[\s:=·\.\t\n]*(\(?\s*주\s*\)?\s*[가-힣A-Za-z0-9\s]{2,30}?)(?:\s*(?:성\s*명|대\s*표|사\s*업\s*장)|$)", t_clean)
+        if not names:
+            names = re.findall(r"상\s*호(?:명)?\s*[:=·\.\t\n]?\s*([가-힣A-Za-z0-9㈜\(\)\s]{2,30}?)(?:\s*[\(\[]|\s*(?:성\s*명|대\s*표)|$)", t_clean)
+        if names:
+            company_name = clean_name(names[0])
 
     elif resolved_type == DocumentType.ESTIMATE:
         supplier_block = None
