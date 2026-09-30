@@ -99,7 +99,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside
       className={`bg-white/95 backdrop-blur-md border-r border-slate-200/80 flex flex-col justify-between h-screen sticky top-0 shrink-0 select-none shadow-sm z-30 transition-all duration-300 ease-in-out ${
-        isOpen ? 'w-64 min-w-[16rem]' : 'w-[68px] min-w-[68px]'
+        isOpen ? 'w-72 min-w-[18rem]' : 'w-[68px] min-w-[68px]'
       }`}
     >
       {/* ============================================================== */}
@@ -286,7 +286,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         /* ============================================================== */
         /* 2. EXPANDED MODE: Full Sidebar Menu (Original Icons)           */
         /* ============================================================== */
-        <div className="w-64 flex flex-col justify-between h-full overflow-y-auto">
+        <div className="w-72 flex flex-col justify-between h-full overflow-y-auto">
           <div>
             {/* Header: Logo & Toggle Button */}
             <div className="p-4 sm:p-5 flex items-center justify-between border-b border-slate-100/80">
@@ -373,14 +373,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 {onOpenAutoBatchContract && (
                   <button
                     onClick={onOpenAutoBatchContract}
-                    className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold bg-indigo-50/80 hover:bg-indigo-100/90 text-indigo-700 border border-indigo-200/80 transition-all hover:scale-[1.01] active:scale-95 group shadow-2xs"
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold bg-indigo-50/80 hover:bg-indigo-100/90 text-indigo-700 border border-indigo-200/80 transition-all hover:scale-[1.01] active:scale-95 group text-left"
                     title="6종 서류로 계약 내용, 금액, 사업자번호, 날짜 자동 생성"
                   >
-                    <div className="flex items-center space-x-2.5">
+                    <div className="flex items-center space-x-2 min-w-0">
                       <Sparkles className="w-4 h-4 text-amber-500 fill-amber-400 group-hover:rotate-12 transition-transform shrink-0" />
-                      <span className="font-extrabold text-indigo-900 leading-tight">6종 서류로 계약 자동 생성</span>
+                      <span className="whitespace-nowrap">6종 서류로 계약 자동 생성</span>
                     </div>
-                    <span className="text-[10px] bg-indigo-200/60 text-indigo-800 px-1.5 py-0.5 rounded font-black">
+                    <span className="text-[10px] bg-indigo-200/60 text-indigo-800 px-1.5 py-0.5 rounded font-extrabold shrink-0 ml-1.5 whitespace-nowrap">
                       ⚡ 자동
                     </span>
                   </button>
@@ -390,14 +390,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 {onOpenUpload && (
                   <button
                     onClick={onOpenUpload}
-                    className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold bg-indigo-50/80 hover:bg-indigo-100/90 text-indigo-700 border border-indigo-200/80 transition-all hover:scale-[1.01] active:scale-95 group text-left"
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold bg-indigo-50/80 hover:bg-indigo-100/90 text-indigo-700 border border-indigo-200/80 transition-all hover:scale-[1.01] active:scale-95 group text-left"
                     title="계약 증빙서류 업로드"
                   >
-                    <div className="flex items-center space-x-2.5">
+                    <div className="flex items-center space-x-2 min-w-0">
                       <UploadCloud className="w-4 h-4 text-indigo-600 group-hover:-translate-y-0.5 transition-transform shrink-0" />
-                      <span>증빙서류 업로드</span>
+                      <span className="whitespace-nowrap">증빙서류 업로드</span>
                     </div>
-                    <span className="text-[10px] bg-indigo-200/60 text-indigo-800 px-1.5 py-0.5 rounded font-extrabold shrink-0">
+                    <span className="text-[10px] bg-indigo-200/60 text-indigo-800 px-1.5 py-0.5 rounded font-extrabold shrink-0 ml-1.5 whitespace-nowrap">
                       + 파일
                     </span>
                   </button>
