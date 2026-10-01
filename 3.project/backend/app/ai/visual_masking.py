@@ -150,15 +150,21 @@ def mask_pdf_page_image(
     Renders visual masking on a single PDF page image.
     Uses pypdfium2's textpage to accurately detect bounding boxes of sensitive business & personal information.
     """
-    page_width, page_height = page_obj.get_size()
+    from .pdf_runtime import open_textpage, page_text
+    with open_textpage(page_obj) as textpage:
+        full_text = page_text(textpage)
+        if full_text:
+            return _mask_pdf_text_page(page_obj, pil_image, scale, sensitive_dict, textpage, full_text)
+    # OCR is intentionally outside the native PDFium mutex and text handle.
+    return mask_image_with_ocr(pil_image, sensitive_dict=sensitive_dict)
+
+
+def _mask_pdf_text_page(page_obj, pil_image, scale, sensitive_dict, textpage, full_text):
+    from .pdf_runtime import page_size, text_rectangles
+    page_width, page_height = page_size(page_obj)
     image_copy = pil_image.copy()
     draw = ImageDraw.Draw(image_copy)
     font = get_korean_font(size=max(11, int(6.5 * scale)))
-
-    textpage = page_obj.get_textpage()
-    full_text = textpage.get_text_range()
-    if not full_text:
-        return image_copy
 
     masked_spans: Set[Tuple[int, int]] = set()
 
@@ -173,9 +179,8 @@ def mask_pdf_page_image(
                     return
         masked_spans.add((start, end))
 
-        n_rects = textpage.count_rects(start, end - start)
-        if n_rects > 0:
-            boxes = [textpage.get_rect(i) for i in range(n_rects)]
+        boxes = text_rectangles(textpage, start, end - start)
+        if boxes:
             min_l = min(b[0] for b in boxes)
             min_b = min(b[1] for b in boxes)
             max_r = max(b[2] for b in boxes)
@@ -328,7 +333,7 @@ def mask_image_with_ocr(
         lines = []
 
     if not lines:
-        return image_copy
+        raise RuntimeError("OCR 위치 정보를 확보하지 못해 이미지 마스킹을 중단했습니다.")
 
     # Collect sensitive words/terms to mask
     sensitive_values: List[str] = []
@@ -390,27 +395,39 @@ def mask_image_with_ocr(
 def render_masked_pdf_bytes(
     pdf_path: str,
     sensitive_dict: Optional[Dict[str, str]] = None,
-    scale: int = 2,
+    scale: float = 2,
 ) -> bytes:
     """Renders all pages of a PDF with masking applied and exports as a clean redacted PDF file."""
-    import pypdfium2 as pdfium
+    from .pdf_runtime import open_pdf, open_page, page_count, page_size, render_page_image
 
-    pdf = pdfium.PdfDocument(pdf_path)
     masked_pages: List[Image.Image] = []
-
-    for page_idx in range(len(pdf)):
-        page_obj = pdf[page_idx]
-        pil_img = page_obj.render(scale=scale).to_pil()
-        masked_img = mask_pdf_page_image(page_obj, pil_img, scale=scale, sensitive_dict=sensitive_dict)
-        masked_pages.append(masked_img)
-
-    buf = io.BytesIO()
-    if masked_pages:
-        masked_pages[0].save(
-            buf,
-            format="PDF",
-            save_all=True,
-            append_images=masked_pages[1:],
-            resolution=150.0,
-        )
-    return buf.getvalue()
+    try:
+        with open_pdf(pdf_path) as pdf:
+            total_pixels = 0
+            count = page_count(pdf)
+            if count > 50:
+                raise RuntimeError("마스킹 PDF는 50페이지까지 지원합니다.")
+            for page_idx in range(count):
+                with open_page(pdf, page_idx) as page_obj:
+                    width, height = page_size(page_obj)
+                    page_scale = min(scale, (16_000_000 / max(width * height, 1)) ** 0.5)
+                    total_pixels += width * height * page_scale**2
+                    if total_pixels > 50_000_000:
+                        raise RuntimeError("마스킹 PDF의 전체 이미지 크기가 너무 큽니다.")
+                    pil_img = render_page_image(page_obj, page_scale)
+                    masked = None
+                    try:
+                        masked = mask_pdf_page_image(page_obj, pil_img, scale=page_scale, sensitive_dict=sensitive_dict)
+                        masked_pages.append(masked.convert("RGB"))
+                    finally:
+                        pil_img.close()
+                        if masked is not None:
+                            masked.close()
+        if not masked_pages:
+            raise RuntimeError("PDF에 페이지가 없습니다.")
+        buf = io.BytesIO()
+        masked_pages[0].save(buf, format="PDF", save_all=True, append_images=masked_pages[1:], resolution=150.0)
+        return buf.getvalue()
+    finally:
+        for image in masked_pages:
+            image.close()

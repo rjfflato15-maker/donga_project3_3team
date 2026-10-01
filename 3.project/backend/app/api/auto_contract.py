@@ -1,4 +1,5 @@
 import os
+import re
 import tempfile
 from typing import List, Optional
 from datetime import datetime
@@ -15,6 +16,9 @@ from ..schemas.common import DocumentType
 from ..ai import analyze_document, is_generic_title
 from ..services.contract_service import ContractService
 from ..services.pipeline_service import PipelineService
+from ..services.storage_service import read_upload, clean_name
+from ..services.workflow_service import audit
+from ..security import Actor, get_current_user
 
 router = APIRouter(prefix="/api/contracts", tags=["AutoContract"])
 contract_service = ContractService()
@@ -102,7 +106,7 @@ def synthesize_extracted_fields(items: List[AutoContractParseItem]) -> AutoContr
                 business_number = item.business_registration_no
                 break
     if not business_number:
-        business_number = "123-45-67890"
+        business_number = ""
 
     # 4. Contract Amount priority: CONTRACT > TAX_INVOICE > ESTIMATE > others (or max plausible amount)
     amount_priority = [
@@ -123,7 +127,7 @@ def synthesize_extracted_fields(items: List[AutoContractParseItem]) -> AutoContr
         if amounts:
             contract_amount = max(amounts)
         else:
-            contract_amount = 10000000.0  # Default fallback amount
+            contract_amount = 0.0  # Missing amounts must be confirmed, never invented
 
     # 5. Date priority: CONTRACT > TAX_INVOICE > ESTIMATE > INSPECTION_CONFIRMATION > others
     date_priority = [
@@ -145,7 +149,7 @@ def synthesize_extracted_fields(items: List[AutoContractParseItem]) -> AutoContr
                 issue_date = item.issue_date
                 break
     if not issue_date:
-        issue_date = datetime.now().strftime("%Y-%m-%d")
+        issue_date = None
 
     return AutoContractSynthesisResponse(
         title=title,
@@ -163,19 +167,20 @@ def auto_parse_batch_documents(files: List[UploadFile] = File(...)):
     Parses multiple evidence documents (up to 6 core types), classifies them,
     extracts key metadata, and synthesizes title, amount, business number, vendor, and date.
     """
-    if not files:
+    if not 1 <= len(files) <= 20:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="At least one document file must be uploaded",
+            detail="한 번에 1~20개 파일을 등록하세요.",
         )
 
     parsed_items: List[AutoContractParseItem] = []
     temp_dir = tempfile.gettempdir()
 
     for file in files:
-        temp_path = os.path.join(temp_dir, f"auto_parse_{int(datetime.utcnow().timestamp())}_{file.filename}")
+        content = read_upload(file)
+        fd, temp_path = tempfile.mkstemp(prefix="auto-parse-", suffix=os.path.splitext(clean_name(file.filename))[1])
+        os.close(fd)
         try:
-            content = file.file.read()
             with open(temp_path, "wb") as f:
                 f.write(content)
 
@@ -198,7 +203,7 @@ def auto_parse_batch_documents(files: List[UploadFile] = File(...)):
                 AutoContractParseItem(
                     file_name=file.filename,
                     document_type=DocumentType.UNKNOWN.value,
-                    confidence=0.5,
+                    confidence=0,
                 )
             )
         finally:
@@ -219,11 +224,16 @@ def auto_create_batch_contract(
     contract_amount: float = Form(...),
     files: List[UploadFile] = File(...),
     db: Session = Depends(get_db),
+    actor: Actor = Depends(get_current_user),
 ):
     """
     Creates a new contract record using synthesized/user-confirmed metadata,
     and automatically uploads, masks, classifies, and validates all attached evidence documents.
     """
+    if not 1 <= len(files) <= 20:
+        raise HTTPException(400, "한 번에 1~20개 파일을 등록하세요.")
+    contents = [(file, read_upload(file)) for file in files]
+
     # 1. Create Contract
     contract_data = ContractCreate(
         title=title,
@@ -231,11 +241,10 @@ def auto_create_batch_contract(
         business_number=business_number,
         contract_amount=contract_amount,
     )
-    contract = contract_service.create_contract(db, contract_data)
+    contract = contract_service.create_contract(db, contract_data, user_id=actor.user_id)
 
     # 2. Upload and process all evidence documents
-    for file in files:
-        content = file.file.read()
+    for file, content in contents:
         try:
             pipeline_service.process_document_upload(
                 db=db,
@@ -244,8 +253,9 @@ def auto_create_batch_contract(
                 file_bytes=content,
             )
         except Exception as e:
-            print(f"Warning: Error processing uploaded document {file.filename}: {e}")
+            raise HTTPException(500, "계약은 등록되었으나 일부 파일 처리에 실패했습니다. 계약 상세에서 보완하세요.") from e
 
+    audit(db, actor, "AUTO_CONTRACT_CREATED", contract.contract_id, details={"document_count": len(files)})
     # 3. Return full contract detail with evidence validation
     detail = contract_service.get_contract_detail(db, contract.contract_id)
     return detail

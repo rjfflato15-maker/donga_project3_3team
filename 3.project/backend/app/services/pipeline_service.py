@@ -1,5 +1,6 @@
 import os
 import json
+import hashlib
 from datetime import datetime
 from typing import List, Dict, Any, Tuple
 from sqlalchemy.orm import Session
@@ -31,170 +32,187 @@ class PipelineService:
         self.rule_engine = RuleEngine()
         self.nts_client = get_nts_client()
 
-    def process_document_upload(
-        self,
-        db: Session,
-        contract_id: int,
-        file_name: str,
-        file_bytes: bytes,
-        target_document_type: str = "",
-    ) -> Document:
-        contract = db.query(Contract).filter(Contract.contract_id == contract_id).first()
+    def process_document_upload(self, db: Session, contract_id: int, file_name: str, file_bytes: bytes,
+                                target_document_type: str = "", existing_document_id=None,
+                                restoration_revision=None) -> Document:
+        from fastapi import HTTPException
+        from .storage_service import STORAGE_LOCK, store_original, store_text, clean_name, resolve_path
+        from .workflow_service import touch_contract, policy_for
+        from ..db.models import DocumentFileInfo
+        from ..schemas.document import DocumentAnalysisResponse, MaskInfo
+
+        # Read the small precondition snapshot, then release the transaction
+        # before OCR/network/file work. No database publication lock is held.
+        db.rollback()
+        db.expire_all()
+        contract = db.get(Contract, contract_id)
         if not contract:
-            raise ValueError(f"Contract {contract_id} not found")
+            raise ValueError("계약을 찾을 수 없습니다.")
+        expected_revision = None
+        if existing_document_id is not None:
+            existing = db.get(Document, existing_document_id)
+            if not existing or existing.contract_id != contract_id:
+                raise HTTPException(404, "복구할 문서를 찾을 수 없습니다.")
+            if resolve_path(existing.storage_path):
+                raise HTTPException(409, "원본이 이미 보관되어 있습니다.")
+            expected_revision = policy_for(db, contract_id)["revision"]
+            if restoration_revision is not None and restoration_revision != expected_revision:
+                raise HTTPException(409, "복구 요청 중 계약 자료가 변경되었습니다. 새로고침하세요.")
+            target_document_type = existing.document_type
+            info = db.get(DocumentFileInfo, existing_document_id)
+            if info and info.sha256 != hashlib.sha256(file_bytes).hexdigest():
+                raise HTTPException(409, "이전에 저장한 원본과 내용이 다릅니다.")
+        business_number = contract.business_number
+        db.rollback()
 
-        # 1. Save raw file to storage/raw
-        safe_filename = f"{contract_id}_{int(datetime.utcnow().timestamp())}_{file_name}"
-        raw_file_path = os.path.join(RAW_STORAGE_DIR, safe_filename)
-        with open(raw_file_path, "wb") as f:
-            f.write(file_bytes)
-
-        # 2. Run Local Document AI Pipeline (Preprocess -> Masking -> Classify -> Extract)
-        analysis_res, raw_text, masked_text = analyze_document(
-            raw_file_path, file_name=file_name, target_document_type=target_document_type
-        )
-
-        # 3. Save masked file to storage/masked and raw extracted text to storage/raw
-        masked_file_path = os.path.join(MASKED_STORAGE_DIR, f"masked_{safe_filename}")
-        with open(masked_file_path, "w", encoding="utf-8") as f:
-            f.write(masked_text)
-
-        raw_text_path = os.path.join(RAW_STORAGE_DIR, f"extracted_raw_{safe_filename}.txt")
+        raw_key, raw_path, digest = store_original(contract_id, file_name, file_bytes)
+        failed = False
         try:
-            with open(raw_text_path, "w", encoding="utf-8") as f:
-                f.write(raw_text)
+            analysis, raw_text, masked_text = analyze_document(str(raw_path), file_name=file_name,
+                                                               target_document_type=target_document_type)
+            body_text = raw_text.partition("\n")[2] if raw_text.startswith("[파일명:") else raw_text
+            failed = not bool(body_text.strip())
         except Exception:
-            pass
+            failed = True
+            raw_text, masked_text = "", ""
+            analysis = DocumentAnalysisResponse(document_type=DocumentType.UNKNOWN, confidence=0,
+                mask=MaskInfo(status=MaskStatus.FAILED), fields=AnalysisFields(), warnings=["문서 인식 실패"])
+        masked_key = store_text(raw_key, raw_text, masked_text)
+        b_no = analysis.fields.business_registration_no or business_number
+        verification_status = self.nts_client.check_business_status(b_no).get("status", "확인 불가")
 
-        # 4. Create or update Document record
-        doc_record = Document(
-            contract_id=contract_id,
-            file_name=file_name,
-            storage_path=raw_file_path,
-            document_type=analysis_res.document_type.value,
-            class_confidence=analysis_res.confidence,
-            processing_status=ProcessingStatus.COMPLETED.value,
-            uploaded_at=datetime.utcnow(),
-        )
-        db.add(doc_record)
-        db.flush()
-
-        # 5. Save DocumentMasking
-        masking_record = DocumentMasking(
-            document_id=doc_record.document_id,
-            masked_file_path=masked_file_path,
-            masking_status=analysis_res.mask.status.value,
-            masked_item_count=analysis_res.mask.masked_count,
-            masked_types=json.dumps(analysis_res.mask.categories, ensure_ascii=False),
-            processed_at=datetime.utcnow(),
-        )
-        db.add(masking_record)
-
-        # 6. Save DocumentExtract
-        extract_record = DocumentExtract(
-            document_id=doc_record.document_id,
-            extracted_vendor_name=analysis_res.fields.company_name,
-            extracted_vendor_reg_no=analysis_res.fields.business_registration_no,
-            extracted_amount=analysis_res.fields.amount,
-            extracted_date=analysis_res.fields.issue_date,
-            extracted_status="COMPLETED",
-            confidence=analysis_res.confidence,
-            raw_fields=analysis_res.fields.model_dump_json(),
-        )
-        db.add(extract_record)
-
-        # 7. If this is business registration or contains biz reg no, query NTS
-        b_no = analysis_res.fields.business_registration_no or contract.business_number
-        nts_info = self.nts_client.check_business_status(b_no)
-        verification_record = BusinessVerification(
-            document_id=doc_record.document_id,
-            business_number=b_no,
-            business_status=nts_info.get("status", "계속사업자"),
-            verified_at=datetime.utcnow(),
-        )
-        db.add(verification_record)
-
-        db.commit()
-        db.refresh(doc_record)
-
-        # 8. Trigger full contract re-validation
+        # Publish the completed immutable files and all related rows together.
+        # Recheck restoration after OCR so concurrent edits/deletion cannot be
+        # overwritten and two restore requests cannot replace one another.
+        with STORAGE_LOCK:
+            db.expire_all()
+            contract = db.get(Contract, contract_id)
+            if not contract:
+                raise ValueError("계약을 찾을 수 없습니다.")
+            doc = db.get(Document, existing_document_id) if existing_document_id is not None else None
+            if existing_document_id is not None:
+                if not doc or doc.contract_id != contract_id:
+                    raise HTTPException(409, "복구 중 문서가 삭제 또는 변경되었습니다. 새로고침하세요.")
+                if resolve_path(doc.storage_path) or policy_for(db, contract_id)["revision"] != expected_revision:
+                    raise HTTPException(409, "복구 중 계약 자료가 변경되었습니다. 새로고침 후 다시 등록하세요.")
+                current_info = db.get(DocumentFileInfo, doc.document_id)
+                if current_info and current_info.sha256 != digest:
+                    raise HTTPException(409, "이전에 저장한 원본과 내용이 다릅니다.")
+            else:
+                doc = Document(contract_id=contract_id)
+                db.add(doc)
+            doc.file_name = clean_name(file_name)
+            doc.storage_path = raw_key
+            doc.document_type = analysis.document_type.value
+            doc.class_confidence = analysis.confidence
+            doc.processing_status = "FAILED" if failed else "COMPLETED"
+            doc.uploaded_at = datetime.utcnow()
+            db.flush()
+            masking = db.query(DocumentMasking).filter_by(document_id=doc.document_id).first()
+            if masking is None:
+                masking = DocumentMasking(document_id=doc.document_id)
+                db.add(masking)
+            masking.masked_file_path, masking.masking_status = masked_key, analysis.mask.status.value
+            masking.masked_item_count, masking.masked_types = analysis.mask.masked_count, json.dumps(analysis.mask.categories, ensure_ascii=False)
+            masking.processed_at = datetime.utcnow()
+            extract = db.query(DocumentExtract).filter_by(document_id=doc.document_id).first()
+            if extract is None:
+                extract = DocumentExtract(document_id=doc.document_id)
+                db.add(extract)
+            extract.extracted_vendor_name = analysis.fields.company_name
+            extract.extracted_vendor_reg_no = analysis.fields.business_registration_no
+            extract.extracted_amount = analysis.fields.amount
+            extract.extracted_date = analysis.fields.issue_date
+            extract.extracted_status = "FAILED" if failed else "COMPLETED"
+            extract.confidence = analysis.confidence
+            extract.raw_fields = analysis.fields.model_dump_json()
+            verification = db.query(BusinessVerification).filter_by(document_id=doc.document_id).first()
+            if verification is None:
+                verification = BusinessVerification(document_id=doc.document_id)
+                db.add(verification)
+            verification.business_number = b_no
+            verification.business_status = verification_status
+            verification.verified_at = datetime.utcnow()
+            info = db.get(DocumentFileInfo, doc.document_id)
+            if info is None:
+                info = DocumentFileInfo(document_id=doc.document_id)
+                db.add(info)
+            info.sha256, info.byte_size = digest, len(file_bytes)
+            touch_contract(db, contract_id)
+            db.commit()
+            db.refresh(doc)
         self.revalidate_contract(db, contract_id)
+        db.refresh(doc)
+        return doc
 
-        return doc_record
+    def validation_inputs(self, db: Session, contract):
+        from .storage_service import resolve_path
+        from ..db.models import DocumentFileInfo
+        result = []
+        for doc in contract.documents:
+            try:
+                fields = json.loads(doc.extract.raw_fields or "{}") if doc.extract else {}
+            except (ValueError, TypeError):
+                fields = {}
+            info = db.get(DocumentFileInfo, doc.document_id)
+            result.append({"document_id": doc.document_id, "document_type": doc.document_type,
+                           "file_name": doc.file_name, "fields": fields,
+                           "file_available": resolve_path(doc.storage_path) is not None,
+                           "sha256": info.sha256 if info else None, "processing_status": doc.processing_status})
+        return result
 
     def revalidate_contract(self, db: Session, contract_id: int):
-        contract = db.query(Contract).filter(Contract.contract_id == contract_id).first()
-        if not contract:
-            return
+        from fastapi import HTTPException
+        from .storage_service import STORAGE_LOCK
+        from .workflow_service import required_types, policy_for, fingerprint_for
+        from ..db.models import AuditEvent
 
-        # Fetch all documents and extracts
-        docs = db.query(Document).filter(Document.contract_id == contract_id).all()
+        for _ in range(3):
+            # Snapshot the inputs and release the read transaction before any
+            # rule evaluation (including an explicitly enabled NTS request).
+            db.rollback()
+            db.expire_all()
+            contract = db.get(Contract, contract_id)
+            if not contract:
+                return False
+            docs_data = self.validation_inputs(db, contract)
+            required = required_types(db)
+            policy = policy_for(db, contract_id)
+            fingerprint = fingerprint_for(db, contract, docs_data)
+            values = dict(contract_id=contract.contract_id, contract_title=contract.title,
+                          expected_vendor_name=contract.vendor_name, expected_biz_no=contract.business_number,
+                          contract_amount=contract.contract_amount, documents_data=docs_data,
+                          required_document_types=required, amount_policy=policy)
+            db.rollback()
+            _, checks = self.rule_engine.validate_contract_evidence(**values)
 
-        docs_data = []
-        for d in docs:
-            fields_dict = {}
-            if d.extract and d.extract.raw_fields:
-                try:
-                    fields_dict = json.loads(d.extract.raw_fields)
-                except Exception:
-                    fields_dict = {
-                        "company_name": d.extract.extracted_vendor_name,
-                        "business_registration_no": d.extract.extracted_vendor_reg_no,
-                        "amount": d.extract.extracted_amount,
-                        "issue_date": d.extract.extracted_date,
-                    }
-            docs_data.append({
-                "document_id": d.document_id,
-                "document_type": d.document_type,
-                "fields": fields_dict,
-            })
-
-        summary, checks = self.rule_engine.validate_contract_evidence(
-            contract_id=contract.contract_id,
-            contract_title=contract.title,
-            expected_vendor_name=contract.vendor_name,
-            expected_biz_no=contract.business_number,
-            contract_amount=contract.contract_amount,
-            documents_data=docs_data,
-        )
-
-        # Clear existing validation results for contract
-        db.query(ValidationResult).filter(ValidationResult.contract_id == contract_id).delete()
-
-        # Insert new validation results
-        has_fail = False
-        has_missing = False
-        has_review = False
-
-        for c in checks:
-            if c.status == ValidationStatus.FAIL:
-                has_fail = True
-            elif c.status == ValidationStatus.MISSING:
-                has_missing = True
-            elif c.status == ValidationStatus.REVIEW:
-                has_review = True
-
-            v_res = ValidationResult(
-                contract_id=contract_id,
-                validation_type=c.rule_id,
-                is_match=(c.status == ValidationStatus.PASS),
-                status=c.status.value,
-                field=c.field,
-                expected=c.expected,
-                actual=c.actual,
-                memo=c.message,
-                created_at=datetime.utcnow(),
-            )
-            db.add(v_res)
-
-        # Update contract review_status
-        if has_fail or has_missing or has_review:
-            contract.review_status = "REVIEW"
-        else:
-            contract.review_status = "PASS"
-
-        contract.updated_at = datetime.utcnow()
-        db.commit()
+            # Only publish if the documents, reference values and policy still
+            # match the evaluated snapshot. Concurrent uploads/reviews cannot
+            # receive validation results from an older revision.
+            with STORAGE_LOCK:
+                db.expire_all()
+                contract = db.get(Contract, contract_id)
+                if not contract:
+                    return False
+                current_inputs = self.validation_inputs(db, contract)
+                if fingerprint_for(db, contract, current_inputs) != fingerprint:
+                    db.rollback()
+                    continue
+                db.query(ValidationResult).filter(ValidationResult.contract_id == contract_id).delete()
+                for check in checks:
+                    db.add(ValidationResult(
+                        contract_id=contract_id, validation_type=check.rule_id,
+                        is_match=check.status == ValidationStatus.PASS, status=check.status.value,
+                        field=check.field, expected=check.expected, actual=check.actual,
+                        memo=check.message, created_at=datetime.utcnow()))
+                contract.review_status = "PASS" if all(check.status == ValidationStatus.PASS for check in checks) else "REVIEW"
+                contract.updated_at = datetime.utcnow()
+                db.add(AuditEvent(actor_name="시스템", action="RULE_VALIDATION", contract_id=contract_id,
+                                 details=json.dumps({"revision": policy["revision"], "fingerprint": fingerprint,
+                                     "checks": [check.model_dump(mode="json") for check in checks]}, ensure_ascii=False)))
+                db.commit()
+                return True
+        raise HTTPException(409, "검수 중 계약 자료가 여러 번 변경되었습니다. 최신 자료로 다시 검수하세요.")
 
     def simulate_pipeline(self, db: Session, contract_id: int) -> Dict[str, Any]:
         """
@@ -226,7 +244,7 @@ class PipelineService:
             "step": 2,
             "title": "마스킹 및 국세청 검증",
             "status": "COMPLETED",
-            "message": f"민감정보 {sum(d.masking.masked_item_count if d.masking else 0 for d in docs)}건 마스킹 완료 및 국세청 사업자 진위확인 완료",
+            "message": f"민감정보 {sum(d.masking.masked_item_count if d.masking else 0 for d in docs)}건 자동 마스킹 결과 저장. 국세청 상태는 실제 조회·데모·미연동을 구분해 표시",
             "details": [
                 {
                     "file_name": d.file_name,
@@ -242,7 +260,7 @@ class PipelineService:
             "step": 3,
             "title": "AI OCR 및 정보 추출",
             "status": "COMPLETED",
-            "message": f"AI 분석 완료 (평균 신뢰도: {round(sum(d.class_confidence or 0 for d in docs) / max(len(docs), 1) * 100, 1)}%)",
+            "message": f"저장된 추출 결과 확인 (문서분류 참고점수: {round(sum(d.class_confidence or 0 for d in docs) / max(len(docs), 1) * 100, 1)}%)",
             "details": [
                 {
                     "file_name": d.file_name,
@@ -260,7 +278,7 @@ class PipelineService:
             "step": 4,
             "title": "문서별 필드 정규화",
             "status": "COMPLETED",
-            "message": "금액, 사업자번호, 업체명 규격 표준화 및 매핑 완료",
+            "message": "저장된 추출값과 금액 기준을 확인합니다. 사업자번호는 숫자로 비교하며, 금액은 합계 의미가 확인될 때 비교합니다.",
             "details": {
                 "target_vendor": contract.vendor_name,
                 "target_biz_no": contract.business_number,

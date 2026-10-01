@@ -16,10 +16,46 @@ KOREAN_REGIONS = (
 # 1. RRN: 앞 6자리 생년월일 + 구분자(선택) + 성별(1~8) + 나머지 6자리
 RRN_PATTERN = re.compile(r"\b(\d{6})\s*[-–]?\s*([1-8])\d{6}\b")
 
+# Corporate IDs are distinct from RRN sex digits. Match them by their explicit
+# label, including PDF text with spaces or a line break between syllables.
+CORP_REG_NO_PATTERN = re.compile(
+    r"(?P<prefix>법\s*인\s*등\s*록\s*번\s*호\s*[:：]?\s*)"
+    r"(?P<front>[0-9]{6})\s*[-–]?\s*(?P<back>[0-9]{7})(?![0-9])"
+)
+_PERSON_LABEL = (
+    r"대\s*표\s*(?:이\s*사|자(?:\s*명)?)|성\s*명|담\s*당\s*자\s*명|"
+    r"검\s*수\s*책\s*임\s*자|총\s*괄\s*확\s*인\s*자|총\s*괄\s*책\s*임\s*자|작\s*성\s*자"
+)
+_NEXT_LABEL = (
+    r"주\s*민(?:\s*등\s*록)?\s*번\s*호|사\s*업\s*자\s*등\s*록\s*번\s*호|"
+    r"법\s*인\s*등\s*록\s*번\s*호|상\s*호|주\s*소|연\s*락\s*처|성\s*명|대\s*표\s*자"
+)
+PERSON_NAME_PATTERN = re.compile(
+    r"(?P<prefix>(?:" + _PERSON_LABEL + r")[ \t]*[:：]?[ \t]*(?:\r?\n[ \t]*)?"
+    r"(?:[가-힣A-Za-z0-9][가-힣A-Za-z0-9 \t]{0,30}(?:실장|본부장|연구소장|팀장|과장|대리|선임)[ \t]+)?)"
+    r"(?P<name>[가-힣](?:[ \t]*[가-힣]){1,4}?)"
+    r"(?=[ \t]*(?:(?:인|서명|날인)[ \t]*)?(?:\r?\n|$|[,/;\(\)\]]|" + _NEXT_LABEL + r"))"
+)
+_LEGAL_PREFIX = r"주\s*식\s*회\s*사|유\s*한\s*회\s*사|\(\s*주\s*\)|㈜"
+_COMPANY_WORD = r"[가-힣A-Za-z0-9][가-힣A-Za-z0-9·&._-]{0,39}"
+LEGAL_COMPANY_PATTERN = re.compile(
+    r"(?P<prefix>(?:" + _LEGAL_PREFIX + r")[ \t]*)"
+    r"(?P<name>" + _COMPANY_WORD + r"(?:\r?\n[가-힣]{1,2}(?=[ \t]*(?:성\s*명|대\s*표\s*자|\r?\n|$)))?)"
+)
+LEGAL_COMPANY_SUFFIX_PATTERN = re.compile(
+    r"(?P<name>" + _COMPANY_WORD + r")[ \t]+(?P<suffix>주\s*식\s*회\s*사)"
+)
+COMPANY_LABEL_PATTERN = re.compile(
+    r"(?P<prefix>(?:상\s*호(?:\s*명)?|법\s*인\s*명|업\s*체\s*명|계\s*약\s*상\s*대\s*자|"
+    r"예\s*금\s*주(?:\s*명)?)[ \t]*(?:\([^()\r\n]{0,20}\))?[ \t]*[:：]?[ \t]*)"
+    r"(?P<name>" + _COMPANY_WORD + r")"
+    r"(?=[ \t]*(?:\r?\n|$|\(|대\s*표|성\s*명|사\s*업\s*자\s*등\s*록\s*번\s*호))"
+)
+
 # 2. Business Registration Number: 3자리-2자리-5자리
 BIZ_REG_NO_PATTERN = re.compile(r"\b(\d{3})\s*[-–]\s*(\d{2})\s*[-–]\s*(\d{5})\b")
 BIZ_KEYWORD_PATTERN = re.compile(
-    r"((?:사업자\s*(?:등록)?\s*번호|등록번호)\s*[:：]?\s*)(\d{3})\s*[-–]?\s*(\d{2})\s*[-–]?\s*(\d{5})\b"
+    r"((?:사\s*업\s*자\s*(?:등\s*록)?\s*번\s*호|등\s*록\s*번\s*호)\s*[:：]?\s*)(\d{3})\s*[-–]?\s*(\d{2})\s*[-–]?\s*(\d{5})\b"
 )
 
 # 3. Phone & Tel patterns (Run BEFORE account pattern to avoid false matching)
@@ -68,6 +104,36 @@ def mask_sensitive_information(text: str) -> Tuple[str, int, List[str], Dict[str
     categories_found = set()
 
     masked_text = text
+
+    def corp_sub(match):
+        token_map[f"CORP_{len(token_map)+1}"] = match.group(0)
+        categories_found.add("CORP_REG_NO")
+        return f"{match.group('prefix')}{match.group('front')}-*******"
+
+    masked_text = CORP_REG_NO_PATTERN.sub(corp_sub, masked_text)
+
+    def name_sub(match):
+        name = match.group("name")
+        token_map[f"NAME_{len(token_map)+1}"] = name
+        categories_found.add("NAME")
+        return match.group("prefix") + re.sub(r"\S", "*", name)
+
+    masked_text = PERSON_NAME_PATTERN.sub(name_sub, masked_text)
+
+    def company_sub(match):
+        name = match.group("name")
+        values = match.groupdict()
+        # In '발주사 주식회사 ...', the preceding word is a role label,
+        # not the name of a company using a suffix legal form.
+        if values.get("suffix") and name in {"발주사", "수주사", "상호", "법인명", "업체명", "예금주", "계약상대자"}:
+            return match.group(0)
+        token_map[f"COMPANY_{len(token_map)+1}"] = name
+        categories_found.add("COMPANY_NAME")
+        return (values.get("prefix") or "") + re.sub(r"\S", "*", name) + (values.get("suffix") or "")
+
+    masked_text = LEGAL_COMPANY_PATTERN.sub(company_sub, masked_text)
+    masked_text = LEGAL_COMPANY_SUFFIX_PATTERN.sub(company_sub, masked_text)
+    masked_text = COMPANY_LABEL_PATTERN.sub(company_sub, masked_text)
 
     # 1. Resident Registration Number (RRN): 주민번호 뒷 성별 구분 제외 *표시
     def rrn_sub(match):

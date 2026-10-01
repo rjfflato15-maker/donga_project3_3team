@@ -25,6 +25,8 @@ interface ChecklistProps {
   onOpenUploadAll?: () => void;
   onDeleteDocument?: (documentId: number, fileName: string) => void;
   isMaskingEnabled?: boolean;
+  canEdit?: boolean;
+  requiredDocumentTypes?: DocumentType[];
 }
 
 const CHECKLIST_ITEMS: {
@@ -49,7 +51,7 @@ const CHECKLIST_ITEMS: {
     type: 'business_registration',
     title: '사업자등록증',
     icon: Building2,
-    description: '사업자등록번호 및 개업연월일 (국세청 진위확인 연동)',
+    description: '사업자등록번호 및 개업연월일 (미연동 상태 별도 확인)',
   },
   {
     type: 'bank_account',
@@ -78,10 +80,12 @@ export const Checklist: React.FC<ChecklistProps> = ({
   onOpenUploadAll,
   onDeleteDocument,
   isMaskingEnabled = true,
+  canEdit = true,
+  requiredDocumentTypes,
 }) => {
   // Collect IDs of primary matched documents to find extra/additional documents
   const primaryDocIds = new Set<number>();
-  CHECKLIST_ITEMS.forEach((item) => {
+  CHECKLIST_ITEMS.filter(item => !requiredDocumentTypes || requiredDocumentTypes.includes(item.type)).forEach((item) => {
     const matched = documents.find((d) => d.document_type === item.type);
     if (matched) primaryDocIds.add(matched.document_id);
   });
@@ -106,13 +110,13 @@ export const Checklist: React.FC<ChecklistProps> = ({
               <span>증빙서류 추가</span>
             </button>
           )}
-          <span className="text-xs text-slate-400 font-medium hidden sm:inline">핵심 6종 문서</span>
+          <span className="text-xs text-slate-400 font-medium hidden sm:inline">필수 {requiredDocumentTypes?.length || 6}종 문서</span>
         </div>
       </div>
 
       {/* 6 Core Documents List */}
       <div className="space-y-3">
-        {CHECKLIST_ITEMS.map((item) => {
+        {CHECKLIST_ITEMS.filter(item => !requiredDocumentTypes || requiredDocumentTypes.includes(item.type)).map((item) => {
           const doc = documents.find((d) => d.document_type === item.type);
           const Icon = item.icon;
 
@@ -128,6 +132,10 @@ export const Checklist: React.FC<ChecklistProps> = ({
             } else {
               statusLabel = '제출';
               statusStyle = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+            }
+            if (doc.file_available === false) {
+              statusLabel = '원본 없음';
+              statusStyle = 'bg-rose-50 text-rose-700 border-rose-200';
             }
           }
 
@@ -164,7 +172,7 @@ export const Checklist: React.FC<ChecklistProps> = ({
                   <p className="text-xs text-slate-500 mt-0.5 truncate hidden sm:block">
                     {doc ? (
                       <span>
-                        {maskFileName(doc.original_file_name, isMaskingEnabled)} • 신뢰도 {Math.round(doc.confidence * 100)}%
+                        {maskFileName(doc.original_file_name, isMaskingEnabled)} • 분류 참고점수 {Math.round(doc.confidence * 100)}%
                       </span>
                     ) : (
                       item.description
@@ -195,16 +203,16 @@ export const Checklist: React.FC<ChecklistProps> = ({
                     </button>
 
                     {/* 교체 / 추가 업로드 */}
-                    <button
+                    {canEdit && <button
                       onClick={(e) => {
                         e.stopPropagation();
                         onUploadSpecific(item.type);
                       }}
                       className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                      title="해당 서류 다시 올리기 (교체/추가)"
+                      title="해당 서류 추가 등록"
                     >
                       <Upload className="w-4 h-4" />
-                    </button>
+                    </button>}
 
                     {/* 서류 삭제 */}
                     {onDeleteDocument && (
@@ -215,13 +223,13 @@ export const Checklist: React.FC<ChecklistProps> = ({
                           onDeleteDocument(doc.document_id, doc.original_file_name);
                         }}
                         className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
-                        title="증빙서류 삭제"
+                        title="증빙서류 제외"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     )}
                   </div>
-                ) : (
+                ) : canEdit ? (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -233,7 +241,7 @@ export const Checklist: React.FC<ChecklistProps> = ({
                     <Plus className="w-3 h-3" />
                     <span>추가</span>
                   </button>
-                )}
+                ) : null}
               </div>
             </div>
           );
@@ -290,7 +298,7 @@ export const Checklist: React.FC<ChecklistProps> = ({
                       onDeleteDocument(extraDoc.document_id, extraDoc.original_file_name);
                     }}
                     className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
-                    title="증빙서류 삭제"
+                    title="증빙서류 제외"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

@@ -3,6 +3,7 @@ import {
   ContractDetail,
   ContractListItem,
   DocumentResponse,
+  PilotInfo,
 } from '../types';
 import { api } from '../api/client';
 import { Sidebar, NavigationTab } from '../components/Sidebar';
@@ -20,6 +21,11 @@ import { ContractsListView } from '../components/ContractsListView';
 import { AccountPasswordResetView } from '../components/auth/AccountPasswordResetView';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { ToastContainer, ToastItem } from '../components/Toast';
+import { useAuth } from '../context/AuthContext';
+import { PilotReviewPanel } from '../components/PilotReviewPanel';
+import { PilotOperations } from '../components/PilotOperations';
+import { PilotDocumentDialog } from '../components/PilotDocumentDialog';
+import { maskVendorName } from '../utils/masking';
 // import { DocumentsView } from '../components/DocumentsView'; // [임시 주석 처리] 증빙서류 관리
 import {
   Loader2,
@@ -34,6 +40,11 @@ import {
 } from 'lucide-react';
 
 export const ContractDashboard: React.FC = () => {
+  const { user } = useAuth();
+  const isPilot = user?.deployment_mode === 'pilot';
+  const canEdit = !isPilot || user?.role === 'operator' || user?.role === 'admin';
+  const [pilotInfo, setPilotInfo] = useState<PilotInfo | null>(null);
+  const [advancedDocOpen, setAdvancedDocOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
   const [contractViewMode, setContractViewMode] = useState<'list' | 'detail'>('list');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
@@ -90,7 +101,8 @@ export const ContractDashboard: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const list = await api.listContracts();
+      const [list, environment] = await Promise.all([api.listContracts(), isPilot ? api.pilotInfo() : Promise.resolve(null)]);
+      setPilotInfo(environment);
       if (list.length > 0) {
         const detail = await api.getContract(list[0].contract_id);
         setCurrentContract(detail);
@@ -100,7 +112,7 @@ export const ContractDashboard: React.FC = () => {
       setContracts(list);
     } catch (err: any) {
       console.error(err);
-      setError('서버 연결 중 오류가 발생했습니다. 백엔드 서버 상태를 확인하세요.');
+      setError(err.message || '서버 연결 중 오류가 발생했습니다. 백엔드 서버 상태를 확인하세요.');
     } finally {
       setLoading(false);
     }
@@ -125,9 +137,19 @@ export const ContractDashboard: React.FC = () => {
       setContractViewMode(viewMode);
     } catch (err) {
       console.error(err);
+      showToast('error', err instanceof Error ? err.message : '계약을 불러오지 못했습니다.');
     } finally {
       setActionLoading(false);
     }
+  };
+
+  const refreshCurrentContract = async (contractId?: number) => {
+    const target = contractId ?? currentContract?.contract_id;
+    const [list, environment, detail] = await Promise.all([
+      api.listContracts(), isPilot ? api.pilotInfo() : Promise.resolve(null), target ? api.getContract(target) : Promise.resolve(null),
+    ]);
+    setContracts(list); setPilotInfo(environment); setCurrentContract(detail);
+    if (selectedDoc && detail) setSelectedDoc(detail.documents.find(doc => doc.document_id === selectedDoc.document_id) || null);
   };
 
   const handleTabChange = (tab: NavigationTab) => {
@@ -159,14 +181,14 @@ export const ContractDashboard: React.FC = () => {
   };
 
   const handleUploadFiles = async (files: File[], targetDocumentType?: string) => {
-    if (!currentContract) return;
+    if (!currentContract || !canEdit) return;
     try {
       setActionLoading(true);
       await api.uploadDocuments(currentContract.contract_id, files, targetDocumentType);
 
       // 화면 노출 없이 백그라운드에서 5단계 파이프라인(마스킹, OCR, 정규화, 최종 대조검수) 자동 수행
       try {
-        await api.simulatePipeline(currentContract.contract_id);
+        if (!isPilot) await api.simulatePipeline(currentContract.contract_id);
       } catch (pipelineErr) {
         console.warn('Background pipeline execution error:', pipelineErr);
       }
@@ -176,16 +198,18 @@ export const ContractDashboard: React.FC = () => {
       setCurrentContract(updated);
       const list = await api.listContracts();
       setContracts(list);
-      showToast('success', `${files.length}건의 증빙서류 업로드 및 5단계 파이프라인 자동 검수가 완료되었습니다.`);
+      showToast('success', `${files.length}건의 원본을 등록했습니다. 자동 검수 결과를 확인하세요.`);
     } catch (err: any) {
       console.error(err);
       showToast('error', '문서 업로드 실패: ' + (err.message || '오류'));
+      throw err;
     } finally {
       setActionLoading(false);
     }
   };
 
   const handleOpenUploadModal = (targetType?: string | null) => {
+    if (!canEdit) return;
     setUploadTargetType(targetType || null);
     setIsUploadOpen(true);
   };
@@ -195,27 +219,40 @@ export const ContractDashboard: React.FC = () => {
     vendor_name: string;
     business_number: string;
     contract_amount: number;
-  }) => {
+  }, attachedFile?: File | null) => {
+    if (!canEdit) throw new Error('담당자 권한이 필요합니다.');
     try {
       setActionLoading(true);
       const created = await api.createContract(data);
+      if (attachedFile) {
+        try {
+          await api.uploadDocuments(created.contract_id, [attachedFile], 'contract');
+        } catch (reason) {
+          showToast('error', '계약은 등록했지만 원본 등록에 실패했습니다. 상세 화면에서 다시 첨부하세요. ' + (reason instanceof Error ? reason.message : ''));
+        }
+      }
       const list = await api.listContracts();
       setContracts(list);
-      setCurrentContract(created);
+      setCurrentContract(await api.getContract(created.contract_id));
       setActiveTab('contracts');
+      setContractViewMode('detail');
     } catch (err) {
       console.error(err);
-      alert('계약 등록 실패');
+      showToast('error', err instanceof Error ? err.message : '계약 등록 실패');
+      throw err;
     } finally {
       setActionLoading(false);
     }
   };
 
-  const handleOpenEditModal = (target?: ContractDetail | ContractListItem | null) => {
+  const handleOpenEditModal = async (target?: ContractDetail | ContractListItem | null) => {
+    if (!canEdit) return;
     const itemToEdit = target || currentContract;
     if (!itemToEdit) return;
-    setEditingContractTarget(itemToEdit);
-    setIsEditContractOpen(true);
+    try {
+      setEditingContractTarget(isPilot ? await api.getContract(itemToEdit.contract_id) : itemToEdit);
+      setIsEditContractOpen(true);
+    } catch (reason) { showToast('error', reason instanceof Error ? reason.message : '계약을 불러오지 못했습니다.'); }
   };
 
   const handleUpdateContract = async (
@@ -225,6 +262,11 @@ export const ContractDashboard: React.FC = () => {
       vendor_name?: string;
       business_number?: string;
       contract_amount?: number;
+      amount_basis?: string;
+      tax_amount?: number | null;
+      payment_mode?: string;
+      revision?: number;
+      change_note?: string;
     }
   ) => {
     try {
@@ -235,13 +277,15 @@ export const ContractDashboard: React.FC = () => {
       setCurrentContract(updated);
     } catch (err) {
       console.error(err);
-      alert('계약 정보 수정 실패');
+      showToast('error', err instanceof Error ? err.message : '계약 정보 수정 실패');
+      throw err;
     } finally {
       setActionLoading(false);
     }
   };
 
   const handleDeleteContract = (contractId: number, title?: string) => {
+    if (!canEdit) return;
     setContractToDelete({ contractId, title });
   };
 
@@ -288,6 +332,7 @@ export const ContractDashboard: React.FC = () => {
   };
 
   const handleDeleteDocument = (documentId: number, fileName: string) => {
+    if (!canEdit) return;
     setDocumentToDelete({ documentId, fileName });
   };
 
@@ -325,6 +370,17 @@ export const ContractDashboard: React.FC = () => {
   const handleRunPipelineSimulation = async (contractId?: number) => {
     const targetId = contractId || currentContract?.contract_id;
     if (!targetId) return;
+    if (isPilot) {
+      try {
+        setActionLoading(true);
+        await api.triggerValidation(targetId);
+        await refreshCurrentContract(targetId);
+        showToast('success', '저장된 추출값으로 규칙 검수 결과를 갱신했습니다.');
+      } catch (reason) { showToast('error', reason instanceof Error ? reason.message : '재검수 실패'); }
+      finally { setActionLoading(false); }
+      return;
+    }
+
 
     try {
       setActionLoading(true);
@@ -353,8 +409,7 @@ export const ContractDashboard: React.FC = () => {
     try {
       setActionLoading(true);
       await api.triggerValidation(currentContract.contract_id);
-      const updated = await api.getContract(currentContract.contract_id);
-      setCurrentContract(updated);
+      await refreshCurrentContract();
       showToast('success', '룰 엔진 재검수가 완료되었습니다.');
     } catch (err: any) {
       console.error(err);
@@ -397,14 +452,15 @@ export const ContractDashboard: React.FC = () => {
         return (
           <OverallDashboardView
             contracts={contracts}
+            isMaskingEnabled={isMaskingEnabled}
             onSelectContract={(id) => handleSelectContract(id, 'contracts', 'detail')}
             onViewAllContracts={() => {
               setActiveTab('contracts');
               setContractViewMode('list');
             }}
-            onEditContract={(item) => handleOpenEditModal(item)}
-            onDeleteContract={(id, title) => handleDeleteContract(id, title)}
-            onOpenAutoBatchContract={() => setIsAutoBatchOpen(true)}
+            onEditContract={canEdit ? (item) => { void handleOpenEditModal(item); } : undefined}
+            onDeleteContract={canEdit ? (id, title) => handleDeleteContract(id, title) : undefined}
+            onOpenAutoBatchContract={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
           />
         );
 
@@ -417,10 +473,13 @@ export const ContractDashboard: React.FC = () => {
               onSelectContract={async (id) => {
                 await handleSelectContract(id, undefined, 'detail');
               }}
-              onOpenAutoBatchContract={() => setIsAutoBatchOpen(true)}
-              onEditContract={(item) => handleOpenEditModal(item)}
-              onDeleteContract={(id, title) => handleDeleteContract(id, title)}
-              onSeedDemo={handleSeedDemo}
+              onOpenAutoBatchContract={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+              onOpenNewContract={isPilot && canEdit ? () => setIsNewContractOpen(true) : undefined}
+              pilot={isPilot}
+              requiredDocumentTypes={pilotInfo?.required_document_types}
+              onEditContract={canEdit ? (item) => { void handleOpenEditModal(item); } : undefined}
+              onDeleteContract={canEdit ? (id, title) => handleDeleteContract(id, title) : undefined}
+              onSeedDemo={!isPilot && canEdit ? handleSeedDemo : undefined}
               actionLoading={actionLoading}
               isMaskingEnabled={isMaskingEnabled}
             />
@@ -470,7 +529,7 @@ export const ContractDashboard: React.FC = () => {
                 >
                   {contracts.map((c) => (
                     <option key={c.contract_id} value={c.contract_id}>
-                      #{c.contract_id} {c.title} ({c.vendor_name}) — 충족률 {c.completeness_rate}%
+                      #{c.contract_id} {c.title} ({maskVendorName(c.vendor_name, isMaskingEnabled)}) — 충족률 {c.completeness_rate}%
                     </option>
                   ))}
                 </select>
@@ -478,6 +537,8 @@ export const ContractDashboard: React.FC = () => {
                 <button
                   onClick={() => handleOpenEditModal(currentContract)}
                   className="inline-flex items-center space-x-1 px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl font-bold text-xs transition-colors"
+                  disabled={!canEdit}
+                  style={!canEdit ? { display: 'none' } : undefined}
                   title="선택된 계약 정보 수정"
                 >
                   <Edit3 className="w-3.5 h-3.5" />
@@ -487,7 +548,9 @@ export const ContractDashboard: React.FC = () => {
                 <button
                   onClick={() => handleDeleteContract(currentContract.contract_id, currentContract.title)}
                   className="inline-flex items-center space-x-1 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl font-bold text-xs transition-colors"
-                  title="선택된 계약 삭제"
+                  disabled={!canEdit}
+                  style={!canEdit ? { display: 'none' } : undefined}
+                  title="선택된 계약 제외"
                 >
                   <Trash2 className="w-3.5 h-3.5 text-rose-600" />
                   <span className="hidden sm:inline">삭제</span>
@@ -497,10 +560,10 @@ export const ContractDashboard: React.FC = () => {
                   onClick={() => handleRunPipelineSimulation()}
                   disabled={actionLoading}
                   className="inline-flex items-center space-x-1 px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl font-bold text-xs shadow-xs transition-all active:scale-95 disabled:bg-slate-300"
-                  title="화면 노출 없이 백그라운드로 5단계 파이프라인(업로드·마스킹·OCR·정규화·대조검수) 실행"
+                  title="저장된 추출값의 규칙 검수 결과를 갱신합니다."
                 >
                   <Sparkles className={`w-3.5 h-3.5 ${actionLoading ? 'animate-spin text-amber-300' : 'text-amber-300'}`} />
-                  <span className="hidden sm:inline">{actionLoading ? '파이프라인 실행 중...' : '5단계 파이프라인 실행'}</span>
+                  <span className="hidden sm:inline">{actionLoading ? '검수 중...' : isPilot ? '현재 추출값 재검수' : '5단계 파이프라인 실행'}</span>
                 </button>
 
                 <button
@@ -518,21 +581,24 @@ export const ContractDashboard: React.FC = () => {
             {/* Contract Detail Content */}
             <MetricsSummary
               contract={currentContract}
-              onEditContract={() => handleOpenEditModal(currentContract)}
-              onDeleteContract={() => handleDeleteContract(currentContract.contract_id, currentContract.title)}
+              onEditContract={canEdit ? () => { void handleOpenEditModal(currentContract); } : undefined}
+              onDeleteContract={canEdit ? () => handleDeleteContract(currentContract.contract_id, currentContract.title) : undefined}
               isMaskingEnabled={isMaskingEnabled}
             />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Checklist
                 documents={currentContract.documents}
+                canEdit={canEdit}
+                requiredDocumentTypes={isPilot ? currentContract.required_document_types : undefined}
                 onSelectDocument={handleOpenDocumentModal}
                 onUploadSpecific={(type) => handleOpenUploadModal(type)}
-                onOpenUploadAll={() => handleOpenUploadModal()}
-                onDeleteDocument={handleDeleteDocument}
+                onOpenUploadAll={canEdit ? () => handleOpenUploadModal() : undefined}
+                onDeleteDocument={canEdit ? handleDeleteDocument : undefined}
                 isMaskingEnabled={isMaskingEnabled}
               />
               <RuleValidationCard checks={currentContract.checks} isMaskingEnabled={isMaskingEnabled} />
             </div>
+            {isPilot && <PilotReviewPanel contract={currentContract} onChanged={refreshCurrentContract} />}
           </div>
         );
 
@@ -542,8 +608,8 @@ export const ContractDashboard: React.FC = () => {
       //     <DocumentsView
       //       currentContract={currentContract}
       //       onSelectDocument={(doc) => setSelectedDoc(doc)}
-      //       onOpenUpload={() => handleOpenUploadModal()}
-      //       onDeleteDocument={handleDeleteDocument}
+      //       onOpenUpload={canEdit ? () => handleOpenUploadModal() : undefined}
+      //       onDeleteDocument={canEdit ? handleDeleteDocument : undefined}
       //     />
       //   );
 
@@ -554,10 +620,12 @@ export const ContractDashboard: React.FC = () => {
             onRunPipeline={() => handleRunPipelineSimulation()}
             onRevalidate={handleRevalidate}
             loading={actionLoading}
+            pilot={isPilot}
           />
         );
 
       case 'account-settings':
+        if (isPilot && pilotInfo) return <PilotOperations info={pilotInfo} onChanged={refreshCurrentContract} />;
         return (
           <AccountPasswordResetView
             onSuccessReturn={() => setActiveTab('dashboard')}
@@ -577,12 +645,12 @@ export const ContractDashboard: React.FC = () => {
         onToggleCollapse={() => setIsSidebarOpen((prev) => !prev)}
         activeTab={activeTab}
         onTabChange={handleTabChange}
-        onOpenAutoBatchContract={() => setIsAutoBatchOpen(true)}
-        onOpenUpload={() => handleOpenUploadModal()}
-        onOpenNewContract={() => setIsNewContractOpen(true)}
+        onOpenAutoBatchContract={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+        onOpenUpload={canEdit ? () => handleOpenUploadModal() : undefined}
+        onOpenNewContract={canEdit ? () => setIsNewContractOpen(true) : undefined}
         isMaskingEnabled={isMaskingEnabled}
         onToggleMasking={() => setIsMaskingEnabled((prev) => !prev)}
-        onSeedDemo={handleSeedDemo}
+        onSeedDemo={!isPilot && canEdit ? handleSeedDemo : undefined}
         loading={actionLoading}
       />
 
@@ -603,6 +671,7 @@ export const ContractDashboard: React.FC = () => {
           </div>
 
           <div className="flex items-center space-x-2">
+            {isPilot && <span className="hidden sm:inline rounded-lg border border-indigo-100 bg-indigo-50 px-2.5 py-1 text-xs font-bold text-indigo-700">{user?.role === 'representative' ? '대표' : '담당자'} · {pilotInfo?.company_name}</span>}
             <button
               onClick={() => setIsMaskingEnabled((prev) => !prev)}
               className={`inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border transition-colors shadow-2xs ${
@@ -694,10 +763,12 @@ export const ContractDashboard: React.FC = () => {
       </div>
 
       {/* Modals */}
+      {advancedDocOpen && selectedDoc && currentContract?.workflow && <PilotDocumentDialog doc={selectedDoc} revision={currentContract.workflow.revision} canEdit={canEdit} onClose={() => setAdvancedDocOpen(false)} onChanged={refreshCurrentContract} />}
       <DocumentViewerModal
-        document={selectedDoc}
+        document={advancedDocOpen ? null : selectedDoc}
+        onManage={isPilot && canEdit ? () => setAdvancedDocOpen(true) : undefined}
         onClose={() => setSelectedDoc(null)}
-        onDelete={handleDeleteDocument}
+        onDelete={canEdit ? handleDeleteDocument : undefined}
         isMaskingEnabled={isMaskingEnabled}
       />
 
@@ -719,6 +790,7 @@ export const ContractDashboard: React.FC = () => {
               setIsEditContractOpen(false);
               setEditingContractTarget(null);
             }}
+            pilot={isPilot}
             onUpdate={handleUpdateContract}
             loading={actionLoading}
           />
@@ -745,12 +817,12 @@ export const ContractDashboard: React.FC = () => {
       {/* 증빙서류 삭제 확인 모달 */}
       <ConfirmModal
         isOpen={!!documentToDelete}
-        title="증빙서류 삭제"
+        title="증빙서류 제외"
         itemName={documentToDelete?.fileName}
         itemBadge="증빙서류"
-        message={`선택한 증빙서류를 영구 삭제하시겠습니까?\n삭제 즉시 AI 검수 룰이 자동으로 재실행되어 계약 충족률과 검수 결과가 갱신됩니다.`}
-        subMessage="서류 삭제 후에도 언제든지 해당 서류를 다시 업로드할 수 있습니다."
-        confirmText="증빙서류 삭제"
+        message={`선택한 증빙서류를 이 계약에서 제외하시겠습니까?\n삭제 즉시 AI 검수 룰이 자동으로 재실행되어 계약 충족률과 검수 결과가 갱신됩니다.`}
+        subMessage="원본 파일과 확인 이력은 회사 보관 정책에 따라 서버에 남습니다."
+        confirmText="증빙 제외"
         cancelText="취소"
         isDanger={true}
         loading={actionLoading}
@@ -764,8 +836,8 @@ export const ContractDashboard: React.FC = () => {
         title="외주/용역 계약 삭제"
         itemName={contractToDelete?.title || `계약 #${contractToDelete?.contractId}`}
         itemBadge="계약 정보"
-        message={`선택한 외주/용역 계약 및 첨부된 모든 증빙서류를 영구 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`}
-        confirmText="계약 영구 삭제"
+        message={`선택한 계약과 증빙 정보를 업무함에서 제외하시겠습니까?\n보관 파일과 대표 확인 이력은 서버에 남습니다.`}
+        confirmText="계약 제외"
         cancelText="취소"
         isDanger={true}
         loading={actionLoading}

@@ -5,8 +5,9 @@ import { useAuth } from '../context/AuthContext';
 
 export const LoginPage: React.FC = () => {
   const { login } = useAuth();
-  const [email, setEmail] = useState('nj445325@gmail.com');
-  const [password, setPassword] = useState('admin123!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [capsLock, setCapsLock] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,10 +27,10 @@ export const LoginPage: React.FC = () => {
         password,
       });
 
-      if (res.user && res.token) {
-        login(res.user, res.token);
+      if (res.success && res.user) {
+        login(res.user, '');
       } else {
-        login({ email: email.trim() }, 'mock_token');
+        throw new Error('로그인 정보를 확인하지 못했습니다. 다시 시도하세요.');
       }
     } catch (err: any) {
       setError(err.message || '로그인 중 오류가 발생했습니다.');
@@ -64,11 +65,10 @@ export const LoginPage: React.FC = () => {
         <div className="mb-6 bg-indigo-50/80 border border-indigo-100 rounded-2xl p-3.5 text-xs text-indigo-900">
           <div className="flex items-center space-x-1.5 font-bold mb-1">
             <Sparkles className="w-4 h-4 text-indigo-600" />
-            <span>데모 체험 계정 안내</span>
+            <span>사내 계정으로 접속</span>
           </div>
           <p className="text-[11px] text-indigo-700/90 font-medium">
-            아이디: <code className="font-extrabold bg-white px-1.5 py-0.5 rounded border border-indigo-200">nj445325@gmail.com</code><br />
-            비밀번호: <code className="font-extrabold bg-white px-1.5 py-0.5 rounded border border-indigo-200 mt-1 inline-block">admin123!</code>
+            대표 또는 운영 담당자에게 받은 계정을 사용하세요. 초기 비밀번호는 첫 로그인 후 변경합니다.
           </p>
         </div>
 
@@ -83,16 +83,18 @@ export const LoginPage: React.FC = () => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">
+            <label htmlFor="login-email" className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">
               이메일 주소
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
               <input
                 type="email"
+                id="login-email"
+                autoComplete="username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@example.com"
+                placeholder="operator@company.local"
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
                 required
               />
@@ -100,20 +102,27 @@ export const LoginPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">
+            <label htmlFor="login-password" className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">
               비밀번호
             </label>
             <div className="relative">
               <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
               <input
                 type="password"
+                id="login-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => setCapsLock(e.getModifierState('CapsLock'))}
+                onKeyUp={(e) => setCapsLock(e.getModifierState('CapsLock'))}
+                onBlur={() => setCapsLock(false)}
+                autoComplete="current-password"
+                aria-describedby={capsLock ? 'login-caps-lock' : undefined}
                 placeholder="••••••••"
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
                 required
               />
             </div>
+            {capsLock && <p id="login-caps-lock" role="status" aria-live="polite" className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-amber-700"><AlertCircle size={14} />Caps Lock이 켜져 있습니다.</p>}
           </div>
 
           <button

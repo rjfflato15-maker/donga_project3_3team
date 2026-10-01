@@ -31,7 +31,7 @@ export const MetricsSummary: React.FC<MetricsSummaryProps> = ({
   const formatDate = (isoString?: string) => {
     if (!isoString) return '-';
     try {
-      const date = new Date(isoString);
+      const date = new Date(/(?:Z|[+-]\d{2}:\d{2})$/.test(isoString) ? isoString : isoString + 'Z');
       return date.toLocaleDateString('ko-KR', {
         year: 'numeric',
         month: '2-digit',
@@ -205,7 +205,7 @@ export const MetricsSummary: React.FC<MetricsSummaryProps> = ({
         </div>
 
         <div className="bg-slate-50/80 rounded-xl p-3 border border-slate-200/60">
-          <span className="text-[11px] font-semibold text-slate-500 block">정보 일치율 / 불일치율</span>
+          <span className="text-[11px] font-semibold text-slate-500 block">일치율 / 불일치율 (미확인 제외)</span>
           <span className="text-sm font-bold text-slate-800">
             {summary.match_rate !== null ? `${summary.match_rate}%` : '-'} /{' '}
             <span className="text-rose-600">{summary.mismatch_rate !== null ? `${summary.mismatch_rate}%` : '-'}</span>

@@ -36,6 +36,11 @@ export interface AnalysisFields {
   contract_period_end?: string | null;
   account_number?: string | null;
   bank_name?: string | null;
+  supply_amount?: number | null;
+  tax_amount?: number | null;
+  total_amount?: number | null;
+  amount_basis?: 'TOTAL' | 'SUPPLY' | 'UNKNOWN';
+  amount_scope?: 'FULL' | 'PARTIAL' | 'UNKNOWN';
 }
 
 export interface DocumentResponse {
@@ -53,6 +58,8 @@ export interface DocumentResponse {
   raw_text?: string | null;
   masked_text?: string | null;
   business_status?: string | null;
+  file_available?: boolean;
+  file_size?: number | null;
 }
 
 export interface ValidationCheck {
@@ -95,6 +102,7 @@ export interface ContractDetail {
   checks: ValidationCheck[];
   created_at: string;
   updated_at: string;
+  workflow?: Workflow;
 }
 
 export interface ContractListItem {
@@ -109,6 +117,9 @@ export interface ContractListItem {
   total_docs_count: number;
   submitted_document_types?: string[];
   created_at: string;
+  approval_status?: string;
+  revision?: number;
+  missing_original_count?: number;
 }
 
 export interface PipelineStep {
@@ -143,5 +154,42 @@ export interface AutoContractSynthesisResponse {
   contract_amount: number;
   issue_date?: string | null;
   documents: AutoContractParseItem[];
+}
+
+export interface Workflow {
+  revision: number;
+  amount_basis: 'TOTAL' | 'SUPPLY' | 'UNKNOWN';
+  tax_amount: number | null;
+  payment_mode: 'FULL' | 'INSTALLMENT';
+  approval_status: string;
+  fingerprint: string;
+  reviews: { review_id: number; revision: number; actor_name: string; decision: string; note: string; created_at: string }[];
+}
+
+export interface PilotInfo {
+  company_name: string;
+  deployment_mode: string;
+  local_database: boolean;
+  nts_mode: string;
+  llm_connected: boolean;
+  required_document_types: DocumentType[];
+}
+
+export interface AuditEntry {
+  event_id: number; actor_name: string; action: string; contract_id: number | null;
+  document_id: number | null; details: Record<string, unknown>; created_at: string;
+}
+
+export interface PilotMetrics {
+  contract_count: number;
+  confirmed_count: number;
+  awaiting_confirmation_count: number;
+  timed_contract_count: number;
+  mean_elapsed_seconds: number | null;
+  median_elapsed_seconds: number | null;
+  document_registration_count: number;
+  field_correction_count: number;
+  measurement: string;
+  limitation: string;
 }
 

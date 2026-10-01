@@ -15,13 +15,6 @@ ACCOUNT_PATTERNS = [
 
 BANK_PATTERN = re.compile(r"(신한|국민|우리|하나|기업|농협|수협|씨티|SC제일|대구|부산|광주|제주|전북|경남|새마을금고|신협|우체국|카카오뱅크|토스뱅크|케이뱅크|IBK|KB|NH|DGB|BNK)(?:은행|뱅크)?")
 
-AMOUNT_PATTERNS = [
-    re.compile(r"(?:총\s*합\s*계\s*금\s*액|합\s*계\s*금\s*액|총\s*견\s*적\s*금\s*액|견\s*적\s*금\s*액|총\s*검\s*수\s*금\s*액|검\s*수\s*금\s*액|총\s*납\s*품\s*금\s*액|납\s*품\s*금\s*액|총\s*계\s*약\s*금\s*액|계\s*약\s*금\s*액|총\s*금\s*액)[\s\S]{0,100}?[₩￦\\금]?\s*([0-9,]{4,})\s*(?:원)?"),
-    re.compile(r"[₩￦\\]\s*([0-9,]{4,})"),
-    re.compile(r"금\s*([0-9,]{4,})\s*원"),
-    re.compile(r"(?:공\s*급\s*가\s*액|공\s*급\s*금\s*액|청\s*구\s*금\s*액|인\s*정\s*금\s*액)[\s\S]{0,50}?[₩￦\\금]?\s*([0-9,]{4,})\s*(?:원)?"),
-    re.compile(r"([0-9,]{4,})\s*원"),
-]
 DATE_PATTERNS = [
     re.compile(r"(\d{4})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일"),
     re.compile(r"(\d{4})\s*-\s*(\d{1,2})\s*-\s*(\d{1,2})"),
@@ -429,23 +422,16 @@ def extract_fields(text: str, doc_type: Optional[Any] = None) -> AnalysisFields:
     if resolved_type == DocumentType.BANK_ACCOUNT and not biz_no and account_no:
         biz_no = f"{bank_name + ' ' if bank_name else ''}{account_no}"
 
-    # 3. Amount
+    # 3. Amount: use explicit monetary evidence, not numbers found by scanning
+    # past a label into dates/item rows. Preserve unknown tax basis for review.
+    from ..validation.financial import extract_financial_fields, extract_reference_amount, document_total
     amount: Optional[float] = None
+    financial_fields = extract_financial_fields(text, resolved_type)
     if resolved_type not in [DocumentType.BUSINESS_REGISTRATION, DocumentType.BANK_ACCOUNT]:
-        for pattern in AMOUNT_PATTERNS:
-            matches = pattern.findall(text)
-            if matches:
-                for raw_val in matches:
-                    clean_val = raw_val.replace(",", "").strip()
-                    try:
-                        val = float(clean_val)
-                        if val >= 10000:
-                            amount = val
-                            break
-                    except ValueError:
-                        continue
-            if amount is not None:
-                break
+        total = document_total(financial_fields)
+        amount = float(total) if total is not None else extract_reference_amount(text)
+        if amount is None and financial_fields["supply_amount"] is not None:
+            amount = financial_fields["supply_amount"]
 
     # 4. Dates
     issue_date: Optional[str] = None
@@ -534,4 +520,5 @@ def extract_fields(text: str, doc_type: Optional[Any] = None) -> AnalysisFields:
         contract_period_end=period_end,
         account_number=account_no,
         bank_name=bank_name,
+        **financial_fields,
     )

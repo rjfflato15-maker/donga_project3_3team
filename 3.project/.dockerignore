@@ -1,0 +1,13 @@
+.git
+**/.git
+**/.venv
+**/node_modules
+**/__pycache__
+**/*.pyc
+**/.env
+**/env
+storage
+*.db
+**/initial-accounts.txt
+output
+tmp

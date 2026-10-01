@@ -1,16 +1,19 @@
-from typing import List, Optional
+from typing import List, Optional, Literal
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from .common import DocumentType
 from .document import DocumentResponse
 from .validation import ValidationSummary, ValidationCheck
 
 
 class ContractBase(BaseModel):
-    title: str
-    vendor_name: str
-    business_number: str
-    contract_amount: float
+    title: str = Field(min_length=1, max_length=200)
+    vendor_name: str = Field(min_length=1, max_length=200)
+    business_number: str = Field(max_length=50)
+    contract_amount: float = Field(ge=0, allow_inf_nan=False)
+    amount_basis: Literal["TOTAL", "SUPPLY", "UNKNOWN"] = "UNKNOWN"
+    tax_amount: Optional[float] = Field(default=None, ge=0, allow_inf_nan=False)
+    payment_mode: Literal["FULL", "INSTALLMENT"] = "FULL"
 
 
 class ContractCreate(ContractBase):
@@ -18,10 +21,15 @@ class ContractCreate(ContractBase):
 
 
 class ContractUpdate(BaseModel):
-    title: Optional[str] = None
-    vendor_name: Optional[str] = None
-    business_number: Optional[str] = None
-    contract_amount: Optional[float] = None
+    title: Optional[str] = Field(default=None, min_length=1, max_length=200)
+    vendor_name: Optional[str] = Field(default=None, min_length=1, max_length=200)
+    business_number: Optional[str] = Field(default=None, max_length=50)
+    contract_amount: Optional[float] = Field(default=None, ge=0, allow_inf_nan=False)
+    amount_basis: Optional[Literal["TOTAL", "SUPPLY", "UNKNOWN"]] = None
+    tax_amount: Optional[float] = Field(default=None, ge=0, allow_inf_nan=False)
+    payment_mode: Optional[Literal["FULL", "INSTALLMENT"]] = None
+    revision: Optional[int] = None
+    change_note: Optional[str] = Field(default=None, max_length=2000)
 
 
 class ParsedContractResponse(BaseModel):
@@ -68,6 +76,9 @@ class ContractListItem(BaseModel):
     total_docs_count: int = 6
     submitted_document_types: List[str] = []
     created_at: datetime
+    approval_status: str = "PENDING"
+    revision: int = 1
+    missing_original_count: int = 0
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -85,5 +96,6 @@ class ContractDetailResponse(BaseModel):
     checks: List[ValidationCheck]
     created_at: datetime
     updated_at: datetime
+    workflow: dict = {}
 
     model_config = ConfigDict(from_attributes=True)

@@ -21,7 +21,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [targetType, setTargetType] = useState<string>('');
-  const [maskingOption, setMaskingOption] = useState<boolean>(true);
+  const [error, setError] = useState('');
   const [dragActive, setDragActive] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -32,12 +32,18 @@ export const UploadModal: React.FC<UploadModalProps> = ({
       setTargetType('');
     }
   }, [initialTargetType, isOpen]);
+  useEffect(() => { if (isOpen) setError(''); }, [isOpen]);
 
   if (!isOpen) return null;
 
   const handleFiles = (fileList: FileList | null) => {
     if (!fileList) return;
     const newFiles = Array.from(fileList);
+    if (selectedFiles.length + newFiles.length > 20 || newFiles.some(file => file.size > 20 * 1024 * 1024)) {
+      setError('한 번에 최대 20개, 파일당 20MB까지 등록할 수 있습니다.');
+      return;
+    }
+    setError('');
     setSelectedFiles((prev) => [...prev, ...newFiles]);
   };
 
@@ -66,10 +72,15 @@ export const UploadModal: React.FC<UploadModalProps> = ({
 
   const handleSubmit = async () => {
     if (selectedFiles.length === 0) return;
-    await onUpload(selectedFiles, targetType || undefined);
-    setSelectedFiles([]);
-    setTargetType('');
-    onClose();
+    try {
+      setError('');
+      await onUpload(selectedFiles, targetType || undefined);
+      setSelectedFiles([]);
+      setTargetType('');
+      onClose();
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : '업로드하지 못했습니다.');
+    }
   };
 
   return (
@@ -91,6 +102,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
 
         {/* Body */}
         <div className="p-6 space-y-4">
+          {error && <p role="alert" className="rounded-xl bg-rose-50 p-3 text-xs font-semibold text-rose-800">{error}</p>}
           {/* Document Type Category Selector */}
           <div>
             <label className="text-xs font-bold text-slate-700 flex items-center space-x-1.5 mb-1.5">
@@ -226,23 +238,13 @@ export const UploadModal: React.FC<UploadModalProps> = ({
           {/* Masking Option */}
           <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 flex items-center justify-between text-xs">
             <div className="flex items-center space-x-2">
-              <Shield className={`w-4 h-4 ${maskingOption ? 'text-indigo-600' : 'text-slate-400'}`} />
+              <Shield className="w-4 h-4 text-indigo-600" />
               <div>
-                <span className="font-bold text-slate-800">개인정보(PII) 자동 마스킹</span>
-                <p className="text-[10px] text-slate-400">주민등록번호, 은행 계좌번호, 전화번호 자동 비식별화</p>
+                <span className="font-bold text-slate-800">가린 문서 미리보기</span>
+                <p className="text-[10px] text-slate-400">원본은 서버에 보관됩니다. 마스킹 결과는 원문과 함께 확인하세요.</p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setMaskingOption(!maskingOption)}
-              className={`px-3 py-1 rounded-lg text-xs font-black transition-colors ${
-                maskingOption
-                  ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                  : 'bg-slate-200 text-slate-600'
-              }`}
-            >
-              {maskingOption ? 'ON (적용)' : 'OFF (미적용)'}
-            </button>
+            <span className="px-3 py-1 rounded-lg text-xs font-black bg-emerald-100 text-emerald-800 border border-emerald-300">기본 ON</span>
           </div>
         </div>
 

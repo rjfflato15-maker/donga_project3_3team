@@ -3,6 +3,7 @@ import re
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional
 import requests
+from ..config import NTS_MODE
 
 
 class NtsClient(ABC):
@@ -52,12 +53,15 @@ class RealNtsClient(NtsClient):
                         "tax_type": tax_type,
                         "is_active": is_active,
                         "detail": f"국세청 조회 결과: {b_stt} ({tax_type})",
+                        "verified": bool(b_stt),
+                        "source": "API",
                     }
         except Exception as e:
             pass
 
         # Fallback to mock on network error
-        return MockNtsClient().check_business_status(business_number)
+        return {"business_number": business_number, "status": "조회 실패", "is_active": None,
+                "verified": False, "source": "UNAVAILABLE", "detail": "실제 조회를 완료하지 못했습니다."}
 
 
 class MockNtsClient(NtsClient):
@@ -97,6 +101,22 @@ class MockNtsClient(NtsClient):
 
 def get_nts_client() -> NtsClient:
     api_key = os.getenv("NTS_API_KEY")
-    if api_key:
+    if NTS_MODE == "api" and api_key:
         return RealNtsClient(api_key)
-    return MockNtsClient()
+    if NTS_MODE == "demo":
+        return DemoNtsClient()
+    return DisabledNtsClient()
+
+
+class DemoNtsClient(MockNtsClient):
+    def check_business_status(self, business_number: str) -> Dict[str, Any]:
+        result = super().check_business_status(business_number)
+        result.update(status="데모 데이터: " + result["status"], verified=False, source="DEMO",
+                      detail="더미 데이터이며 실제 국세청 조회 결과가 아닙니다.")
+        return result
+
+
+class DisabledNtsClient(NtsClient):
+    def check_business_status(self, business_number: str) -> Dict[str, Any]:
+        return {"business_number": business_number, "status": "미연동", "is_active": None,
+                "verified": False, "source": "DISABLED", "detail": "사내망 모드에서는 외부 조회를 사용하지 않습니다."}

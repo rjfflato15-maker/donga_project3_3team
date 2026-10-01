@@ -1,5 +1,4 @@
 import uuid
-import hashlib
 from datetime import datetime, timedelta
 from typing import Optional, Tuple
 from sqlalchemy.orm import Session
@@ -10,53 +9,25 @@ from .email_service import EmailService
 class AuthService:
     @staticmethod
     def _hash_password(password: str) -> str:
-        """비밀번호 SHA-256 해시 생성"""
-        return hashlib.sha256(password.encode("utf-8")).hexdigest()
+        """공통 PBKDF2 비밀번호 해시 생성"""
+        from ..security import hash_password
+        return hash_password(password)
 
     @classmethod
     def verify_password(cls, plain_password: str, hashed_password: str) -> bool:
         """비밀번호 검증 (평문 해시 vs 기존 해시 또는 기존 평문 호환)"""
-        if plain_password == hashed_password:
-            return True
-        return cls._hash_password(plain_password) == hashed_password
-
-    @classmethod
-    def ensure_default_user(cls, db: Session) -> User:
-        """기본 시드 계정(nj445325@gmail.com) 생성 또는 조회"""
-        default_email = "nj445325@gmail.com"
-        default_pw = "admin123!"
-
-        # Check for existing admin@example.com and update to new email
-        old_user = db.query(User).filter(User.email == "admin@example.com").first()
-        if old_user:
-            old_user.email = default_email
-            db.commit()
-            return old_user
-
-        user = db.query(User).filter(User.email == default_email).first()
-        if not user:
-            user = User(
-                email=default_email,
-                password=cls._hash_password(default_pw)
-            )
-            db.add(user)
-            db.commit()
-            db.refresh(user)
-        return user
+        from ..security import verify_password
+        return verify_password(plain_password, hashed_password)
 
     @classmethod
     def authenticate_user(cls, db: Session, email: str, password: str) -> Optional[User]:
-        """사용자 이메일 및 비밀번호 검증"""
-        # Ensure initial user exists if database is fresh
-        cls.ensure_default_user(db)
-        
-        user = db.query(User).filter(User.email == email).first()
-        if not user:
-            return None
-        if not cls.verify_password(password, user.password):
+        from ..security import verify_password
+        from ..db.models import UserProfile
+        user = db.query(User).filter(User.email == email.strip().lower()).first()
+        profile = db.get(UserProfile, user.user_id) if user else None
+        if not user or not profile or not profile.active or not verify_password(password, user.password):
             return None
         return user
-
     @classmethod
     def send_verification_code(cls, db: Session, email: str, password: str) -> Tuple[bool, str, int, Optional[str]]:
         """

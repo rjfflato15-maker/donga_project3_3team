@@ -13,9 +13,15 @@ interface EditContractModalProps {
       vendor_name?: string;
       business_number?: string;
       contract_amount?: number;
+      amount_basis?: string;
+      tax_amount?: number | null;
+      payment_mode?: string;
+      revision?: number;
+      change_note?: string;
     }
   ) => Promise<void>;
   loading: boolean;
+  pilot?: boolean;
 }
 
 export const EditContractModal: React.FC<EditContractModalProps> = ({
@@ -24,11 +30,17 @@ export const EditContractModal: React.FC<EditContractModalProps> = ({
   contract,
   onUpdate,
   loading,
+  pilot = false,
 }) => {
   const [title, setTitle] = useState('');
   const [vendorName, setVendorName] = useState('');
   const [businessNumber, setBusinessNumber] = useState('');
   const [contractAmount, setContractAmount] = useState('');
+  const [basis, setBasis] = useState('UNKNOWN');
+  const [tax, setTax] = useState('');
+  const [payment, setPayment] = useState('FULL');
+  const [note, setNote] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (contract) {
@@ -36,6 +48,10 @@ export const EditContractModal: React.FC<EditContractModalProps> = ({
       setVendorName(contract.vendor_name || '');
       setBusinessNumber(contract.business_number || '');
       setContractAmount(contract.contract_amount ? String(contract.contract_amount) : '');
+      const workflow = 'workflow' in contract ? contract.workflow : undefined;
+      setBasis(workflow?.amount_basis || 'UNKNOWN');
+      setTax(workflow?.tax_amount == null ? '' : String(workflow.tax_amount));
+      setPayment(workflow?.payment_mode || 'FULL'); setNote(''); setError('');
     }
   }, [contract]);
 
@@ -45,19 +61,22 @@ export const EditContractModal: React.FC<EditContractModalProps> = ({
     e.preventDefault();
     if (!title || !vendorName || !businessNumber || !contractAmount) return;
 
-    await onUpdate(contract.contract_id, {
+    try {
+      await onUpdate(contract.contract_id, {
       title,
       vendor_name: vendorName,
       business_number: businessNumber,
       contract_amount: parseFloat(contractAmount),
+      ...(pilot ? { amount_basis: basis, tax_amount: tax === '' ? null : Number(tax), payment_mode: payment, revision: 'workflow' in contract ? contract.workflow?.revision : ('revision' in contract ? contract.revision : undefined), change_note: note } : {}),
     });
 
-    onClose();
+      onClose();
+    } catch (reason) { setError(reason instanceof Error ? reason.message : '저장하지 못했습니다.'); }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
           <div className="flex items-center space-x-2">
@@ -127,10 +146,12 @@ export const EditContractModal: React.FC<EditContractModalProps> = ({
 
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-1">
-              총 계약 금액 (원) <span className="text-rose-500">*</span>
+              계약 기준 금액 (원) <span className="text-rose-500">*</span>
             </label>
             <input
               type="number"
+              min={0}
+              step={1}
               required
               placeholder="예: 11000000"
               value={contractAmount}
@@ -142,6 +163,13 @@ export const EditContractModal: React.FC<EditContractModalProps> = ({
             </p>
           </div>
 
+          {pilot && <div className="space-y-3 rounded-xl border border-indigo-100 bg-indigo-50/40 p-4">
+            <label className="block text-xs font-bold text-slate-700">금액 기준<select className="mt-1 w-full rounded-xl border border-slate-300 bg-white p-2 text-xs" value={basis} onChange={e => setBasis(e.target.value)}><option value="UNKNOWN">미확인</option><option value="TOTAL">부가세 포함 합계</option><option value="SUPPLY">공급가액 · 부가세 제외</option></select></label>
+            <div className="grid grid-cols-2 gap-3"><label className="block text-xs font-bold text-slate-700">명시된 세액 · 원<input className="mt-1 w-full rounded-xl border border-slate-300 p-2 text-xs" type="number" min={0} step={1} value={tax} onChange={e => setTax(e.target.value)} placeholder="모르면 비워 두기" /></label><label className="block text-xs font-bold text-slate-700">지급 방식<select className="mt-1 w-full rounded-xl border border-slate-300 bg-white p-2 text-xs" value={payment} onChange={e => setPayment(e.target.value)}><option value="FULL">전액 지급</option><option value="INSTALLMENT">분할 지급</option></select></label></div>
+            <p className="text-[11px] leading-5 text-slate-500">공급가액과 명시된 세액을 더해 합계로 비교합니다. 세율을 임의로 적용하지 않습니다. 기준 수정으로 문서 추출값을 덮어쓰지 않으며, 대표 재확인이 필요합니다.</p>
+            <label className="block text-xs font-bold text-slate-700">변경 근거<textarea required minLength={3} maxLength={2000} value={note} onChange={e => setNote(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-300 p-2 text-xs" placeholder="원본을 확인한 내용과 수정 사유" /></label>
+          </div>}
+          {error && <p role="alert" className="text-xs text-rose-700">{error}</p>}
           {/* Footer */}
           <div className="pt-4 border-t border-slate-100 flex justify-end space-x-2">
             <button

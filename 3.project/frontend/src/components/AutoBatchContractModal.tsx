@@ -182,7 +182,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
               <div className="flex items-center space-x-2">
                 <h3 className="text-lg font-black tracking-tight">6종 증빙 서류 기반 계약 자동 생성</h3>
                 <span className="text-[10px] font-bold bg-amber-400 text-indigo-950 px-2 py-0.5 rounded-full uppercase">
-                  AI Auto Generator
+                  문서에서 계약 초안 만들기
                 </span>
               </div>
               <p className="text-xs text-indigo-200 mt-0.5">
@@ -304,7 +304,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
             <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-2xl flex items-center space-x-3 text-indigo-900 animate-pulse">
               <Loader2 className="w-5 h-5 text-indigo-600 animate-spin shrink-0" />
               <div>
-                <p className="text-xs font-extrabold">AI가 6종 서류를 교차 분석 및 정보 자동 합성 중입니다...</p>
+                <p className="text-xs font-extrabold">문서를 읽고 계약 초안을 추출하고 있습니다…</p>
                 <p className="text-[11px] text-indigo-700 mt-0.5">
                   계약서, 사업자증, 통장, 세금계산서 등에서 계약명, 금액, 사업자번호, 날짜를 통합 추출합니다.
                 </p>
@@ -318,7 +318,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
               <div className="flex items-center justify-between">
                 <span className="text-xs font-black text-emerald-950 flex items-center space-x-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>AI 서류 교차 대조 추출 완료</span>
+                  <span>문서 추출 완료 · 계약 기준을 확인하세요</span>
                 </span>
                 <span className="text-[11px] font-bold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-lg">
                   {synthesis.documents.length}개 서류 합성 완료
@@ -331,7 +331,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-slate-800 truncate max-w-[180px]">{doc.file_name}</span>
                       <span className="text-[10px] font-extrabold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded">
-                        {getTypeNameInKorean(doc.document_type)} ({Math.round(doc.confidence * 100)}%)
+                        {getTypeNameInKorean(doc.document_type)} (분류 참고점수 {Math.round(doc.confidence * 100)}%)
                       </span>
                     </div>
                     <div className="text-[11px] text-slate-600 font-medium space-y-0.5">
@@ -357,7 +357,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
           {/* Final Form Inputs */}
           <form id="auto-contract-form" onSubmit={handleSubmit} className="space-y-4 pt-2">
             <h4 className="text-xs font-black text-slate-800 border-b border-slate-200 pb-2">
-              계약 정보 확인 및 최종 검토 (AI 자동 완성)
+              계약 초안 확인 · 저장 후 자동 검수
             </h4>
 
             <div>

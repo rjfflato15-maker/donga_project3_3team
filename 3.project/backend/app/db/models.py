@@ -133,3 +133,66 @@ class ValidationResult(Base):
 
     contract = relationship("Contract", back_populates="validation_results")
     extract = relationship("DocumentExtract", back_populates="validation_results")
+
+
+class UserProfile(Base):
+    __tablename__ = "pilot_user_profiles"
+    user_id = Column(Integer, ForeignKey("app_users.user_id"), primary_key=True)
+    role = Column(String(30), nullable=False)
+    display_name = Column(String(80), nullable=False)
+    active = Column(Boolean, nullable=False, default=True)
+    must_change_password = Column(Boolean, nullable=False, default=True)
+
+
+class AuthSession(Base):
+    __tablename__ = "pilot_auth_sessions"
+    token_hash = Column(String(64), primary_key=True)
+    user_id = Column(Integer, ForeignKey("app_users.user_id"), nullable=False, index=True)
+    expires_at = Column(DateTime, nullable=False)
+
+
+class CompanySetting(Base):
+    __tablename__ = "pilot_company_settings"
+    key = Column(String(80), primary_key=True)
+    value = Column(Text, nullable=False)
+
+
+class ContractWorkflow(Base):
+    __tablename__ = "pilot_contract_workflows"
+    contract_id = Column(Integer, ForeignKey("contracts.contract_id", ondelete="CASCADE"), primary_key=True)
+    revision = Column(Integer, nullable=False, default=1)
+    amount_basis = Column(String(20), nullable=False, default="UNKNOWN")
+    tax_amount = Column(Float, nullable=True)
+    payment_mode = Column(String(20), nullable=False, default="FULL")
+
+
+class ContractReview(Base):
+    __tablename__ = "pilot_contract_reviews"
+    review_id = Column(Integer, primary_key=True, autoincrement=True)
+    contract_id = Column(Integer, nullable=False, index=True)
+    revision = Column(Integer, nullable=False)
+    actor_id = Column(Integer, nullable=False)
+    actor_name = Column(String(80), nullable=False)
+    decision = Column(String(30), nullable=False)
+    note = Column(Text, nullable=False)
+    snapshot_json = Column(Text, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class AuditEvent(Base):
+    __tablename__ = "pilot_audit_events"
+    event_id = Column(Integer, primary_key=True, autoincrement=True)
+    actor_id = Column(Integer, nullable=True)
+    actor_name = Column(String(80), nullable=False)
+    action = Column(String(80), nullable=False)
+    contract_id = Column(Integer, nullable=True, index=True)
+    document_id = Column(Integer, nullable=True)
+    details = Column(Text, nullable=False, default="{}")
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class DocumentFileInfo(Base):
+    __tablename__ = "pilot_document_files"
+    document_id = Column(Integer, ForeignKey("documents.document_id", ondelete="CASCADE"), primary_key=True)
+    sha256 = Column(String(64), nullable=False)
+    byte_size = Column(Integer, nullable=False)

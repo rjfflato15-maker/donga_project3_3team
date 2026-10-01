@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   ContractListItem,
   DocumentType,
@@ -12,19 +12,24 @@ import {
   RefreshCw,
   ShieldCheck,
   Calendar,
+  Plus,
 } from 'lucide-react';
 import { maskBusinessNumber, maskVendorName } from '../utils/masking';
+import { approvalLabels } from './PilotReviewPanel';
 
 interface ContractsListViewProps {
   contracts: ContractListItem[];
   currentContractId?: number | null;
   onSelectContract: (contractId: number) => void;
   onOpenAutoBatchContract?: () => void;
-  onEditContract: (contract: ContractListItem) => void;
-  onDeleteContract: (contractId: number, title?: string) => void;
+  onOpenNewContract?: () => void;
+  onEditContract?: (contract: ContractListItem) => void;
+  onDeleteContract?: (contractId: number, title?: string) => void;
   onSeedDemo?: () => void;
   actionLoading?: boolean;
   isMaskingEnabled?: boolean;
+  pilot?: boolean;
+  requiredDocumentTypes?: string[];
 }
 
 const CORE_DOCS: { type: DocumentType; label: string; short: string }[] = [
@@ -41,21 +46,31 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
   currentContractId,
   onSelectContract,
   onOpenAutoBatchContract,
+  onOpenNewContract,
   onEditContract,
   onDeleteContract,
   onSeedDemo,
   actionLoading = false,
   isMaskingEnabled = true,
+  pilot = false,
+  requiredDocumentTypes,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'ALL' | 'PASS' | 'FLAGGED' | 'INCOMPLETE' | 'PENDING'>('ALL');
   const [sortBy, setSortBy] = useState<'latest' | 'amount_desc' | 'amount_asc' | 'completeness_desc' | 'title'>('latest');
+  const [month, setMonth] = useState('');
+  const [approval, setApproval] = useState('ALL');
+  const [missingOriginal, setMissingOriginal] = useState(false);
+  const [page, setPage] = useState(1);
+  const coreDocs = requiredDocumentTypes ? CORE_DOCS.filter(doc => requiredDocumentTypes.includes(doc.type)) : CORE_DOCS;
+  const months = Array.from(new Set(contracts.map(c => c.created_at?.slice(0, 7)).filter(Boolean))).sort().reverse();
+  useEffect(() => { setPage(1); }, [searchTerm, statusFilter, sortBy, month, approval, missingOriginal]);
 
   // Stats
   const totalCount = contracts.length;
   const passCount = contracts.filter((c) => c.review_status === 'PASS').length;
-  const flaggedCount = contracts.filter((c) => c.review_status === 'FLAGGED').length;
-  const incompleteCount = contracts.filter((c) => c.review_status === 'INCOMPLETE' || c.completeness_rate < 100).length;
+  const flaggedCount = contracts.filter((c) => ['FLAGGED', 'REVIEW', 'FAIL'].includes(c.review_status)).length;
+  const incompleteCount = contracts.filter((c) => ['INCOMPLETE', 'MISSING'].includes(c.review_status) || c.completeness_rate < 100).length;
   const totalAmount = contracts.reduce((acc, c) => acc + (c.contract_amount || 0), 0);
 
   // Filtered & Sorted Contracts
@@ -64,9 +79,12 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
       .filter((c) => {
         // Status filter
         if (statusFilter === 'PASS' && c.review_status !== 'PASS') return false;
-        if (statusFilter === 'FLAGGED' && c.review_status !== 'FLAGGED') return false;
-        if (statusFilter === 'INCOMPLETE' && c.review_status !== 'INCOMPLETE' && c.completeness_rate >= 100) return false;
+        if (statusFilter === 'FLAGGED' && !['FLAGGED', 'REVIEW', 'FAIL'].includes(c.review_status)) return false;
+        if (statusFilter === 'INCOMPLETE' && !['INCOMPLETE', 'MISSING'].includes(c.review_status) && c.completeness_rate >= 100) return false;
         if (statusFilter === 'PENDING' && c.review_status !== 'PENDING') return false;
+        if (pilot && month && !c.created_at?.startsWith(month)) return false;
+        if (pilot && approval !== 'ALL' && (c.approval_status || 'PENDING') !== approval) return false;
+        if (pilot && missingOriginal && !c.missing_original_count) return false;
 
         // Search term
         if (searchTerm.trim()) {
@@ -95,7 +113,10 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
             return b.contract_id - a.contract_id;
         }
       });
-  }, [contracts, statusFilter, searchTerm, sortBy]);
+  }, [contracts, statusFilter, searchTerm, sortBy, pilot, month, approval, missingOriginal]);
+  const pageCount = Math.max(1, Math.ceil(filteredContracts.length / 20));
+  const currentPage = Math.min(page, pageCount);
+  const visibleContracts = pilot ? filteredContracts.slice((currentPage - 1) * 20, currentPage * 20) : filteredContracts;
 
   const getContractCode = (id: number) => {
     const year = 2026;
@@ -113,7 +134,7 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
         </span>
       );
     }
-    if (completenessRate < 100 || status === 'INCOMPLETE') {
+    if (completenessRate < 100 || status === 'INCOMPLETE' || status === 'MISSING') {
       return (
         <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-black bg-purple-50 text-purple-700 border border-purple-200/80 shadow-2xs whitespace-nowrap">
           <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
@@ -140,7 +161,7 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
   const formatDate = (isoString?: string) => {
     if (!isoString) return '-';
     try {
-      const d = new Date(isoString);
+      const d = new Date(/(?:Z|[+-]\d{2}:\d{2})$/.test(isoString) ? isoString : isoString + 'Z');
       return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
     } catch {
       return isoString;
@@ -173,6 +194,7 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
 
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center gap-3">
+            {onOpenNewContract && <button onClick={onOpenNewContract} className="px-3.5 py-2.5 bg-white/10 hover:bg-white/15 text-slate-200 font-bold text-xs rounded-xl border border-white/20 transition-colors flex items-center space-x-1.5"><Plus className="w-3.5 h-3.5" /><span>새 계약 등록</span></button>}
             {onOpenAutoBatchContract && (
               <button
                 onClick={onOpenAutoBatchContract}
@@ -324,6 +346,12 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
         </div>
       </div>
 
+      {pilot && <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200/80 bg-white px-4 py-3 text-xs font-semibold text-slate-600">
+        <label className="flex items-center gap-2">등록 월<select aria-label="등록 월 필터" value={month} onChange={e => setMonth(e.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2"><option value="">전체</option>{months.map(value => <option key={value} value={value}>{value}</option>)}</select></label>
+        <label className="flex items-center gap-2">대표 확인<select aria-label="대표 확인 상태 필터" value={approval} onChange={e => setApproval(e.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2"><option value="ALL">전체</option>{Object.entries(approvalLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
+        <label className="flex items-center gap-2"><input type="checkbox" checked={missingOriginal} onChange={e => setMissingOriginal(e.target.checked)} />원본 없는 계약만</label>
+      </div>}
+
       {/* Main Contracts Table */}
       <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
@@ -334,7 +362,7 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
                 <th className="py-3.5 px-5">계약 명칭</th>
                 <th className="py-3.5 px-5">상대 업체명</th>
                 <th className="py-3.5 px-5">계약 금액</th>
-                <th className="py-3.5 px-5">6종 필수 서류 현황</th>
+                <th className="py-3.5 px-5">{coreDocs.length}종 필수 서류 현황</th>
                 <th className="py-3.5 px-5">검수 상태</th>
                 <th className="py-3.5 px-5">등록일</th>
                 <th className="py-3.5 px-5 text-center">동작</th>
@@ -389,7 +417,7 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
                   </td>
                 </tr>
               ) : (
-                filteredContracts.map((c) => {
+                visibleContracts.map((c) => {
                   const isSelected = currentContractId === c.contract_id;
                   const submittedTypes = c.submitted_document_types || [];
 
@@ -452,7 +480,7 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
 
                           {/* 6 Document Type Mini Badges */}
                           <div className="flex items-center space-x-1 pt-0.5">
-                            {CORE_DOCS.map((doc) => {
+                            {coreDocs.map((doc) => {
                               const isSubmitted = submittedTypes.includes(doc.type);
                               return (
                                 <span
@@ -475,6 +503,7 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
                       {/* AI Review Status */}
                       <td className="py-4 px-5 whitespace-nowrap">
                         {getStatusBadge(c.review_status, c.completeness_rate)}
+                        {pilot && <div className="mt-1.5 text-[11px] font-semibold text-slate-500">{approvalLabels[c.approval_status || 'PENDING']}<span className={c.missing_original_count ? 'ml-2 text-rose-600' : 'ml-2 text-emerald-600'}>{c.missing_original_count ? `원본 ${c.missing_original_count}건 없음` : '원본 보관됨'}</span></div>}
                       </td>
 
                       {/* Created At */}
@@ -539,11 +568,9 @@ export const ContractsListView: React.FC<ContractsListViewProps> = ({
         {/* Table Footer Count */}
         <div className="px-5 py-3.5 bg-slate-50/80 border-t border-slate-200/80 flex items-center justify-between text-xs text-slate-500">
           <span className="font-semibold">
-            총 {totalCount}개 계약 중 {filteredContracts.length}개 표시
+            총 {totalCount}개 계약 · 조건에 맞는 {filteredContracts.length}개{pilot ? ` 중 ${visibleContracts.length}개 표시` : ' 표시'}
           </span>
-          <span className="text-[11px] text-slate-400">
-            행을 클릭하면 해당 계약의 6종 서류 체크리스트 및 AI 검수 화면으로 이동합니다.
-          </span>
+          {pilot ? <div className="flex items-center gap-3 font-bold"><button className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 disabled:opacity-40" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>이전</button><span>{currentPage} / {pageCount}</span><button className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 disabled:opacity-40" disabled={currentPage === pageCount} onClick={() => setPage(currentPage + 1)}>다음</button></div> : <span className="text-[11px] text-slate-400">행을 클릭하면 해당 계약의 서류 체크리스트 및 검수 화면으로 이동합니다.</span>}
         </div>
       </div>
     </div>

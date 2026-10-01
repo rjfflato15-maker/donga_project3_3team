@@ -15,6 +15,10 @@ from ..services.contract_service import ContractService
 from ..ai.preprocessor import extract_text_from_file
 from ..ai.extractor import extract_fields
 from ..ai.classifier import classify_document
+from ..security import Actor, get_current_user
+from ..services.workflow_service import audit
+from ..services.storage_service import read_upload, clean_name
+from ..config import IS_PILOT
 
 router = APIRouter(prefix="/api/contracts", tags=["Contracts"])
 contract_service = ContractService()
@@ -23,11 +27,12 @@ contract_service = ContractService()
 @router.post("/parse-file", response_model=ParsedContractResponse)
 def parse_contract_file(file: UploadFile = File(...)):
     """Parse contract PDF/text/image file and auto-extract title, vendor, business number, amount, date"""
-    temp_dir = tempfile.gettempdir()
-    temp_path = os.path.join(temp_dir, file.filename)
+    suffix = os.path.splitext(clean_name(file.filename))[1]
+    fd, temp_path = tempfile.mkstemp(prefix="contract-parse-", suffix=suffix)
+    os.close(fd)
 
     try:
-        content = file.file.read()
+        content = read_upload(file)
         with open(temp_path, "wb") as f:
             f.write(content)
 
@@ -50,6 +55,8 @@ def parse_contract_file(file: UploadFile = File(...)):
             document_type=doc_type.value,
             raw_text_snippet=raw_text[:500] if raw_text else "",
         )
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -71,9 +78,10 @@ def list_contracts(db: Session = Depends(get_db)):
 
 
 @router.post("", response_model=ContractDetailResponse, status_code=status.HTTP_201_CREATED)
-def create_contract(req: ContractCreate, db: Session = Depends(get_db)):
+def create_contract(req: ContractCreate, db: Session = Depends(get_db), actor: Actor = Depends(get_current_user)):
     """Register a new contract and initialize verification checklist"""
-    contract = contract_service.create_contract(db, req)
+    contract = contract_service.create_contract(db, req, user_id=actor.user_id)
+    audit(db, actor, "CONTRACT_CREATED", contract.contract_id, details={"title": req.title})
     detail = contract_service.get_contract_detail(db, contract.contract_id)
     return detail
 
@@ -91,7 +99,7 @@ def get_contract(contract_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{contract_id}", response_model=ContractDetailResponse)
-def update_contract(contract_id: int, req: ContractUpdate, db: Session = Depends(get_db)):
+def update_contract(contract_id: int, req: ContractUpdate, db: Session = Depends(get_db), actor: Actor = Depends(get_current_user)):
     """Update contract information and re-evaluate validation rules"""
     detail = contract_service.update_contract(db, contract_id, req)
     if not detail:
@@ -99,11 +107,12 @@ def update_contract(contract_id: int, req: ContractUpdate, db: Session = Depends
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Contract with ID {contract_id} not found",
         )
+    audit(db, actor, "CONTRACT_UPDATED", contract_id, details={"note": req.change_note or "", "changes": req.model_dump(exclude_unset=True)})
     return detail
 
 
 @router.delete("/{contract_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_contract(contract_id: int, db: Session = Depends(get_db)):
+def delete_contract(contract_id: int, db: Session = Depends(get_db), actor: Actor = Depends(get_current_user)):
     """Delete a contract and clean up all associated documents and validation records"""
     success = contract_service.delete_contract(db, contract_id)
     if not success:
@@ -111,12 +120,15 @@ def delete_contract(contract_id: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Contract with ID {contract_id} not found",
         )
+    audit(db, actor, "CONTRACT_DELETED", contract_id)
     return None
 
 
 @router.post("/seed-demo", response_model=ContractDetailResponse)
 def seed_demo_contract(db: Session = Depends(get_db)):
     """Seeds or resets the demo contract matching the presentation slides"""
+    if IS_PILOT:
+        raise HTTPException(403, "시범 운영 모드에서는 자동 데모 초기화를 사용하지 않습니다.")
     contract = contract_service.seed_demo_contract(db)
     return contract_service.get_contract_detail(db, contract.contract_id)
 

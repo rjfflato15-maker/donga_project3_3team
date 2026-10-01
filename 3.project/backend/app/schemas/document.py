@@ -13,8 +13,13 @@ class AnalysisFields(BaseModel):
     contract_period_end: Optional[str] = None
     account_number: Optional[str] = None
     bank_name: Optional[str] = None
+    supply_amount: Optional[float] = None
+    tax_amount: Optional[float] = None
+    total_amount: Optional[float] = None
+    amount_basis: str = "UNKNOWN"
+    amount_scope: str = "UNKNOWN"
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, allow_inf_nan=False)
 
 
 class MaskInfo(BaseModel):
@@ -48,5 +53,7 @@ class DocumentResponse(BaseModel):
     raw_text: Optional[str] = None
     masked_text: Optional[str] = None
     business_status: Optional[str] = None
+    file_available: bool = False
+    file_size: Optional[int] = None
 
     model_config = ConfigDict(from_attributes=True)

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ContractListItem } from '../types';
+import { maskVendorName } from '../utils/masking';
 import {
   CheckCircle2,
   AlertTriangle,
@@ -21,6 +22,7 @@ interface OverallDashboardViewProps {
   onEditContract?: (contract: ContractListItem) => void;
   onDeleteContract?: (contractId: number, title: string) => void;
   onOpenAutoBatchContract?: () => void;
+  isMaskingEnabled?: boolean;
 }
 
 export const OverallDashboardView: React.FC<OverallDashboardViewProps> = ({
@@ -30,6 +32,7 @@ export const OverallDashboardView: React.FC<OverallDashboardViewProps> = ({
   onEditContract,
   onDeleteContract,
   onOpenAutoBatchContract,
+  isMaskingEnabled = true,
 }) => {
   const totalCount = contracts.length;
 
@@ -100,13 +103,13 @@ export const OverallDashboardView: React.FC<OverallDashboardViewProps> = ({
           <div className="space-y-2">
             <div className="inline-flex items-center space-x-2 bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 px-3 py-1 rounded-full text-xs font-bold backdrop-blur-xs">
               <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
-              <span>실시간 AI 서류 분류 &amp; 룰 엔진 교차검수</span>
+              <span>문서 분류 &amp; 룰 엔진 교차검수</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
               계약 증빙 검수 대시보드
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 max-w-xl font-medium leading-relaxed">
-              외주·용역 계약 건별 6종 필수 서류의 자동 수집, AI PII 마스킹, 국세청 진위확인 및 룰 엔진 불일치 대조 결과를 모니터링합니다.
+              외주·용역 계약의 6종 증빙을 보관하고, 개인정보 마스킹과 규칙 검수 결과를 확인합니다. 국세청 조회의 연동 여부는 검수 항목에서 구분해 표시합니다.
             </p>
           </div>
 
@@ -285,7 +288,7 @@ export const OverallDashboardView: React.FC<OverallDashboardViewProps> = ({
                       {c.title}
                     </td>
                     <td className="py-4 px-5 font-semibold text-slate-600">
-                      {c.vendor_name}
+                      {maskVendorName(c.vendor_name, isMaskingEnabled)}
                     </td>
                     <td className="py-4 px-5 font-black text-slate-900">
                       ₩{c.contract_amount.toLocaleString()}

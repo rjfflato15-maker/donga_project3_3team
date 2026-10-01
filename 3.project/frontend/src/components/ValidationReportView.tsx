@@ -9,6 +9,7 @@ interface ValidationReportViewProps {
   onOpenSimulator?: () => void;
   onRevalidate: () => void;
   loading: boolean;
+  pilot?: boolean;
 }
 
 export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
@@ -16,6 +17,7 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
   onRunPipeline,
   onRevalidate,
   loading,
+  pilot = false,
 }) => {
   if (!currentContract) {
     return (
@@ -55,10 +57,10 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
             onClick={onRunPipeline}
             disabled={loading}
             className="flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm rounded-xl transition-all active:scale-95 disabled:bg-slate-300"
-            title="화면 노출 없이 백그라운드 5단계 파이프라인(업로드·마스킹·OCR·정규화·대조검수) 자동 실행"
+            title={pilot ? '저장된 추출값으로 규칙 검수 결과를 갱신합니다.' : '5단계 처리 결과를 갱신합니다.'}
           >
             <Sparkles className={`w-4 h-4 ${loading ? 'animate-spin text-amber-300' : 'text-amber-400'}`} />
-            <span>{loading ? '5단계 파이프라인 실행 중...' : '5단계 파이프라인 검수 실행'}</span>
+            <span>{loading ? '검수 중...' : pilot ? '현재 추출값 재검수' : '5단계 파이프라인 검수 실행'}</span>
           </button>
         </div>
       </div>

@@ -39,127 +39,34 @@ from .pipeline_service import PipelineService
 
 
 def get_document_response(doc: Document) -> DocumentResponse:
-    # Read raw and masked text if exists
-    raw_text = ""
-    masked_text = ""
-
-    if doc.masking and doc.masking.masked_file_path and os.path.exists(doc.masking.masked_file_path):
-        try:
-            with open(doc.masking.masked_file_path, "r", encoding="utf-8", errors="ignore") as f:
-                masked_text = f.read()
-        except Exception:
-            pass
-
-    # 1. Check if dedicated raw text file exists in storage/raw
-    if doc.storage_path:
-        dir_name = os.path.dirname(doc.storage_path)
-        base_name = os.path.basename(doc.storage_path)
-        extracted_raw_path = os.path.join(dir_name, f"extracted_raw_{base_name}.txt")
-        if os.path.exists(extracted_raw_path):
-            try:
-                with open(extracted_raw_path, "r", encoding="utf-8", errors="ignore") as f:
-                    content = f.read()
-                    # Only accept if it has actual content beyond just a 1-line file name header
-                    if len(content.strip().splitlines()) > 1:
-                        raw_text = content
-            except Exception:
-                pass
-
-    # 2. Check storage_path for text or binary files (PDF, Image, Word, Hancom, Excel)
-    if (not raw_text or len(raw_text.strip().splitlines()) <= 1) and doc.storage_path and os.path.exists(doc.storage_path):
-        ext = os.path.splitext(doc.storage_path)[1].lower()
-        if ext in [".txt", ".json", ".md", ".csv"]:
-            try:
-                with open(doc.storage_path, "r", encoding="utf-8", errors="ignore") as f:
-                    raw_text = f.read()
-            except Exception:
-                pass
-        else:
-            # For binary files (PDF, DOCX, HWP, XLSX, images), dynamically extract full original unmasked text
-            try:
-                from ..ai.preprocessor import extract_text_from_file
-                extracted, _ = extract_text_from_file(doc.storage_path, file_name=doc.file_name)
-                if extracted and len(extracted.strip().splitlines()) > 1:
-                    raw_text = extracted
-            except Exception:
-                pass
-
-    if not raw_text and masked_text:
-        raw_text = masked_text
-
-    # If masked_text was not on disk but raw_text is available, create masked_text on the fly
-    if not masked_text and raw_text:
-        try:
-            from ..ai.masking import mask_sensitive_information
-            masked_text, _, _, _ = mask_sensitive_information(raw_text)
-        except Exception:
-            masked_text = raw_text
-
-    # Fields
+    from .storage_service import read_texts, resolve_path
+    from ..config import NTS_MODE
+    raw_text, masked_text = read_texts(doc)
+    source = resolve_path(doc.storage_path)
     fields = AnalysisFields()
-    if doc.extract and doc.extract.raw_fields:
+    if doc.extract:
         try:
-            fields_dict = json.loads(doc.extract.raw_fields)
-            fields = AnalysisFields(**fields_dict)
-        except Exception:
-            fields = AnalysisFields(
-                company_name=doc.extract.extracted_vendor_name,
-                business_registration_no=doc.extract.extracted_vendor_reg_no,
-                amount=doc.extract.extracted_amount,
-                issue_date=doc.extract.extracted_date,
-            )
-
-    # Dynamic fallback: if fields are empty/partial but raw_text is available, extract fields
-    if raw_text and len(raw_text.strip().splitlines()) > 1 and (
-        not fields.company_name
-        or not fields.business_registration_no
-        or not fields.issue_date
-        or (fields.amount is None and doc.document_type not in ["business_registration", "bank_account"])
-        or (doc.document_type == "bank_account" and not fields.account_number)
-    ):
-        try:
-            from ..ai.extractor import extract_fields
-            dynamic_fields = extract_fields(raw_text, doc_type=doc.document_type)
-            if not fields.company_name and dynamic_fields.company_name:
-                fields.company_name = dynamic_fields.company_name
-            if not fields.business_registration_no and dynamic_fields.business_registration_no:
-                fields.business_registration_no = dynamic_fields.business_registration_no
-            if fields.amount is None and dynamic_fields.amount is not None:
-                fields.amount = dynamic_fields.amount
-            if not fields.issue_date and dynamic_fields.issue_date:
-                fields.issue_date = dynamic_fields.issue_date
-            if not fields.title and dynamic_fields.title:
-                fields.title = dynamic_fields.title
-            if not fields.contract_period_start and dynamic_fields.contract_period_start:
-                fields.contract_period_start = dynamic_fields.contract_period_start
-            if not fields.contract_period_end and dynamic_fields.contract_period_end:
-                fields.contract_period_end = dynamic_fields.contract_period_end
-            if not fields.account_number and dynamic_fields.account_number:
-                fields.account_number = dynamic_fields.account_number
-            if not fields.bank_name and dynamic_fields.bank_name:
-                fields.bank_name = dynamic_fields.bank_name
-        except Exception:
-            pass
-
-    mask_categories = []
-    if doc.masking and doc.masking.masked_types:
-        try:
-            mask_categories = json.loads(doc.masking.masked_types)
-        except Exception:
-            mask_categories = []
-
+            fields = AnalysisFields(**json.loads(doc.extract.raw_fields or "{}"))
+        except (ValueError, TypeError):
+            fields = AnalysisFields(company_name=doc.extract.extracted_vendor_name,
+                                    business_registration_no=doc.extract.extracted_vendor_reg_no,
+                                    amount=doc.extract.extracted_amount, issue_date=doc.extract.extracted_date)
+    warnings = []
+    if source is None:
+        warnings.append("공용 서버에 원본이 없습니다. 원본을 다시 등록하세요.")
+    if doc.processing_status == "FAILED":
+        warnings.append("문서 인식에 실패했습니다. 원본을 확인하고 추출값을 보완하세요.")
     return DocumentResponse(
-        document_id=doc.document_id,
-        contract_id=doc.contract_id,
-        original_file_name=doc.file_name,
+        document_id=doc.document_id, contract_id=doc.contract_id, original_file_name=doc.file_name,
         document_type=DocumentType(doc.document_type) if doc.document_type in [t.value for t in DocumentType] else DocumentType.UNKNOWN,
         confidence=doc.class_confidence or 0.0,
-        processing_status=ProcessingStatus(doc.processing_status) if doc.processing_status in [s.value for s in ProcessingStatus] else ProcessingStatus.COMPLETED,
-        mask_status=MaskStatus(doc.masking.masking_status) if (doc.masking and doc.masking.masking_status in [m.value for m in MaskStatus]) else MaskStatus.NOT_STARTED,
-        analysis=DocumentAnalysis(fields=fields, warnings=[]),
-        raw_text=raw_text,
-        masked_text=masked_text,
-        business_status=doc.verification.business_status if doc.verification else None,
+        processing_status=ProcessingStatus(doc.processing_status) if doc.processing_status in [s.value for s in ProcessingStatus] else ProcessingStatus.REVIEW,
+        mask_status=MaskStatus(doc.masking.masking_status) if doc.masking and doc.masking.masking_status in [m.value for m in MaskStatus] else MaskStatus.NOT_STARTED,
+        analysis=DocumentAnalysis(fields=fields, warnings=warnings), raw_text=raw_text, masked_text=masked_text,
+        business_status="미연동" if NTS_MODE == "disabled" else (
+            "데모 데이터 · 실제 조회 아님" if NTS_MODE == "demo" else (
+                doc.verification.business_status if doc.verification else "미확인")),
+        file_available=source is not None, file_size=source.stat().st_size if source else None,
     )
 
 
@@ -168,80 +75,53 @@ class ContractService:
         self.pipeline_service = PipelineService()
 
     def list_contracts(self, db: Session) -> List[ContractListItem]:
-        contracts = db.query(Contract).order_by(Contract.contract_id.desc()).all()
+        from .workflow_service import required_types, review_state, fingerprint_for, policy_for
+        from .storage_service import resolve_path
+        required = required_types(db)
         result = []
-        for c in contracts:
-            docs = c.documents
-            submitted_types = set(d.document_type for d in docs)
-            submitted_cnt = len([t for t in CORE_6_DOCUMENT_TYPES if t.value in submitted_types])
-            completeness = round((submitted_cnt / 6.0) * 100.0, 1)
-
-            valid_submitted_types = [t.value for t in CORE_6_DOCUMENT_TYPES if t.value in submitted_types]
-
-            result.append(
-                ContractListItem(
-                    contract_id=c.contract_id,
-                    title=c.title,
-                    vendor_name=c.vendor_name,
-                    business_number=c.business_number,
-                    contract_amount=c.contract_amount,
-                    review_status=c.review_status,
-                    completeness_rate=completeness,
-                    submitted_docs_count=submitted_cnt,
-                    total_docs_count=6,
-                    submitted_document_types=valid_submitted_types,
-                    created_at=c.created_at,
-                )
-            )
+        for contract in db.query(Contract).order_by(Contract.contract_id.desc()).all():
+            submitted = {d.document_type for d in contract.documents}
+            count = sum(t.value in submitted for t in required)
+            inputs = self.pipeline_service.validation_inputs(db, contract)
+            workflow = review_state(db, contract.contract_id, fingerprint_for(db, contract, inputs))
+            _, current_checks = self.pipeline_service.rule_engine.validate_contract_evidence(
+                contract.contract_id, contract.title, contract.vendor_name, contract.business_number,
+                contract.contract_amount, inputs, required_document_types=required,
+                amount_policy=policy_for(db, contract.contract_id))
+            current_status = "PASS" if all(c.status == ValidationStatus.PASS for c in current_checks) else "REVIEW"
+            result.append(ContractListItem(
+                contract_id=contract.contract_id, title=contract.title, vendor_name=contract.vendor_name,
+                business_number=contract.business_number, contract_amount=contract.contract_amount,
+                review_status=current_status, completeness_rate=round(count / len(required) * 100, 1) if required else 100,
+                submitted_docs_count=count, total_docs_count=len(required),
+                submitted_document_types=[t.value for t in required if t.value in submitted], created_at=contract.created_at,
+                approval_status=workflow["approval_status"], revision=workflow["revision"],
+                missing_original_count=sum(resolve_path(d.storage_path) is None for d in contract.documents),
+            ))
         return result
 
     def get_contract_detail(self, db: Session, contract_id: int) -> Optional[ContractDetailResponse]:
-        contract = db.query(Contract).filter(Contract.contract_id == contract_id).first()
+        from .workflow_service import required_types, policy_for, review_state, fingerprint_for
+        contract = db.get(Contract, contract_id)
         if not contract:
             return None
-
-        docs = contract.documents
-        doc_responses = [get_document_response(d) for d in docs]
-
-        validation_results = contract.validation_results
-        checks = [
-            ValidationCheck(
-                rule_id=vr.validation_type,
-                status=ValidationStatus(vr.status) if vr.status in [s.value for s in ValidationStatus] else ValidationStatus.PASS,
-                field=vr.field or "",
-                expected=vr.expected,
-                actual=vr.actual,
-                message=vr.memo or "",
-            )
-            for vr in validation_results
-        ]
-
-        submitted_types = set(d.document_type for d in docs)
-        submitted_cnt = len([t for t in CORE_6_DOCUMENT_TYPES if t.value in submitted_types])
-        from ..validation.metrics import calculate_validation_metrics
-        summary = calculate_validation_metrics(
-            required_count=6,
-            submitted_count=submitted_cnt,
-            checks=checks,
-        )
-
+        docs = self.pipeline_service.validation_inputs(db, contract)
+        required = required_types(db)
+        summary, checks = self.pipeline_service.rule_engine.validate_contract_evidence(
+            contract.contract_id, contract.title, contract.vendor_name, contract.business_number, contract.contract_amount,
+            docs, required_document_types=required, amount_policy=policy_for(db, contract_id))
+        status = "REVIEW" if any(c.status != ValidationStatus.PASS for c in checks) else "PASS"
         return ContractDetailResponse(
-            contract_id=contract.contract_id,
-            title=contract.title,
-            vendor_name=contract.vendor_name,
-            business_number=contract.business_number,
-            contract_amount=contract.contract_amount,
-            review_status=contract.review_status,
-            required_document_types=CORE_6_DOCUMENT_TYPES,
-            documents=doc_responses,
-            summary=summary,
-            checks=checks,
-            created_at=contract.created_at,
-            updated_at=contract.updated_at,
+            contract_id=contract.contract_id, title=contract.title, vendor_name=contract.vendor_name,
+            business_number=contract.business_number, contract_amount=contract.contract_amount, review_status=status,
+            required_document_types=required, documents=[get_document_response(d) for d in contract.documents],
+            summary=summary, checks=checks, created_at=contract.created_at, updated_at=contract.updated_at,
+            workflow=review_state(db, contract_id, fingerprint_for(db, contract, docs)),
         )
 
-    def create_contract(self, db: Session, req: ContractCreate) -> Contract:
+    def create_contract(self, db: Session, req: ContractCreate, user_id=None) -> Contract:
         contract = Contract(
+            user_id=user_id,
             title=req.title,
             vendor_name=req.vendor_name,
             business_number=req.business_number,
@@ -254,79 +134,62 @@ class ContractService:
         db.commit()
         db.refresh(contract)
 
+        from ..db.models import ContractWorkflow
+        db.add(ContractWorkflow(contract_id=contract.contract_id, amount_basis=req.amount_basis,
+                                tax_amount=req.tax_amount, payment_mode=req.payment_mode))
+        db.commit()
         # Trigger initial validation (which will flag missing documents)
         self.pipeline_service.revalidate_contract(db, contract.contract_id)
         db.refresh(contract)
         return contract
 
     def update_contract(self, db: Session, contract_id: int, req: ContractUpdate) -> Optional[ContractDetailResponse]:
-        contract = db.query(Contract).filter(Contract.contract_id == contract_id).first()
-        if not contract:
-            return None
-
-        if req.title is not None:
-            contract.title = req.title
-        if req.vendor_name is not None:
-            contract.vendor_name = req.vendor_name
-        if req.business_number is not None:
-            contract.business_number = req.business_number
-        if req.contract_amount is not None:
-            contract.contract_amount = req.contract_amount
-
-        contract.updated_at = datetime.utcnow()
-        db.commit()
-        db.refresh(contract)
-
-        # Also update DocumentExtract for attached 'contract' document if present
-        contract_docs = db.query(Document).filter(
-            Document.contract_id == contract_id,
-            Document.document_type == "contract"
-        ).all()
-        for cdoc in contract_docs:
-            if cdoc.extract:
-                if req.vendor_name is not None:
-                    cdoc.extract.extracted_vendor_name = req.vendor_name
-                if req.business_number is not None:
-                    cdoc.extract.extracted_vendor_reg_no = req.business_number
-                if req.contract_amount is not None:
-                    cdoc.extract.extracted_amount = req.contract_amount
-
-                fields_dict = {
-                    "company_name": cdoc.extract.extracted_vendor_name,
-                    "business_registration_no": cdoc.extract.extracted_vendor_reg_no,
-                    "amount": cdoc.extract.extracted_amount,
-                    "issue_date": cdoc.extract.extracted_date,
-                }
-                cdoc.extract.raw_fields = json.dumps(fields_dict, ensure_ascii=False)
-        db.commit()
-
-        # Re-run rule engine validation with updated contract info
+        from fastapi import HTTPException
+        from ..config import IS_PILOT
+        from ..db.models import ContractWorkflow
+        from .workflow_service import policy_for, touch_contract
+        from .storage_service import STORAGE_LOCK
+        with STORAGE_LOCK:
+            contract = db.get(Contract, contract_id)
+            if not contract:
+                return None
+            policy = policy_for(db, contract_id)
+            if IS_PILOT and (req.revision is None or req.revision != policy["revision"]):
+                raise HTTPException(409, "다른 사용자가 변경했습니다. 새로고침 후 다시 수정하세요.")
+            if IS_PILOT and len((req.change_note or "").strip()) < 3:
+                raise HTTPException(400, "변경 사유를 3자 이상 남기세요.")
+            for key in ("title", "vendor_name", "business_number", "contract_amount"):
+                value = getattr(req, key)
+                if value is not None:
+                    setattr(contract, key, value)
+            touch_contract(db, contract_id)
+            workflow = db.get(ContractWorkflow, contract_id)
+            if req.amount_basis is not None:
+                workflow.amount_basis = req.amount_basis
+            if "tax_amount" in req.model_fields_set:
+                workflow.tax_amount = req.tax_amount
+            if req.payment_mode is not None:
+                workflow.payment_mode = req.payment_mode
+            # Contract reference edits never overwrite OCR evidence.
+            contract.updated_at = datetime.utcnow()
+            db.commit()
         self.pipeline_service.revalidate_contract(db, contract_id)
-        db.refresh(contract)
-
         return self.get_contract_detail(db, contract_id)
 
     def delete_contract(self, db: Session, contract_id: int) -> bool:
-        contract = db.query(Contract).filter(Contract.contract_id == contract_id).first()
-        if not contract:
-            return False
-
-        # Clean up physical document files
-        for doc in contract.documents:
-            if doc.storage_path and os.path.exists(doc.storage_path):
-                try:
-                    os.remove(doc.storage_path)
-                except Exception:
-                    pass
-            if doc.masking and doc.masking.masked_file_path and os.path.exists(doc.masking.masked_file_path):
-                try:
-                    os.remove(doc.masking.masked_file_path)
-                except Exception:
-                    pass
-
-        db.delete(contract)
-        db.commit()
-        return True
+        from ..db.models import ContractWorkflow, DocumentFileInfo
+        from .storage_service import STORAGE_LOCK
+        with STORAGE_LOCK:
+            contract = db.get(Contract, contract_id)
+            if not contract:
+                return False
+            for doc in contract.documents:
+                db.query(DocumentFileInfo).filter(DocumentFileInfo.document_id == doc.document_id).delete()
+            db.query(ContractWorkflow).filter(ContractWorkflow.contract_id == contract_id).delete()
+            db.delete(contract)
+            db.commit()
+            # Original bytes are retained in server backups/storage pending an agreed retention policy.
+            return True
 
     def seed_demo_contract(self, db: Session) -> Contract:
         """

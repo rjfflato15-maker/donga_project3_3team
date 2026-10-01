@@ -1,15 +1,19 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 
 
 class LoginRequest(BaseModel):
-    email: str
-    password: str
+    email: str = Field(min_length=3, max_length=255)
+    password: str = Field(min_length=1, max_length=128)
 
 
 class UserResponse(BaseModel):
     user_id: Optional[int] = None
     email: str
+    role: str = "operator"
+    display_name: str = ""
+    must_change_password: bool = False
+    deployment_mode: str = "development"
 
 
 class LoginResponse(BaseModel):
@@ -51,3 +55,8 @@ class ChangePasswordRequest(BaseModel):
 class ChangePasswordResponse(BaseModel):
     success: bool
     message: str
+
+
+class SelfPasswordChange(BaseModel):
+    current_password: str
+    new_password: str

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DocumentResponse } from '../types';
+import { downloadProtected, requestJson } from '../api/client';
 import {
   X,
   FileText,
@@ -43,6 +44,7 @@ interface DocumentViewerModalProps {
   onClose: () => void;
   onDelete?: (documentId: number, fileName: string) => void;
   isMaskingEnabled?: boolean;
+  onManage?: () => void;
 }
 
 export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
@@ -50,6 +52,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
   onClose,
   onDelete,
   isMaskingEnabled = true,
+  onManage,
 }) => {
   const [activeTab, setActiveTab] = useState<'fields' | 'preview'>('fields');
   const [isMasked, setIsMasked] = useState<boolean>(isMaskingEnabled);
@@ -59,6 +62,11 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
+  const [previewError, setPreviewError] = useState('');
+  const [previewUrl, setPreviewUrl] = useState('');
+  const [liveText, setLiveText] = useState('');
+  const [downloadError, setDownloadError] = useState('');
+  const [downloading, setDownloading] = useState(false);
 
   const docTypeKey = document?.document_type || 'unknown';
   const isBankAccount = docTypeKey === 'bank_account';
@@ -85,7 +93,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
     setImageLoaded(false);
     setIsZoomed(false);
 
-    if (isPdf) {
+    if (isPdf && document.file_available !== false) {
       fetch(`/api/documents/${document.document_id}/pages-info`)
         .then((res) => (res.ok ? res.json() : null))
         .then((data) => {
@@ -101,20 +109,46 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
     }
   }, [document?.document_id, isPdf]);
 
+  useEffect(() => {
+    setPreviewError(''); setPreviewUrl(''); setImageLoaded(false); setLiveText('');
+    if (!document || document.file_available === false || activeTab !== 'preview') return;
+    const controller = new AbortController();
+    let active = true; let objectUrl = '';
+    const timeout = window.setTimeout(() => controller.abort(), 30_000);
+    const path = isPdf || isImage ? (isPdf && pdfViewMode === 'embedded' ? `/api/documents/${document.document_id}/file?masked=${isMasked}` : `/api/documents/${document.document_id}/preview-image?page=${currentPage}&masked=${isMasked}`) : '';
+    const operation = path ? fetch(path, { credentials: 'same-origin', signal: controller.signal }).then(async response => {
+      if (!response.ok) {
+        if (response.status === 401) window.dispatchEvent(new Event('session-expired'));
+        const body = await response.json().catch(() => ({})); throw new Error(body.detail || '미리보기를 생성하지 못했습니다.');
+      }
+      return response.blob();
+    }).then(blob => { if (active) { objectUrl = URL.createObjectURL(blob); setPreviewUrl(objectUrl); setImageLoaded(true); } }) : requestJson<{ text: string }>(`/api/documents/${document.document_id}/text-preview?masked=${isMasked}`, { signal: controller.signal }).then(value => { if (active) setLiveText(value.text); });
+    operation.catch(reason => { if (active) { setPreviewError(controller.signal.aborted ? '미리보기 생성이 30초를 넘었습니다. 다시 열거나 원본을 내려받아 확인하세요.' : reason.message); setImageLoaded(true); } }).finally(() => window.clearTimeout(timeout));
+    return () => { active = false; controller.abort(); window.clearTimeout(timeout); if (objectUrl) URL.revokeObjectURL(objectUrl); };
+  }, [document, activeTab, currentPage, isMasked, isPdf, isImage, pdfViewMode]);
+
+  const download = async (masked: boolean) => {
+    if (!document) return;
+    setDownloading(true); setDownloadError('');
+    try { await downloadProtected(`/api/documents/${document.document_id}/download?masked=${masked}`, document.original_file_name); }
+    catch (reason) { setDownloadError(reason instanceof Error ? reason.message : '다운로드하지 못했습니다.'); }
+    finally { setDownloading(false); }
+  };
+
   if (!document) return null;
 
   const fields = document.analysis?.fields || {};
   const fileUrl = `/api/documents/${document.document_id}/file?masked=${isMasked}`;
-  const previewImageUrl = `/api/documents/${document.document_id}/preview-image?page=${currentPage}&masked=${isMasked}&v=${document.document_id}_${isMasked}`;
+  const previewImageUrl = previewUrl;
 
   const getDisplayContent = () => {
     if (!document) return '';
     if (isMasked) {
-      const baseText = document.masked_text || document.raw_text || '';
+      const baseText = liveText || document.masked_text || '';
       return maskAllSensitiveInfo(baseText);
     }
     // When masking is OFF, show full raw unmasked original text
-    return document.raw_text || document.masked_text || '';
+    return liveText;
   };
 
   const handleCopyText = (text: string) => {
@@ -162,6 +196,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
             <a
               href={fileUrl}
               download={document.original_file_name}
+              onClick={e => { e.preventDefault(); void download(isMasked); }}
               className="inline-flex items-center space-x-1 px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
@@ -243,6 +278,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
             <a
               href={fileUrl}
               download={document.original_file_name}
+              onClick={e => { e.preventDefault(); void download(isMasked); }}
               className="inline-flex items-center space-x-1 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
@@ -309,6 +345,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
             <a
               href={fileUrl}
               download={document.original_file_name}
+              onClick={e => { e.preventDefault(); void download(isMasked); }}
               className="inline-flex items-center space-x-1 px-3 py-1 bg-slate-700 hover:bg-slate-800 text-white rounded-lg text-xs font-bold shadow-xs transition-colors cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
@@ -373,7 +410,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                 )}
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
-                AI 분류 신뢰도: <strong className="text-slate-800">{Math.round(document.confidence * 100)}%</strong>
+                문서분류 참고점수: <strong className="text-slate-800">{Math.round(document.confidence * 100)}%</strong>
               </p>
             </div>
           </div>
@@ -484,6 +521,14 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
 
         {/* Modal Body: Only fields and preview */}
         <div className="p-6 overflow-y-auto flex-1 bg-slate-50/50">
+          <div className="mb-4 flex flex-wrap items-center gap-2">
+            <button disabled={document.file_available === false || downloading} onClick={() => void download(false)} className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-200 bg-white px-3 py-2 text-xs font-bold text-indigo-700 disabled:opacity-40"><Download size={14} />원본 다운로드</button>
+            <button disabled={document.file_available === false || downloading} onClick={() => void download(true)} className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-600 disabled:opacity-40"><Shield size={14} />{isPdf || isImage ? '마스킹본 다운로드' : '마스킹 텍스트 다운로드'}</button>
+            {onManage && <button onClick={onManage} className="ml-auto rounded-xl bg-indigo-50 px-3 py-2 text-xs font-bold text-indigo-700">원본 복구 · 추출값 보정</button>}
+          </div>
+          {downloadError && <p role="alert" className="mb-3 rounded-xl bg-rose-50 p-3 text-xs text-rose-800">{downloadError}</p>}
+          {document.file_available === false && <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs leading-6 text-amber-900"><strong>공용 서버에 원본이 없습니다.</strong> 등록 정보와 추출값만 남아 있습니다. 담당자가 원본을 다시 등록하면 팀원이 같은 파일을 미리 보고 내려받을 수 있습니다.{onManage && <button className="ml-2 font-bold underline" onClick={onManage}>원본 다시 등록</button>}</div>}
+          {previewError && activeTab === 'preview' && <p role="alert" className="mb-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-xs text-rose-800">{previewError} 마스킹 실패 시 원본을 자동으로 대신 표시하지 않습니다.</p>}
           {activeTab === 'fields' ? (
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -549,9 +594,9 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                     <DollarSign className="w-3.5 h-3.5 text-emerald-600" />
                     <span>
                       {isEstimate
-                        ? '추출 견적금액 (총 합계)'
+                        ? '추출 견적금액 (금액 기준 확인)'
                         : isTaxInvoice
-                        ? '추출 총 합계금액 (세금계산서)'
+                        ? '추출 청구금액 (금액 기준 확인)'
                         : isInspection
                         ? '추출 검수금액 (계약금액)'
                         : '추출 금액 (VAT 포함 여부 확인)'}
@@ -594,22 +639,9 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                 </div>
               </div>
 
-              {/* NTS Status */}
-              {document.business_status && (
-                <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center justify-between">
-                  <div>
-                    <span className="text-xs font-bold text-emerald-800 uppercase tracking-wide">
-                      국세청 홈택스 진위확인
-                    </span>
-                    <p className="text-sm font-semibold text-emerald-900 mt-0.5">
-                      사업자 상태: <strong>{document.business_status}</strong>
-                    </p>
-                  </div>
-                  <span className="px-3 py-1.5 bg-emerald-600 text-white font-bold text-xs rounded-lg shadow-sm">
-                    확인 완료
-                  </span>
-                </div>
-              )}
+              {(isEstimate || isTaxInvoice) && <div className="grid grid-cols-3 gap-3">{([['공급가액', fields.supply_amount], ['세액', fields.tax_amount], ['합계', fields.total_amount]] as const).map(([label, value]) => <div key={label} className="rounded-xl border border-slate-200 bg-white p-3"><p className="text-xs font-semibold text-slate-500">{label}</p><p className="mt-1 text-sm font-bold text-slate-900">{value == null ? '미추출' : value.toLocaleString() + '원'}</p></div>)}</div>}
+              <p className="text-xs text-slate-500">금액 기준: {fields.amount_basis === 'TOTAL' ? '부가세 포함 합계' : fields.amount_basis === 'SUPPLY' ? '공급가액' : '미확인'} · 청구 범위: {fields.amount_scope === 'FULL' ? '전체 청구' : fields.amount_scope === 'PARTIAL' ? '부분 청구' : '미확인'}</p>
+              {document.business_status && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4"><p className="text-xs font-bold text-amber-800">사업자 영업 상태 기록 · 세금계산서 진위 검증과 별개</p><p className="mt-1 text-sm font-semibold text-amber-900">{document.business_status}</p></div>}
 
               {/* Privacy Masking Info Card */}
               <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
@@ -625,7 +657,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                           : 'bg-amber-100 text-amber-900 border border-amber-200'
                       }`}
                     >
-                      {isMasked ? 'ON (비식별화 적용)' : 'OFF (원본 노출)'}
+                      {isMasked ? 'ON (감지 항목 가림)' : 'OFF (원본 노출)'}
                     </span>
                   </div>
 
@@ -645,7 +677,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
 
                 <p className="text-xs text-slate-500">
                   {isMasked
-                    ? '주민번호(뒷자리 제외 *), 계좌번호(가운데 *), 사업자번호(123-**-*****), 주소지(지역 제외 *), 상호명 비식별화가 적용되었습니다.'
+                    ? '감지된 번호·연락처·주소·이름을 가립니다. 미검출 정보가 있을 수 있으므로 원본 접근 권한과 함께 관리하세요.'
                     : '개인정보 마스킹이 해제되어 주민등록번호, 계좌번호, 사업자등록번호, 상세 주소, 상호명이 원본 그대로 전체 노출됩니다.'}
                 </p>
 
@@ -656,7 +688,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                 )}
               </div>
             </div>
-          ) : (
+          ) : document.file_available === false ? <p className="p-8 text-center text-sm text-slate-500">원본을 다시 등록한 후 미리보기를 이용하세요.</p> : (
             <div className="space-y-4">
               {isPdf || isImage ? (
                 <>
@@ -674,7 +706,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                         {isMasked ? (
                           <>
                             <strong className="font-extrabold text-emerald-950">개인정보·사업자 비식별화 마스킹 보호 중:</strong>{' '}
-                            사업자등록번호, 법인등록번호, 대표자명, 연락처, 입금계좌, 상세주소가 안전하게 마스킹 처리되어 표시됩니다.
+                            감지한 민감정보를 자동으로 가립니다. 마스킹 누락 가능성이 있으므로 원본 접근 권한과 함께 관리하세요.
                           </>
                         ) : (
                           <>
@@ -708,7 +740,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                       <span>
                         {isPdf
                           ? '업로드된 원본 PDF 증빙문서 (pypdfium2 고해상도 이미지 렌더링)'
-                          : '업로드된 원본 증빙 이미지 (Windows Native & RapidOCR 엔진 자동 인식 완료)'}
+                          : '업로드된 원본 증빙 이미지 (자동 마스킹 미리보기 · 원문 확인 필요)'}
                       </span>
                     </div>
 
@@ -759,10 +791,10 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                   </div>
 
                   {/* Main Content Area */}
-                  {isPdf && pdfViewMode === 'embedded' ? (
+                  {previewError ? null : !previewUrl ? <div className="min-h-[300px] flex items-center justify-center text-xs font-semibold text-slate-500">미리보기 생성 중…</div> : isPdf && pdfViewMode === 'embedded' ? (
                     <div className="bg-slate-900/5 rounded-xl border border-slate-200 p-2 min-h-[520px]">
                       <iframe
-                        src={`${fileUrl}#view=FitH`}
+                        src={`${previewUrl}#view=FitH`}
                         title={document.original_file_name}
                         className="w-full h-[540px] rounded-lg border border-slate-200 bg-white"
                       />
@@ -828,6 +860,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                           src={previewImageUrl}
                           alt={document.original_file_name}
                           onLoad={() => setImageLoaded(true)}
+                          onError={() => { setImageLoaded(true); setPreviewError('미리보기 이미지를 표시하지 못했습니다.'); }}
                           className={`w-auto object-contain rounded-lg shadow-md border border-slate-200 bg-white transition-all duration-200 ${
                             isZoomed ? 'max-h-[900px] max-w-full' : 'max-h-[500px] max-w-full'
                           } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
@@ -859,7 +892,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
               title="증빙서류 삭제"
             >
               <Trash2 className="w-3.5 h-3.5" />
-              <span>증빙서류 삭제</span>
+              <span>증빙서류 제외</span>
             </button>
           ) : (
             <div />

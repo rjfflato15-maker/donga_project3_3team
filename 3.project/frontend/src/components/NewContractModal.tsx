@@ -66,7 +66,9 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
     e.preventDefault();
     if (!title || !vendorName || !businessNumber || !contractAmount) return;
 
-    await onCreate(
+    try {
+      setParseError(null);
+      await onCreate(
       {
         title,
         vendor_name: vendorName,
@@ -84,6 +86,9 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
     setParseSuccessMessage(null);
     setParseError(null);
     onClose();
+    } catch (reason) {
+      setParseError(reason instanceof Error ? reason.message : '계약을 등록하지 못했습니다.');
+    }
   };
 
   return (

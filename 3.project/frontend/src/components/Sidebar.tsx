@@ -178,7 +178,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <div className="w-8 h-px bg-slate-200/80 my-0.5"></div>
 
             {/* 5. 6종 서류로 계약 자동 생성 (증빙서류 업로드 위로 위치 변경) */}
-            <div className="relative group flex items-center justify-center">
+            {(onOpenAutoBatchContract || onOpenNewContract) && <div className="relative group flex items-center justify-center">
               <button
                 onClick={() => {
                   if (onOpenAutoBatchContract) onOpenAutoBatchContract();
@@ -191,7 +191,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <Sparkles className="w-5 h-5 text-amber-500 fill-amber-400 group-hover:rotate-12 transition-transform" />
               </button>
               <SidebarTooltip text="6종 서류로 계약 자동 생성" badge="AUTO" />
-            </div>
+            </div>}
 
             {/* 6. 증빙서류 업로드 */}
             {onOpenUpload && (
@@ -488,8 +488,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </div>
               <div className="flex-1 text-center min-w-0 px-2">
                 <p className="text-xs font-extrabold text-slate-800 leading-tight truncate">
-                  {user?.email || 'System Admin'}
+                  {user?.display_name || user?.email || 'System Admin'}
                 </p>
+                {user?.deployment_mode === 'pilot' && <p className="mt-1 text-[10px] font-semibold text-slate-400">{user.role === 'representative' ? '대표 · 조회와 확인' : '담당자 · 등록과 보완'}</p>}
               </div>
               <button
                 onClick={(e) => {

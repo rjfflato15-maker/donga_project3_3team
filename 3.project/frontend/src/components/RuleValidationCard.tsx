@@ -86,9 +86,18 @@ export const RuleValidationCard: React.FC<RuleValidationCardProps> = ({ checks, 
                       <span className="text-sm font-bold text-slate-900">
                         {check.rule_id === 'BUSINESS_NO_MATCH' && '사업자번호 일치'}
                         {check.rule_id === 'BUSINESS_STATUS' && '계속사업자 / 사업상태'}
-                        {check.rule_id === 'AMOUNT_MATCH_TAX_INVOICE' && '금액 불일치 (세금계산서)'}
+                        {check.rule_id === 'AMOUNT_MATCH_TAX_INVOICE' && '금액 대조 (세금계산서)'}
                         {check.rule_id === 'AMOUNT_MATCH_ESTIMATE' && '금액 대조 (견적서)'}
                         {check.rule_id === 'REQUIRED_DOCUMENTS' && '필수 증빙 누락'}
+                        {check.rule_id === 'AMOUNT_BASIS' && '계약 금액 기준'}
+                        {check.rule_id === 'AMOUNT_COMPONENTS' && '공급가액·세액·합계'}
+                        {check.rule_id === 'AMOUNT_EXTRACTION' && '문서 금액 확인'}
+                        {check.rule_id === 'PAYMENT_SCOPE' && '청구 범위 확인'}
+                        {check.rule_id === 'INSTALLMENT_TOTAL' && '분할 청구 누적 합계'}
+                        {check.rule_id === 'DUPLICATE_INVOICE' && '중복 세금계산서'}
+                        {check.rule_id === 'ORIGINAL_FILE' && '서버 원본 보관'}
+                        {check.rule_id === 'DOCUMENT_TYPE' && '문서 분류 확인'}
+                        {check.rule_id === 'DOCUMENT_PROCESSING' && '문서 인식 상태'}
                       </span>
                       {getStatusBadge(check.status)}
                     </div>

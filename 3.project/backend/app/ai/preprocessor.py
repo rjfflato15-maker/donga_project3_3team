@@ -415,14 +415,23 @@ def extract_text_from_file(file_path: str, file_name: str = "") -> Tuple[str, st
         # 3rd attempt: Scanned PDF pages OCR via pypdfium2 + WinOCR/PyTesseract
         if not pdf_text:
             try:
-                import pypdfium2 as pdfium
-                pdf = pdfium.PdfDocument(file_path)
+                from .pdf_runtime import open_pdf, open_page, page_count, page_size, render_page_image
                 ocr_pages = []
-                for page in pdf:
-                    pil_image = page.render(scale=2).to_pil()
-                    page_ocr = run_ocr_on_image(pil_image)
-                    if page_ocr:
-                        ocr_pages.append(page_ocr)
+                with open_pdf(file_path) as pdf:
+                    count = page_count(pdf)
+                    if count > 50:
+                        return header.strip(), "pdf"
+                    for page_index in range(count):
+                        with open_page(pdf, page_index) as page:
+                            width, height = page_size(page)
+                            scale = min(2.0, (16_000_000 / max(width * height, 1)) ** 0.5)
+                            pil_image = render_page_image(page, scale)
+                            try:
+                                page_ocr = run_ocr_on_image(pil_image)
+                                if page_ocr:
+                                    ocr_pages.append(page_ocr)
+                            finally:
+                                pil_image.close()
                 pdf_text = "\n\n".join(ocr_pages).strip()
             except Exception:
                 pass
