@@ -1,4 +1,5 @@
 # These evaluation files have SHA256 receipts. Preserve checkout bytes exactly.
 3.project/eval/** -text
+3.project/eval/**/*.pdf -diff
 3.project/backend/scripts/generate_evaluation_dataset.py -text
 3.project/backend/scripts/build_reference_labels.py -text

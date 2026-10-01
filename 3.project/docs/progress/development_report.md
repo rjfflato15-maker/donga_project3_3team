@@ -139,7 +139,7 @@ DOCX 페이지의 시각 검증은 미완료다. [Documents 스킬](C:/Users/Don
 
 FAIL 정답 4건 중 FAIL로 찾은 것은 1건이다. 따라서 잘못된 PASS가 0이라는 수치로 오류를 모두 검출했다고 주장하지 않는다. 필드별 상세 집계와 오류 ID는 `docs/eval/dev/preliminary/preliminary_rule.json`에 있으며 Markdown 및 CSV도 저장했다. 분류와 금액 정확도는 합성 서식에서의 개발용 결과이며 최종 발표 수치는 독립 판독·사람 확인 및 별도 test 평가 뒤에만 사용한다. LLM 도입 전 수치는 기록했지만 모든 목표를 달성했다고 설명하지 않는다.
 
-이 단계에서는 앱 화면과 디자인을 수정하지 않았다. 기존 안정화 단계의 커밋 후 평가 도구·보고서를 별도 체크포인트로 저장한다.
+이 단계에서는 앱 화면과 디자인을 수정하지 않았다. 평가 도구·자료·보고서는 `cc27b35 feat(eval): add synthetic baseline and blind review workflow`로 별도 저장했다. Git이 일부 이미지 PDF를 텍스트로 인식해 PDF 형식에 필요한 줄 끝 공백을 경고했으므로 PDF는 `.gitattributes`의 바이너리 diff 대상으로 지정했다. PDF 원본 바이트나 해시는 수정하지 않았다.
 
 ## 확인 자료
 
