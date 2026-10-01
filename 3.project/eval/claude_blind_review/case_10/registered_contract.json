@@ -1,0 +1,48 @@
+{
+  "dataset_version": "synthetic-v1",
+  "split": "dev",
+  "contract_id": 110,
+  "input": {
+    "title": "가상 업무지원 시스템 구축",
+    "vendor_name": "가상 솔빛제작소 10",
+    "business_number": "000-00-01106",
+    "contract_amount": 2200000,
+    "amount_policy": {
+      "amount_basis": "TOTAL",
+      "tax_amount": null,
+      "payment_mode": "FULL"
+    }
+  },
+  "documents": [
+    {
+      "document_id": 11001,
+      "path": "document_01.pdf",
+      "sha256": "e0ed5cf010809e43bf554371b50b1bb4d85d7be8906cb1a277e76e64a3060d44"
+    },
+    {
+      "document_id": 11002,
+      "path": "document_02.png",
+      "sha256": "30c2dac54d3f956d0bf2179224b9344642c9890c2c30ac9392be423b0646a438"
+    },
+    {
+      "document_id": 11003,
+      "path": "document_03.docx",
+      "sha256": "55c86403a98f73959b39fbe763f0e51b3e4172300ad7bdce64d5e36a6a9ae9dc"
+    },
+    {
+      "document_id": 11004,
+      "path": "document_04.pdf",
+      "sha256": "3d6e7ba70dbb9ff02ba43da232c7e0c22eccf4361428870c67acf9d5690f3479"
+    },
+    {
+      "document_id": 11005,
+      "path": "document_05.png",
+      "sha256": "a46cc40eb5faf2bb77b405df5cbe10b29288dab8a5d82aa8d148b4594d0913c0"
+    },
+    {
+      "document_id": 11006,
+      "path": "document_06.docx",
+      "sha256": "8b45f652be107e3e6b21abf6e5acbc7168af957d2e81a7487ffeacbd7abecd1c"
+    }
+  ]
+}

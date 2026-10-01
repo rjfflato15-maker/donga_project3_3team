@@ -1,0 +1,4139 @@
+{
+  "dataset_version": "synthetic-v1",
+  "split": "dev",
+  "review": {
+    "confirmed": false,
+    "reviewer": null,
+    "confirmed_at": null
+  },
+  "documents": {
+    "10101": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10102": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10103": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10104": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10105": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10106": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10201": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10202": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10203": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10204": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10301": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10302": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10303": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10304": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10305": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10306": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10401": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10402": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10403": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10404": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10405": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10406": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10501": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10502": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10503": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10504": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10505": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10506": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10601": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10602": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10603": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10604": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10605": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10606": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10607": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10701": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10702": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10703": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10704": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10705": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10706": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10801": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10802": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10803": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10804": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10805": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10806": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10901": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10902": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10903": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10904": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10905": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "10906": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "11001": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "11002": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "11003": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "11004": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "11005": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    },
+    "11006": {
+      "document_type": null,
+      "reviewed": false,
+      "fields": {
+        "company_name": {
+          "state": null,
+          "value": null
+        },
+        "business_registration_no": {
+          "state": null,
+          "value": null
+        },
+        "supply_amount": {
+          "state": null,
+          "value": null
+        },
+        "tax_amount": {
+          "state": null,
+          "value": null
+        },
+        "total_amount": {
+          "state": null,
+          "value": null
+        },
+        "issue_date": {
+          "state": null,
+          "value": null
+        },
+        "amount_scope": {
+          "state": null,
+          "value": null
+        }
+      }
+    }
+  },
+  "contracts": {
+    "101": {
+      "reviewed": false,
+      "missing_types": null,
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10101",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10101",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10101",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10101",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10102",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10102",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10102",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10102",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10102",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10102",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10102",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10103",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10103",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10103",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10103",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10104",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10104",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10104",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10105",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10105",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10105",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10105",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10105",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10105",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10105",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10105",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10106",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10106",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10106",
+          "status": null
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": null
+        }
+      ]
+    },
+    "102": {
+      "reviewed": false,
+      "missing_types": null,
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10201",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10201",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10201",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10201",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10202",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10202",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10202",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10202",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10202",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10202",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10202",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10203",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10203",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10203",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10203",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10204",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10204",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10204",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10204",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10204",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10204",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10204",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10204",
+          "status": null
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": null
+        }
+      ]
+    },
+    "103": {
+      "reviewed": false,
+      "missing_types": null,
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10301",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10301",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10301",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10301",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10302",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10302",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10302",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10302",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10302",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10302",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10302",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10303",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10303",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10303",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10303",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10304",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10304",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10304",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10305",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10305",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10305",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10305",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10305",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10305",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10305",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10305",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10306",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10306",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10306",
+          "status": null
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": null
+        }
+      ]
+    },
+    "104": {
+      "reviewed": false,
+      "missing_types": null,
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10401",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10401",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10401",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10401",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10402",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10402",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10402",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10402",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10402",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10402",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10402",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10403",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10403",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10403",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10403",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10404",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10404",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10404",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10405",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10405",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10405",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10405",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10405",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10405",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10405",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10405",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10406",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10406",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10406",
+          "status": null
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": null
+        }
+      ]
+    },
+    "105": {
+      "reviewed": false,
+      "missing_types": null,
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10501",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10501",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10501",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10501",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10502",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10502",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10502",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10502",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10502",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10502",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10502",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10503",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10503",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10503",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10503",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10504",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10504",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10504",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10505",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10505",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10505",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10505",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10505",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10505",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10505",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10505",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10506",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10506",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10506",
+          "status": null
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": null
+        }
+      ]
+    },
+    "106": {
+      "reviewed": false,
+      "missing_types": null,
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10601",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10601",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10601",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10601",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10602",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10602",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10602",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10602",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10602",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10602",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10602",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10603",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10603",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10603",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10603",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10604",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10604",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10604",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10605",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10605",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10605",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10605",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10605",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10605",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10605",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10605",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10606",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10606",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10606",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10607",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10607",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10607",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10607",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10607",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10607",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10607",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10607",
+          "status": null
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": null
+        }
+      ]
+    },
+    "107": {
+      "reviewed": false,
+      "missing_types": null,
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10701",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10701",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10701",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10701",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10702",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10702",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10702",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10702",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10702",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10702",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10702",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10703",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10703",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10703",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10703",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10704",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10704",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10704",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10705",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10705",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10705",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10705",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10705",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10705",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10705",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10705",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10706",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10706",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10706",
+          "status": null
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": null
+        }
+      ]
+    },
+    "108": {
+      "reviewed": false,
+      "missing_types": null,
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10801",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10801",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10801",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10801",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10802",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10802",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10802",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10802",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10802",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10802",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10802",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10803",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10803",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10803",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10803",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10804",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10804",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10804",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10805",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10805",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10805",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10805",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10805",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10805",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10805",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10805",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10806",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10806",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10806",
+          "status": null
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": null
+        }
+      ]
+    },
+    "109": {
+      "reviewed": false,
+      "missing_types": null,
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10901",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10901",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10901",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10901",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10902",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10902",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10902",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10902",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10902",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10902",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10902",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10903",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10903",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10903",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10903",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10904",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10904",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10904",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10905",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10905",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10905",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10905",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10905",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10905",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10905",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10905",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10906",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10906",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10906",
+          "status": null
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": null
+        }
+      ]
+    },
+    "110": {
+      "reviewed": false,
+      "missing_types": null,
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11001",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11001",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11001",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "11001",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11002",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11002",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11002",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "11002",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "11002",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "11002",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "11002",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11003",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11003",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11003",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "11003",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11004",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11004",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11004",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11005",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11005",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11005",
+          "status": null
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "11005",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "11005",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "11005",
+          "status": null
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "11005",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "11005",
+          "status": null
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11006",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11006",
+          "status": null
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11006",
+          "status": null
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": null
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": null
+        }
+      ]
+    }
+  }
+}

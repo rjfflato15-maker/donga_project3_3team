@@ -1,0 +1,1869 @@
+{
+  "documents": {
+    "10101": {
+      "document_type": "contract",
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-01014",
+        "amount": 1210000.0,
+        "issue_date": "2026-09-01",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1100000.0,
+        "tax_amount": 110000.0,
+        "total_amount": 1210000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10102": {
+      "document_type": "estimate",
+      "fields": {
+        "title": "가상 솔빛제작소 1 견적서",
+        "company_name": "가상 솔빛제작소 1",
+        "business_registration_no": "000-00-01014",
+        "amount": null,
+        "issue_date": "2026-09-01",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10103": {
+      "document_type": "business_registration",
+      "fields": {
+        "title": "가상 솔빛제작소 1 사업자등록증",
+        "company_name": "가상 솔빛제작소 1",
+        "business_registration_no": "000-00-01014",
+        "amount": null,
+        "issue_date": "2026-09-01",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10104": {
+      "document_type": "bank_account",
+      "fields": {
+        "title": "가상 솔빛제작소 1 통장사본",
+        "company_name": "가상 솔빛제작소 1",
+        "business_registration_no": "000-00-01014",
+        "amount": null,
+        "issue_date": "2026-09-01",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10105": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "title": "가상 솔빛제작소 1 전자세금계산서",
+        "company_name": "가상 솔빛제작소 1",
+        "business_registration_no": "000-00-01014",
+        "amount": null,
+        "issue_date": "2026-09-01",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10106": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "title": "가상 솔빛제작소 1 검수확인서",
+        "company_name": "가상 솔빛제작소 1",
+        "business_registration_no": "000-00-01014",
+        "amount": 1210000.0,
+        "issue_date": "2026-09-01",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1100000.0,
+        "tax_amount": 110000.0,
+        "total_amount": 1210000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10201": {
+      "document_type": "contract",
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-01028",
+        "amount": null,
+        "issue_date": "2026-09-02",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10202": {
+      "document_type": "estimate",
+      "fields": {
+        "title": "가상 솔빛제작소 2 견적서",
+        "company_name": "가상 솔빛제작소 2",
+        "business_registration_no": "000-00-01028",
+        "amount": 1320000.0,
+        "issue_date": "2026-09-02",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1200000.0,
+        "tax_amount": 120000.0,
+        "total_amount": 1320000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10203": {
+      "document_type": "business_registration",
+      "fields": {
+        "title": "가상 솔빛제작소 2 사업자등록증",
+        "company_name": "가상 솔빛제작소 2",
+        "business_registration_no": "000-00-01028",
+        "amount": null,
+        "issue_date": "2026-09-02",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10204": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "title": "가상 솔빛제작소 2 전자세금계산서",
+        "company_name": "가상 솔빛제작소 2",
+        "business_registration_no": "000-00-01028",
+        "amount": null,
+        "issue_date": "2026-09-02",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10301": {
+      "document_type": "contract",
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-01033",
+        "amount": 1430000.0,
+        "issue_date": "2026-09-03",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1300000.0,
+        "tax_amount": 130000.0,
+        "total_amount": 1430000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10302": {
+      "document_type": "estimate",
+      "fields": {
+        "title": "가상 솔빛제작소 3 견적서",
+        "company_name": "가상 솔빛제작소 3",
+        "business_registration_no": "000-00-21039",
+        "amount": 1430000.0,
+        "issue_date": "2026-09-03",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1300000.0,
+        "tax_amount": 130000.0,
+        "total_amount": 1430000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10303": {
+      "document_type": "business_registration",
+      "fields": {
+        "title": "가상 솔빛제작소 3 사업자등록증",
+        "company_name": "가상 솔빛제작소 3",
+        "business_registration_no": "000-00-01033",
+        "amount": null,
+        "issue_date": "2026-09-03",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10304": {
+      "document_type": "bank_account",
+      "fields": {
+        "title": "가상 솔빛제작소 3 통장사본",
+        "company_name": "가상 솔빛제작소 3",
+        "business_registration_no": "000-00-01033",
+        "amount": null,
+        "issue_date": "2026-09-03",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10305": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "title": "가상 솔빛제작소 3 전자세금계산서",
+        "company_name": "가상 솔빛제작소 3",
+        "business_registration_no": "000-00-01033",
+        "amount": 1430000.0,
+        "issue_date": "2026-09-03",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1300000.0,
+        "tax_amount": 130000.0,
+        "total_amount": 1430000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10306": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "title": "가상 솔빛제작소 3 검수확인서",
+        "company_name": "가상 솔빛제작소 3",
+        "business_registration_no": "000-00-01033",
+        "amount": null,
+        "issue_date": "2026-09-03",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10401": {
+      "document_type": "contract",
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-01047",
+        "amount": 1540000.0,
+        "issue_date": "2026-09-04",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1400000.0,
+        "tax_amount": 140000.0,
+        "total_amount": 1540000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10402": {
+      "document_type": "estimate",
+      "fields": {
+        "title": "가상 솔빛제작소 4 견적서",
+        "company_name": "가상 솔빛제작소 4",
+        "business_registration_no": "000-00-01047",
+        "amount": null,
+        "issue_date": "2026-09-04",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10403": {
+      "document_type": "business_registration",
+      "fields": {
+        "title": "가상 솔빛제작소 4 사업자등록증",
+        "company_name": "가상 솔빛제작소 4",
+        "business_registration_no": "000-00-01047",
+        "amount": null,
+        "issue_date": "2026-09-04",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10404": {
+      "document_type": "bank_account",
+      "fields": {
+        "title": "가상 솔빛제작소 4 통장사본",
+        "company_name": "가상 솔빛제작소 4",
+        "business_registration_no": "000-00-01047",
+        "amount": null,
+        "issue_date": "2026-09-04",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10405": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "title": "가상 솔빛제작소 4 전자세금계산서",
+        "company_name": "가상 솔빛제작소 4",
+        "business_registration_no": "000-00-01047",
+        "amount": null,
+        "issue_date": "2026-09-04",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10406": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "title": "가상 솔빛제작소 4 검수확인서",
+        "company_name": "가상 솔빛제작소 4",
+        "business_registration_no": "000-00-01047",
+        "amount": 1540000.0,
+        "issue_date": "2026-09-04",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1400000.0,
+        "tax_amount": 140000.0,
+        "total_amount": 1540000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10501": {
+      "document_type": "contract",
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-01052",
+        "amount": null,
+        "issue_date": "2026-09-05",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10502": {
+      "document_type": "estimate",
+      "fields": {
+        "title": "가상 솔빛제작소 5 견적서",
+        "company_name": "가상 솔빛제작소 5",
+        "business_registration_no": "000-00-01052",
+        "amount": 1650000.0,
+        "issue_date": "2026-09-05",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1500000.0,
+        "tax_amount": 150000.0,
+        "total_amount": 1650000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10503": {
+      "document_type": "business_registration",
+      "fields": {
+        "title": "가상 솔빛제작소 5 사업자등록증",
+        "company_name": "가상 솔빛제작소 5",
+        "business_registration_no": "000-00-01052",
+        "amount": null,
+        "issue_date": "2026-09-05",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10504": {
+      "document_type": "bank_account",
+      "fields": {
+        "title": "통장사본",
+        "company_name": null,
+        "business_registration_no": "000-00-01052",
+        "amount": null,
+        "issue_date": "2026-09-05",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10505": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "title": "가상 솔빛제작소 5 전자세금계산서",
+        "company_name": "가상 솔빛제작소 5",
+        "business_registration_no": "000-00-01052",
+        "amount": 1650000.0,
+        "issue_date": "2026-09-05",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1500000.0,
+        "tax_amount": 150000.0,
+        "total_amount": 1650000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10506": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "title": "가상 솔빛제작소 5 검수확인서",
+        "company_name": "가상 솔빛제작소 5",
+        "business_registration_no": "000-00-01052",
+        "amount": 1650000.0,
+        "issue_date": "2026-09-05",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1500000.0,
+        "tax_amount": 150000.0,
+        "total_amount": 1650000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10601": {
+      "document_type": "contract",
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-01066",
+        "amount": 1760000.0,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1600000.0,
+        "tax_amount": 160000.0,
+        "total_amount": 1760000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10602": {
+      "document_type": "estimate",
+      "fields": {
+        "title": "가상 솔빛제작소 6 견적서",
+        "company_name": "가상 솔빛제작소 6",
+        "business_registration_no": "000-00-01066",
+        "amount": 1760000.0,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1600000.0,
+        "tax_amount": 160000.0,
+        "total_amount": 1760000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10603": {
+      "document_type": "business_registration",
+      "fields": {
+        "title": "가상 솔빛제작소 6 사업자등록증",
+        "company_name": "가상 솔빛제작소 6",
+        "business_registration_no": "000-00-01066",
+        "amount": null,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10604": {
+      "document_type": "bank_account",
+      "fields": {
+        "title": "가상 솔빛제작소 6 통장사본",
+        "company_name": "가상 솔빛제작소 6",
+        "business_registration_no": "000-00-01066",
+        "amount": null,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10605": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "title": "가상 솔빛제작소 6 전자세금계산서",
+        "company_name": "가상 솔빛제작소 6",
+        "business_registration_no": "000-00-01066",
+        "amount": 528000.0,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 480000.0,
+        "tax_amount": 48000.0,
+        "total_amount": 528000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10606": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "title": "가상 솔빛제작소 6 검수확인서",
+        "company_name": "가상 솔빛제작소 6",
+        "business_registration_no": "000-00-01066",
+        "amount": null,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10607": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "title": "가상 솔빛제작소 6 전자세금계산서",
+        "company_name": "가상 솔빛제작소 6",
+        "business_registration_no": "000-00-01066",
+        "amount": 1232000.0,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1120000.0,
+        "tax_amount": 112000.0,
+        "total_amount": 1232000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10701": {
+      "document_type": "contract",
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-01071",
+        "amount": null,
+        "issue_date": "2026-09-07",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": 170000.0,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10702": {
+      "document_type": "estimate",
+      "fields": {
+        "title": "가상 솔빛제작소 7 견적서",
+        "company_name": "가상 솔빛제작소 7",
+        "business_registration_no": "000-00-01071",
+        "amount": null,
+        "issue_date": "2026-09-07",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": 170000.0,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10703": {
+      "document_type": "business_registration",
+      "fields": {
+        "title": "가상 솔빛제작소 7 사업자등록증",
+        "company_name": "가상 솔빛제작소 7",
+        "business_registration_no": "000-00-01071",
+        "amount": null,
+        "issue_date": "2026-09-07",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10704": {
+      "document_type": "bank_account",
+      "fields": {
+        "title": "가상 솔빛제작소 7 통장사본",
+        "company_name": "가상 솔빛제작소 7",
+        "business_registration_no": "000-00-01071",
+        "amount": null,
+        "issue_date": "2026-09-07",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10705": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "title": "가상 솔빛제작소 7 전자세금계산서",
+        "company_name": "가상 솔빛제작소 7",
+        "business_registration_no": "000-00-01071",
+        "amount": null,
+        "issue_date": "2026-09-07",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": 170000.0,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10706": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "title": "가상 솔빛제작소 7 검수확인서",
+        "company_name": "가상 솔빛제작소 7",
+        "business_registration_no": "000-00-01071",
+        "amount": null,
+        "issue_date": "2026-09-07",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": 170000.0,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10801": {
+      "document_type": "contract",
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-01085",
+        "amount": null,
+        "issue_date": "2026-09-08",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10802": {
+      "document_type": "estimate",
+      "fields": {
+        "title": "가상 솔빛제작소 8 견적서",
+        "company_name": "가상 솔빛제작소 8",
+        "business_registration_no": "000-00-01085",
+        "amount": 1980000.0,
+        "issue_date": "2026-09-08",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1800000.0,
+        "tax_amount": 180000.0,
+        "total_amount": 1980000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10803": {
+      "document_type": "business_registration",
+      "fields": {
+        "title": "가상 솔빛제작소 8 사업자등록증",
+        "company_name": "가상 솔빛제작소 8",
+        "business_registration_no": "000-00-01085",
+        "amount": null,
+        "issue_date": "2026-09-08",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10804": {
+      "document_type": "bank_account",
+      "fields": {
+        "title": "통장사본",
+        "company_name": null,
+        "business_registration_no": "000-00-01085",
+        "amount": null,
+        "issue_date": "2026-09-08",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10805": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "title": "가상 솔빛제작소 8 전자세금계산서",
+        "company_name": "가상 솔빛제작소 8",
+        "business_registration_no": "000-00-01085",
+        "amount": 1980000.0,
+        "issue_date": "2026-09-08",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1800000.0,
+        "tax_amount": 180000.0,
+        "total_amount": 1980000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10806": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "title": "가상 솔빛제작소 8 검수확인서",
+        "company_name": "가상 솔빛제작소 8",
+        "business_registration_no": "000-00-01085",
+        "amount": 1980000.0,
+        "issue_date": "2026-09-08",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1800000.0,
+        "tax_amount": 180000.0,
+        "total_amount": 1980000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10901": {
+      "document_type": "contract",
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-01090",
+        "amount": 2090000.0,
+        "issue_date": "2026-09-09",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1900000.0,
+        "tax_amount": 190000.0,
+        "total_amount": 2090000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10902": {
+      "document_type": "estimate",
+      "fields": {
+        "title": "가상 솔빛제작소 9 견적서",
+        "company_name": "가상 솔빛제작소 9",
+        "business_registration_no": "000-00-01090",
+        "amount": null,
+        "issue_date": "2026-09-09",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10903": {
+      "document_type": "business_registration",
+      "fields": {
+        "title": "가상 솔빛제작소 9 사업자등록증",
+        "company_name": "가상 솔빛제작소 9",
+        "business_registration_no": "000-00-01090",
+        "amount": null,
+        "issue_date": "2026-09-09",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10904": {
+      "document_type": "bank_account",
+      "fields": {
+        "title": "가상 솔빛제작소 9 통장사본",
+        "company_name": "가상 솔빛제작소 9",
+        "business_registration_no": "000-00-01090",
+        "amount": null,
+        "issue_date": "2026-09-09",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10905": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "title": "가상 솔빛제작소 9 전자세금계산서",
+        "company_name": "가상 솔빛제작소 9",
+        "business_registration_no": "000-00-01090",
+        "amount": 2090000.0,
+        "issue_date": "2026-09-09",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 1900000.0,
+        "tax_amount": 190000.0,
+        "total_amount": 2090000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "10906": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "title": "가상 솔빛제작소 9 검수확인서",
+        "company_name": "가상 솔빛제작소 9",
+        "business_registration_no": "000-00-01090",
+        "amount": null,
+        "issue_date": "2026-09-09",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "11001": {
+      "document_type": "contract",
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-01106",
+        "amount": 2200000.0,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 2000000.0,
+        "tax_amount": 200000.0,
+        "total_amount": 2200000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "11002": {
+      "document_type": "estimate",
+      "fields": {
+        "title": "가상 솔빛제작소 10 견적서",
+        "company_name": "가상 솔빛제작소 10",
+        "business_registration_no": "000-00-01106",
+        "amount": null,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "11003": {
+      "document_type": "business_registration",
+      "fields": {
+        "title": "가상 솔빛제작소 10 사업자등록증",
+        "company_name": "가상 솔빛제작소 10",
+        "business_registration_no": "000-00-01106",
+        "amount": null,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "11004": {
+      "document_type": "bank_account",
+      "fields": {
+        "title": "가상 솔빛제작소 10 통장사본",
+        "company_name": "가상 솔빛제작소 10",
+        "business_registration_no": "000-00-01106",
+        "amount": null,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "11005": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "title": "가상 솔빛제작소 10 전자세금계산서",
+        "company_name": "가상 솔빛제작소 10",
+        "business_registration_no": "000-00-01106",
+        "amount": null,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    },
+    "11006": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "title": "가상 솔빛제작소 10 검수확인서",
+        "company_name": "가상 솔빛제작소 10",
+        "business_registration_no": "000-00-01106",
+        "amount": 2200000.0,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 2000000.0,
+        "tax_amount": 200000.0,
+        "total_amount": 2200000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "processing_failed": false,
+      "error_type": null
+    }
+  },
+  "contracts": {
+    "101": {
+      "checks": [
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10101",
+          "expected": "000-00-01014",
+          "actual": "0000001014",
+          "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10102",
+          "expected": "000-00-01014",
+          "actual": "0000001014",
+          "message": "document_02.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10103",
+          "expected": "000-00-01014",
+          "actual": "0000001014",
+          "message": "document_03.docx: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10105",
+          "expected": "000-00-01014",
+          "actual": "0000001014",
+          "message": "document_05.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "status": "REVIEW",
+          "field": "10102",
+          "expected": "공급가액·세액·합계",
+          "actual": "기준 미확인",
+          "message": "document_02.png: 금액 의미를 확인하고 추출값을 보완하세요."
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "status": "REVIEW",
+          "field": "10105",
+          "expected": "공급가액·세액·합계",
+          "actual": "기준 미확인",
+          "message": "document_05.png: 금액 의미를 확인하고 추출값을 보완하세요."
+        }
+      ]
+    },
+    "102": {
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "status": "MISSING",
+          "field": "bank_account",
+          "expected": "제출",
+          "actual": "누락",
+          "message": "통장사본이(가) 제출되지 않았습니다."
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "status": "MISSING",
+          "field": "inspection_confirmation",
+          "expected": "제출",
+          "actual": "누락",
+          "message": "검수확인서이(가) 제출되지 않았습니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10201",
+          "expected": "000-00-01028",
+          "actual": "0000001028",
+          "message": "document_01.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10202",
+          "expected": "000-00-01028",
+          "actual": "0000001028",
+          "message": "document_02.docx: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10203",
+          "expected": "000-00-01028",
+          "actual": "0000001028",
+          "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10204",
+          "expected": "000-00-01028",
+          "actual": "0000001028",
+          "message": "document_04.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "status": "PASS",
+          "field": "10202",
+          "expected": "1,320,000원",
+          "actual": "1,320,000원",
+          "message": "document_02.docx: 합계 기준 금액 일치."
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "status": "REVIEW",
+          "field": "10204",
+          "expected": "공급가액·세액·합계",
+          "actual": "기준 미확인",
+          "message": "document_04.png: 금액 의미를 확인하고 추출값을 보완하세요."
+        }
+      ]
+    },
+    "103": {
+      "checks": [
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10301",
+          "expected": "000-00-01033",
+          "actual": "0000001033",
+          "message": "document_01.docx: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "FAIL",
+          "field": "10302",
+          "expected": "000-00-01033",
+          "actual": "0000021039",
+          "message": "document_02.pdf: 사업자등록번호가 다릅니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10303",
+          "expected": "000-00-01033",
+          "actual": "0000001033",
+          "message": "document_03.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10305",
+          "expected": "000-00-01033",
+          "actual": "0000001033",
+          "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "status": "PASS",
+          "field": "10302",
+          "expected": "1,430,000원",
+          "actual": "1,430,000원",
+          "message": "document_02.pdf: 합계 기준 금액 일치."
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "status": "PASS",
+          "field": "10305",
+          "expected": "1,430,000원",
+          "actual": "1,430,000원",
+          "message": "document_05.pdf: 합계 기준 금액 일치."
+        }
+      ]
+    },
+    "104": {
+      "checks": [
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10401",
+          "expected": "000-00-01047",
+          "actual": "0000001047",
+          "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10402",
+          "expected": "000-00-01047",
+          "actual": "0000001047",
+          "message": "document_02.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10403",
+          "expected": "000-00-01047",
+          "actual": "0000001047",
+          "message": "document_03.docx: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10405",
+          "expected": "000-00-01047",
+          "actual": "0000001047",
+          "message": "document_05.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "status": "REVIEW",
+          "field": "10402",
+          "expected": "공급가액·세액·합계",
+          "actual": "기준 미확인",
+          "message": "document_02.png: 금액 의미를 확인하고 추출값을 보완하세요."
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "status": "REVIEW",
+          "field": "10405",
+          "expected": "공급가액·세액·합계",
+          "actual": "기준 미확인",
+          "message": "document_05.png: 금액 의미를 확인하고 추출값을 보완하세요."
+        }
+      ]
+    },
+    "105": {
+      "checks": [
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10501",
+          "expected": "000-00-01052",
+          "actual": "0000001052",
+          "message": "document_01.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10502",
+          "expected": "000-00-01052",
+          "actual": "0000001052",
+          "message": "document_02.docx: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10503",
+          "expected": "000-00-01052",
+          "actual": "0000001052",
+          "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10505",
+          "expected": "000-00-01052",
+          "actual": "0000001052",
+          "message": "document_05.docx: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "status": "PASS",
+          "field": "10502",
+          "expected": "1,650,000원",
+          "actual": "1,650,000원",
+          "message": "document_02.docx: 합계 기준 금액 일치."
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "status": "PASS",
+          "field": "10505",
+          "expected": "1,650,000원",
+          "actual": "1,650,000원",
+          "message": "document_05.docx: 합계 기준 금액 일치."
+        }
+      ]
+    },
+    "106": {
+      "checks": [
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10601",
+          "expected": "000-00-01066",
+          "actual": "0000001066",
+          "message": "document_01.docx: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10602",
+          "expected": "000-00-01066",
+          "actual": "0000001066",
+          "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10603",
+          "expected": "000-00-01066",
+          "actual": "0000001066",
+          "message": "document_03.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10605",
+          "expected": "000-00-01066",
+          "actual": "0000001066",
+          "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10607",
+          "expected": "000-00-01066",
+          "actual": "0000001066",
+          "message": "document_07.docx: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "status": "PASS",
+          "field": "10602",
+          "expected": "1,760,000원",
+          "actual": "1,760,000원",
+          "message": "document_02.pdf: 합계 기준 금액 일치."
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "status": "REVIEW",
+          "field": "tax_invoice",
+          "expected": "부분 청구 확인",
+          "actual": "범위 미확인",
+          "message": "각 세금계산서의 부분 청구 여부를 확인하세요."
+        }
+      ]
+    },
+    "107": {
+      "checks": [
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10701",
+          "expected": "000-00-01071",
+          "actual": "0000001071",
+          "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10702",
+          "expected": "000-00-01071",
+          "actual": "0000001071",
+          "message": "document_02.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10703",
+          "expected": "000-00-01071",
+          "actual": "0000001071",
+          "message": "document_03.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10705",
+          "expected": "000-00-01071",
+          "actual": "0000001071",
+          "message": "document_05.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "status": "REVIEW",
+          "field": "10702",
+          "expected": "공급가액·세액·합계",
+          "actual": "기준 미확인",
+          "message": "document_02.png: 금액 의미를 확인하고 추출값을 보완하세요."
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "status": "REVIEW",
+          "field": "10705",
+          "expected": "공급가액·세액·합계",
+          "actual": "기준 미확인",
+          "message": "document_05.png: 금액 의미를 확인하고 추출값을 보완하세요."
+        }
+      ]
+    },
+    "108": {
+      "checks": [
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10801",
+          "expected": "000-00-01085",
+          "actual": "0000001085",
+          "message": "document_01.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10802",
+          "expected": "000-00-01085",
+          "actual": "0000001085",
+          "message": "document_02.docx: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10803",
+          "expected": "000-00-01085",
+          "actual": "0000001085",
+          "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10805",
+          "expected": "000-00-01085",
+          "actual": "0000001085",
+          "message": "document_05.docx: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "status": "PASS",
+          "field": "10802",
+          "expected": "1,980,000원",
+          "actual": "1,980,000원",
+          "message": "document_02.docx: 합계 기준 금액 일치."
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "status": "PASS",
+          "field": "10805",
+          "expected": "1,980,000원",
+          "actual": "1,980,000원",
+          "message": "document_05.docx: 합계 기준 금액 일치."
+        }
+      ]
+    },
+    "109": {
+      "checks": [
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10901",
+          "expected": "000-00-01090",
+          "actual": "0000001090",
+          "message": "document_01.docx: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10902",
+          "expected": "000-00-01090",
+          "actual": "0000001090",
+          "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10903",
+          "expected": "000-00-01090",
+          "actual": "0000001090",
+          "message": "document_03.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "10905",
+          "expected": "000-00-01090",
+          "actual": "0000001090",
+          "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "status": "REVIEW",
+          "field": "10902",
+          "expected": "공급가액·세액·합계",
+          "actual": "기준 미확인",
+          "message": "document_02.pdf: 금액 의미를 확인하고 추출값을 보완하세요."
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "status": "PASS",
+          "field": "10905",
+          "expected": "2,090,000원",
+          "actual": "2,090,000원",
+          "message": "document_05.pdf: 합계 기준 금액 일치."
+        }
+      ]
+    },
+    "110": {
+      "checks": [
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "11001",
+          "expected": "000-00-01106",
+          "actual": "0000001106",
+          "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "11002",
+          "expected": "000-00-01106",
+          "actual": "0000001106",
+          "message": "document_02.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "11003",
+          "expected": "000-00-01106",
+          "actual": "0000001106",
+          "message": "document_03.docx: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "status": "PASS",
+          "field": "11005",
+          "expected": "000-00-01106",
+          "actual": "0000001106",
+          "message": "document_05.png: 사업자등록번호가 일치합니다."
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "status": "REVIEW",
+          "field": "11002",
+          "expected": "공급가액·세액·합계",
+          "actual": "기준 미확인",
+          "message": "document_02.png: 금액 의미를 확인하고 추출값을 보완하세요."
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "status": "REVIEW",
+          "field": "11005",
+          "expected": "공급가액·세액·합계",
+          "actual": "기준 미확인",
+          "message": "document_05.png: 금액 의미를 확인하고 추출값을 보완하세요."
+        }
+      ]
+    }
+  }
+}

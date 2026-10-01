@@ -1,0 +1,4334 @@
+{
+  "dataset_version": "synthetic-v1",
+  "split": "dev",
+  "reference_version": "source-reference-v1",
+  "review": {
+    "confirmed": false,
+    "reviewer_type": "source_reference",
+    "author": "Codex",
+    "created_at": "2026-10-02T00:08:18.969906+09:00",
+    "human_reviewed": false,
+    "claude_reviewed": false,
+    "docx_page_visual_verified": false
+  },
+  "documents": {
+    "10101": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01014"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1100000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 110000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1210000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-01"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "8bdbde16d7d46cc7873a1ee7f76f5bbc31beb975ae2cf63ac3c71bce643d4b8b"
+    },
+    "10102": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01014"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1100000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 110000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1210000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-01"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "2d0358e3d30e98b2869d187b6f1e74c37d43ed7e115f573e99f9390f14f344b9"
+    },
+    "10103": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01014"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-01"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "f1da94085c371fe80700d0267c04a4d41260de6a791b9a1e4805b286ad319a9c"
+    },
+    "10104": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01014"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-01"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "a27e1468b6db7f786936be0524a9c5b2dcfbfcc7020b5fe1573ce5601e7b2c5e"
+    },
+    "10105": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01014"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1100000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 110000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1210000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-01"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "1ef6600dc3135491bbdc0a4e1c5b238214418d470df043ccad40f6b9b36835ea"
+    },
+    "10106": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01014"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1100000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 110000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1210000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-01"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "499bcc7a938e89cf6bfb4d35c442517b79377c6a6111044442976af7c36c8d45"
+    },
+    "10201": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01028"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1200000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 120000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1320000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-02"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "9f870a8dce4afd9480dbdf1f7ef1c467ede220c1feb5e247f4dc74eea14fa1d4"
+    },
+    "10202": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01028"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1200000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 120000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1320000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-02"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "e49887b1b45ce692235e5b357875988d096553d02f058d782e954ac3f4170fac"
+    },
+    "10203": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01028"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-02"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "40f02a9e732c19ee542236834bb00bcb0a83336d35f0cf794d6212a246afe7cb"
+    },
+    "10204": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01028"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1200000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 120000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1320000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-02"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "3fc0222f4d897e1082e6663b24d22e2fa2cf9d7c1500f157d798a753a9d83252"
+    },
+    "10301": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01033"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1300000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 130000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1430000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-03"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "f9eb74f7e896b72cb63452dfbfda0e18d4a64858c33aaaeb0dc7b61e24238b5a"
+    },
+    "10302": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-21039"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1300000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 130000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1430000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-03"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "74382b2f8c64077edb20b1da34e961ee91dbec2ee05ab86ebe48cdf983e7cafd"
+    },
+    "10303": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01033"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-03"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "6d82dc311e481d0c235afe65104ff6e474b0e0666053b035af7c23bbc80ef7af"
+    },
+    "10304": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01033"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-03"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "a636a2bfb10a56aadd8e41f6d833c7cbb3d3a3a82bf00e82f559f3335fad0575"
+    },
+    "10305": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01033"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1300000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 130000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1430000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-03"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "f935ac3eb42dd0fa49b6ee2721c706cd462ffeac48fc7a03cf373d5d074546f2"
+    },
+    "10306": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01033"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1300000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 130000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1430000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-03"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "230051504ec9f4e82a6372fa5f5a2d595fc2c8dc53999f2382bcde3eb1390843"
+    },
+    "10401": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01047"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1400000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 140000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1540000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-04"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "82edbc6dcd0223b5f6c2294d5692bebb51debd40f8cb90de8238ce1442f90935"
+    },
+    "10402": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01047"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1500000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 150000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1650000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-04"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "f5c1072618c0295df6a0e77a83f4a498f897516a920adf64d91b3374bb92a4b3"
+    },
+    "10403": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01047"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-04"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "a2662b0da2faa1ff790c5051c0eeffe9ed1b7106aaf7c2df31e694714f42a5bb"
+    },
+    "10404": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01047"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-04"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "5fa892ccea7b9252bc3cc840f056619bbce745f9bf164ffb54f2678e4d3ebe39"
+    },
+    "10405": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01047"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1400000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 140000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1540000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-04"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "c7a6b5e04b26e516167df36174eb7efa604a463b3df931b78931ff444167c64d"
+    },
+    "10406": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01047"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1400000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 140000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1540000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-04"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "d7a2572c1f5d27a9a26d477605d65fa2537e74f86bc63f1db53ee01d319ac9a8"
+    },
+    "10501": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01052"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1500000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 150000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1650000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-05"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "834eedb33129deafc045e9151400cdaa943a483a9b4c9134cacdf1bf0f30cd97"
+    },
+    "10502": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01052"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1500000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 150000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1650000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-05"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "73b354d3763e6f37a7242ce642760647234bec02090f53ae05c556fb75645636"
+    },
+    "10503": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01052"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-05"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "90f52e9bae317f5896e8e5011eb6b0f59f022e7a416c3536e0c8dd9836ef41c5"
+    },
+    "10504": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01052"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-05"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "bfe7e8457a99ea6af3e0d18d32ab0c4185f7aa7b599b4e6e7a12058b1be0bf7c"
+    },
+    "10505": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01052"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1500000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 150000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1650000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-05"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "99e487ce6dfc109d15e1cfa1a73f5d18e738747cf7870c0a2bbdc4347fcb8fc0"
+    },
+    "10506": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01052"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1500000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 150000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1650000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-05"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "66a19a70699ebd28c2141853864500be47c271224bd0df21f0748cf2ec9ab0ab"
+    },
+    "10601": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01066"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1600000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 160000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1760000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-06"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "f36e3959ca0b43b97c20b2f387a22f2ad8898b871922bccb11af4e5c996e5157"
+    },
+    "10602": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01066"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1600000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 160000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1760000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-06"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "adfb3bc0815ab17faf380ccbf3d367a6bae23c18a54adb35aedc65200d637251"
+    },
+    "10603": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01066"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-06"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "e615debe1ff132c1db983eb01f348d6b00f7592437510322f886deb269bd194d"
+    },
+    "10604": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01066"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-06"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "4775e94d82083633f4893859bfb0ca67da9c57745f1a9961b0305d48e003fb4b"
+    },
+    "10605": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01066"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 480000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 48000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 528000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-06"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "PARTIAL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "778549950898f4ef0e25c61d33648e00cbe07f1e4fe674895dc9d5fd4790cfe2"
+    },
+    "10606": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01066"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1600000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 160000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1760000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-06"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "4c843675dda2f4b85107a3a18f27e18c632dcfb461bcd1b7fdcf198715eb879f"
+    },
+    "10607": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01066"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1120000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 112000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1232000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-06"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "PARTIAL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "9d9e845869fcd64eb518a13e38149d0ffa99e1bdbeeafb919961e7534f2b58cb"
+    },
+    "10701": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 7"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01071"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1700000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 170000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1870000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-07"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "scanned_pdf_design_pixels",
+      "source_sha256": "e188523a2d18b194fef2277fa257510c989f55cbd7cc78e5013301a46eea4e85"
+    },
+    "10702": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 7"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01071"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1700000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 170000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1870000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-07"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "4e993c24436f04fbc52ffd68ca67487f85bbc84a9213d854e2917e0e9733f3a3"
+    },
+    "10703": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 7"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01071"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-07"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "4dd61cf4604eff019c577c8affbcee9e43db748279759114332c82c5343b11fc"
+    },
+    "10704": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 7"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01071"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-07"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "f96396f5ec6cb6bec6f84a69505f3f5285023149fdac716a58cebddf78d28ba4"
+    },
+    "10705": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 7"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01071"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1700000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 170000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1870000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-07"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "e1b4774da684b8577d43196f406b90e6620f0304ca0418eca17db913c0b953d1"
+    },
+    "10706": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 7"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01071"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1700000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 170000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1870000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-07"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "3af70e28ca154249d040457372b4c2d9dd97b79c79602c29563525e133520444"
+    },
+    "10801": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 8"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01085"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1800000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 180000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1980000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-08"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "bad7b3dbc5d1f2e6eb743c08a7adaac8d44f2bc40a1743c90e54ac4ae7b00160"
+    },
+    "10802": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 8"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01085"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1800000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 180000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1980000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-08"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "af175b490a1c019cba75e886d2df8c85dcd0344be89853b0d1c187dfa7e643d4"
+    },
+    "10803": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 8"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01085"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-08"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "5aadeb0591ce9743bbf345db9e0c8c41b87a191f72563055f093da2a51e3c04c"
+    },
+    "10804": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 8"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01085"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-08"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "8ebac7fe426911f3322b3dc857db153b1547b0702a1814932b72f45cd566ffe4"
+    },
+    "10805": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 8"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01085"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1800000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 180000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1980000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-08"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "006d568e2b3f71695e681eb32dc626c9d879f61b8910ed8f030a7dea03a57bbe"
+    },
+    "10806": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 8"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01085"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1800000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 180000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 1980000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-08"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "be3258b1b742b1b3d82991ba99501c15e9efb8e6c29d432962790e09b8150812"
+    },
+    "10901": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 9"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01090"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1900000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 190000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2090000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-09"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "df2af685c7bf94a97ad0e08022d83ec9d12dcbfba8a6b0dabc4df76deab28832"
+    },
+    "10902": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 9"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01090"
+        },
+        "supply_amount": {
+          "state": "REVIEW",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "REVIEW",
+          "value": null
+        },
+        "total_amount": {
+          "state": "REVIEW",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-09"
+        },
+        "amount_scope": {
+          "state": "REVIEW",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "ff9f41662e6ff9674ba07a6009bb73402a931064e9065948e2ea936f0a16d5e2"
+    },
+    "10903": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 9"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01090"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-09"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "a85aac78668c0e75445c6fa9eb534b37a83fb6dedb52d340d0c4f07df8234624"
+    },
+    "10904": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 9"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01090"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-09"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "f0110b1b28bcde1914e1cc838965925f445d145faa1ea6498a264af29f08e906"
+    },
+    "10905": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 9"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01090"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1900000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 190000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2090000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-09"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "2651ac5f3710f944df5f7083048f87641cc1ed42b47cf7da4a8cc6e4ac888a58"
+    },
+    "10906": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 9"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01090"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1900000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 190000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2090000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-09"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "80e85c54573171316c7786c7ed805e99f247acaf33f5e820c9b588e8dbda3f6e"
+    },
+    "11001": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 10"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01106"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 2000000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 200000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2200000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-10"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "e0ed5cf010809e43bf554371b50b1bb4d85d7be8906cb1a277e76e64a3060d44"
+    },
+    "11002": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 10"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01106"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 2000000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 200000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2200000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-10"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "30c2dac54d3f956d0bf2179224b9344642c9890c2c30ac9392be423b0646a438"
+    },
+    "11003": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 10"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01106"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-10"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "55c86403a98f73959b39fbe763f0e51b3e4172300ad7bdce64d5e36a6a9ae9dc"
+    },
+    "11004": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 10"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01106"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-10"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_pdf_content",
+      "source_sha256": "3d6e7ba70dbb9ff02ba43da232c7e0c22eccf4361428870c67acf9d5690f3479"
+    },
+    "11005": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 10"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01106"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 2000000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 200000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2201000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-10"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "png_design_pixels",
+      "source_sha256": "a46cc40eb5faf2bb77b405df5cbe10b29288dab8a5d82aa8d148b4594d0913c0"
+    },
+    "11006": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 10"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01106"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 2000000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 200000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2200000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-10"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "reviewed": false,
+      "source_checked": true,
+      "source_check_method": "independent_docx_content",
+      "source_sha256": "8b45f652be107e3e6b21abf6e5acbc7168af957d2e81a7487ffeacbd7abecd1c"
+    }
+  },
+  "contracts": {
+    "101": {
+      "reviewed": false,
+      "source_checked": true,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10101",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10101",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10101",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10101",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10102",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10102",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10102",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10102",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10102",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10102",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10102",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10103",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10103",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10103",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10103",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10104",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10104",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10104",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10105",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10105",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10105",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10105",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10105",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10105",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10105",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10105",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10106",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10106",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10106",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        }
+      ]
+    },
+    "102": {
+      "reviewed": false,
+      "source_checked": true,
+      "missing_types": [
+        "bank_account",
+        "inspection_confirmation"
+      ],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "MISSING"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "MISSING"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10201",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10201",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10201",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10201",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10202",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10202",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10202",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10202",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10202",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10202",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10202",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10203",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10203",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10203",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10203",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10204",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10204",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10204",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10204",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10204",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10204",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10204",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10204",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        }
+      ]
+    },
+    "103": {
+      "reviewed": false,
+      "source_checked": true,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10301",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10301",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10301",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10301",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10302",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10302",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10302",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10302",
+          "status": "FAIL"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10302",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10302",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10302",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10303",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10303",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10303",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10303",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10304",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10304",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10304",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10305",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10305",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10306",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10306",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10306",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        }
+      ]
+    },
+    "104": {
+      "reviewed": false,
+      "source_checked": true,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10401",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10401",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10401",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10401",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10402",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10402",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10402",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10402",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10402",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10402",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10402",
+          "status": "FAIL"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10403",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10403",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10403",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10403",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10404",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10404",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10404",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10405",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10405",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10406",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10406",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10406",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        }
+      ]
+    },
+    "105": {
+      "reviewed": false,
+      "source_checked": true,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10501",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10501",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10501",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10501",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10502",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10502",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10502",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10502",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10502",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10502",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10502",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10503",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10503",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10503",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10503",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10504",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10504",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10504",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10505",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10505",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10505",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10505",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10505",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10505",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10505",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10505",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10506",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10506",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10506",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        }
+      ]
+    },
+    "106": {
+      "reviewed": false,
+      "source_checked": true,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10601",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10601",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10601",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10601",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10602",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10602",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10602",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10602",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10602",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10602",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10602",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10603",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10603",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10603",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10603",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10604",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10604",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10604",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10605",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10605",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10605",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10605",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10605",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10605",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10605",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10605",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10606",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10606",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10606",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10607",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10607",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10607",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10607",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10607",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10607",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10607",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10607",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        }
+      ]
+    },
+    "107": {
+      "reviewed": false,
+      "source_checked": true,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10701",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10701",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10701",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10701",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10702",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10702",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10702",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10702",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10702",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10702",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10702",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10703",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10703",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10703",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10703",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10704",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10704",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10704",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10705",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10705",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10705",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10705",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10705",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10705",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10705",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10705",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10706",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10706",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10706",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        }
+      ]
+    },
+    "108": {
+      "reviewed": false,
+      "source_checked": true,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10801",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10801",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10801",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10801",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10802",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10802",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10802",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10802",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10802",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10802",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10802",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10803",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10803",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10803",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10803",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10804",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10804",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10804",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10805",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10805",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10805",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10805",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10805",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10805",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10805",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10805",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10806",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10806",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10806",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        }
+      ]
+    },
+    "109": {
+      "reviewed": false,
+      "source_checked": true,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10901",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10901",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10901",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10901",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10902",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10902",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10902",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10902",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10902",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10902",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10902",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10903",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10903",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10903",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10903",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10904",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10904",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10904",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10905",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10905",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10906",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10906",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10906",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        }
+      ]
+    },
+    "110": {
+      "reviewed": false,
+      "source_checked": true,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11001",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11001",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11001",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "11001",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11002",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11002",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11002",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "11002",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "11002",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "11002",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "11002",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11003",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11003",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11003",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "11003",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11004",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11004",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11004",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11005",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11005",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11005",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "11005",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "11005",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "11005",
+          "status": "FAIL"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "11005",
+          "status": "FAIL"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "11005",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11006",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11006",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11006",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        }
+      ]
+    }
+  }
+}
