@@ -1,0 +1,50 @@
+[
+  {
+    "review_id": "101/10106/amount_scope",
+    "reason": "검수확인서는 청구 문서가 아니지만 계약 전체 금액을 표시한다. 이 평가의 amount_scope를 FULL로 보는 해석을 원문과 기준으로 확인한다."
+  },
+  {
+    "review_id": "103/10306/amount_scope",
+    "reason": "검수확인서는 청구 문서가 아니지만 계약 전체 금액을 표시한다. 이 평가의 amount_scope를 FULL로 보는 해석을 원문과 기준으로 확인한다."
+  },
+  {
+    "review_id": "104/10406/amount_scope",
+    "reason": "검수확인서는 청구 문서가 아니지만 계약 전체 금액을 표시한다. 이 평가의 amount_scope를 FULL로 보는 해석을 원문과 기준으로 확인한다."
+  },
+  {
+    "review_id": "105/10506/amount_scope",
+    "reason": "검수확인서는 청구 문서가 아니지만 계약 전체 금액을 표시한다. 이 평가의 amount_scope를 FULL로 보는 해석을 원문과 기준으로 확인한다."
+  },
+  {
+    "review_id": "106/10606/amount_scope",
+    "reason": "검수확인서는 청구 문서가 아니지만 계약 전체 금액을 표시한다. 이 평가의 amount_scope를 FULL로 보는 해석을 원문과 기준으로 확인한다."
+  },
+  {
+    "review_id": "107/10706/amount_scope",
+    "reason": "검수확인서는 청구 문서가 아니지만 계약 전체 금액을 표시한다. 이 평가의 amount_scope를 FULL로 보는 해석을 원문과 기준으로 확인한다."
+  },
+  {
+    "review_id": "108/10806/amount_scope",
+    "reason": "검수확인서는 청구 문서가 아니지만 계약 전체 금액을 표시한다. 이 평가의 amount_scope를 FULL로 보는 해석을 원문과 기준으로 확인한다."
+  },
+  {
+    "review_id": "109/10906/amount_scope",
+    "reason": "검수확인서는 청구 문서가 아니지만 계약 전체 금액을 표시한다. 이 평가의 amount_scope를 FULL로 보는 해석을 원문과 기준으로 확인한다."
+  },
+  {
+    "review_id": "110/11006/amount_scope",
+    "reason": "검수확인서는 청구 문서가 아니지만 계약 전체 금액을 표시한다. 이 평가의 amount_scope를 FULL로 보는 해석을 원문과 기준으로 확인한다."
+  },
+  {
+    "review_id": "109/10902/amount_scope",
+    "reason": "참고값 A/B만 있고 금액의 적용 범위가 표시되지 않는다. 견적서라는 이유만으로 FULL로 확정하지 않고 REVIEW로 두는 판단을 확인한다."
+  },
+  {
+    "review_id": "110/contract/AMOUNT_COMPONENTS/11005",
+    "reason": "표시 합계 2,201,000원과 공급가액·세액의 합 2,200,000원이 다르므로 산술 검사가 FAIL인지 원문으로 확인한다."
+  },
+  {
+    "review_id": "110/contract/AMOUNT_MATCH_TAX_INVOICE/11005",
+    "reason": "전액 청구가 명시되어 있고 표시 합계가 계약 합계와 다르므로 REVIEW가 아닌 FAIL인지 확인한다."
+  }
+]

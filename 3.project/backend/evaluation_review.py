@@ -74,7 +74,7 @@ def valid_field(field, answer):
     return field != "amount_scope" or token in {"FULL", "PARTIAL"}
 
 
-def compare_labels(manifest, reference, independent, *, seed=42, sample_rate=0.20):
+def compare_labels(manifest, reference, independent, *, seed=42, sample_rate=0.20, review_requests=()):
     if not 0 <= sample_rate <= 1:
         raise EvaluationNotReady("표본 비율은 0과 1 사이여야 합니다.")
     if reference.get("split") != "dev" or independent.get("split") != "dev" or reference.get("dataset_version") != independent.get("dataset_version") or reference.get("dataset_version") != manifest.get("dataset_version"):
@@ -135,9 +135,18 @@ def compare_labels(manifest, reference, independent, *, seed=42, sample_rate=0.2
                 normalized_actual = ({"state": answer["state"], "value": str(normalize(field, answer["value"])) if answer["state"] == "VALUE" else None} if valid else answer)
                 add(cid, field, normalized_reference, normalized_actual, valid, document=doc,
                     ambiguous=ref_answer["state"] == "REVIEW" or isinstance(answer, dict) and answer.get("state") == "REVIEW", blocked=not readable)
-    mandatory = [row for row in rows if row["comparison"] == "DISAGREE" or row["ambiguous"] and row["comparison"] != "UNANSWERED"]
+    by_id = {row["review_id"]: row for row in rows}
+    requested = set()
+    for request in review_requests:
+        rid, reason = request.get("review_id"), request.get("reason")
+        if rid not in by_id or rid in requested or not isinstance(reason, str) or not reason.strip():
+            raise EvaluationNotReady("추가 사람 확인 요청의 ID, 중복, 이유를 확인하세요.")
+        requested.add(rid)
+        by_id[rid]["human_question"] = reason
+    mandatory = [row for row in rows if row["comparison"] == "DISAGREE" or (row["ambiguous"] or row.get("human_question")) and row["comparison"] != "UNANSWERED"]
     for row in mandatory:
-        row.update(human_review_required=True, selection_reason="DISAGREEMENT" if row["comparison"] == "DISAGREE" else "AMBIGUITY")
+        reason = "DISAGREEMENT" if row["comparison"] == "DISAGREE" else "INTERPRETATION" if row.get("human_question") else "AMBIGUITY"
+        row.update(human_review_required=True, selection_reason=reason)
     agreements = sorted([row for row in rows if row["comparison"] == "AGREE" and not row["human_review_required"]], key=lambda row: row["review_id"])
     sample = random.Random(seed).sample(agreements, math.ceil(len(agreements) * sample_rate))
     for row in sample:
@@ -150,4 +159,5 @@ def compare_labels(manifest, reference, independent, *, seed=42, sample_rate=0.2
             "human_review_completed_count": 0, "independent_complete": counts["UNANSWERED"] == 0},
             "sampling": {"seed": seed, "rate": sample_rate, "method": "random_without_replacement_over_agreed_nonmandatory_cells",
                          "eligible_agreements": len(agreements), "sampled_count": len(sample), "coverage": coverage},
+            "review_requests": list(review_requests),
             "counts": dict(counts), "required_human_count": sum(row["human_review_required"] for row in rows), "rows": rows}

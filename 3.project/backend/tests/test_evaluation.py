@@ -14,6 +14,8 @@ from backend.scripts.import_evaluation_labels import import_workbook
 from backend.evaluation_review import blind_check_slots, blank_independent_labels, compare_labels, merge_independent_parts
 from backend.scripts.build_reference_labels import design_documents
 from backend.scripts.package_independent_review import package
+from backend.evaluation_confirmation import apply_human_decisions
+from backend.scripts.import_reconciled_labels import import_review
 
 
 def scoring_example():
@@ -269,6 +271,167 @@ def test_independent_merge_rejects_reference_exposure_and_duplicate_batches():
     answer["review"]["used_reference_answers"] = True
     with pytest.raises(EvaluationNotReady, match="미참조"):
         merge_independent_parts([answer])
+
+
+def confirmation_example():
+    manifest, reference = source_example()
+    answer = independent_example(manifest, reference)
+    comparison = compare_labels(manifest, reference, answer)
+    comparison.update(hashes={"reference": "a" * 64, "independent_replies": {"test.json": "b" * 64}}, comparison_sha256="c" * 64)
+    decisions = {}
+    for row in comparison["rows"]:
+        if not row["human_review_required"]:
+            continue
+        expected = row["reference"]
+        state = expected["state"] if isinstance(expected, dict) else "TYPE" if row["key"] == "document_type" else "MISSING_TYPES" if row["key"] == "missing_types" else expected
+        value = expected.get("value") if isinstance(expected, dict) else expected if state in {"TYPE", "MISSING_TYPES"} else None
+        decisions[row["review_id"]] = {"state": state, "value": value, "confirmation": "확인", "evidence": "hand-authored unit-test decision"}
+    return manifest, reference, comparison, decisions
+
+
+def test_human_interpretation_question_is_required_even_when_both_ai_answers_agree():
+    manifest, reference = source_example()
+    answer = independent_example(manifest, reference)
+    request = {"review_id": "1/7/supply_amount", "reason": "unit-test interpretation question"}
+    result = compare_labels(manifest, reference, answer, review_requests=[request])
+    row = next(row for row in result["rows"] if row["review_id"] == request["review_id"])
+    assert row["comparison"] == "AGREE"
+    assert row["human_review_required"] is True
+    assert row["selection_reason"] == "INTERPRETATION"
+    with pytest.raises(EvaluationNotReady, match="중복"):
+        compare_labels(manifest, reference, answer, review_requests=[request, request])
+
+
+def test_reconciled_labels_preserve_actual_human_coverage_and_ai_agreements():
+    manifest, reference, comparison, decisions = confirmation_example()
+    labels = apply_human_decisions(manifest, reference, comparison, decisions, "test-human")
+    assert validate_labels(manifest, labels, "dev")
+    assert labels["review"]["human_full_review"] is False
+    assert labels["review"]["human_direct_count"] == len(decisions)
+    assert labels["review"]["ai_agreement_count"] == len(comparison["rows"]) - len(decisions)
+    assert labels["documents"]["7"]["reviewed"] is False
+    assert labels["documents"]["7"]["accepted"] is True
+    assert reference["review"]["confirmed"] is False
+    broken = copy.deepcopy(labels)
+    broken["review"]["human_direct_count"] += 1
+    with pytest.raises(EvaluationNotReady, match="집계"):
+        validate_labels(manifest, broken, "dev")
+
+
+@pytest.mark.parametrize("problem", ["missing_row", "unchecked", "no_evidence", "incomplete_independent"])
+def test_reconciled_confirmation_blocks_incomplete_human_review(problem):
+    manifest, reference, comparison, decisions = confirmation_example()
+    first = next(iter(decisions))
+    if problem == "missing_row":
+        decisions.pop(first)
+    elif problem == "unchecked":
+        decisions[first]["confirmation"] = None
+    elif problem == "no_evidence":
+        decisions[first]["evidence"] = ""
+    else:
+        comparison["review"]["independent_complete"] = False
+    with pytest.raises(EvaluationNotReady):
+        apply_human_decisions(manifest, reference, comparison, decisions, "test-human")
+
+
+def test_interpretation_correction_records_human_reason_and_keeps_source_draft():
+    manifest, reference = source_example()
+    answer = independent_example(manifest, reference)
+    comparison = compare_labels(manifest, reference, answer, review_requests=[{"review_id": "1/7/supply_amount", "reason": "hand-authored question"}])
+    comparison.update(hashes={"reference": "a" * 64, "independent_replies": {"test.json": "b" * 64}}, comparison_sha256="c" * 64)
+    _, _, _, decisions = confirmation_example()
+    for row in comparison["rows"]:
+        if row["human_review_required"] and row["review_id"] not in decisions:
+            expected = row["reference"]
+            state = expected["state"] if isinstance(expected, dict) else "TYPE" if row["key"] == "document_type" else "MISSING_TYPES" if row["key"] == "missing_types" else expected
+            value = expected.get("value") if isinstance(expected, dict) else expected if state in {"TYPE", "MISSING_TYPES"} else None
+            decisions[row["review_id"]] = {"state": state, "value": value, "confirmation": "확인", "evidence": "unit test source correction"}
+    decisions = {rid: decision for rid, decision in decisions.items() if any(row["review_id"] == rid and row["human_review_required"] for row in comparison["rows"])}
+    decisions["1/7/supply_amount"].update(value=120, evidence="hand-authored unit-test corrected value")
+    labels = apply_human_decisions(manifest, reference, comparison, decisions, "test-human")
+    assert labels["documents"]["7"]["fields"]["supply_amount"]["value"] == 120
+    assert labels["documents"]["7"]["fields"]["supply_amount"]["review"]["method"] == "human_direct"
+    assert reference["documents"]["7"]["fields"]["supply_amount"]["value"] == 100
+
+
+@pytest.mark.parametrize("case", ["partial", "partial_correction", "full_correction", "unchecked", "changed_reply"])
+def test_review_import_checks_provenance_and_expands_after_sample_error(tmp_path, monkeypatch, case):
+    import openpyxl
+    manifest, reference = source_example()
+    source = tmp_path / "fiction.txt"
+    source.write_text("hand-authored unit-test original", encoding="utf-8")
+    manifest["contracts"][0]["documents"][0].update(path=source.name, sha256=file_hash(source))
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    reference_path = tmp_path / "reference_labels_dev.json"
+    reference_path.write_text(json.dumps(reference), encoding="utf-8")
+    reference_path.with_suffix(".freeze.json").write_text(json.dumps({"labels_sha256": file_hash(reference_path), "manifest_sha256": file_hash(manifest_path)}), encoding="utf-8")
+    truth_path = tmp_path / "ground_truth_dev.json"
+    truth_path.write_text(json.dumps(reference), encoding="utf-8")
+    before_hash = file_hash(truth_path)
+    reply_dir = tmp_path / "replies"
+    reply_dir.mkdir()
+    reply = independent_example(manifest, reference)
+    reply_path = reply_dir / "test.json"
+    reply_path.write_text(json.dumps(reply), encoding="utf-8")
+    comparison = compare_labels(manifest, reference, reply, sample_rate=1.0 if case == "full_correction" else 0.20)
+    comparison["hashes"] = {"manifest": file_hash(manifest_path), "reference": file_hash(reference_path), "independent_replies": {reply_path.name: file_hash(reply_path)}}
+    comparison_path = tmp_path / "comparison.json"
+    comparison_path.write_text(json.dumps(comparison), encoding="utf-8")
+    workbook = tmp_path / "test-workbook.dat"
+    workbook.write_bytes(b"unit-test workbook stand-in")
+    rows = {"필드확인": [], "검수확인": []}
+    for row in comparison["rows"]:
+        if not row["human_review_required"]:
+            continue
+        expected = row["reference"]
+        state = expected["state"] if isinstance(expected, dict) else "TYPE" if row["key"] == "document_type" else "MISSING_TYPES" if row["key"] == "missing_types" else expected
+        value = expected.get("value") if isinstance(expected, dict) else json.dumps(expected) if state == "MISSING_TYPES" else expected if state == "TYPE" else None
+        if case in {"partial_correction", "full_correction"} and row["key"] == "business_registration_no":
+            state, value = "VALUE", "000-12-34567"
+        item = [row["review_id"], None, None, None, None, None, None, None, state, value, None if case == "unchecked" else "확인", "unit-test direct source check"]
+        rows["필드확인" if row["document_id"] is not None else "검수확인"].append(item)
+    class Sheet:
+        def __init__(self, rows=(), cells=None):
+            self.rows, self.cells = rows, cells or {}
+        def iter_rows(self, **kwargs):
+            return iter(self.rows)
+        def __getitem__(self, cell):
+            return SimpleNamespace(value=self.cells[cell])
+    class Workbook(dict):
+        def close(self):
+            pass
+    book = Workbook({"안내": Sheet(cells={"B2": manifest["dataset_version"], "B3": file_hash(comparison_path), "B4": file_hash(manifest_path), "B12": "test-human"}),
+                     **{name: Sheet(rows=items) for name, items in rows.items()}})
+    monkeypatch.setattr(openpyxl, "load_workbook", lambda *args, **kwargs: book)
+    if case == "changed_reply":
+        reply_path.write_text(json.dumps(reply) + " ", encoding="utf-8")
+    if case in {"partial_correction", "unchecked", "changed_reply"}:
+        with pytest.raises(EvaluationNotReady, match="표본|직접 확인|Claude"):
+            import_review(workbook, tmp_path, comparison_path, reply_dir, "test-human")
+        assert file_hash(truth_path) == before_hash
+        assert not truth_path.with_suffix(".freeze.json").exists()
+    else:
+        labels = import_review(workbook, tmp_path, comparison_path, reply_dir, "test-human")
+        assert labels["review"]["human_full_review"] is (case == "full_correction")
+        assert verify_freeze(manifest_path, truth_path)["workbook_sha256"] == file_hash(workbook)
+        if case == "full_correction":
+            assert labels["documents"]["7"]["fields"]["business_registration_no"]["value"] == "000-12-34567"
+
+
+def test_final_report_discloses_human_sample_and_ai_agreement_counts(tmp_path):
+    manifest, reference, comparison, decisions = confirmation_example()
+    truth = apply_human_decisions(manifest, reference, comparison, decisions, "test-human")
+    contracts, _, predictions = scoring_example()
+    metrics = score_predictions(contracts, truth, predictions)
+    metrics["mean_document_seconds"] = 0.1
+    metadata = {"split": "dev", "dataset_version": "test-fixture", "evaluated_at": "unit-test time",
+                "labels_sha256": "a" * 64, "manifest_sha256": "b" * 64, "label_review": truth["review"]}
+    evaluate.write_report(tmp_path, metadata, metrics)
+    text = (tmp_path / "baseline_rule.md").read_text(encoding="utf-8")
+    assert f"{truth['review']['human_direct_count']}칸을 직접 확인" in text
+    assert f"{truth['review']['ai_agreement_count']}칸은 두 AI 초안의 일치" in text
+    assert "사람 전수 검수로 해석하지 않는다" in text
 
 
 def test_blind_package_contains_dev_originals_but_no_oracle_test_or_predictions(tmp_path):

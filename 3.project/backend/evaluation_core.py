@@ -87,6 +87,11 @@ def validate_labels(manifest, labels, split, *, allow_unreviewed=False):
         raise EvaluationNotReady("AI 초안은 작성자를 기록하고 사람 확정 상태는 false로 유지하세요.")
     if labels.get("dataset_version") != manifest.get("dataset_version") or labels.get("split") != split:
         raise EvaluationNotReady("정답표와 자료 버전이 다릅니다.")
+    sampled = not preliminary and review.get("review_method") == "independent_reconciliation_with_human_sampling"
+    if sampled and (split != "dev" or not isinstance(review.get("human_full_review"), bool)
+                    or not review.get("comparison_sha256") or not review.get("source_reference_sha256")
+                    or not review.get("independent_reply_sha256")):
+        raise EvaluationNotReady("표본 검수는 dev의 대조 출처와 실제 확인 범위를 기록해야 합니다.")
     contracts = [row for row in manifest["contracts"] if row["split"] == split]
     if not contracts:
         raise EvaluationNotReady("평가할 계약이 없습니다.")
@@ -94,7 +99,7 @@ def validate_labels(manifest, labels, split, *, allow_unreviewed=False):
     for contract in contracts:
         cid = str(contract["contract_id"])
         truth_contract = labels.get("contracts", {}).get(cid, {})
-        checked = truth_contract.get("source_checked") if preliminary else truth_contract.get("reviewed")
+        checked = truth_contract.get("source_checked") if preliminary else truth_contract.get("accepted") if sampled else truth_contract.get("reviewed")
         if not checked or not isinstance(truth_contract.get("missing_types"), list):
             missing.append("계약 " + cid)
         elif any(value not in DOCUMENT_TYPES for value in truth_contract["missing_types"]):
@@ -113,7 +118,7 @@ def validate_labels(manifest, labels, split, *, allow_unreviewed=False):
         for document in contract["documents"]:
             did = str(document["document_id"])
             truth = labels.get("documents", {}).get(did, {})
-            checked = truth.get("source_checked") if preliminary else truth.get("reviewed")
+            checked = truth.get("source_checked") if preliminary else truth.get("accepted") if sampled else truth.get("reviewed")
             if not checked or truth.get("document_type") not in (*DOCUMENT_TYPES, "unknown"):
                 missing.append("문서 " + did)
             for field in FIELDS:
@@ -131,6 +136,29 @@ def validate_labels(manifest, labels, split, *, allow_unreviewed=False):
                     raise EvaluationNotReady("ABSENT/REVIEW 정답 값은 비워두세요.")
     if missing:
         raise EvaluationNotReady(f"미작성 또는 미확인 정답 {len(missing)}개가 있습니다. 성능 수치를 계산하지 않았습니다.")
+    if sampled:
+        proofs = []
+        for contract in contracts:
+            entry = labels["contracts"][str(contract["contract_id"])]
+            proofs.append(entry.get("missing_types_review", {}))
+            proofs.extend(row.get("review", {}) for row in entry["checks"])
+            for document in contract["documents"]:
+                row = labels["documents"][str(document["document_id"])]
+                proofs.append(row.get("document_type_review", {}))
+                proofs.extend(row["fields"][field].get("review", {}) for field in FIELDS)
+        direct = 0
+        for proof in proofs:
+            if proof.get("method") == "human_direct":
+                if proof.get("confirmed") is not True or proof.get("reviewer") != review["reviewer"] or not proof.get("evidence"):
+                    raise EvaluationNotReady("사람 직접 확인의 판단 근거와 검수자가 필요합니다.")
+                direct += 1
+            elif proof.get("method") != "ai_agreement" or proof.get("human_reviewed") is not False or proof.get("independent_match") is not True:
+                raise EvaluationNotReady("AI 일치와 사람 직접 확인을 항목별로 구분하세요.")
+        if (direct != review.get("human_direct_count") or len(proofs) - direct != review.get("ai_agreement_count")
+                or direct != review.get("required_human_count") or not direct):
+            raise EvaluationNotReady("표본 확인의 필수 항목과 실제 확인 집계가 다릅니다.")
+        if review["human_full_review"] != (direct == len(proofs)):
+            raise EvaluationNotReady("전수 확인 여부와 실제 사람 확인 범위가 다릅니다.")
     return contracts
 
 

@@ -1,0 +1,620 @@
+{
+  "dataset_version": "synthetic-v1",
+  "split": "dev",
+  "review": {
+    "author": "Claude",
+    "reviewer_type": "ai_independent_review",
+    "confirmed": false,
+    "used_reference_answers": false,
+    "used_app_predictions": false
+  },
+  "documents": {
+    "10901": {
+      "document_type": "contract",
+      "original_read": {
+        "readable": true,
+        "method": "text_content",
+        "notes": "DOCX 내부 document.xml의 문단·표 내용을 추출하여 읽음. 내용 판독, 페이지 배치 미확인."
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 9",
+          "evidence": "본문 '수급인(을): 가상 솔빛제작소 9'"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01090",
+          "evidence": "본문 '사업자등록번호: 000-00-01090'"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1900000,
+          "evidence": "본문 '공급가액: 1,900,000원'"
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 190000,
+          "evidence": "본문 '세액: 190,000원'"
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2090000,
+          "evidence": "본문 '합계금액: 2,090,000원'"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-09",
+          "evidence": "본문 '발행일: 2026-09-09'"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "evidence": "문서 유형(외주용역 계약서) 자체가 계약 전체 금액을 표시함"
+        }
+      }
+    },
+    "10902": {
+      "document_type": "estimate",
+      "original_read": {
+        "readable": true,
+        "method": "visual_and_text",
+        "notes": "PDF 1쪽 페이지 이미지와 텍스트 레이어를 함께 확인함. 금액은 '참고값 A: 1,900,000원', '참고값 B: 2,090,000원'만 있고 '금액의 적용 범위가 표시되지 않음'이라 공급가액·세액·합계 의미를 확정할 수 없어 REVIEW로 둠."
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 9",
+          "evidence": "p.1 '공급자 상호: 가상 솔빛제작소 9'"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01090",
+          "evidence": "p.1 '사업자등록번호: 000-00-01090'"
+        },
+        "supply_amount": {
+          "state": "REVIEW",
+          "value": null,
+          "evidence": "p.1 '참고값 A: 1,900,000원' / '참고값 B: 2,090,000원' — 공급가액 의미 미표시"
+        },
+        "tax_amount": {
+          "state": "REVIEW",
+          "value": null,
+          "evidence": "p.1 세액 항목 없음, 참고값 2개만 존재 — 세액 의미 확정 불가"
+        },
+        "total_amount": {
+          "state": "REVIEW",
+          "value": null,
+          "evidence": "p.1 '참고값 B: 2,090,000원' — 합계 의미 미표시, '금액의 적용 범위가 표시되지 않음'"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-09",
+          "evidence": "p.1 '발행일: 2026-09-09'"
+        },
+        "amount_scope": {
+          "state": "REVIEW",
+          "value": null,
+          "evidence": "p.1 '금액의 적용 범위가 표시되지 않음'"
+        }
+      }
+    },
+    "10903": {
+      "document_type": "business_registration",
+      "original_read": {
+        "readable": true,
+        "method": "visual",
+        "notes": "PNG 페이지 이미지를 직접 확인함."
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 9",
+          "evidence": "p.1 '상호: 가상 솔빛제작소 9'"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01090",
+          "evidence": "p.1 '사업자등록번호: 000-00-01090'"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "p.1 금액 항목 없음"
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "p.1 금액 항목 없음"
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "p.1 금액 항목 없음"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-09",
+          "evidence": "p.1 '발행일: 2026-09-09'"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "p.1 금액·청구와 무관한 문서"
+        }
+      }
+    },
+    "10904": {
+      "document_type": "bank_account",
+      "original_read": {
+        "readable": true,
+        "method": "text_content",
+        "notes": "DOCX 내부 document.xml의 문단·표 내용을 추출하여 읽음. 내용 판독, 페이지 배치 미확인. company_name은 예금주 값. 계좌번호 TEST-ACCOUNT-001."
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 9",
+          "evidence": "본문 '예금주: 가상 솔빛제작소 9'"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01090",
+          "evidence": "본문 '사업자등록번호: 000-00-01090'"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "본문 금액 항목 없음"
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "본문 금액 항목 없음"
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "본문 금액 항목 없음"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-09",
+          "evidence": "본문 '발행일: 2026-09-09'"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "본문 금액·청구와 무관한 문서"
+        }
+      }
+    },
+    "10905": {
+      "document_type": "tax_invoice",
+      "original_read": {
+        "readable": true,
+        "method": "visual_and_text",
+        "notes": "PDF 1쪽 페이지 이미지와 텍스트 레이어를 함께 확인함."
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 9",
+          "evidence": "p.1 '공급자 상호: 가상 솔빛제작소 9'"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01090",
+          "evidence": "p.1 '사업자등록번호: 000-00-01090'"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1900000,
+          "evidence": "p.1 '공급가액: 1,900,000원'"
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 190000,
+          "evidence": "p.1 '세액: 190,000원'"
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2090000,
+          "evidence": "p.1 '합계금액: 2,090,000원'"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-09",
+          "evidence": "p.1 '발행일: 2026-09-09'"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "evidence": "p.1 '전액 청구: 전체 계약 대금'"
+        }
+      }
+    },
+    "10906": {
+      "document_type": "inspection_confirmation",
+      "original_read": {
+        "readable": true,
+        "method": "visual",
+        "notes": "PNG 페이지 이미지를 직접 확인함. 기준 해석 의문: 검수확인서는 청구 문서가 아니나 계약 전체 금액을 표시하므로 amount_scope를 FULL로 둠."
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 솔빛제작소 9",
+          "evidence": "p.1 '계약상대자: 가상 솔빛제작소 9'"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-01090",
+          "evidence": "p.1 '사업자등록번호: 000-00-01090'"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 1900000,
+          "evidence": "p.1 '공급가액: 1,900,000원'"
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 190000,
+          "evidence": "p.1 '세액: 190,000원'"
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2090000,
+          "evidence": "p.1 '합계금액: 2,090,000원'"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-09",
+          "evidence": "p.1 '발행일: 2026-09-09'"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "evidence": "납품 검수확인서에 계약 전체 금액이 표시됨. 부분 표시 없음 (청구 문서는 아님)"
+        }
+      }
+    }
+  },
+  "contracts": {
+    "109": {
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10901",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10901",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10901",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10901",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10901",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10901",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10901",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10901",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10901",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10902",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10902",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10902",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10902",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10902",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10902",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10902",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10902",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10902",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10903",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10903",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10903",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10903",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10903",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10903",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10903",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10903",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10903",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10904",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10904",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10904",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10904",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10904",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10904",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10904",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10904",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10904",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10905",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10905",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10905",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10906",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10906",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10906",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10906",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10906",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10906",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10906",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10906",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10906",
+          "status": "N/A"
+        }
+      ]
+    }
+  }
+}

@@ -19,6 +19,7 @@ def main(argv=None):
     parser.add_argument("--output", type=Path, default=PROJECT / "eval/reconciliation")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--sample-rate", type=float, default=0.20)
+    parser.add_argument("--human-questions", type=Path, help="일치하더라도 사람이 판단해야 하는 해석 질문 JSON")
     args = parser.parse_args(argv)
     try:
         root = args.dataset.resolve()
@@ -30,9 +31,14 @@ def main(argv=None):
         validate_labels(manifest, reference, "dev", allow_unreviewed=True)
         verify_freeze(manifest_path, reference_path)
         independent = merge_independent_parts([json.loads(path.read_text(encoding="utf-8-sig")) for path in args.replies])
-        comparison = compare_labels(manifest, reference, independent, seed=args.seed, sample_rate=args.sample_rate)
+        if len({path.name for path in args.replies}) != len(args.replies):
+            raise EvaluationNotReady("독립 판독 파일의 이름이 중복됩니다. 파일별 해시를 구분할 수 없습니다.")
+        requests = json.loads(args.human_questions.read_text(encoding="utf-8")) if args.human_questions else []
+        comparison = compare_labels(manifest, reference, independent, seed=args.seed, sample_rate=args.sample_rate, review_requests=requests)
         comparison["hashes"] = {"manifest": file_hash(manifest_path), "reference": file_hash(reference_path),
                                  "independent_replies": {path.name: file_hash(path) for path in args.replies}}
+        if args.human_questions:
+            comparison["hashes"]["human_questions"] = file_hash(args.human_questions)
         if args.output.exists():
             raise EvaluationNotReady("이전 대조 결과를 덮어쓰지 않습니다. 새 --output 경로를 지정하세요.")
         args.output.mkdir(parents=True)

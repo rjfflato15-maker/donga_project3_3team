@@ -75,6 +75,12 @@ def write_report(output, metadata, metrics):
     title = "# 규칙 예비 성능 보고서" if preliminary else "# 규칙 기준 성능 보고서"
     notice = ("생성 정보와 파일을 대조해 만든 Codex 정답 초안을 사용했다. 사람 검수와 Claude 독립 검토는 아직 완료하지 않았다. 이 결과는 개발용 예비 측정이며 최종 발표의 검증된 성능 수치로 사용하지 않는다."
               if preliminary else "사람이 확정한 정답표를 사용한 규칙 기준 성능이다.")
+    review = metadata.get("label_review", {})
+    if not preliminary and review.get("review_method") == "independent_reconciliation_with_human_sampling":
+        notice = (f"생성 설계 초안과 Claude 독립 판독을 대조하고 사람이 필수 항목과 무작위 표본 {review['human_direct_count']}칸을 직접 확인하여 확정했다. "
+                  f"나머지 {review['ai_agreement_count']}칸은 두 AI 초안의 일치에 따른 정답이다. 사람 전수 검수로 해석하지 않는다.")
+        if review.get("human_full_review"):
+            notice = f"생성 설계 초안과 Claude 독립 판독을 대조한 뒤 사람이 전체 {review['human_direct_count']}칸을 직접 확인하여 정답을 확정했다."
     lines = [title, "", notice, "", f"평가 구분은 {metadata['split']}이며 모델을 사용하지 않은 규칙 기준 성능이다.", "",
              f"실행 일시: {metadata['evaluated_at']}", f"자료 버전: {metadata['dataset_version']}",
              f"정답 SHA256: {metadata['labels_sha256']}", f"자료 목록 SHA256: {metadata['manifest_sha256']}",
