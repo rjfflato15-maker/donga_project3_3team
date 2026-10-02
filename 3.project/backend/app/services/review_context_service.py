@@ -12,6 +12,7 @@ from ..schemas.document import AnalysisFields
 from .contract_service import ContractService
 from .storage_service import read_texts, resolve_path
 from .company_policy_service import approval_state
+from .review_summary_service import build_action_summary, pending_ai_count
 SOURCE_NAMES = {'RULE': '규칙', 'AI_SUPPLEMENT': 'AI 보완', 'HUMAN_CONFIRMATION': '사람 확인', 'UNAVAILABLE': '미추출'}
 
 
@@ -106,23 +107,7 @@ def review_context(db, contract_id):
     requests = db.query(ResubmissionRequest).filter_by(contract_id=contract_id).order_by(ResubmissionRequest.request_id.desc()).all()
     waiting = sum((r.status == 'WAITING_RESPONSE' for r in requests))
     summary = detail.summary
-    parts = []
     approval = approval_state(db, contract_id, detail.workflow['revision'], detail.workflow['fingerprint'])
-    state = detail.workflow['approval_status']
-    if state == 'CONFIRMED':
-        parts.append('최종 확인 완료')
-    elif state == 'STALE':
-        parts.append('자료 변경 · 재확인 필요')
-    elif state == 'RETURNED':
-        parts.append('보완 요청 · 재제출 확인 필요')
-    elif approval['completed_steps']:
-        parts.append(f"{approval['next_step']}단계 결재 대기")
-    if waiting:
-        parts.append(f'회신 대기 {waiting}건')
-    for count, label in ((summary.missing_count, '필수 서류 누락'), (summary.fail_count, '불일치'), (summary.review_count, '미확인')):
-        if count:
-            parts.append(f'{label} {count}건')
-    ai_pending = sum((bool(d['ai_review'] and d['ai_review'].get('manual_review_required') and (not d['ai_review'].get('human_confirmed'))) for d in documents))
-    if ai_pending:
-        parts.append(f'AI 추출 확인 {ai_pending}문서')
-    return {'contract_id': contract_id, 'revision': detail.workflow['revision'], 'fingerprint': detail.workflow['fingerprint'], 'action_summary': ' · '.join(parts) if parts else '자동 검사 완료 · 담당자 최종 확인 필요', 'summary': summary.model_dump(), 'checks': checks, 'documents': documents, 'workflow': detail.workflow, 'follow_up': {'status': 'WAITING_RESPONSE' if waiting else 'NO_PENDING_REQUEST', 'waiting_count': waiting, 'requests': [request_response(r) for r in requests]}, 'approval': approval}
+    ai_pending = pending_ai_count(d['ai_review'] for d in documents)
+    action_summary = build_action_summary(summary, detail.workflow, approval, waiting, ai_pending)
+    return {'contract_id': contract_id, 'revision': detail.workflow['revision'], 'fingerprint': detail.workflow['fingerprint'], 'action_summary': action_summary, 'summary': summary.model_dump(), 'checks': checks, 'documents': documents, 'workflow': detail.workflow, 'follow_up': {'status': 'WAITING_RESPONSE' if waiting else 'NO_PENDING_REQUEST', 'waiting_count': waiting, 'requests': [request_response(r) for r in requests]}, 'approval': approval}
