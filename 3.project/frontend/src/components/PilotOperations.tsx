@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Download, KeyRound, Save, ShieldCheck, Users } from 'lucide-react';
 import { api, downloadProtected } from '../api/client';
 import { useAuth } from '../context/AuthContext';
-import { PilotInfo, PilotMetrics } from '../types';
+import { LlmStatus, PilotInfo, PilotMetrics } from '../types';
 import { PilotPasswordChange } from './PilotPasswordChange';
+
+const LLM_ERROR_KO: Record<string, string> = { LOCAL_MODEL_NOT_INSTALLED: '모델이 설치되지 않음', LOCAL_SERVER_UNAVAILABLE: 'AI 서버가 응답하지 않음', INVALID_LOCAL_CONFIGURATION: '설정 값 오류' };
 import { CompanyPolicySection } from './review/CompanyPolicySection';
 
 type TeamUser = Awaited<ReturnType<typeof api.users>>[number];
@@ -15,6 +17,8 @@ export const PilotOperations: React.FC<{ info: PilotInfo; onChanged: () => Promi
   const representative = user?.role === 'representative' || user?.role === 'admin';
   const [name, setName] = useState(info.company_name);
   const [users, setUsers] = useState<TeamUser[]>([]);
+  const [llm, setLlm] = useState<LlmStatus | null>(null);
+  useEffect(() => { api.llmStatus().then(setLlm).catch(() => setLlm(null)); }, []);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
@@ -53,7 +57,8 @@ export const PilotOperations: React.FC<{ info: PilotInfo; onChanged: () => Promi
       <div className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
         <div className="rounded-lg bg-slate-50 p-3">DB <strong className="block">{info.local_database ? '공용 PC의 SQLite' : '외부 DB'}</strong></div>
         <div className="rounded-lg bg-slate-50 p-3">국세청 <strong className="block">{info.nts_mode === 'disabled' ? '미연동 · 외부 요청 안 함' : info.nts_mode === 'demo' ? '데모 데이터' : '사업자 상태 조회 모드'}</strong></div>
-        <div className="rounded-lg bg-slate-50 p-3">LLM <strong className="block">{info.llm_connected ? '연결됨' : '연결 없음 · 규칙 기반 검수'}</strong></div>
+        <div className="rounded-lg bg-slate-50 p-3">AI 보완 <strong className="block">{llm ? (llm.configured_enabled ? (llm.ready_for_inference ? '켜짐 · 사용 가능' : '켜짐 · 연결 안 됨') : '꺼짐 · 규칙만 사용') : '확인 중…'}</strong>
+          {llm && <span className="mt-0.5 block text-xs text-slate-500">PC 안 AI 서버 {llm.connected == null ? '확인 전' : llm.connected ? (llm.model_installed === false ? '연결됨 · 모델 없음' : '연결됨') : '연결 안 됨'}{llm.error ? ` (${LLM_ERROR_KO[llm.error] ?? llm.error})` : ''} · 외부 전송 없음</span>}</div>
       </div>
       <p className="mt-4 text-sm leading-6 text-slate-600">새로 등록한 원본은 공용 PC에 저장됩니다. 다른 직원은 파일을 따로 받지 않아도 이 앱에서 열거나 내려받을 수 있습니다. PC를 끄면 접속할 수 없습니다.</p>
       <button className="mt-4 flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm" onClick={() => setPasswordOpen(true)}><KeyRound size={16} />내 비밀번호 변경</button>

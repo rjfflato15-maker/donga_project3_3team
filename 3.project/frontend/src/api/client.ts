@@ -67,6 +67,8 @@ export const api = {
   },
   pilotInfo: () => requestJson<PilotInfo>('/api/pilot/info'),
   pilotMetrics: () => requestJson<import('../types').PilotMetrics>('/api/pilot/metrics'),
+  pilotPerformance: () => requestJson<import('../types').PilotPerformance>('/api/pilot/performance'),
+  llmStatus: () => requestJson<import('../types').LlmStatus>('/api/pilot/llm-status'),
   savePilotSettings: (company_name: string, required_document_types: DocumentType[]) =>
     requestJson<PilotInfo>('/api/pilot/settings', json('PUT', { company_name, required_document_types })),
   audit: (id?: number) => requestJson<AuditEntry[]>('/api/pilot/audit' + (id ? '?contract_id=' + id : '')),

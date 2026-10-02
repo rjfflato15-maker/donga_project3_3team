@@ -287,6 +287,8 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
               <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-semibold text-emerald-700">사람 확인</span>
               <span>표시 없는 값은 규칙이 읽은 값</span>
             </div>
+            {doc.llm?.status === 'FAILED' && <div className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">AI 보완을 시도했지만 실패해 규칙 값만 남았습니다{doc.llm.error ? ` (${doc.llm.error})` : ''}.</div>}
+            {(doc.llm?.applied_value_field_count ?? 0) > 0 && <div className="rounded-lg bg-violet-50 px-3 py-2 text-xs text-violet-800">이 서류는 AI가 {doc.llm?.applied_value_field_count}칸을 보완했습니다. 원문 근거가 확인된 값만 채택했으니, 표시된 칸을 원문과 한 번 더 비교해 주세요.</div>}
             {provError && <div className="rounded-lg bg-rose-50 p-3 text-sm text-rose-700">{provError}</div>}
             {!prov && !provError && <div className="flex items-center gap-2 text-sm text-slate-500"><Loader2 className="h-4 w-4 animate-spin" /> 값을 불러오는 중…</div>}
             {editing && (

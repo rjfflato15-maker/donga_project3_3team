@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../../api/client';
-import { PilotMetrics } from '../../types';
+import { PilotMetrics, PilotPerformance } from '../../types';
 
 export const minutes = (s: number | null) => {
   if (s == null) return '기록 없음';
@@ -13,10 +13,12 @@ export const minutes = (s: number | null) => {
 /** 대시보드 아래 '업무 현황': 기록된 경과 시간(대기 포함)과 수정 저장 횟수. 작업 시간·절감 효과가 아님 */
 export const WorkStatsStrip: React.FC<{ refreshKey: unknown }> = ({ refreshKey }) => {
   const [m, setM] = useState<PilotMetrics | null>(null);
+  const [perf, setPerf] = useState<PilotPerformance | null>(null);
   const [error, setError] = useState('');
   useEffect(() => {
     let active = true;
     api.pilotMetrics().then((v) => { if (active) { setM(v); setError(''); } }).catch((e) => { if (active) setError(e.message); });
+    api.pilotPerformance().then((v) => { if (active) setPerf(v); }).catch(() => { if (active) setPerf(null); });
     return () => { active = false; };
   }, [refreshKey]);
   if (error) return <p className="text-xs text-slate-500">업무 현황을 불러오지 못했습니다: {error}</p>;
@@ -27,6 +29,14 @@ export const WorkStatsStrip: React.FC<{ refreshKey: unknown }> = ({ refreshKey }
     { label: '첫 서류 등록 → 첫 대표 확인', value: minutes(m.mean_elapsed_seconds), note: m.timed_contract_count ? `평균 · ${m.timed_contract_count}건 · 대기 시간 포함` : '대기 시간 포함' },
     { label: '추출값 수정 저장', value: `${m.field_correction_count}회`, note: `등록한 서류 ${m.document_registration_count}건` },
   ];
+  if (perf) {
+    const sum = (k: 'human_field_edit_count' | 'ai_applied_value_field_count' | 'resubmission_request_count') => perf.contracts.reduce((n, c) => n + (c[k] ?? 0), 0);
+    items.push(
+      { label: '사람이 실제로 고친 칸', value: `${sum('human_field_edit_count')}칸`, note: '값이 바뀐 칸만 · 같은 값 저장 제외' },
+      { label: 'AI가 채운 칸', value: `${sum('ai_applied_value_field_count')}칸`, note: '원문 근거가 확인된 값만' },
+      { label: '재제출 요청 기록', value: `${sum('resubmission_request_count')}건`, note: '앱에 기록한 요청 수' },
+    );
+  }
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-4" aria-labelledby="stats-title">
       <div className="mb-3 flex flex-wrap items-baseline gap-2">

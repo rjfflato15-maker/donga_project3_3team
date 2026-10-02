@@ -25,7 +25,6 @@ interface Props {
   onUploadType: (type: DocumentType) => void;
   pilot?: boolean;
   onChanged?: () => Promise<void>;
-  llmConnected?: boolean;
   recentUploadNames?: string[];
 }
 
@@ -54,7 +53,6 @@ export const ContractReviewOverview: React.FC<Props> = ({
   onUploadType,
   pilot = false,
   onChanged,
-  llmConnected,
   recentUploadNames,
 }) => {
   const [requests, setRequests] = useState<ResubmissionRequest[]>([]);
@@ -166,20 +164,30 @@ export const ContractReviewOverview: React.FC<Props> = ({
         </div>
       )}
       {followError && <p className="text-xs text-rose-600">{followError}</p>}
-      {pilot && llmConnected !== undefined && (
-        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
-          <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-semibold ${llmConnected ? 'bg-violet-100 text-violet-700' : 'bg-slate-100 text-slate-600'}`}>
-            AI 보완 {llmConnected ? '연결됨' : '꺼짐'}
-          </span>
-          <span>
-            {llmConnected
-              ? '규칙이 못 읽은 값만 PC 안의 AI가 다시 읽고, 원문 근거가 확인된 값만 채택합니다.'
-              : overview.issues.filter((i) => i.kind === 'reading').length > 0
-                ? `규칙만 사용 중입니다. AI 보완을 켜면 '원문 확인' ${overview.issues.filter((i) => i.kind === 'reading').length}건 중 일부를 AI가 다시 읽어 봅니다.`
-                : '규칙만 사용 중입니다.'}
-          </span>
-        </div>
-      )}
+      {pilot && contract.llm?.current_state && (() => {
+        const st = contract.llm.current_state;
+        const applied = contract.llm.applied_value_field_count ?? 0;
+        const readingCount = overview.issues.filter((i) => i.kind === 'reading').length;
+        const on = st.configured_enabled;
+        const ready = on && st.ready_for_inference;
+        return (
+          <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+            <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-semibold ${ready ? 'bg-violet-100 text-violet-700' : on ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600'}`}>
+              AI 보완 {ready ? '켜짐' : on ? '켜짐 · 연결 안 됨' : '꺼짐'}
+            </span>
+            {applied > 0 && <span className="rounded-full bg-violet-50 px-2.5 py-1 font-semibold text-violet-700">이 계약에서 AI가 채운 칸 {applied}개</span>}
+            <span>
+              {ready
+                ? '규칙이 못 읽은 값만 PC 안의 AI가 다시 읽고, 원문 근거가 확인된 값만 채택합니다.'
+                : on
+                  ? 'AI 서버나 모델을 찾지 못해 규칙만 사용했습니다. 업무 설정에서 상태를 확인하세요.'
+                  : readingCount > 0
+                    ? `규칙만 사용 중입니다. AI 보완을 켜면 '원문 확인' ${readingCount}건 중 일부를 AI가 다시 읽어 봅니다.`
+                    : '규칙만 사용 중입니다.'}
+            </span>
+          </div>
+        );
+      })()}
       {overview.notices.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
           <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 font-semibold text-slate-600">

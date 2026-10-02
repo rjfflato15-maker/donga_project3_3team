@@ -117,6 +117,32 @@ export interface ContractDetail {
   created_at: string;
   updated_at: string;
   workflow?: Workflow;
+  llm?: ContractLlm | null;
+}
+
+export interface LlmStatus {
+  configured_enabled: boolean;
+  model?: string;
+  connection_state?: string;
+  connected: boolean | null;
+  model_installed?: boolean | null;
+  ready_for_inference: boolean;
+  checked_at?: string | null;
+  error?: string | null;
+}
+
+export interface ContractLlm {
+  current_state?: LlmStatus;
+  document_count?: number;
+  invoked_document_count?: number;
+  failed_document_count?: number;
+  applied_value_field_count?: number;
+  current_matching_ai_value_field_count?: number;
+}
+
+export interface PilotPerformance {
+  contracts: { contract_id: number; human_correction_save_count: number; human_field_edit_count: number; human_changed_unique_field_count: number; ai_applied_value_field_count: number; ai_current_matching_value_field_count: number; resubmission_request_count: number }[];
+  totals: { contract_count: number; currently_confirmed_contract_count: number; mean_registration_to_current_final_confirmation_elapsed_seconds: number | null };
 }
 
 export interface ContractListItem {
