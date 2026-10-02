@@ -9,9 +9,11 @@ import { api } from '../api/client';
 import { Sidebar, NavigationTab } from '../components/Sidebar';
 import { OverallDashboardView } from '../components/OverallDashboardView';
 import { ValidationReportView } from '../components/ValidationReportView';
-import { MetricsSummary } from '../components/MetricsSummary';
-import { Checklist } from '../components/Checklist';
-import { RuleValidationCard } from '../components/RuleValidationCard';
+import { ContractReviewOverview } from '../components/review/ContractReviewOverview';
+import { DocumentReviewDialog } from '../components/review/DocumentReviewDialog';
+import { WorkQueueDashboard, DashboardItem } from '../components/review/WorkQueueDashboard';
+import { ApprovalPanel } from '../components/review/ApprovalPanel';
+import { WorkStatsStrip } from '../components/review/WorkStatsStrip';
 import { DocumentViewerModal } from '../components/DocumentViewerModal';
 import { UploadModal } from '../components/UploadModal';
 import { NewContractModal } from '../components/NewContractModal';
@@ -34,9 +36,8 @@ import {
   Edit3,
   Trash2,
   ArrowLeft,
-  List,
-  FileSearch,
-  Sparkles,
+  MoreHorizontal,
+  Upload,
 } from 'lucide-react';
 
 export const ContractDashboard: React.FC = () => {
@@ -45,9 +46,11 @@ export const ContractDashboard: React.FC = () => {
   const canEdit = !isPilot || user?.role === 'operator' || user?.role === 'admin';
   const [pilotInfo, setPilotInfo] = useState<PilotInfo | null>(null);
   const [advancedDocOpen, setAdvancedDocOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
   const [contractViewMode, setContractViewMode] = useState<'list' | 'detail'>('list');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) return false;
     try {
       const saved = localStorage.getItem('sidebar_visible');
       return saved !== null ? saved === 'true' : true;
@@ -56,7 +59,15 @@ export const ContractDashboard: React.FC = () => {
     }
   });
 
+  // 좁은 화면에서는 사이드바가 본문을 가리지 않도록 자동으로 접는다
   useEffect(() => {
+    const onResize = () => { if (window.innerWidth < 1024) setIsSidebarOpen(false); };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  useEffect(() => {
+    if (window.innerWidth < 1024) return;
     try {
       localStorage.setItem('sidebar_visible', String(isSidebarOpen));
     } catch {
@@ -449,6 +460,20 @@ export const ContractDashboard: React.FC = () => {
 
     switch (activeTab) {
       case 'dashboard':
+        if (isPilot) {
+          return (
+            <div className="space-y-5">
+              <WorkQueueDashboard
+                contracts={contracts as DashboardItem[]}
+                isMaskingEnabled={isMaskingEnabled}
+                canEdit={canEdit}
+                onOpen={(id) => handleSelectContract(id, 'contracts', 'detail')}
+                onNewFromDocuments={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+              />
+              <WorkStatsStrip refreshKey={contracts} />
+            </div>
+          );
+        }
         return (
           <OverallDashboardView
             contracts={contracts}
@@ -465,6 +490,19 @@ export const ContractDashboard: React.FC = () => {
         );
 
       case 'contracts':
+        if (isPilot && (contractViewMode === 'list' || !currentContract)) {
+          return (
+            <WorkQueueDashboard
+              mode="list"
+              contracts={contracts as DashboardItem[]}
+              isMaskingEnabled={isMaskingEnabled}
+              canEdit={canEdit}
+              onOpen={(id) => handleSelectContract(id, undefined, 'detail')}
+              onNewFromDocuments={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+              onNewManual={canEdit ? () => setIsNewContractOpen(true) : undefined}
+            />
+          );
+        }
         if (contractViewMode === 'list' || !currentContract) {
           return (
             <ContractsListView
@@ -487,118 +525,82 @@ export const ContractDashboard: React.FC = () => {
         }
 
         return (
-          <div className="space-y-6">
-            {/* Top Navigation & Breadcrumb Bar for Detail View */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center space-x-3">
-                <button
-                  onClick={() => setContractViewMode('list')}
-                  className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl font-extrabold text-xs transition-all border border-slate-200 active:scale-95 shadow-2xs"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  <span>← 계약 목록으로 돌아가기</span>
-                </button>
-
-                <div className="h-4 w-px bg-slate-200 hidden sm:block"></div>
-
-                {/* View Mode Toggle */}
-                <div className="flex items-center p-1 bg-slate-100 rounded-xl text-xs font-bold">
+          <div className="space-y-5">
+            {/* 상단 이동·작업 바 */}
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={() => setContractViewMode('list')}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-indigo-300"
+              >
+                <ArrowLeft className="w-4 h-4" /> 계약 목록
+              </button>
+              <select
+                value={currentContract?.contract_id || ''}
+                onChange={(e) => handleSelectContract(Number(e.target.value), undefined, 'detail')}
+                className="min-w-0 max-w-xs truncate rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                aria-label="다른 계약 선택"
+              >
+                {contracts.map((c) => (
+                  <option key={c.contract_id} value={c.contract_id}>
+                    {c.title} · {maskVendorName(c.vendor_name, isMaskingEnabled)}
+                  </option>
+                ))}
+              </select>
+              <div className="ml-auto flex items-center gap-2">
+                {canEdit && (
                   <button
-                    onClick={() => setContractViewMode('list')}
-                    className="flex items-center space-x-1 px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition-colors"
+                    onClick={() => handleOpenUploadModal()}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-indigo-300"
                   >
-                    <List className="w-3.5 h-3.5" />
-                    <span>목록 보기</span>
+                    <Upload className="w-4 h-4" /> 서류 추가
                   </button>
-                  <button
-                    onClick={() => setContractViewMode('detail')}
-                    className="flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-white text-indigo-700 font-extrabold shadow-2xs transition-colors"
-                  >
-                    <FileSearch className="w-3.5 h-3.5" />
-                    <span>상세 검수</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Right Side: Contract Selector & Actions */}
-              <div className="flex items-center space-x-2">
-                <select
-                  value={currentContract?.contract_id || ''}
-                  onChange={(e) => handleSelectContract(Number(e.target.value), undefined, 'detail')}
-                  className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 font-bold text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 max-w-xs truncate"
-                >
-                  {contracts.map((c) => (
-                    <option key={c.contract_id} value={c.contract_id}>
-                      #{c.contract_id} {c.title} ({maskVendorName(c.vendor_name, isMaskingEnabled)}) — 충족률 {c.completeness_rate}%
-                    </option>
-                  ))}
-                </select>
-
-                <button
-                  onClick={() => handleOpenEditModal(currentContract)}
-                  className="inline-flex items-center space-x-1 px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl font-bold text-xs transition-colors"
-                  disabled={!canEdit}
-                  style={!canEdit ? { display: 'none' } : undefined}
-                  title="선택된 계약 정보 수정"
-                >
-                  <Edit3 className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">수정</span>
-                </button>
-
-                <button
-                  onClick={() => handleDeleteContract(currentContract.contract_id, currentContract.title)}
-                  className="inline-flex items-center space-x-1 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl font-bold text-xs transition-colors"
-                  disabled={!canEdit}
-                  style={!canEdit ? { display: 'none' } : undefined}
-                  title="선택된 계약 제외"
-                >
-                  <Trash2 className="w-3.5 h-3.5 text-rose-600" />
-                  <span className="hidden sm:inline">삭제</span>
-                </button>
-
+                )}
                 <button
                   onClick={() => handleRunPipelineSimulation()}
                   disabled={actionLoading}
-                  className="inline-flex items-center space-x-1 px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl font-bold text-xs shadow-xs transition-all active:scale-95 disabled:bg-slate-300"
-                  title="저장된 추출값의 규칙 검수 결과를 갱신합니다."
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-indigo-300 disabled:opacity-50"
+                  title="저장된 값으로 검사를 다시 실행합니다."
                 >
-                  <Sparkles className={`w-3.5 h-3.5 ${actionLoading ? 'animate-spin text-amber-300' : 'text-amber-300'}`} />
-                  <span className="hidden sm:inline">{actionLoading ? '검수 중...' : isPilot ? '현재 추출값 재검수' : '5단계 파이프라인 실행'}</span>
+                  <RefreshCw className={`w-4 h-4 ${actionLoading ? 'animate-spin' : ''}`} /> {actionLoading ? '검사 중…' : '다시 검사'}
                 </button>
-
-                <button
-                  onClick={handleRevalidate}
-                  disabled={actionLoading}
-                  className="inline-flex items-center space-x-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs transition-colors active:scale-95"
-                  title="검수 룰 재실행"
-                >
-                  <RefreshCw className={`w-3.5 h-3.5 ${actionLoading ? 'animate-spin' : ''}`} />
-                  <span className="hidden sm:inline">룰 재검수</span>
-                </button>
+                {canEdit && (
+                  <div className="relative">
+                    <button
+                      onClick={() => setMoreOpen((v) => !v)}
+                      className="rounded-lg border border-slate-200 bg-white p-1.5 text-slate-600 hover:border-indigo-300"
+                      aria-label="계약 수정·제외 메뉴"
+                      aria-expanded={moreOpen}
+                    >
+                      <MoreHorizontal className="w-5 h-5" />
+                    </button>
+                    {moreOpen && (
+                      <div className="absolute right-0 z-30 mt-1 w-40 rounded-xl border border-slate-200 bg-white py-1 text-sm shadow-lg">
+                        <button onClick={() => { setMoreOpen(false); void handleOpenEditModal(currentContract); }} className="flex w-full items-center gap-2 px-3 py-2 hover:bg-slate-50">
+                          <Edit3 className="w-4 h-4" /> 계약 정보 수정
+                        </button>
+                        <button onClick={() => { setMoreOpen(false); handleDeleteContract(currentContract.contract_id, currentContract.title); }} className="flex w-full items-center gap-2 px-3 py-2 text-rose-600 hover:bg-rose-50">
+                          <Trash2 className="w-4 h-4" /> 계약 제외
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Contract Detail Content */}
-            <MetricsSummary
+            <ContractReviewOverview
               contract={currentContract}
-              onEditContract={canEdit ? () => { void handleOpenEditModal(currentContract); } : undefined}
-              onDeleteContract={canEdit ? () => handleDeleteContract(currentContract.contract_id, currentContract.title) : undefined}
               isMaskingEnabled={isMaskingEnabled}
+              canEdit={canEdit}
+              ntsMode={pilotInfo?.nts_mode}
+              onOpenDocument={handleOpenDocumentModal}
+              onUploadType={(type) => handleOpenUploadModal(type)}
+              pilot={isPilot}
+              onChanged={() => refreshCurrentContract()}
+              /* llmConnected: 실제 LLM 설정·연결 상태 API가 생기면 연결 (현재 llm_connected는 항상 false) */
             />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Checklist
-                documents={currentContract.documents}
-                canEdit={canEdit}
-                requiredDocumentTypes={isPilot ? currentContract.required_document_types : undefined}
-                onSelectDocument={handleOpenDocumentModal}
-                onUploadSpecific={(type) => handleOpenUploadModal(type)}
-                onOpenUploadAll={canEdit ? () => handleOpenUploadModal() : undefined}
-                onDeleteDocument={canEdit ? handleDeleteDocument : undefined}
-                isMaskingEnabled={isMaskingEnabled}
-              />
-              <RuleValidationCard checks={currentContract.checks} isMaskingEnabled={isMaskingEnabled} />
-            </div>
-            {isPilot && <PilotReviewPanel contract={currentContract} onChanged={refreshCurrentContract} />}
+            {isPilot && <ApprovalPanel contract={currentContract} onChanged={() => refreshCurrentContract()} />}
+            {isPilot && <PilotReviewPanel contract={currentContract} onChanged={refreshCurrentContract} historyOnly />}
           </div>
         );
 
@@ -661,8 +663,8 @@ export const ContractDashboard: React.FC = () => {
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2 text-xs font-bold text-slate-700">
               <span className="text-indigo-600 font-extrabold">
-                {activeTab === 'dashboard' && '대시보드'}
-                {activeTab === 'contracts' && (contractViewMode === 'list' ? '외주/용역 계약 목록' : `계약 상세 검수 (#${currentContract?.contract_id ?? ''})`)}
+                {activeTab === 'dashboard' && (isPilot ? '검수 할 일' : '대시보드')}
+                {activeTab === 'contracts' && (contractViewMode === 'list' ? '계약 목록' : '계약 검수')}
                 {/* {activeTab === 'documents' && '증빙서류 관리'} */}
                 {activeTab === 'reports' && 'AI 교차검수 리포트'}
                 {activeTab === 'account-settings' && '계정 정보 및 비밀번호 변경'}
@@ -687,7 +689,7 @@ export const ContractDashboard: React.FC = () => {
           </div>
         </header>
 
-        <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+        <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 sm:py-8">
           {renderActiveContent()}
         </main>
 
@@ -764,8 +766,19 @@ export const ContractDashboard: React.FC = () => {
 
       {/* Modals */}
       {advancedDocOpen && selectedDoc && currentContract?.workflow && <PilotDocumentDialog doc={selectedDoc} revision={currentContract.workflow.revision} canEdit={canEdit} onClose={() => setAdvancedDocOpen(false)} onChanged={refreshCurrentContract} />}
+      {isPilot && selectedDoc && !advancedDocOpen && currentContract && (
+        <DocumentReviewDialog
+          doc={selectedDoc}
+          checks={currentContract.checks}
+          revision={currentContract.workflow?.revision ?? 0}
+          isMaskingEnabled={isMaskingEnabled}
+          canEdit={canEdit}
+          onClose={() => setSelectedDoc(null)}
+          onCorrect={() => setAdvancedDocOpen(true)}
+        />
+      )}
       <DocumentViewerModal
-        document={advancedDocOpen ? null : selectedDoc}
+        document={advancedDocOpen || isPilot ? null : selectedDoc}
         onManage={isPilot && canEdit ? () => setAdvancedDocOpen(true) : undefined}
         onClose={() => setSelectedDoc(null)}
         onDelete={canEdit ? handleDeleteDocument : undefined}

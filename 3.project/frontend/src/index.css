@@ -8,6 +8,9 @@ body {
   background-color: #f8fafc;
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
+  /* 한글이 단어 중간에서 줄바뀌지 않게 (긴 영문·번호는 필요할 때만 끊김) */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* Glassmorphism utilities */
