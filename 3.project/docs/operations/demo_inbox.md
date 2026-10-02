@@ -52,3 +52,5 @@ backend/.venv/Scripts/python.exe backend/scripts/prepare_demo_inbox.py --output 
 이것은 **LLM 미사용 상태와 기존 LLM 보완 결과의 비교**다. 실시간 모델 추론이나 실제 처리 속도 시연이라고 말하지 않는다. 시연 서버의 새 업로드 자동 LLM 호출은 꺼져 있다. 현재 개발 수치와 평가용 캐시는 그대로 보존하고 test 자료·정답·응답을 사용하지 않는다. `guarded-replay/receipt.json`과 `demo_manifest.json`에 재생 문서 수·변경 필드 수·모델 버전·출처·새 LLM 호출 0건을 기록한다.
 
 [C업체 프로필](../architecture/c_company_profile.md) · [LLM 설정](../eval/llm_settings.md) · [설명 문서 목차](../submission/explanation_outline.md)
+
+팀원 PC에서 함께 테스트할 때는 [사내망 접속 한 장 안내](team_test_network.md)를 따른다. 두 시연 계정은 이미 생성돼 있으며 8021 업무함 하나에 접속한다.

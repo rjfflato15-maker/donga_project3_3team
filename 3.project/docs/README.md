@@ -10,7 +10,7 @@
 | 유지보수·통합 담당 | [개발자 작업 안내](development/maintenance.md) | 확인 명령·변경 기록·복구 |
 | 문서 AI·검증 담당 | [LLM·평가 문서 목록](eval/local_llm_runbook.md) | 모델·근거 검증·dev/test 절차 |
 | 프로젝트 담당 | [진행 요약](progress/development_report.md) | 완료 사항·합의 기준·다음 작업 |
-| 시연 담당 | [C업체 프로필](architecture/c_company_profile.md) · [시연 업무함](operations/demo_inbox.md) | 시범 가정·다섯 사례·분리 실행·국세청 미연동 |
+| 시연 담당 | [C업체 프로필](architecture/c_company_profile.md) · [시연 업무함](operations/demo_inbox.md) · [팀원 접속 안내](operations/team_test_network.md) | 시범 가정·다섯 사례·분리 실행·국세청 미연동·사내망 테스트 |
 | 제출 문서 담당 | [설명 문서 목차](submission/explanation_outline.md) | 문제·구조·평가·결과·한계와 작성 재료 |
 | 배포 담당 | [배포 경계](development/distribution_boundary.md) | 앱·고객 자료·평가 도구 구분 |
 | 폴더 정리 담당 | [보관·삭제 기준](development/folder_guide.md) | 필요한 자료·캐시·로컬 보관함 구분 |
