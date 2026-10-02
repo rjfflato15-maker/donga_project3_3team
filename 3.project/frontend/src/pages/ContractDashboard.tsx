@@ -47,6 +47,7 @@ export const ContractDashboard: React.FC = () => {
   const [pilotInfo, setPilotInfo] = useState<PilotInfo | null>(null);
   const [advancedDocOpen, setAdvancedDocOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [recentUpload, setRecentUpload] = useState<{ contractId: number; names: string[] } | null>(null);
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
   const [contractViewMode, setContractViewMode] = useState<'list' | 'detail'>('list');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
@@ -209,6 +210,7 @@ export const ContractDashboard: React.FC = () => {
       setCurrentContract(updated);
       const list = await api.listContracts();
       setContracts(list);
+      if (isPilot) setRecentUpload({ contractId: currentContract.contract_id, names: files.map((f) => f.name) });
       showToast('success', `${files.length}건의 원본을 등록했습니다. 자동 검수 결과를 확인하세요.`);
     } catch (err: any) {
       console.error(err);
@@ -467,6 +469,7 @@ export const ContractDashboard: React.FC = () => {
                 contracts={contracts as DashboardItem[]}
                 isMaskingEnabled={isMaskingEnabled}
                 canEdit={canEdit}
+                representative={user?.role === 'representative'}
                 onOpen={(id) => handleSelectContract(id, 'contracts', 'detail')}
                 onNewFromDocuments={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
               />
@@ -597,6 +600,7 @@ export const ContractDashboard: React.FC = () => {
               onUploadType={(type) => handleOpenUploadModal(type)}
               pilot={isPilot}
               onChanged={() => refreshCurrentContract()}
+              recentUploadNames={recentUpload?.contractId === currentContract.contract_id ? recentUpload.names : undefined}
               /* llmConnected: 실제 LLM 설정·연결 상태 API가 생기면 연결 (현재 llm_connected는 항상 false) */
             />
             {isPilot && <ApprovalPanel contract={currentContract} onChanged={() => refreshCurrentContract()} />}
@@ -774,7 +778,7 @@ export const ContractDashboard: React.FC = () => {
           isMaskingEnabled={isMaskingEnabled}
           canEdit={canEdit}
           onClose={() => setSelectedDoc(null)}
-          onCorrect={() => setAdvancedDocOpen(true)}
+          onChanged={() => refreshCurrentContract()}
         />
       )}
       <DocumentViewerModal

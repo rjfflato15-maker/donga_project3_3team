@@ -48,6 +48,10 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
   const [businessNumber, setBusinessNumber] = useState('');
   const [contractAmount, setContractAmount] = useState('');
   const [issueDate, setIssueDate] = useState('');
+  // 등록할 때 계약 기준을 같이 받아서, 등록 직후 '계약 기준 확인'이 뜨지 않게 한다
+  const [amountBasis, setAmountBasis] = useState<'TOTAL' | 'SUPPLY'>('TOTAL');
+  const [taxAmount, setTaxAmount] = useState('');
+  const [paymentMode, setPaymentMode] = useState<'FULL' | 'INSTALLMENT'>('FULL');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const resetForm = () => {
     setSelectedFiles([]);
@@ -59,6 +63,9 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
     setBusinessNumber('');
     setContractAmount('');
     setIssueDate('');
+    setAmountBasis('TOTAL');
+    setTaxAmount('');
+    setPaymentMode('FULL');
     setErrorMsg(null);
   };
 
@@ -132,6 +139,11 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
       return;
     }
 
+    if (amountBasis === 'SUPPLY' && !(Number(taxAmount) >= 0 && taxAmount !== '')) {
+      setErrorMsg('공급가액 기준이면 계약서에 적힌 세액도 입력해 주세요. (임의로 10%를 더하지 않습니다)');
+      return;
+    }
+
     setSubmitting(true);
     setErrorMsg(null);
 
@@ -146,6 +158,18 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
         selectedFiles
       );
 
+      try {
+        await api.updateContract(createdContract.contract_id, {
+          amount_basis: amountBasis,
+          tax_amount: amountBasis === 'SUPPLY' ? Number(taxAmount) : null,
+          payment_mode: paymentMode,
+          revision: createdContract.workflow?.revision,
+          change_note: '등록할 때 계약 기준 입력',
+        });
+      } catch (policyErr) {
+        // 계약은 만들어졌으니 화면으로 이동하고, 기준은 계약 화면에서 다시 입력하게 둔다
+        console.warn('계약 기준 저장 실패:', policyErr);
+      }
       onSuccess(createdContract.contract_id);
       onClose();
     } catch (err: any) {
@@ -429,6 +453,32 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
                   onChange={(e) => setIssueDate(e.target.value)}
                   className="w-full px-3.5 py-2.5 text-xs font-semibold border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800 bg-white"
                 />
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 space-y-3">
+              <div className="text-xs font-bold text-slate-700">계약 기준 <span className="font-normal text-slate-500">계약서에 적힌 대로 고르세요. 금액 대조에 그대로 씁니다.</span></div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <label className="text-xs font-semibold text-slate-700">금액 기준
+                  <select value={amountBasis} onChange={(e) => setAmountBasis(e.target.value as 'TOTAL' | 'SUPPLY')}
+                    className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs text-slate-800">
+                    <option value="TOTAL">부가세 포함 합계</option>
+                    <option value="SUPPLY">공급가액 (부가세 별도)</option>
+                  </select>
+                </label>
+                {amountBasis === 'SUPPLY' && (
+                  <label className="text-xs font-semibold text-slate-700">계약서의 세액 (원)
+                    <input type="number" min={0} value={taxAmount} onChange={(e) => setTaxAmount(e.target.value)} placeholder="예: 150000"
+                      className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs text-slate-800" />
+                  </label>
+                )}
+                <label className="text-xs font-semibold text-slate-700">지급 방식
+                  <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value as 'FULL' | 'INSTALLMENT')}
+                    className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs text-slate-800">
+                    <option value="FULL">일시(전액) 지급</option>
+                    <option value="INSTALLMENT">분할 지급 (선금·잔금)</option>
+                  </select>
+                </label>
               </div>
             </div>
           </form>

@@ -26,6 +26,7 @@ interface Props {
   pilot?: boolean;
   onChanged?: () => Promise<void>;
   llmConnected?: boolean;
+  recentUploadNames?: string[];
 }
 
 const STATUS_STYLE: Record<ValidationStatus, string> = {
@@ -54,6 +55,7 @@ export const ContractReviewOverview: React.FC<Props> = ({
   pilot = false,
   onChanged,
   llmConnected,
+  recentUploadNames,
 }) => {
   const [requests, setRequests] = useState<ResubmissionRequest[]>([]);
   const [resolving, setResolving] = useState<{ id: number; status: 'RECEIVED' | 'CANCELLED' } | null>(null);
@@ -130,6 +132,13 @@ export const ContractReviewOverview: React.FC<Props> = ({
       {waiting.length > 0 && (
         <div className="rounded-2xl border-2 border-sky-300 bg-sky-50 px-5 py-4 space-y-2">
           <div className="font-bold text-sky-900">회신 대기 {waiting.length}건</div>
+          {recentUploadNames && recentUploadNames.length > 0 && canEdit && (
+            <div className="flex flex-wrap items-center gap-2 rounded-xl bg-white px-3 py-2 text-sm text-sky-900">
+              <span>방금 올린 서류: <b className="break-all">{recentUploadNames.join(', ')}</b>. 요청한 서류를 받은 거라면 회신 받음으로 기록하세요.</span>
+              <button onClick={() => { setResolving({ id: waiting[0].request_id, status: 'RECEIVED' }); setResolveNote(`회신 서류 등록: ${recentUploadNames.join(', ')}`.slice(0, 2000)); }}
+                className="rounded-lg bg-sky-600 px-2.5 py-1 text-xs font-semibold text-white">{waiting.length > 1 ? '가장 오래된 요청을 회신 받음으로' : '회신 받음으로 기록'}</button>
+            </div>
+          )}
           {waiting.map((r) => (
             <div key={r.request_id} className="rounded-xl bg-white/80 px-3 py-2 text-sm">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
