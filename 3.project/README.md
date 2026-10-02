@@ -15,4 +15,4 @@ EXE는 앱 폴더와 준비된 Python 환경이 필요한 실행 입구다. EXE�
 | LLM 설정·성능 평가 | [LLM·평가 문서 목록](docs/eval/local_llm_runbook.md) |
 | 나머지 설계·참고 문서 | [전체 문서 목록](docs/README.md) |
 
-고객 업무 자료·계정 안내·설정·백업은 Git에 올리지 않는다. 개발자는 기존 start_dev.bat 또는 npm run dev를 사용한다. 화면 변경은 계획과 이미지 시안을 승인받은 뒤 적용한다.
+고객 업무 자료·계정 안내·설정·백업은 Git에 올리지 않는다. 개발자는 기존 tools/dev/start_dev.bat 또는 npm run dev를 사용한다. 화면 변경은 계획과 이미지 시안을 승인받은 뒤 적용한다.

@@ -1,2 +1,5 @@
 # Local prompts and intermediate verification files are not submission sources.
 /tmp/
+/_local_archive/
+.pytest_cache/
+__pycache__/

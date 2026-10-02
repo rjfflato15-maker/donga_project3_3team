@@ -55,6 +55,7 @@
 | 가드 v3·현재 dev 수치 | [가드 v3 감사](history/09_guard_v3.md) |
 | 실행기·실제 실행 검증 | [통합 실행기](history/10_launcher.md) |
 | 역할별 소스·문서 정리 | [유지보수 구조 정리](history/11_maintenance_structure.md) |
+| 탐색기 폴더·중복 파일 정리 | [도구와 로컬 보관함](history/12_folder_cleanup.md) |
 
 [전체 문서 목록](../README.md) · [변경할 파일 찾기](../architecture/module_map.md)
 

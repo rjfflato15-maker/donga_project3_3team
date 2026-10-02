@@ -6,7 +6,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from backend.launcher import environment, operations, server, settings as config
+from backend.launcher import cli, environment, operations, server, settings as config
 from backend.launcher.environment import LauncherError
 
 
@@ -165,3 +165,18 @@ def test_health_identity_never_exposes_data_location(monkeypatch):
     assert reply["launcher_instance"] == "opaque-value"
     assert type(reply["launcher_pid"]) is int
     assert set(reply) == {"status", "service", "version", "launcher_instance", "launcher_pid"}
+
+
+@pytest.mark.parametrize("task,script", [("1", "install_pilot_startup.ps1"), ("2", "install_pilot_backup.ps1")])
+def test_management_menu_registers_selected_task_with_same_settings(tmp_path, settings, monkeypatch, task, script):
+    path = tmp_path / "settings.json"
+    config.save_settings(path, settings)
+    answers = iter(["8", task, "0"])
+    monkeypatch.setattr("builtins.input", lambda _: next(answers))
+    run = Mock()
+    monkeypatch.setattr(cli, "run_checked", run)
+    assert cli.manage_menu(path, tmp_path / "server.json") == 0
+    run.assert_called_once()
+    args = run.call_args.args[0]
+    assert args[-3:] == [environment.PROJECT / "tools/ops" / script, "-SettingsFile", path]
+    assert Path(args[-3]).is_file()

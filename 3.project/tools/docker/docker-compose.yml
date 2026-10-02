@@ -3,13 +3,13 @@ version: '3.8'
 services:
   app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../..
+      dockerfile: tools/docker/Dockerfile
     container_name: contract-evidence-manager
     ports:
       - "8000:8000"
     volumes:
-      - ./storage:/app/storage
+      - ../../storage:/app/storage
     environment:
       - PYTHONUNBUFFERED=1
     restart: unless-stopped

@@ -2,7 +2,7 @@ const { spawn, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
-const rootDir = path.resolve(__dirname, '..');
+const rootDir = path.resolve(__dirname, '../../..');
 const frontendDir = path.join(rootDir, 'frontend');
 const distDir = path.join(frontendDir, 'dist');
 

@@ -1,7 +1,8 @@
 ﻿param([Parameter(Mandatory=$true)][string]$BackupDirectory)
 $ErrorActionPreference = 'Stop'
-$pilotPython = Join-Path $PSScriptRoot 'backend\.venv\Scripts\python.exe'
-$pilotManager = Join-Path $PSScriptRoot 'backend\manage_pilot.py'
+$pilotProjectRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
+$pilotPython = Join-Path $pilotProjectRoot 'backend\.venv\Scripts\python.exe'
+$pilotManager = Join-Path $pilotProjectRoot 'backend\manage_pilot.py'
 $pilotBackupName = 'C-pilot-' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '.zip'
 $pilotBackupTarget = Join-Path ([System.IO.Path]::GetFullPath($BackupDirectory)) $pilotBackupName
 & $pilotPython $pilotManager backup --output $pilotBackupTarget

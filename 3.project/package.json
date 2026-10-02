@@ -4,15 +4,15 @@
   "description": "계약 증빙서류 누락·불일치 자동 검수 시스템 (통합 패키지)",
   "private": true,
   "scripts": {
-    "setup": "node scripts/setup.js",
-    "dev": "node scripts/dev.js",
-    "dev:concurrently": "concurrently -n \"BACKEND,FRONTEND\" -c \"cyan,green\" \"node scripts/backend.js\" \"npm --prefix frontend run dev\"",
+    "setup": "node tools/dev/node/setup.js",
+    "dev": "node tools/dev/node/dev.js",
+    "dev:concurrently": "concurrently -n \"BACKEND,FRONTEND\" -c \"cyan,green\" \"node tools/dev/node/backend.js\" \"npm --prefix frontend run dev\"",
     "dev:frontend": "npm --prefix frontend run dev",
-    "dev:backend": "node scripts/backend.js",
+    "dev:backend": "node tools/dev/node/backend.js",
     "build": "npm --prefix frontend run build",
-    "start": "node scripts/start.js",
-    "serve": "node scripts/start.js",
-    "test": "node scripts/test.js"
+    "start": "node tools/dev/node/start.js",
+    "serve": "node tools/dev/node/start.js",
+    "test": "node tools/dev/node/test.js"
   },
   "keywords": [
     "contract-evidence",

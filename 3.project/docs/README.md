@@ -10,6 +10,7 @@
 | 문서 AI·검증 담당 | [LLM·평가 문서 목록](eval/local_llm_runbook.md) | 모델·근거 검증·dev/test 절차 |
 | 프로젝트 담당 | [진행 요약](progress/development_report.md) | 완료 사항·합의 기준·다음 작업 |
 | 배포 담당 | [배포 경계](development/distribution_boundary.md) | 앱·고객 자료·평가 도구 구분 |
+| 폴더 정리 담당 | [보관·삭제 기준](development/folder_guide.md) | 필요한 자료·캐시·로컬 보관함 구분 |
 
 참고 설계는 [서비스 개요](architecture/overview.md), [기존 ERD](architecture/erd_v0.1.md), [초기 검수 규칙](validation/validation_rules_v0.1.md), [개인정보 전처리](ai/privacy_preprocessing_v0.1.md)에 있다. 오래된 설계 문서보다 현재 소스와 진행 요약을 우선 확인한다.
 

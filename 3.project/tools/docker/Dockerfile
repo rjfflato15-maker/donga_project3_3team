@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install python dependencies (excluding Windows-only winocr)
-COPY requirements.txt .
+COPY backend/requirements.txt ./requirements.txt
 RUN sed -i '/winocr/d' requirements.txt && pip install --no-cache-dir -r requirements.txt
 
 # Copy backend application code and sample files

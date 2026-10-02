@@ -11,3 +11,8 @@ storage
 **/initial-accounts.txt
 output
 tmp
+eval
+outputs
+docs
+backups
+**/local-login.txt

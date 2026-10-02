@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | 실행 소스 | `backend/app/`, `backend/launcher/`, `backend/pilot_launcher.py`, `backend/manage_pilot.py` | 앱 실행·운영에 필요한 코드. 판매용 포장 후보 |
 | 화면 | `frontend/src/`, `frontend/dist/` | 개발은 src, 실제 서버는 빌드 결과 dist 사용 |
-| 실행 준비 | `tools/launcher/`, `tools/build_launcher.ps1`, `start_pilot.bat`, 운영 PowerShell | EXE 생성·설치·예약 작업. 배포 방식에 맞춰 포함 |
+| 실행 준비 | `tools/launcher/`, `tools/ops/`, `start_pilot.bat` | EXE 생성·설치·예약 작업. 배포 방식에 맞춰 포함 |
 | 실행 환경 | `backend/.venv/`, `frontend/node_modules/` | Git 제외. 대상 PC에서 준비하거나 검증한 별도 실행 환경으로 패키징 |
 | 고객 자료 | 지정 자료 폴더의 DB·원본·가린 파일·텍스트 | 코드 배포와 분리. 업데이트가 덮어쓰지 않음 |
 | 고객 설정·비밀 | `storage/launcher/`, 환경 설정·초기 계정 안내 | 고객별 보관. 공용 Git·배포 묶음에 넣지 않음 |
@@ -16,5 +16,7 @@
 | 모델 가중치 | Ollama 모델 저장소 | 현재 저장소에 포함하지 않음. 배포 시 모델 조건 별도 확인 |
 
 소스 폴더가 나뉘었다고 파일을 바로 제외할 수 있는 것은 아니다. 실제 import·명령 호출·문서 판독·화면 로딩을 확인한 뒤 배포 목록을 확정한다. 초기 설치의 패키지 다운로드와 폐쇄망 반입 준비도 따로 검증한다.
+
+개발용 로컬 폴더의 삭제·보관 기준은 [폴더 안내](folder_guide.md)를 따른다.
 
 판매용 패키징의 다음 순서는 실행 환경 고정 → 대상 PC 설치 확인 → 파일 목록 확정 → 라이브러리·모델 고지 확인 → 업데이트·복구 검증이다. 소스 공개·저장소 공개 범위와 고객 직접 수정 버전의 지원 조건은 [배포·판매 검토](../operations/distribution.md)에서 다룬다.

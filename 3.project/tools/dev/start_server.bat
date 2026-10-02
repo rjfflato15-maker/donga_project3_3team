@@ -1,5 +1,6 @@
 @echo off
 chcp 65001 > nul
+pushd "%~dp0..\.."
 title AI Contract Evidence Manager - Single Production Server
 
 echo ========================================================
@@ -17,13 +18,14 @@ if %errorlevel% neq 0 (
 
 if not exist "backend\.venv\Scripts\python.exe" (
     echo [안내] 가상환경이 발견되지 않아 초기 설정을 진행합니다...
-    call node scripts\setup.js
+    call node tools\dev\node\setup.js
 )
 
 :: 브라우저 자동 실행
 start "" cmd /c "timeout /t 3 /nobreak >nul & start http://localhost:8000"
 
 :: 단일 통합 서버 시작
-node scripts\start.js
+node tools\dev\node\start.js
 
+popd
 pause

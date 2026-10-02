@@ -1,5 +1,6 @@
 @echo off
 chcp 65001 > nul
+pushd "%~dp0..\.."
 title AI Contract Evidence Manager - Dev Server
 
 echo ========================================================
@@ -20,13 +21,14 @@ if %errorlevel% neq 0 (
 :: 2. Python 가상환경 확인 및 생성 안내
 if not exist "backend\.venv\Scripts\python.exe" (
     echo [안내] 가상환경이 발견되지 않아 초기 설정을 진행합니다...
-    call node scripts\setup.js
+    call node tools\dev\node\setup.js
 )
 
 :: 3. 브라우저 자동 실행 (2초 후)
 start "" cmd /c "timeout /t 3 /nobreak >nul & start http://localhost:5173"
 
 :: 4. 통합 개발 서버 시작 (FastAPI 8000 + Vite 5173)
-node scripts\dev.js
+node tools\dev\node\dev.js
 
+popd
 pause

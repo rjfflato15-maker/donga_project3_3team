@@ -1,7 +1,7 @@
 ﻿param([switch]$OnlyIfMissing)
 $ErrorActionPreference = 'Stop'
-$launcherProject = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$launcherSource = Join-Path $PSScriptRoot 'launcher\Program.cs'
+$launcherProject = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
+$launcherSource = Join-Path $PSScriptRoot 'Program.cs'
 $launcherOutput = Join-Path $launcherProject 'C-Pilot.exe'
 if ($OnlyIfMissing -and (Test-Path -LiteralPath $launcherOutput) -and ((Get-Item -LiteralPath $launcherOutput).LastWriteTimeUtc -ge (Get-Item -LiteralPath $launcherSource).LastWriteTimeUtc)) { exit 0 }
 $launcherCompiler = Join-Path $env:WINDIR 'Microsoft.NET\Framework\v4.0.30319\csc.exe'

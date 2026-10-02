@@ -6,7 +6,7 @@
     [switch]$KeepRunning
 )
 $ErrorActionPreference = 'Stop'
-$pilotProjectRoot = $PSScriptRoot
+$pilotProjectRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 $pilotPython = Join-Path $pilotProjectRoot 'backend\.venv\Scripts\python.exe'
 $pilotFrontend = Join-Path $pilotProjectRoot 'frontend\dist\index.html'
 if (-not (Test-Path -LiteralPath $pilotPython)) { throw 'backend\.venv 가상환경이 없습니다. 운영 안내의 준비 절차를 진행하세요.' }

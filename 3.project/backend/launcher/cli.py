@@ -72,7 +72,7 @@ def manage_menu(settings_path, state_path):
                         if not settings_path.exists():
                             save_settings(settings_path, settings)
                         script = "install_pilot_startup.ps1" if task == "1" else "install_pilot_backup.ps1"
-                        run_checked(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", PROJECT / script,
+                        run_checked(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", PROJECT / "tools/ops" / script,
                                      "-SettingsFile", settings_path])
                 elif choice == "9":
                     if input("모든 접속이 종료됩니다. 진행하려면 '종료': ").strip() == "종료":

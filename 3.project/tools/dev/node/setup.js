@@ -2,7 +2,7 @@ const { execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
-const rootDir = path.resolve(__dirname, '..');
+const rootDir = path.resolve(__dirname, '../../..');
 const frontendDir = path.join(rootDir, 'frontend');
 const isWin = process.platform === 'win32';
 const npmCmd = isWin ? 'npm.cmd' : 'npm';
@@ -35,12 +35,12 @@ if (!fs.existsSync(venvPython)) {
 }
 
 // 2. Install Backend Requirements
-const reqFile = path.join(rootDir, 'requirements.txt');
+const reqFile = path.join(rootDir, 'backend', 'requirements.txt');
 if (fs.existsSync(reqFile) && fs.existsSync(venvPython)) {
   console.log('\x1b[33m📦 Installing Backend dependencies from requirements.txt...\x1b[0m');
   try {
     execSync(`"${venvPython}" -m pip install --upgrade pip`, { cwd: rootDir, stdio: 'inherit' });
-    execSync(`"${venvPython}" -m pip install -r requirements.txt`, { cwd: rootDir, stdio: 'inherit' });
+    execSync(`"${venvPython}" -m pip install -r backend/requirements.txt`, { cwd: rootDir, stdio: 'inherit' });
     console.log('\x1b[32m✔ Backend dependencies installed.\x1b[0m\n');
   } catch (e) {
     console.error('\x1b[31m✖ Failed to install backend dependencies:\x1b[0m', e.message);

@@ -28,3 +28,5 @@ npm run build
 확정 dev 정답과 사람 출처는 임의 수정하지 않는다. test 자료는 개발·튜닝에 열지 않고 [최종 평가 조건](../eval/final_workflow.md)을 따른다. 캐시·JSON·CSV·고정 기록은 문서 정리 대상에서 제외한다.
 
 고객 업데이트는 [운영 유지보수](../operations/maintenance.md), 배포할 폴더는 [배포 경계](distribution_boundary.md)를 참고한다.
+
+개발·운영 보조 스크립트는 [tools 안내](../../tools/README.md), 파일 보관 기준은 [폴더 안내](folder_guide.md)를 확인한다.
