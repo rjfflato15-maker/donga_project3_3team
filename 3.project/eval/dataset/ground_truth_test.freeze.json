@@ -1,0 +1,560 @@
+{
+  "labels_sha256": "296c093264ce09b6287be02bc6351adf42aacdf155927107038307643e45d758",
+  "manifest_sha256": "ba103e8a64f08c41c6f511cdcf5c908b0ab7e57aa827f38d8137f795af53258f",
+  "workbook_sha256": "f41029ca05a4d4a50e50ac2729931239c4fb2a08e080e503c0fa62d2c345a37a",
+  "confirmed": true,
+  "reviewer_type": "human",
+  "reviewer": "이창헌",
+  "confirmed_at": "2026-10-03T00:45:30.579115+09:00",
+  "review_method": "independent_reconciliation_with_human_sampling",
+  "human_full_review": false,
+  "human_direct_count": 134,
+  "ai_agreement_count": 760,
+  "required_human_count": 134,
+  "source_reference_sha256": "f13263203a504d7c1ca7b8f33d6916d57d4b954065a361bbb8a6e369d2f24c4c",
+  "comparison_sha256": "abdf058110ec5aef2f92345c97a84f92a7472b89725d00bf35adc699c4593ab3",
+  "independent_reply_sha256": {
+    "case_01.json": "8432de385a60eee0952b0d29b022b3d8a799bfb453649d6bac73eb98c58e2197",
+    "case_02.json": "546095726ea18237d17b6a57e8c5fba3b5b52eadc78234960a45b5cb0544a723",
+    "case_03.json": "de525b539982fa32c8e1be791372312ab61e75f5712d03818fffc3c13add1eee",
+    "case_04.json": "7354524e1c8f09a6f18e20c5b6a59e6a2a7ada522d943cb4c833cd409112bbc4",
+    "case_05.json": "5e6488f416a94a88701654dbedbb62b6dc204dbe204042778d70ec88b697b3dc",
+    "case_06.json": "07ad445a07f394a9e9217297048f3c050e69cff5c8e56c6a560a6845a0ddd77c",
+    "case_07.json": "c1b6a5535d299b43924c727889f967c05f1ba85f308cc2ad0f1191d6ebf0899c",
+    "case_08.json": "35a7a45fdc20aca57f0d91d1dfd13afb3ea94efdf6f5cae93d915701e07fa145",
+    "case_09.json": "79bfc0e05abdc96dc2e867290458085ba24c83e03aafe416634897471624ad28",
+    "case_10.json": "91ac5702bfe24fb12297ddee681c53b2c0c3229db12aae4436be4e0ec3b7d8bb"
+  },
+  "sampling": {
+    "seed": 42,
+    "rate": 0.1,
+    "method": "stratified_random_by_case_document_type",
+    "eligible_agreements": 845,
+    "sampled_count": 85,
+    "coverage": [
+      {
+        "contract_id": 201,
+        "scenario": "normal",
+        "selected_document_ids": [
+          20101,
+          20102,
+          20103,
+          20105,
+          20106
+        ]
+      },
+      {
+        "contract_id": 202,
+        "scenario": "missing",
+        "selected_document_ids": [
+          20201,
+          20202,
+          20204
+        ]
+      },
+      {
+        "contract_id": 203,
+        "scenario": "wrong_business_no",
+        "selected_document_ids": [
+          20301,
+          20302,
+          20303,
+          20304,
+          20305,
+          20306
+        ]
+      },
+      {
+        "contract_id": 204,
+        "scenario": "amount_mismatch",
+        "selected_document_ids": [
+          20401,
+          20402,
+          20404,
+          20406
+        ]
+      },
+      {
+        "contract_id": 205,
+        "scenario": "vat_separate",
+        "selected_document_ids": [
+          20501,
+          20502,
+          20503,
+          20504,
+          20505,
+          20506
+        ]
+      },
+      {
+        "contract_id": 206,
+        "scenario": "installments",
+        "selected_document_ids": [
+          20601,
+          20602,
+          20603,
+          20604,
+          20605,
+          20606,
+          20607
+        ]
+      },
+      {
+        "contract_id": 207,
+        "scenario": "scan_noise",
+        "selected_document_ids": [
+          20701,
+          20702,
+          20704,
+          20706
+        ]
+      },
+      {
+        "contract_id": 208,
+        "scenario": "amount_table",
+        "selected_document_ids": [
+          20801,
+          20802,
+          20805,
+          20806
+        ]
+      },
+      {
+        "contract_id": 209,
+        "scenario": "ambiguous_amount",
+        "selected_document_ids": [
+          20901,
+          20902,
+          20903,
+          20904,
+          20905,
+          20906
+        ]
+      },
+      {
+        "contract_id": 210,
+        "scenario": "arithmetic_mismatch",
+        "selected_document_ids": [
+          21001,
+          21002,
+          21003,
+          21006
+        ]
+      }
+    ],
+    "strata": [
+      {
+        "contract_id": "201",
+        "document_type": "bank_account",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "201",
+        "document_type": "business_registration",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "201",
+        "document_type": "contract",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "201",
+        "document_type": "contract_checks",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "201",
+        "document_type": "estimate",
+        "eligible_count": 13,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "201",
+        "document_type": "inspection_confirmation",
+        "eligible_count": 10,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "201",
+        "document_type": "tax_invoice",
+        "eligible_count": 15,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "202",
+        "document_type": "business_registration",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "202",
+        "document_type": "contract",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "202",
+        "document_type": "contract_checks",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "202",
+        "document_type": "estimate",
+        "eligible_count": 14,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "202",
+        "document_type": "tax_invoice",
+        "eligible_count": 16,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "203",
+        "document_type": "bank_account",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "203",
+        "document_type": "business_registration",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "203",
+        "document_type": "contract",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "203",
+        "document_type": "contract_checks",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "203",
+        "document_type": "estimate",
+        "eligible_count": 14,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "203",
+        "document_type": "inspection_confirmation",
+        "eligible_count": 10,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "203",
+        "document_type": "tax_invoice",
+        "eligible_count": 16,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "204",
+        "document_type": "bank_account",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "204",
+        "document_type": "business_registration",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "204",
+        "document_type": "contract",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "204",
+        "document_type": "contract_checks",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "204",
+        "document_type": "estimate",
+        "eligible_count": 14,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "204",
+        "document_type": "inspection_confirmation",
+        "eligible_count": 10,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "204",
+        "document_type": "tax_invoice",
+        "eligible_count": 16,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "205",
+        "document_type": "bank_account",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "205",
+        "document_type": "business_registration",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "205",
+        "document_type": "contract",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "205",
+        "document_type": "contract_checks",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "205",
+        "document_type": "estimate",
+        "eligible_count": 14,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "205",
+        "document_type": "inspection_confirmation",
+        "eligible_count": 10,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "205",
+        "document_type": "tax_invoice",
+        "eligible_count": 16,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "206",
+        "document_type": "bank_account",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "206",
+        "document_type": "business_registration",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "206",
+        "document_type": "contract",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "206",
+        "document_type": "contract_checks",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "206",
+        "document_type": "estimate",
+        "eligible_count": 14,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "206",
+        "document_type": "inspection_confirmation",
+        "eligible_count": 10,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "206",
+        "document_type": "tax_invoice",
+        "eligible_count": 30,
+        "sampled_count": 3
+      },
+      {
+        "contract_id": "207",
+        "document_type": "bank_account",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "207",
+        "document_type": "business_registration",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "207",
+        "document_type": "contract",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "207",
+        "document_type": "contract_checks",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "207",
+        "document_type": "estimate",
+        "eligible_count": 14,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "207",
+        "document_type": "inspection_confirmation",
+        "eligible_count": 10,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "207",
+        "document_type": "tax_invoice",
+        "eligible_count": 16,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "208",
+        "document_type": "bank_account",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "208",
+        "document_type": "business_registration",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "208",
+        "document_type": "contract",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "208",
+        "document_type": "contract_checks",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "208",
+        "document_type": "estimate",
+        "eligible_count": 14,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "208",
+        "document_type": "inspection_confirmation",
+        "eligible_count": 10,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "208",
+        "document_type": "tax_invoice",
+        "eligible_count": 16,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "209",
+        "document_type": "bank_account",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "209",
+        "document_type": "business_registration",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "209",
+        "document_type": "contract",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "209",
+        "document_type": "contract_checks",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "209",
+        "document_type": "estimate",
+        "eligible_count": 10,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "209",
+        "document_type": "inspection_confirmation",
+        "eligible_count": 10,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "209",
+        "document_type": "tax_invoice",
+        "eligible_count": 16,
+        "sampled_count": 2
+      },
+      {
+        "contract_id": "210",
+        "document_type": "bank_account",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "210",
+        "document_type": "business_registration",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "210",
+        "document_type": "contract",
+        "eligible_count": 11,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "210",
+        "document_type": "contract_checks",
+        "eligible_count": 12,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "210",
+        "document_type": "estimate",
+        "eligible_count": 14,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "210",
+        "document_type": "inspection_confirmation",
+        "eligible_count": 10,
+        "sampled_count": 1
+      },
+      {
+        "contract_id": "210",
+        "document_type": "tax_invoice",
+        "eligible_count": 14,
+        "sampled_count": 1
+      }
+    ]
+  },
+  "human_result_sha256": "5a90e6dc72915946db2b7e15dc7e496cbb437a0820a592a5f9a5092a4779059d",
+  "human_result_file": "human_review_result_test_이창헌.json",
+  "reviewed_from": "2026-10-02T15:34:07.165000+00:00",
+  "reviewed_until": "2026-10-02T15:42:43.484000+00:00"
+}
