@@ -107,6 +107,9 @@ def submit_review(contract_id: int, req: ReviewRequest, db: Session = Depends(ge
         inputs = service.pipeline_service.validation_inputs(db, contract)
         if policy_for(db, contract_id)["revision"] != req.revision or fingerprint_for(db, contract, inputs) != req.fingerprint:
             raise HTTPException(409, "확인 처리 중 계약 자료가 변경되었습니다. 최신 자료를 다시 확인하세요.")
+        if req.decision == "CONFIRMED":
+            from ..services.company_policy_service import require_prior_approval
+            require_prior_approval(db, contract_id, req.revision, req.fingerprint, actor)
         review = ContractReview(contract_id=contract_id, revision=req.revision, actor_id=actor.user_id,
                                 actor_name=actor.display_name, decision=req.decision, note=req.note.strip(),
                                 snapshot_json=json.dumps(snapshot, ensure_ascii=False, default=str))

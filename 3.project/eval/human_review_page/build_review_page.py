@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 """Build a click-through human review page from human_review.xlsx (items) + originals."""
-import datetime, json, os, re, zipfile
+import argparse, datetime, json, os, re, sys, zipfile
+from pathlib import Path
+from html import escape
 from xml.etree import ElementTree as ET
 
-PROJ = r"C:\3조 색인\3.project"
+PROJ = str(Path(__file__).resolve().parents[2])
+sys.path.insert(0, PROJ)
 PAGE_DIR = os.path.join(PROJ, "eval", "human_review_page")
 RAW = os.path.join(PAGE_DIR, "_items_raw.json")
 BLIND = os.path.join(PROJ, "eval", "claude_blind_review")
@@ -29,11 +32,15 @@ def docx_lines(path):
 
 def make_views(path, stem):
     """Crop page images to the text area so the text displays large on a laptop screen."""
-    import io, pymupdf
+    from backend.app.ai.pdf_runtime import open_pdf, open_page, page_count, render_page_image
     from PIL import Image
     vdir = os.path.join(PAGE_DIR, "views"); os.makedirs(vdir, exist_ok=True)
     if path.endswith(".pdf"):
-        imgs = [Image.open(io.BytesIO(pg.get_pixmap(dpi=200).tobytes("png"))) for pg in pymupdf.open(path)]
+        imgs = []
+        with open_pdf(path) as pdf:
+            for index in range(page_count(pdf)):
+                with open_page(pdf, index) as page:
+                    imgs.append(render_page_image(page, 200 / 72))
     else:
         imgs = [Image.open(path)]
     out = []
@@ -59,29 +66,30 @@ def excel_date(v):
     return v
 
 # ---- per-case context ----
-cases = {}
-for c in range(1, 11):
-    cdir = f"case_{c:02d}"
-    rc = json.load(open(os.path.join(BLIND, cdir, "registered_contract.json"), encoding="utf-8"))
-    rep = json.load(open(os.path.join(BLIND, "replies", cdir + ".json"), encoding="utf-8"))
-    inp = rc["input"]; pol = inp["amount_policy"]
-    cmp_total = inp["contract_amount"] + (pol["tax_amount"] or 0) if pol["amount_basis"] == "SUPPLY" else inp["contract_amount"]
-    docs = []
-    for d in rc["documents"]:
-        p = d["path"]; ext = p.rsplit(".", 1)[1]
-        entry = {"id": str(d["document_id"]), "src": f"../dataset/dev/{cdir}/{p}", "ext": ext, "name": p,
-                 "type": TYPE_KO.get(rep["documents"][str(d["document_id"])]["document_type"], "")}
-        if ext == "docx":
-            entry["lines"] = docx_lines(os.path.join(DEV, cdir, p))
-        if ext in ("pdf", "png"):
-            entry["views"] = make_views(os.path.join(DEV, cdir, p), f"{cdir}_{p.rsplit('.',1)[0]}")
-        docs.append(entry)
-    basis = ("공급가액 기준 %s + 등록 세액 %s = 비교 합계 %s" % (won(inp["contract_amount"]), won(pol["tax_amount"]), won(cmp_total))
-             if pol["amount_basis"] == "SUPPLY" else "합계 기준 %s" % won(inp["contract_amount"]))
-    cases[str(rc["contract_id"])] = {
-        "case": cdir, "vendor": inp["vendor_name"], "bno": inp["business_number"], "basis": basis,
-        "cmp": cmp_total, "pay": "분할 지급" if pol["payment_mode"] == "INSTALLMENT" else "일시(전액) 지급",
-        "docs": docs, "doctype": {d["id"]: d["type"] for d in docs}}
+def load_cases(reference):
+    cases = {}
+    for cdir in sorted(name for name in os.listdir(BLIND) if name.startswith("case_") and os.path.isdir(os.path.join(BLIND, name))):
+        rc = json.load(open(os.path.join(BLIND, cdir, "registered_contract.json"), encoding="utf-8"))
+        rep = reference
+        inp = rc["input"]; pol = inp["amount_policy"]
+        cmp_total = inp["contract_amount"] + (pol["tax_amount"] or 0) if pol["amount_basis"] == "SUPPLY" else inp["contract_amount"]
+        docs = []
+        for d in rc["documents"]:
+            p = d["path"]; ext = p.rsplit(".", 1)[1]
+            entry = {"id": str(d["document_id"]), "src": Path(os.path.relpath(os.path.join(DEV, cdir, p), PAGE_DIR)).as_posix(), "ext": ext, "name": p,
+                     "type": TYPE_KO.get(rep["documents"][str(d["document_id"])]["document_type"], "")}
+            if ext == "docx":
+                entry["lines"] = docx_lines(os.path.join(DEV, cdir, p))
+            if ext in ("pdf", "png"):
+                entry["views"] = make_views(os.path.join(DEV, cdir, p), f"{cdir}_{p.rsplit('.',1)[0]}")
+            docs.append(entry)
+        basis = ("공급가액 기준 %s + 등록 세액 %s = 비교 합계 %s" % (won(inp["contract_amount"]), won(pol["tax_amount"]), won(cmp_total))
+                 if pol["amount_basis"] == "SUPPLY" else "합계 기준 %s" % won(inp["contract_amount"]))
+        cases[str(rc["contract_id"])] = {
+            "case": cdir, "vendor": inp["vendor_name"], "bno": inp["business_number"], "basis": basis,
+            "cmp": cmp_total, "pay": "분할 지급" if pol["payment_mode"] == "INSTALLMENT" else "일시(전액) 지급",
+            "docs": docs, "doctype": {d["id"]: d["type"] for d in docs}}
+    return cases
 
 # ---- questions: "정답 초안이 하는 말" + 볼 곳 + (필요 시) 기준 ----
 def Q(claim, rule=None):
@@ -183,31 +191,33 @@ def check_q(it, ctx, rule, target):
         return Q("이 세금계산서에 <b>'전액 청구'</b>라고 적혀 있다."), "'전액 청구' 줄을 보세요."
     return Q(f"{rule} {target}: {st}"), ""
 
-items = json.load(open(RAW, encoding="utf-8"))
-out = []
-for it in items:
-    parts = it["A"].split("/")
-    cid = parts[0]; ctx = cases[cid]
-    if it["sheet"] == "필드확인":
-        doc_id, field = parts[1], parts[2]
-        q, hint = field_q(it, ctx, doc_id, field)
-        kind = "field"
-    else:
-        doc_id = None
-        if parts[2] == "missing_types":
-            rule, target = "missing_types", None
+def make_items(items, cases):
+    out = []
+    for it in items:
+        parts = it["A"].split("/")
+        cid = parts[0]; ctx = cases[cid]
+        if it["sheet"] == "필드확인":
+            doc_id, field = parts[1], parts[2]
+            q, hint = field_q(it, ctx, doc_id, field)
+            kind = "field"
         else:
-            rule, target = parts[2], parts[3]
-            if target.isdigit(): doc_id = target
-        q, hint = check_q(it, ctx, rule, target)
-        kind = "check"
-    val = it.get("J")
-    shown = excel_date(val) if val else ""
-    out.append({"key": f"{it['sheet']}!{it['row']}", "sheet": it["sheet"], "row": it["row"], "id": it["A"],
-                "cid": cid, "doc": doc_id, "label": it["C"], "q": q, "hint": hint,
-                "important": it["H"] != "일치 표본", "reason_tag": it["H"],
-                "excel": f"{it['I']}" + (f" / {shown}" if shown else ""),
-                "kind": kind})
+            doc_id = None
+            if parts[2] == "missing_types":
+                rule, target = "missing_types", None
+            else:
+                rule, target = parts[2], parts[3]
+                if target.isdigit(): doc_id = target
+            q, hint = check_q(it, ctx, rule, target)
+            kind = "check"
+        val = it.get("J")
+        shown = excel_date(val) if val else ""
+        out.append({"key": f"{it['sheet']}!{it['row']}", "sheet": it["sheet"], "row": it["row"], "id": it["A"],
+                    "cid": cid, "doc": doc_id, "label": it["C"], "q": q, "hint": hint,
+                    "important": it["H"] != "일치 표본", "reason_tag": it["H"],
+                    "excel": f"{it['I']}" + (f" / {shown}" if shown else ""),
+                    "kind": kind})
+    out.sort(key=sort_key)
+    return out
 
 def sort_key(x):
     first_doc = x["doc"] or "0"
@@ -215,12 +225,49 @@ def sort_key(x):
         pri = 2 if "BUSINESS_STATUS" in x["id"] else (1 if x["label"].startswith("검수확인서") else 0)
         return (0, pri, x["cid"], first_doc, x["row"])
     return (1, 0, x["cid"], first_doc, x["row"])
-out.sort(key=sort_key)
+def build_page(*, split="dev", dataset=None, blind=None, output=None, workbook=None):
+    global PAGE_DIR, BLIND, DEV, RAW
+    dataset = Path(dataset or Path(PROJ)/"eval/dataset").resolve()
+    BLIND = str(Path(blind or Path(PROJ)/("eval/claude_blind_review" + ("_test" if split == "test" else ""))).resolve())
+    PAGE_DIR = str(Path(output or Path(PROJ)/("eval/human_review_page" + ("_test" if split == "test" else ""))).resolve())
+    DEV = str(dataset/split)
+    Path(PAGE_DIR).mkdir(parents=True, exist_ok=True)
+    reference = json.loads((dataset/f"reference_labels_{split}.json").read_text(encoding="utf-8"))
+    cases = load_cases(reference)
+    items = []
+    if workbook:
+        import openpyxl
+        book = openpyxl.load_workbook(workbook,read_only=True,data_only=False)
+        try:
+            for name in ("필드확인", "검수확인"):
+                for n, row in enumerate(book[name].iter_rows(min_row=5,values_only=True),5):
+                    if row[0] is not None:
+                        items.append({**{chr(65+i): value for i,value in enumerate(row[:13])}, "sheet":name,"row":n})
+        finally:
+            book.close()
+    out = make_items(items,cases)
+    from hashlib import sha256
+    data = {"generated":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).isoformat(timespec="seconds"),
+            "split":split, "ready":bool(workbook), "cases":cases, "items":out,
+            "source_xlsx":Path(os.path.relpath(workbook,PROJ)).as_posix() if workbook else None,
+            "source_xlsx_sha256":sha256(Path(workbook).read_bytes()).hexdigest() if workbook else None}
+    tpl = Path(__file__).with_name("review_page_template.html").read_text(encoding="utf-8")
+    html = tpl.replace("/*__DATA__*/null",json.dumps(data,ensure_ascii=False).replace("<","\\u003c"))
+    Path(PAGE_DIR,"index.html").write_text(html,encoding="utf-8",newline="\n")
+    return data
 
-data = {"generated": datetime.datetime.now().isoformat(timespec="seconds"),
-        "source_xlsx": "outputs/01a0f640-7f7a-7eb1-8eb2-bb5a189f1850/human_review.xlsx",
-        "cases": cases, "items": out}
-tpl = open(os.path.join(os.path.dirname(__file__), "review_page_template.html"), encoding="utf-8").read()
-html = tpl.replace("/*__DATA__*/null", json.dumps(data, ensure_ascii=False))
-open(os.path.join(PAGE_DIR, "index.html"), "w", encoding="utf-8").write(html)
-print("items", len(out), "important", sum(x["important"] for x in out))
+
+def main():
+    parser=argparse.ArgumentParser(description="기존 원문 확인 화면으로 dev/test 검수 페이지 생성")
+    parser.add_argument("--split",choices=["dev","test"],default="dev")
+    parser.add_argument("--dataset",type=Path)
+    parser.add_argument("--blind",type=Path)
+    parser.add_argument("--output",type=Path)
+    parser.add_argument("--workbook",type=Path)
+    args=parser.parse_args()
+    data=build_page(split=args.split,dataset=args.dataset,blind=args.blind,output=args.output,workbook=args.workbook)
+    print("검수 페이지:",args.split,"확인 목록",len(data["items"]),"칸 /", "사람 확인 대기" if data["ready"] else "Claude 독립 판독 대기; 확정 불가")
+
+
+if __name__ == "__main__":
+    main()

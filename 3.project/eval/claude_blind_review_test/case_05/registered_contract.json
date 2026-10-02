@@ -1,0 +1,48 @@
+{
+  "dataset_version": "synthetic-v1",
+  "split": "test",
+  "contract_id": 205,
+  "input": {
+    "title": "가상 업무지원 시스템 구축",
+    "vendor_name": "가상 달빛제작소 5",
+    "business_number": "000-00-02051",
+    "contract_amount": 2500000,
+    "amount_policy": {
+      "amount_basis": "SUPPLY",
+      "tax_amount": 250000,
+      "payment_mode": "FULL"
+    }
+  },
+  "documents": [
+    {
+      "document_id": 20501,
+      "path": "document_01.docx",
+      "sha256": "851bfe75512a2fc53d7cf45494f32b42ec2a5b2eebab504baa474e7e1ea83f81"
+    },
+    {
+      "document_id": 20502,
+      "path": "document_02.pdf",
+      "sha256": "132a36948cff79dcd0b763a2d641f6356014c160edf72d8fa65204770f89c19b"
+    },
+    {
+      "document_id": 20503,
+      "path": "document_03.png",
+      "sha256": "b097c79679b1305c2df5cd1d24399fb6d3b79b75464976412a44a85f71818233"
+    },
+    {
+      "document_id": 20504,
+      "path": "document_04.docx",
+      "sha256": "fa832122770254c7502402f150394e11bee2016df07a4a1f898f024ee9b5244d"
+    },
+    {
+      "document_id": 20505,
+      "path": "document_05.pdf",
+      "sha256": "f479862a1474523a6875e16843939d43ca4ab460fe19433ada610281733c3718"
+    },
+    {
+      "document_id": 20506,
+      "path": "document_06.png",
+      "sha256": "8c0669b1970802631d6c94dd30c6259af4c120dbf85f05a20ee6a7413962c5c5"
+    }
+  ]
+}

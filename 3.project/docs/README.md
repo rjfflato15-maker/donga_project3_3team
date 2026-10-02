@@ -6,6 +6,7 @@
 | --- | --- | --- |
 | 앱 사용자·설치 담당 | [운영 문서 목록](operations/run_guide.md) | 설치·실행·계정·백업 |
 | 서버·기능 개발 담당 | [소스 역할 표](architecture/module_map.md) | 수정할 파일과 영향 범위 |
+| 화면 개발 담당 | [백엔드 API 인계](api/frontend_handoff.md) | 검사 근거·출처·연락 기록·회사 설정·결재 |
 | 유지보수·통합 담당 | [개발자 작업 안내](development/maintenance.md) | 확인 명령·변경 기록·복구 |
 | 문서 AI·검증 담당 | [LLM·평가 문서 목록](eval/local_llm_runbook.md) | 모델·근거 검증·dev/test 절차 |
 | 프로젝트 담당 | [진행 요약](progress/development_report.md) | 완료 사항·합의 기준·다음 작업 |

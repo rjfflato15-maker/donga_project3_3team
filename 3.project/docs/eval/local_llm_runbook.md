@@ -7,6 +7,7 @@ LLM은 규칙 추출이 실패하거나 모순인 필드를 보완하고, 최종
 | 실행 환경 담당 | [모델·타임아웃·클라우드 비활성 설정](llm_settings.md) |
 | 문서 AI 담당 | [근거 검증 정책](../ai/grounding_policy.md) |
 | 검증 담당 | [dev 비교와 캐시 재생](dev_workflow.md) |
+| test 정답 담당 | [독립 판독 자료·사람 확인 준비](test_review_preparation.md) |
 | 최종 평가 담당 | [test 실행 조건](final_workflow.md) |
 | 배포 담당 | [모델 라이선스 기록](model_licenses.md) |
 

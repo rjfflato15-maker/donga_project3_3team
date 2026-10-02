@@ -27,18 +27,18 @@ check_slots는 모든 문서에 동일한 후보 검사를 주는 표다. 이 �
 """
 
 
-def package(root, destination):
+def package(root, destination, *, split="dev"):
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
     if manifest.get("dataset_version") != "synthetic-v1" or manifest.get("created_for") != "local-evaluation":
         raise EvaluationNotReady("외부 검토 묶음은 현재 가상 평가 자료만 허용합니다.")
-    verify_dataset(root, manifest)
+    verify_dataset(root, manifest, split=split)
     zip_path = destination.with_suffix(".zip")
     if destination.exists() or zip_path.exists():
         raise EvaluationNotReady("기존 독립 검토 묶음을 덮어쓰지 않습니다.")
     destination.mkdir(parents=True)
-    (destination / "CLAUDE_PROMPT.md").write_text(PROMPT, encoding="utf-8")
+    (destination / "CLAUDE_PROMPT.md").write_text(PROMPT.replace("eval/claude_blind_review", "eval/" + destination.name), encoding="utf-8")
     shutil.copyfile(PROJECT / "eval/LABELING_GUIDE.md", destination / "LABELING_GUIDE.md")
-    contracts = [row for row in manifest["contracts"] if row["split"] == "dev"]
+    contracts = [row for row in manifest["contracts"] if row["split"] == split]
     for index, contract in enumerate(contracts, 1):
         directory = destination / f"case_{index:02d}"
         directory.mkdir()
@@ -47,15 +47,15 @@ def package(root, destination):
             name = Path(document["path"]).name
             shutil.copyfile(dataset_file(root, document["path"]), directory / name)
             document_rows.append({"document_id": document["document_id"], "path": name, "sha256": document["sha256"]})
-        inputs = {"dataset_version": manifest["dataset_version"], "split": "dev", "contract_id": contract["contract_id"],
+        inputs = {"dataset_version": manifest["dataset_version"], "split": split, "contract_id": contract["contract_id"],
                   "input": contract["input"], "documents": document_rows}
         (directory / "registered_contract.json").write_text(json.dumps(inputs, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         (directory / "reply_template.json").write_text(json.dumps(blank_independent_labels(manifest, [contract]), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     hashes = {path.relative_to(destination).as_posix(): file_hash(path) for path in sorted(destination.rglob("*")) if path.is_file()}
-    (destination / "package_receipt.json").write_text(json.dumps({"dataset_version": manifest["dataset_version"], "split": "dev",
+    (destination / "package_receipt.json").write_text(json.dumps({"dataset_version": manifest["dataset_version"], "split": split,
         "contract_count": len(contracts), "document_count": sum(len(row["documents"]) for row in contracts),
         "files": hashes, "contains_reference_answers": False, "contains_app_predictions": False,
-        "contains_test_documents": False, "review_completed": False}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        "contains_test_documents": split == "test", "review_completed": False}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(destination.rglob("*")):
             if path.is_file():
@@ -66,11 +66,12 @@ def package(root, destination):
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Claude 새 대화용 원문·기준·빈 양식 묶음")
     parser.add_argument("--dataset", type=Path, default=PROJECT / "eval/dataset")
-    parser.add_argument("--output", type=Path, default=PROJECT / "eval/claude_blind_review")
+    parser.add_argument("--split", choices=["dev", "test"], default="dev")
+    parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
     try:
-        output = package(args.dataset.resolve(), args.output.resolve())
-        print(f"dev 독립 검토 묶음 생성: {output.name}. 아직 Claude에게 전송하거나 판독하지 않았습니다.")
+        output = package(args.dataset.resolve(), (args.output or PROJECT / ("eval/claude_blind_review" + ("_test" if args.split == "test" else ""))).resolve(), split=args.split)
+        print(f"{args.split} 독립 검토 묶음 생성: {output.name}. 아직 Claude에게 전송하거나 판독하지 않았습니다.")
         return 0
     except (EvaluationNotReady, OSError, ValueError) as exc:
         print("검토 묶음 생성 중단: " + str(exc), file=sys.stderr)

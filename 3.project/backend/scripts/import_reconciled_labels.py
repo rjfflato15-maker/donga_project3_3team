@@ -8,21 +8,21 @@ from pathlib import Path
 PROJECT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT))
 from backend.evaluation_core import EvaluationNotReady, file_hash, validate_labels, verify_dataset, verify_freeze
-from backend.evaluation_review import compare_labels, merge_independent_parts
+from backend.evaluation_review import compare_labels, merge_independent_parts, validate_reference_draft
 from backend.evaluation_confirmation import apply_human_decisions
 
 
-def import_review(workbook_path, root, comparison_path, replies_directory, reviewer, review_result=None):
+def import_review(workbook_path, root, comparison_path, replies_directory, reviewer, review_result=None, *, split="dev"):
     import openpyxl
-    output = root / "ground_truth_dev.json"
+    output = root / f"ground_truth_{split}.json"
     if output.with_suffix(".freeze.json").exists() or json.loads(output.read_text(encoding="utf-8")).get("review", {}).get("confirmed"):
         raise EvaluationNotReady("이미 확정한 정답을 덮어쓰지 않습니다. 새 버전으로 검수하세요.")
     manifest_path = root / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    verify_dataset(root, manifest, split="dev")
-    reference_path = root / "reference_labels_dev.json"
+    verify_dataset(root, manifest, split=split)
+    reference_path = root / f"reference_labels_{split}.json"
     reference = json.loads(reference_path.read_text(encoding="utf-8"))
-    validate_labels(manifest, reference, "dev", allow_unreviewed=True)
+    validate_reference_draft(manifest, reference, split)
     verify_freeze(manifest_path, reference_path)
     comparison = json.loads(comparison_path.read_text(encoding="utf-8"))
     hashes = comparison["hashes"]
@@ -36,7 +36,7 @@ def import_review(workbook_path, root, comparison_path, replies_directory, revie
         if file_hash(path) != digest:
             raise EvaluationNotReady("대조 이후 Claude 응답이 변경되었습니다.")
         parts.append(json.loads(path.read_text(encoding="utf-8-sig")))
-    independent = merge_independent_parts(parts)
+    independent = merge_independent_parts(parts, split=split)
     methods = {"random_without_replacement_over_agreed_nonmandatory_cells": "random",
                "stratified_random_by_case_document_type": "case_document_type"}
     recalculated = compare_labels(manifest, reference, independent, seed=comparison["sampling"]["seed"],
@@ -124,6 +124,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="독립 AI 판독 대조 후 사람의 직접·표본 검수 결과 확정")
     parser.add_argument("workbook", type=Path)
     parser.add_argument("--dataset", type=Path, default=PROJECT / "eval/dataset")
+    parser.add_argument("--split", choices=["dev", "test"], default="dev")
     parser.add_argument("--comparison", type=Path, default=PROJECT / "eval/reconciliation-v3/comparison.json")
     parser.add_argument("--replies", type=Path, default=PROJECT / "eval/claude_blind_review/replies")
     parser.add_argument("--reviewer", required=True)
@@ -131,8 +132,8 @@ def main(argv=None):
     parser.add_argument("--confirmed", action="store_true", required=True, help="필수 항목을 실제로 확인했음을 명시")
     args = parser.parse_args(argv)
     try:
-        labels = import_review(args.workbook, args.dataset.resolve(), args.comparison, args.replies, args.reviewer, args.review_result)
-        print(f"dev 정답 확정: 사람 직접 확인 {labels['review']['human_direct_count']}칸, AI 일치 {labels['review']['ai_agreement_count']}칸. 전수 사람 검수로 기록하지 않았습니다.")
+        labels = import_review(args.workbook, args.dataset.resolve(), args.comparison, args.replies, args.reviewer, args.review_result, split=args.split)
+        print(f"{args.split} 정답 확정: 사람 직접 확인 {labels['review']['human_direct_count']}칸, AI 일치 {labels['review']['ai_agreement_count']}칸. 전수 사람 검수로 기록하지 않았습니다.")
         return 0
     except (EvaluationNotReady, OSError, ValueError, KeyError, TypeError) as exc:
         print("대조 정답 가져오기 중단: " + str(exc), file=sys.stderr)

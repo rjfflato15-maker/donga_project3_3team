@@ -1,0 +1,38 @@
+{
+  "dataset_version": "synthetic-v1",
+  "split": "test",
+  "contract_id": 202,
+  "input": {
+    "title": "가상 업무지원 시스템 구축",
+    "vendor_name": "가상 달빛제작소 2",
+    "business_number": "000-00-02027",
+    "contract_amount": 2420000,
+    "amount_policy": {
+      "amount_basis": "TOTAL",
+      "tax_amount": null,
+      "payment_mode": "FULL"
+    }
+  },
+  "documents": [
+    {
+      "document_id": 20201,
+      "path": "document_01.docx",
+      "sha256": "7c08f6f6a5de033137ce02507f5a204ec898e89fb8e402b4da7c4ccaeb07e087"
+    },
+    {
+      "document_id": 20202,
+      "path": "document_02.pdf",
+      "sha256": "7adc573a9a1b0c02d390aa03fc998a406d726aa836898a5c93c60c41fad31df5"
+    },
+    {
+      "document_id": 20203,
+      "path": "document_03.png",
+      "sha256": "46306f628eaf44c1e95f2ffc373216e96e56792c5d968419efd1ba9732e5044a"
+    },
+    {
+      "document_id": 20204,
+      "path": "document_04.docx",
+      "sha256": "8f8fb7c90cc4841fbe6de9aaa0febbd59ea55d6aa2f334eb1dcc93f3df42a434"
+    }
+  ]
+}

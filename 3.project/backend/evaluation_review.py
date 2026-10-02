@@ -1,4 +1,5 @@
 """Blind review schemas and reconciliation, without importing the app or oracle."""
+import copy
 import math
 import random
 import re
@@ -24,7 +25,10 @@ def blind_check_slots(contract):
 
 
 def blank_independent_labels(manifest, contracts):
-    return {"dataset_version": manifest["dataset_version"], "split": "dev",
+    splits = {row["split"] for row in contracts}
+    if len(splits) != 1 or not splits <= {"dev", "test"}:
+        raise EvaluationNotReady("독립 판독 묶음은 한 split만 포함해야 합니다.")
+    return {"dataset_version": manifest["dataset_version"], "split": next(iter(splits)),
             "review": {"author": "Claude", "reviewer_type": "ai_independent_review", "confirmed": False,
                        "used_reference_answers": False, "used_app_predictions": False},
             "documents": {str(doc["document_id"]): {
@@ -35,16 +39,16 @@ def blank_independent_labels(manifest, contracts):
                 "checks": [{**slot, "status": None} for slot in blind_check_slots(contract)]} for contract in contracts}}
 
 
-def merge_independent_parts(parts):
+def merge_independent_parts(parts, split="dev"):
     merged = None
     for part in parts:
         review = part.get("review", {})
-        if (part.get("split") != "dev" or review.get("reviewer_type") != "ai_independent_review"
+        if (part.get("split") != split or review.get("reviewer_type") != "ai_independent_review"
                 or review.get("confirmed") is not False or review.get("used_reference_answers") is not False
                 or review.get("used_app_predictions") is not False or not review.get("author")):
             raise EvaluationNotReady("독립 AI 판독의 작성자와 미확정·정답 미참조 기록을 확인하세요.")
         if merged is None:
-            merged = {"dataset_version": part.get("dataset_version"), "split": "dev", "review": dict(review),
+            merged = {"dataset_version": part.get("dataset_version"), "split": split, "review": dict(review),
                       "documents": {}, "contracts": {}}
         elif part.get("dataset_version") != merged["dataset_version"] or review.get("author") != merged["review"]["author"]:
             raise EvaluationNotReady("독립 판독 파일의 자료 버전 또는 작성자가 다릅니다.")
@@ -79,13 +83,14 @@ def compare_labels(manifest, reference, independent, *, seed=42, sample_rate=0.2
         raise EvaluationNotReady("표본 비율은 0과 1 사이여야 합니다.")
     if sample_method not in {"random", "case_document_type"}:
         raise EvaluationNotReady("표본 방식은 random 또는 case_document_type이어야 합니다.")
-    if reference.get("split") != "dev" or independent.get("split") != "dev" or reference.get("dataset_version") != independent.get("dataset_version") or reference.get("dataset_version") != manifest.get("dataset_version"):
-        raise EvaluationNotReady("대조할 자료 버전과 dev 구분을 확인하세요.")
-    contracts = [row for row in manifest["contracts"] if row["split"] == "dev"]
+    split = reference.get("split")
+    if split not in {"dev", "test"} or independent.get("split") != split or reference.get("dataset_version") != independent.get("dataset_version") or reference.get("dataset_version") != manifest.get("dataset_version"):
+        raise EvaluationNotReady("대조할 자료 버전과 split 구분을 확인하세요.")
+    contracts = [row for row in manifest["contracts"] if row["split"] == split]
     allowed_documents = {str(doc["document_id"]) for row in contracts for doc in row["documents"]}
     allowed_contracts = {str(row["contract_id"]) for row in contracts}
     if set(independent["documents"]) - allowed_documents or set(independent["contracts"]) - allowed_contracts:
-        raise EvaluationNotReady("독립 판독에 dev 목록에 없는 ID가 있습니다.")
+        raise EvaluationNotReady("독립 판독에 선택한 split 목록에 없는 ID가 있습니다.")
     rows = []
 
     def add(cid, key, expected, actual, valid, *, document=None, ambiguous=False, blocked=False):
@@ -181,7 +186,7 @@ def compare_labels(manifest, reference, independent, *, seed=42, sample_rate=0.2
                  "selected_document_ids": sorted({item["document_id"] for item in rows if item["contract_id"] == str(row["contract_id"]) and item["human_review_required"] and item["document_id"] is not None})}
                 for row in contracts]
     counts = Counter(row["comparison"] for row in rows)
-    result = {"dataset_version": reference["dataset_version"], "split": "dev", "review": {"confirmed": False,
+    result = {"dataset_version": reference["dataset_version"], "split": split, "review": {"confirmed": False,
             "human_review_completed_count": 0, "independent_complete": counts["UNANSWERED"] == 0},
             "sampling": {"seed": seed, "rate": sample_rate, "method": "random_without_replacement_over_agreed_nonmandatory_cells",
                          "eligible_agreements": len(agreements), "sampled_count": len(sample), "coverage": coverage},
@@ -190,3 +195,22 @@ def compare_labels(manifest, reference, independent, *, seed=42, sample_rate=0.2
     if sample_method == "case_document_type":
         result["sampling"].update(method="stratified_random_by_case_document_type", strata=strata)
     return result
+
+
+def validate_reference_draft(manifest, reference, split):
+    """Validate draft structure only; never authorize heldout predictions.
+
+    The frozen scoring validator deliberately rejects test preliminary scoring.
+    Project one split into its draft-only structural check, without changing
+    originals or marking any item human-confirmed.
+    """
+    from backend.evaluation_core import validate_labels
+    if split not in {"dev", "test"} or reference.get("split") != split:
+        raise EvaluationNotReady("정답 초안의 split이 다릅니다.")
+    projected_manifest = copy.deepcopy(manifest)
+    projected_manifest["contracts"] = [row for row in projected_manifest["contracts"] if row["split"] == split]
+    for row in projected_manifest["contracts"]:
+        row["split"] = "dev"
+    projected = copy.deepcopy(reference)
+    projected["split"] = "dev"
+    validate_labels(projected_manifest, projected, "dev", allow_unreviewed=True)

@@ -121,7 +121,7 @@ textarea{width:100%;font:inherit;font-size:14px;padding:6px 8px;border:1px solid
 </main>
 <script>
 const DATA = /*__DATA__*/null;
-const STORE = "human_review_page_v1";
+const STORE = `human-review-${DATA.split||"dev"}-${DATA.source_xlsx_sha256||DATA.generated}`;
 let state = {alias:"", answers:{}};
 try { const s = JSON.parse(localStorage.getItem(STORE)||"null"); if (s && s.answers) state = s; } catch(e) {}
 function save(){ try { localStorage.setItem(STORE, JSON.stringify(state)); } catch(e) {} }
@@ -178,7 +178,11 @@ function render(){
   $("progtxt").textContent = `이 목록 ${fdone}/${L.length} · 전체 ${done}/${total}`;
   $("progbar").style.width = (100*done/total)+"%";
   document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.f===filter));
-  if (!L.length) return;
+  if (!L.length) {
+    $("q").textContent = DATA.ready ? "이 목록에 확인할 항목이 없습니다." : "Claude 독립 판독 결과 대기 중입니다. 응답 대조 후 사람 확인 목록을 생성합니다.";
+    $("export").disabled = !DATA.ready;
+    return;
+  }
   idx = Math.max(0, Math.min(idx, L.length-1));
   const it = L[idx], c = DATA.cases[it.cid];
   $("reg").innerHTML = `<b>등록 계약</b><span>${c.case} · ${c.vendor}</span><b>사업자번호</b><span>${c.bno}</span><b>금액 기준</b><span>${c.basis}</span><b>지급 방식</b><span>${c.pay}</span>`;
@@ -204,6 +208,7 @@ function render(){
 }
 
 function answer(k){
+  if (!DATA.ready || !list().length) return;
   if (!state.alias){ alert("먼저 위쪽에 검수자 이름을 적어주세요."); $("alias").focus(); return; }
   const it = list()[idx];
   let reason = $("reason").value.trim();
@@ -217,7 +222,7 @@ function answer(k){
   if (k === "확인") setTimeout(() => nextOpen(), 250);
 }
 $("reason").addEventListener("input", () => {
-  const it = list()[idx]; const a = state.answers[it.key];
+  const it = list()[idx]; if (!it) return; const a = state.answers[it.key];
   if (a){ a.reason = $("reason").value; save(); }
 });
 function nextOpen(){
@@ -238,11 +243,12 @@ document.addEventListener("keydown", e => {
   else if (e.key==="ArrowRight") { idx++; render(); } else if (e.key==="ArrowLeft") { idx--; render(); }
 });
 $("export").onclick = () => {
+  if (!DATA.ready) return;
   const missingReason = items.filter(it => state.answers[it.key] && state.answers[it.key].k==="수정 필요" && !state.answers[it.key].reason);
   if (missingReason.length && !confirm(`'아니에요'로 표시했지만 이유를 안 적은 문항이 ${missingReason.length}개 있습니다. 그래도 저장할까요?`)) return;
   const out = {
     reviewer: state.alias, exported_at: new Date().toISOString(),
-    source_xlsx: DATA.source_xlsx, page_generated: DATA.generated,
+    source_xlsx: DATA.source_xlsx, source_xlsx_sha256: DATA.source_xlsx_sha256, split:DATA.split, page_generated: DATA.generated,
     note: "검수자가 이 페이지에서 원문 이미지/PDF/DOCX 글자를 직접 보고 클릭한 기록. K열=decision, L열=reason.",
     counts: {total: items.length, answered: Object.keys(state.answers).length},
     items: items.map(it => { const a = state.answers[it.key]||null;
@@ -251,7 +257,7 @@ $("export").onclick = () => {
   };
   const blob = new Blob([JSON.stringify(out, null, 2)], {type:"application/json"});
   const url = URL.createObjectURL(blob); const link = document.createElement("a");
-  link.href = url; link.download = `human_review_result_${(state.alias||"reviewer").replace(/[^\w가-힣-]/g,"_")}.json`;
+  link.href = url; link.download = `human_review_result_${DATA.split||"dev"}_${(state.alias||"reviewer").replace(/[^\w가-힣-]/g,"_")}.json`;
   document.body.appendChild(link); link.click(); link.remove(); setTimeout(()=>URL.revokeObjectURL(url), 1000);
 };
 render();

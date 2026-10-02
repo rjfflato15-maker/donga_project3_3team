@@ -83,5 +83,5 @@ def apply_human_decisions(manifest, reference, comparison, decisions, reviewer):
                        "comparison_sha256": comparison["comparison_sha256"],
                        "independent_reply_sha256": comparison["hashes"]["independent_replies"],
                        "sampling": comparison["sampling"]}
-    validate_labels(manifest, labels, "dev")
+    validate_labels(manifest, labels, reference["split"])
     return labels

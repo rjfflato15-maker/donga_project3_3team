@@ -9,9 +9,13 @@ backend/.venv/Scripts/python.exe backend/scripts/compare_llm_modes.py --selected
 ```
 
 ```powershell
-backend/.venv/Scripts/python.exe backend/scripts/compare_llm_modes.py --split test --final --selected-model qwen3:latest --selection-record docs/eval/dev/guard_v3/release_lock.json
+backend/.venv/Scripts/python.exe backend/scripts/compare_llm_modes.py --split test --final --selected-model qwen3:latest --selection-record docs/eval/test/preparation/release_lock.json
 ```
 
-현재 실제 test 문서와 정답은 열지 않았고 최종 평가도 실행하지 않았다. 결과 기본 경로는 `docs/eval/test/final/`이다. 확정 test 정답과 고정 버전을 확인한 다음, test 문서를 처음 열기 전에 자료 폴더에 `final_evaluation_attempt.json`을 독점 생성한다. 출력 폴더를 바꾸어도 재실행을 차단한다. 실패·중단도 시도 기록을 남기며 자동 재실행하지 않는다. 독립 정답 준비는 별도 절차이며 평가 코드를 개발할 때 test를 열어 보지 않는다.
+사용자 승인에 따라 test 정답 초안·독립 판독 묶음·사람 확인 페이지를 준비했다. 실제 test 원본은 이 정답 준비에만 사용했으며, 모델 추출·튜닝·성능 측정은 실행하지 않았다. Claude 독립 판독과 사람 정답 확정은 대기 중이다. [정답 준비 절차](test_review_preparation.md)를 먼저 따른다.
+
+dev 전용이던 표본 검수 출처 검증을 test에도 허용하도록 평가 정답 검증기만 확장했다. AI·검수·모델·프롬프트·가드는 그대로이며, 기존 dev 고정 기록을 보존하고 원래 기록의 해시와 변경 범위를 `docs/eval/test/preparation/release_lock.json`에 남겼다. 위 최종 명령은 이 파생 기록을 사용한다.
+
+결과 기본 경로는 `docs/eval/test/final/`이다. 확정 test 정답과 고정 버전을 확인한 다음, 평가용으로 test 문서를 읽기 전에 자료 폴더에 `final_evaluation_attempt.json`을 독점 생성한다. 출력 폴더를 바꾸어도 재실행을 차단한다. 실패·중단도 시도 기록을 남기며 자동 재실행하지 않는다. 실제 최종 시도는 아직 없다.
 
 [LLM·평가 문서 목록](local_llm_runbook.md)
