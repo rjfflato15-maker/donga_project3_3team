@@ -1,0 +1,40 @@
+{
+  "sha256": "3fc9d5c6c75b3a03318a0d6e41a7db4bcc3088b705879e315bc61f6108517fde",
+  "payload": {
+    "attempt_id": "5867ef04-9165-4321-82a3-c692e241fb37",
+    "request_sha256": "4701fd840326ce1344891d49847da8e6fad914dbde5c5c723ffd66323b07355c",
+    "started_at": "2026-10-02T17:03:46.069575+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "전자세금계산서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호: 가상 한결기획 4\n사업자등록번호: 000-00-03045\n공급받는자\n상호: 가상 북쪽연구소 4\n사업자등록번호: 000-00-15046\n공급가액: 4,110,000원\n세액: 411,000원\n합계금액: 4,521,000원\n전액 청구: 전체 계약 대금\n발행일: 2026-09-19\n"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "issue_date",
+        "amount_scope"
+      ],
+      "document_type": "tax_invoice",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

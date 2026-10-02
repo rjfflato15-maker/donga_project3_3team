@@ -5,3 +5,5 @@
 3.project/backend/scripts/build_reference_labels.py -text
 3.project/docs/eval/test/v3_predictions/** -text
 3.project/docs/eval/test/v3_scores/** -text
+3.project/docs/eval/dev2/four_modes/** -text
+3.project/docs/eval/dev2/four_mode_scores/** -text
