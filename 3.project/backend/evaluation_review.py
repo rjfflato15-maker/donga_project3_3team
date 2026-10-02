@@ -74,9 +74,11 @@ def valid_field(field, answer):
     return field != "amount_scope" or token in {"FULL", "PARTIAL"}
 
 
-def compare_labels(manifest, reference, independent, *, seed=42, sample_rate=0.20, review_requests=()):
+def compare_labels(manifest, reference, independent, *, seed=42, sample_rate=0.20, review_requests=(), sample_method="random"):
     if not 0 <= sample_rate <= 1:
         raise EvaluationNotReady("표본 비율은 0과 1 사이여야 합니다.")
+    if sample_method not in {"random", "case_document_type"}:
+        raise EvaluationNotReady("표본 방식은 random 또는 case_document_type이어야 합니다.")
     if reference.get("split") != "dev" or independent.get("split") != "dev" or reference.get("dataset_version") != independent.get("dataset_version") or reference.get("dataset_version") != manifest.get("dataset_version"):
         raise EvaluationNotReady("대조할 자료 버전과 dev 구분을 확인하세요.")
     contracts = [row for row in manifest["contracts"] if row["split"] == "dev"]
@@ -148,16 +150,43 @@ def compare_labels(manifest, reference, independent, *, seed=42, sample_rate=0.2
         reason = "DISAGREEMENT" if row["comparison"] == "DISAGREE" else "INTERPRETATION" if row.get("human_question") else "AMBIGUITY"
         row.update(human_review_required=True, selection_reason=reason)
     agreements = sorted([row for row in rows if row["comparison"] == "AGREE" and not row["human_review_required"]], key=lambda row: row["review_id"])
-    sample = random.Random(seed).sample(agreements, math.ceil(len(agreements) * sample_rate))
+    target = math.ceil(len(agreements) * sample_rate)
+    rng = random.Random(seed)
+    strata = []
+    if sample_method == "case_document_type":
+        groups = {}
+        for row in agreements:
+            did = str(row["document_id"] or row["key"].split("/")[-1])
+            kind = reference["documents"].get(did, {}).get("document_type", "contract_checks")
+            groups.setdefault((row["contract_id"], kind), []).append(row)
+        keys = sorted(groups)
+        # Guarantee one cell per case/type group when the requested total
+        # permits it. Allocate the remainder proportionally, then sample
+        # randomly within each group without changing the total sample size.
+        quotas = {key: int(target >= len(keys)) for key in keys}
+        while sum(quotas.values()) < target:
+            key = max((key for key in keys if quotas[key] < len(groups[key])),
+                      key=lambda key: target * len(groups[key]) / len(agreements) - quotas[key])
+            quotas[key] += 1
+        sample = []
+        for key in keys:
+            sample.extend(rng.sample(groups[key], quotas[key]))
+            strata.append({"contract_id": key[0], "document_type": key[1],
+                           "eligible_count": len(groups[key]), "sampled_count": quotas[key]})
+    else:
+        sample = rng.sample(agreements, target)
     for row in sample:
         row.update(human_review_required=True, selection_reason="RANDOM_SAMPLE")
     coverage = [{"contract_id": row["contract_id"], "scenario": row.get("scenario"),
                  "selected_document_ids": sorted({item["document_id"] for item in rows if item["contract_id"] == str(row["contract_id"]) and item["human_review_required"] and item["document_id"] is not None})}
                 for row in contracts]
     counts = Counter(row["comparison"] for row in rows)
-    return {"dataset_version": reference["dataset_version"], "split": "dev", "review": {"confirmed": False,
+    result = {"dataset_version": reference["dataset_version"], "split": "dev", "review": {"confirmed": False,
             "human_review_completed_count": 0, "independent_complete": counts["UNANSWERED"] == 0},
             "sampling": {"seed": seed, "rate": sample_rate, "method": "random_without_replacement_over_agreed_nonmandatory_cells",
                          "eligible_agreements": len(agreements), "sampled_count": len(sample), "coverage": coverage},
             "review_requests": list(review_requests),
             "counts": dict(counts), "required_human_count": sum(row["human_review_required"] for row in rows), "rows": rows}
+    if sample_method == "case_document_type":
+        result["sampling"].update(method="stratified_random_by_case_document_type", strata=strata)
+    return result

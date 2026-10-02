@@ -302,6 +302,27 @@ def test_human_interpretation_question_is_required_even_when_both_ai_answers_agr
         compare_labels(manifest, reference, answer, review_requests=[request, request])
 
 
+def test_stratified_sample_keeps_total_and_covers_cases_and_document_types():
+    import math
+    manifest, reference = source_example()
+    second = copy.deepcopy(manifest["contracts"][0])
+    second.update(contract_id=2)
+    second["documents"][0]["document_id"] = 8
+    second["check_slots"][0]["field"] = "8"
+    manifest["contracts"].append(second)
+    reference["documents"]["8"] = copy.deepcopy(reference["documents"]["7"])
+    reference["documents"]["8"]["document_type"] = "contract"
+    reference["contracts"]["2"] = copy.deepcopy(reference["contracts"]["1"])
+    reference["contracts"]["2"]["checks"][0]["field"] = "8"
+    independent = independent_example(manifest, reference)
+    result = compare_labels(manifest, reference, independent, sample_rate=0.5, sample_method="case_document_type")
+    assert result == compare_labels(manifest, reference, independent, sample_rate=0.5, sample_method="case_document_type")
+    assert result["sampling"]["sampled_count"] == math.ceil(result["sampling"]["eligible_agreements"] * 0.5)
+    assert all(group["sampled_count"] > 0 for group in result["sampling"]["strata"])
+    assert {group["contract_id"] for group in result["sampling"]["strata"]} == {"1", "2"}
+    assert {group["document_type"] for group in result["sampling"]["strata"]} == {"estimate", "contract", "contract_checks"}
+
+
 def test_reconciled_labels_preserve_actual_human_coverage_and_ai_agreements():
     manifest, reference, comparison, decisions = confirmation_example()
     labels = apply_human_decisions(manifest, reference, comparison, decisions, "test-human")

@@ -36,8 +36,11 @@ def import_review(workbook_path, root, comparison_path, replies_directory, revie
             raise EvaluationNotReady("대조 이후 Claude 응답이 변경되었습니다.")
         parts.append(json.loads(path.read_text(encoding="utf-8-sig")))
     independent = merge_independent_parts(parts)
+    methods = {"random_without_replacement_over_agreed_nonmandatory_cells": "random",
+               "stratified_random_by_case_document_type": "case_document_type"}
     recalculated = compare_labels(manifest, reference, independent, seed=comparison["sampling"]["seed"],
-                                  sample_rate=comparison["sampling"]["rate"], review_requests=comparison.get("review_requests", []))
+                                  sample_rate=comparison["sampling"]["rate"], review_requests=comparison.get("review_requests", []),
+                                  sample_method=methods[comparison["sampling"]["method"]])
     if any(recalculated[key] != comparison[key] for key in ("rows", "counts", "sampling", "review_requests", "required_human_count", "review")):
         raise EvaluationNotReady("대조 결과 또는 사람 확인 목록이 재현되지 않습니다.")
     comparison["comparison_sha256"] = file_hash(comparison_path)
@@ -95,7 +98,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="독립 AI 판독 대조 후 사람의 직접·표본 검수 결과 확정")
     parser.add_argument("workbook", type=Path)
     parser.add_argument("--dataset", type=Path, default=PROJECT / "eval/dataset")
-    parser.add_argument("--comparison", type=Path, default=PROJECT / "eval/reconciliation-v2/comparison.json")
+    parser.add_argument("--comparison", type=Path, default=PROJECT / "eval/reconciliation-v3/comparison.json")
     parser.add_argument("--replies", type=Path, default=PROJECT / "eval/claude_blind_review/replies")
     parser.add_argument("--reviewer", required=True)
     parser.add_argument("--confirmed", action="store_true", required=True, help="필수 항목을 실제로 확인했음을 명시")

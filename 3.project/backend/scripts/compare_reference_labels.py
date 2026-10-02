@@ -19,6 +19,7 @@ def main(argv=None):
     parser.add_argument("--output", type=Path, default=PROJECT / "eval/reconciliation")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--sample-rate", type=float, default=0.20)
+    parser.add_argument("--sample-method", choices=("random", "case_document_type"), default="random")
     parser.add_argument("--human-questions", type=Path, help="일치하더라도 사람이 판단해야 하는 해석 질문 JSON")
     args = parser.parse_args(argv)
     try:
@@ -34,7 +35,8 @@ def main(argv=None):
         if len({path.name for path in args.replies}) != len(args.replies):
             raise EvaluationNotReady("독립 판독 파일의 이름이 중복됩니다. 파일별 해시를 구분할 수 없습니다.")
         requests = json.loads(args.human_questions.read_text(encoding="utf-8")) if args.human_questions else []
-        comparison = compare_labels(manifest, reference, independent, seed=args.seed, sample_rate=args.sample_rate, review_requests=requests)
+        comparison = compare_labels(manifest, reference, independent, seed=args.seed, sample_rate=args.sample_rate,
+                                    review_requests=requests, sample_method=args.sample_method)
         comparison["hashes"] = {"manifest": file_hash(manifest_path), "reference": file_hash(reference_path),
                                  "independent_replies": {path.name: file_hash(path) for path in args.replies}}
         if args.human_questions:
