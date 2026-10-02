@@ -35,7 +35,8 @@ class PipelineService:
     def process_document_upload(self, db: Session, contract_id: int, file_name: str, file_bytes: bytes,
                                 target_document_type: str = "", existing_document_id=None,
                                 restoration_revision=None, replaces_document_id=None,
-                                expected_contract_revision=None, change_note="", actor=None) -> Document:
+                                expected_contract_revision=None, change_note="", actor=None,
+                                upload_job_id=None, upload_job_lease=None, require_readable=False) -> Document:
         from fastapi import HTTPException
         from .storage_service import STORAGE_LOCK, store_original, store_text, clean_name, resolve_path
         from .workflow_service import touch_contract, policy_for
@@ -93,8 +94,8 @@ class PipelineService:
             analysis = DocumentAnalysisResponse(document_type=DocumentType.UNKNOWN, confidence=0,
                 mask=MaskInfo(status=MaskStatus.FAILED), fields=AnalysisFields(), warnings=["문서 인식 실패"])
         masked_key = store_text(raw_key, raw_text, masked_text)
-        if replaces_document_id is not None and failed:
-            raise HTTPException(422,"재발행본을 읽지 못했습니다. 이전 버전은 유지됩니다. 파일을 확인하세요.")
+        if (replaces_document_id is not None or require_readable) and failed:
+            raise HTTPException(422,"재발행본을 읽지 못했습니다. 이전 버전은 유지됩니다. 파일을 확인하세요." if replaces_document_id is not None else "문서 내용을 읽지 못했습니다. 문서를 게시하지 않았습니다. 파일을 확인하세요.")
         if replaces_document_id is not None and analysis.document_type.value != target_document_type:
             raise HTTPException(422,"재발행본의 문서 종류를 확인하지 못했습니다. 이전 버전은 유지됩니다.")
         b_no = analysis.fields.business_registration_no or business_number
@@ -108,6 +109,15 @@ class PipelineService:
             contract = db.get(Contract, contract_id)
             if not contract:
                 raise ValueError("계약을 찾을 수 없습니다.")
+            job=None
+            if upload_job_id is not None:
+                from ..db.models import DocumentUploadJob, UserProfile
+                job=db.get(DocumentUploadJob,upload_job_id)
+                if not job or job.contract_id!=contract_id or job.lease_token!=upload_job_lease or job.status!='RUNNING' or job.document_id is not None:
+                    raise HTTPException(409,'작업 실행권이 변경되었습니다. 중복으로 게시하지 않습니다.')
+                profile=db.get(UserProfile,job.actor_id)
+                if not profile or not profile.active or profile.must_change_password or profile.role not in {'operator','admin'}:
+                    raise HTTPException(403,'자료 등록 권한이 변경되었습니다.')
             if expected_contract_revision is not None and policy_for(db, contract_id)['revision'] != expected_contract_revision:
                 raise HTTPException(409,"분석 중 계약 자료가 변경되었습니다. 새로고침 후 다시 등록하세요.")
             previous = db.get(Document,replaces_document_id) if replaces_document_id is not None else None
@@ -200,6 +210,14 @@ class PipelineService:
                         action="DOCUMENT_REISSUED",contract_id=contract_id,document_id=doc.document_id,
                         details=json.dumps({"previous_document_id":previous.document_id,"logical_document_id":group,
                                             "version_number":number,"note":change_note.strip()},ensure_ascii=False)))
+            if job is not None:
+                # Publication receipt commits with the document. A crash or a
+                # validation failure after this point must never upload again.
+                job.document_id=doc.document_id
+                job.status='VALIDATING';job.stage='VALIDATING';job.job_revision+=1
+                job.updated_at=datetime.utcnow()
+                db.add(AuditEvent(actor_id=actor.user_id,actor_name=actor.display_name,action='DOCUMENT_UPLOAD',
+                    contract_id=contract_id,document_id=doc.document_id,details=json.dumps({'job_id':job.job_id,'file_name':doc.file_name},ensure_ascii=False)))
             touch_contract(db, contract_id)
             db.commit()
             db.refresh(doc)

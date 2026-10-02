@@ -187,3 +187,48 @@ action은 START/COMPLETE/CANCEL/REASSIGN/UPDATE. START는 현재 맡은 사람, 
 계약 자료 revision/fingerprint가 바뀌면 is_stale=true다. 과거 자료의 업무를 START/COMPLETE하면 409다. 계약 단위 업무는 최신 자료로 재배정할 수 있고, 재발행된 이전 문서의 업무는 취소 후 새 문서에 새 업무를 맡긴다. 맡기기는 계약 revision/fingerprint와 결재 상태를 변경하지 않는다. 기한은 KST 날짜로 overdue를 계산한다. 기한을 놓쳤다고 자동 상태 변경하지 않는다.
 
 로그인 실패 401, 권한 부족 403, 다른 계약의 업무/문서·없는 계약은 404, 오래된 assignment_revision/contract_revision·이미 종료/자료 변경은 `409 {"detail":"다른 사용자가 업무를 변경했습니다. 새로 불러오세요."}` 등 구체 사유, 비활성 담당자는 400, 스키마 누락·잘못된 action은 422다. 대표가 다른 사람의 업무를 완료해도 결재가 자동 완료되지 않는다.
+## 계약 요약 문장 (2026-10-03)
+
+`GET /api/contracts/3/summary?style=brief&revision=8`은 코드가 채운 요약이다. style은 brief/detail(기본 brief), revision은 선택이다. 등록한 기준금액과 현재 활성 서류 종류 수, 표시되는 확인 항목 수, 현재 결재 상태를 자리표시자로 넣는다. 기준이 UNKNOWN이면 부가세 포함 여부 확인 필요라고 명시한다. 같은 종류의 여러 서류는 제출 종류 수에서 중복 계산하지 않는다.
+
+```json
+{"contract_id":3,"revision":8,"fingerprint":"...","text":"가상 업체의 ‘외주 계약’ 계약입니다. 등록 기준금액은 1,100원(부가세 포함 합계)입니다. 필수 서류 6종 중 5종이 있고, 확인할 항목은 2건입니다. 결재 상태: 최종 확인 대기.","style":"brief","facts":{"vendor_name":"가상 업체","title":"외주 계약","contract_amount":"1,100","amount_basis":"부가세 포함 합계","required_document_count":"6","submitted_document_count":"5","open_issue_count":"2","approval_status":"최종 확인 대기"},"numeric_placeholders_verified":true,"llm_used":false}
+```
+
+화면에는 text를 일반 텍스트로 표시한다. facts/template/sources도 반환해 숫자 출처를 확인할 수 있다. 임의 LLM 문장 대신 검증된 코드 템플릿을 사용하며 LLM 요약은 현재 호출하지 않는다. 자리표시자 누락·중복·다른 금액을 직접 쓴 템플릿은 허용하지 않는다. 재발행 뒤에는 ‘자료 변경으로 재확인 필요’가 된다. 존재하지 않는 계약은 404, 오래된 revision 또는 생성 중 변경은 409, 잘못된 style은 422, 미로그인은 401이다. DB·검수 결과·revision을 변경하지 않는다.
+## 검수 도우미 미리보기 (2026-10-03)
+
+`POST /api/pilot/contracts/3/assistant-preview`는 저장된 현재 자료를 읽고 메모리에서 규칙을 재실행한 뒤 확인 항목별 초안을 준비한다. 실제 OCR/LLM을 새로 실행하지 않으며 DB 검수 결과·감사 로그·요청·업무·revision을 변경하지 않는다. 국세청은 DisabledNtsClient를 명시해 외부 호출이 없다.
+
+```json
+{"revision":8,"fingerprint":"현재 상세의 64자리 fingerprint"}
+```
+
+```json
+{"contract_id":3,"revision":8,"fingerprint":"...","preview_only":true,"persisted":false,"automatic_send":false,"llm_used":false,"external_api_calls":0,"item_count":1,"items":[{"issue_id":"현재 항목의 안정 ID","rule_id":"REQUIRED_DOCUMENTS","field":"tax_invoice","status":"MISSING","reason":"세금계산서가 제출되지 않았습니다.","next_action":"DRAFT_REQUEST_AFTER_REVIEW","recheck":{"tool":"LOCAL_RULE_RECHECK","completed":true,"revision":8,"fingerprint":"..."},"request_draft":{"recipient_name":"가상 업체","document_type":"tax_invoice","subject":"외주 계약 · 세금계산서 확인 요청 초안","body":"가상 업체 담당자님, ... 원문을 보내 주세요.","review_before_use":true,"sent":false},"assignment_draft":null,"persisted":false}],"recheck_differences":[],"steps":[{"tool":"READ_CURRENT_STORED_EVIDENCE","status":"COMPLETED"},{"tool":"LOCAL_RULE_RECHECK","status":"COMPLETED","writes":0,"nts_mode":"disabled"},{"tool":"PREPARE_DRAFTS","status":"COMPLETED","saved":0,"sent":0}]}
+```
+
+items는 PASS 이외의 확인 항목을 반환한다. 계약서·검수확인서는 사내 준비용 assignment_draft를 반환하고 거래처 요청 초안을 만들지 않는다. 사업자 영업 상태는 MANUAL_CONFIRMATION으로 담당자가 따로 확인한다. 견적서·세금계산서·사업자등록증·통장사본은 원문과 추출값을 사람이 확인한 뒤 사용할 거래처 요청 초안을 준비한다.
+
+응답의 summary는 이번 메모리 재검사 결과다. recheck_differences는 저장된 규칙 결과와 이번 결과의 차이를 보여 주며 저장하지 않는다. `issue_ids`에 이전 응답의 특정 항목 ID 배열을 주면 그 항목만 준비한다. 없는 ID는 422다. 오래된 revision/fingerprint 또는 처리 중 자료 변경은 409, 없는 계약은 404, 미로그인은 401이다. 생성된 초안은 별도 저장 버튼을 통해 기존 요청 기록/맡기기 API를 호출할 때만 저장하며, 이 API에는 저장·발송 옵션이 없다. 예시는 일부 필드만 표기했다.
+## 긴 업로드의 상태 조회와 중복 없는 재시도 (2026-10-03)
+
+기존 동기 업로드는 유지한다. 새 화면은 `POST /api/pilot/contracts/3/document-jobs` multipart로 파일 1개를 보내면 202를 받고 상태를 조회할 수 있다. 필수 필드: file, revision, idempotency_key(8~100자, 클라이언트가 파일 선택 시 생성한 UUID 권장). 선택: upload_mode=ADD/REISSUE, target_document_type, replaces_document_id, change_note. 재발행 조건은 기존 버전 API와 같다.
+
+```json
+{"job_id":"uuid","contract_id":3,"file_name":"견적서.pdf","status":"QUEUED","stage":"QUEUED","job_revision":1,"attempt_count":0,"document_id":null,"document_available":false,"document_is_current":false,"error_code":null,"error_message":null,"replayed":false}
+```
+
+`GET /api/pilot/document-jobs/{job_id}`를 약 1초 간격으로 조회한다. stage는 QUEUED → ANALYZING(OCR·추출·LLM 포함) → VALIDATING → COMPLETED 또는 FAILED다. 완료하면 document_id로 문서를 읽고 계약 상세를 갱신한다. 처리 중 같은 파일/조건/사용자의 같은 키를 다시 보내면 replayed=true로 동일 작업만 반환한다. 키에 다른 파일·조건·사용자를 넣으면 409다. 계약 revision이 바뀌어도 원래 요청 그대로의 재전송은 기존 작업을 반환한다.
+
+실패 사유는 SOURCE_UNREADABLE(원문 인식/보관 문제), DATA_CHANGED(자료·실행권 변경), ACTOR_INACTIVE(등록 권한 변경), NOT_FOUND, PROCESSING_FAILED로 나누며 error_message에 확인 방법을 반환한다. 새 상태 조회/등록 응답에는 원문 텍스트·서버 경로·LLM 응답을 넣지 않는다. 이 새 비동기 경로는 인식에 실패한 문서를 게시하지 않는다.
+
+`POST /api/pilot/document-jobs/{job_id}/retry`:
+
+```json
+{"job_revision":4,"contract_revision":8}
+```
+
+처음 요청한 담당자만 최신 두 revision으로 명시적으로 재시도한다. 아직 실행 중이거나 이미 완료했으면 409다. 재시도는 같은 job_id를 유지한다. 문서 게시 완료 영수증을 문서와 같은 DB 트랜잭션에 저장하므로, 게시 뒤 검수 실패/중단은 기존 document_id의 규칙 검수만 재개하고 OCR/LLM을 다시 호출하거나 새 문서를 만들지 않는다. 게시 전 실패는 같은 보관 원본으로 다시 분석한다. 서버 재시작으로 실행이 끊겼으면 10분 실행권 만료 뒤 재시도할 수 있다. 이전 작업이 늦게 돌아와도 실행권이 달라져 중복 게시하지 못한다. 자동 재시도는 하지 않는다.
+
+상태 변경마다 job_revision이 증가한다. 계약 revision은 실제 문서 게시 때만 증가한다. 오류 스키마는 다른 API와 같이 detail이다: 미로그인 401, 담당자 권한/다른 요청자 재시도 403, 없는 작업/계약 404, 키 재사용·오래된 revision·진행/완료 중 재시도 409, 형식 검증 400/413/422. job 상태의 FAILED는 조회 200으로 원인을 보여 준다. 완료한 문서가 나중에 재발행되면 document_is_current=false이며 작업 이력은 유지한다. 동기 업로드가 반환한 결과에도 동일한 버전/LLM 메타데이터가 있다.

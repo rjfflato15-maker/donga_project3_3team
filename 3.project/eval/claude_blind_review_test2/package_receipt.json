@@ -2,7 +2,7 @@
   "dataset_version": "synthetic-hard-v2",
   "split": "test",
   "files": {
-    "CLAUDE_PROMPT.md": "c0bc13cc4b90dcca7863796b5afe35d3ae99c42353213bda256312e590c1f411",
+    "CLAUDE_PROMPT.md": "2a60449ea1c05c920332795251b0439f65955eaca39f63aef6cf1dba25b89023",
     "LABELING_GUIDE.md": "1a493424d136d040ea3652937bfea86213135e5537ee555a30bb6c8063d0d38c",
     "case_01/document_01.pdf": "3aebea6df1738f0d234bb167adaee202c05062effe8854864ddde04bb6a28d36",
     "case_01/document_02.pdf": "3da07a2125d99f2e6a2551ae25b869ef7cb5290d6288463dee9637e26ff173bb",
@@ -55,5 +55,7 @@
   },
   "contains_reference_answers": false,
   "contains_app_predictions": false,
-  "review_completed": false
+  "review_completed": false,
+  "instruction_version": "test2-blind-v2",
+  "parent_receipt_sha256": "266e13bc8d0d2484295c820df9bcd81ef870e5e4d43067ff4b116c5654528987"
 }
