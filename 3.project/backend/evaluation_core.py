@@ -28,7 +28,7 @@ def dataset_file(root, relative):
     return path
 
 
-def verify_dataset(root, manifest):
+def verify_dataset(root, manifest, *, split=None):
     seen = set()
     contract_ids = set()
     families = {"dev": set(), "test": set()}
@@ -43,7 +43,7 @@ def verify_dataset(root, manifest):
             if document["document_id"] in seen:
                 raise EvaluationNotReady("문서 ID가 중복됩니다.")
             seen.add(document["document_id"])
-            if file_hash(dataset_file(root, document["path"])) != document["sha256"]:
+            if (split is None or contract["split"] == split) and file_hash(dataset_file(root, document["path"])) != document["sha256"]:
                 raise EvaluationNotReady("평가 서류가 변경되었습니다. 새 자료 버전으로 검수하세요.")
     if families["dev"] & families["test"]:
         raise EvaluationNotReady("같은 서식 계열이 dev와 test에 섞여 있습니다.")

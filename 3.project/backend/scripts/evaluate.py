@@ -141,7 +141,7 @@ def main(argv=None):
             raise EvaluationNotReady("추출 결과 저장은 현재 가상 자료 버전에서만 허용합니다.")
         labels_path = args.labels or root / ("reference_labels_dev.json" if args.preliminary else f"ground_truth_{args.split}.json")
         labels = json.loads(labels_path.read_text(encoding="utf-8"))
-        verify_dataset(root, manifest)
+        verify_dataset(root, manifest, split=args.split)
         contracts = validate_labels(manifest, labels, args.split, allow_unreviewed=args.preliminary)
         receipt = verify_freeze(manifest_path, labels_path)
         if args.preliminary:

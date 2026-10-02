@@ -123,6 +123,17 @@ def test_dataset_paths_cannot_escape_root(tmp_path):
         dataset_file(root, "../outside.txt")
 
 
+def test_dev_verification_does_not_open_heldout_document_files(tmp_path):
+    source = tmp_path / "dev.txt"
+    source.write_text("dev fixture", encoding="utf-8")
+    manifest = {"contracts": [
+        {"contract_id": 1, "split": "dev", "layout_family": "dev", "documents": [{"document_id": 1, "path": "dev.txt", "sha256": file_hash(source)}]},
+        {"contract_id": 2, "split": "test", "layout_family": "test", "documents": [{"document_id": 2, "path": "never-open.txt", "sha256": "unavailable"}]}]}
+    verify_dataset(tmp_path, manifest, split="dev")
+    with pytest.raises(EvaluationNotReady, match="파일이 없습니다"):
+        verify_dataset(tmp_path, manifest)
+
+
 def test_freeze_detects_changes_after_review(tmp_path):
     manifest = tmp_path / "manifest.json"
     labels = tmp_path / "ground_truth_dev.json"
