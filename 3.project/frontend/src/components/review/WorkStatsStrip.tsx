@@ -10,7 +10,7 @@ export const minutes = (s: number | null) => {
   return [d && `${d}일`, h && `${h}시간`, (m || (!d && !h)) && `${m}분`].filter(Boolean).join(' ');
 };
 
-/** 대시보드 아래 '업무 현황': 이 업무함에서 실제로 기록된 처리 시간과 보정 횟수 */
+/** 대시보드 아래 '업무 현황': 기록된 경과 시간(대기 포함)과 수정 저장 횟수. 작업 시간·절감 효과가 아님 */
 export const WorkStatsStrip: React.FC<{ refreshKey: unknown }> = ({ refreshKey }) => {
   const [m, setM] = useState<PilotMetrics | null>(null);
   const [error, setError] = useState('');
@@ -23,15 +23,15 @@ export const WorkStatsStrip: React.FC<{ refreshKey: unknown }> = ({ refreshKey }
   if (!m) return null;
   const items = [
     { label: '등록한 계약', value: `${m.contract_count}건` },
-    { label: '결재 완료', value: `${m.confirmed_count}건` },
-    { label: '서류 등록 → 첫 결재 평균', value: minutes(m.mean_elapsed_seconds), note: m.timed_contract_count ? `${m.timed_contract_count}건 기준` : '' },
-    { label: '사람이 값을 고친 횟수', value: `${m.field_correction_count}회`, note: `서류 ${m.document_registration_count}건 중` },
+    { label: '현재 결재 완료', value: `${m.confirmed_count}건` },
+    { label: '첫 서류 등록 → 첫 대표 확인', value: minutes(m.mean_elapsed_seconds), note: m.timed_contract_count ? `평균 · ${m.timed_contract_count}건 · 대기 시간 포함` : '대기 시간 포함' },
+    { label: '추출값 수정 저장', value: `${m.field_correction_count}회`, note: `등록한 서류 ${m.document_registration_count}건` },
   ];
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-4" aria-labelledby="stats-title">
       <div className="mb-3 flex flex-wrap items-baseline gap-2">
         <h2 id="stats-title" className="font-bold text-slate-900">업무 현황</h2>
-        <span className="text-xs text-slate-500">이 업무함에 실제로 남은 기록 기준 · 대기 시간 포함</span>
+        <span className="text-xs text-slate-500">이 업무함에 남은 기록을 그대로 센 값입니다. 실제 작업 시간이나 시간 절감을 뜻하지 않습니다.</span>
       </div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {items.map((it) => (

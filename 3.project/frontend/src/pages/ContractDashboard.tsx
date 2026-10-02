@@ -597,7 +597,7 @@ export const ContractDashboard: React.FC = () => {
               onUploadType={(type) => handleOpenUploadModal(type)}
               pilot={isPilot}
               onChanged={() => refreshCurrentContract()}
-              llmConnected={pilotInfo?.llm_connected}
+              /* llmConnected: 실제 LLM 설정·연결 상태 API가 생기면 연결 (현재 llm_connected는 항상 false) */
             />
             {isPilot && <ApprovalPanel contract={currentContract} onChanged={() => refreshCurrentContract()} />}
             {isPilot && <PilotReviewPanel contract={currentContract} onChanged={refreshCurrentContract} historyOnly />}
