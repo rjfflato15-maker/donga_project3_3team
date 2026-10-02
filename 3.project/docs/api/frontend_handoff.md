@@ -160,3 +160,30 @@ evidence.page는 1부터 시작하고 preview-image의 page query는 0부터 시
 ```
 
 DISABLED/NOT_NEEDED는 호출 0회, FAILED는 실패 이유와 실제 시도 수를 표시한다. 실행 기록이 없는 레거시는 UNKNOWN_LEGACY 또는 저장된 상태, 호출 여부 null일 수 있다. AI 보완 칸은 applied=true인 VALUE 제안만 세며 ABSENT/REVIEW·자동 파생 amount를 중복 집계하지 않는다. current_matching 값은 저장값이 AI 제안과 현재 같은 칸 수이며 사람이 검증했다는 뜻은 아니다. JSON 예시는 일부 필드만 표기했다.
+## 사내 담당자에게 맡기기 (2026-10-03)
+
+`GET /api/pilot/assignees`는 활성 업무 계정의 user_id/display_name/role만 반환한다. `POST /api/pilot/contracts/3/assignments`:
+
+```json
+{"assignee_id":2,"contract_revision":8,"document_id":45,"title":"재발행 견적서 금액 확인","memo":"합계와 원문 근거 확인","due_on":"2026-10-05"}
+```
+
+document_id와 due_on은 선택이다. 생성 응답(201):
+
+```json
+{"assignment_id":7,"contract_id":3,"document_id":45,"contract_revision":8,"assignment_revision":1,"assigner_id":1,"assigner_name":"담당자 김","assignee_id":2,"assignee_name":"담당자 이","title":"재발행 견적서 금액 확인","memo":"합계와 원문 근거 확인","due_on":"2026-10-05","status":"OPEN","is_stale":false,"overdue":false,"created_at":"2026-10-03T01:00:00Z","updated_at":"2026-10-03T01:00:00Z","completed_at":null}
+```
+
+`GET /api/pilot/contracts/3/assignments`는 계약 업무 전체와 contract_revision, `GET /api/pilot/assignments/mine`은 로그인한 사람의 OPEN/IN_PROGRESS만 assignments/count로 반환한다. mine은 `?include_closed=true`로 완료·취소도 볼 수 있다. 업무를 맡긴다고 계정의 자료 수정·결재 권한은 바뀌지 않는다.
+
+`PATCH /api/pilot/contracts/3/assignments/7`:
+
+```json
+{"action":"REASSIGN","assignment_revision":1,"assignee_id":4,"contract_revision":8,"note":"담당자 변경","due_on":"2026-10-06"}
+```
+
+action은 START/COMPLETE/CANCEL/REASSIGN/UPDATE. START는 현재 맡은 사람, COMPLETE는 현재 맡은 사람 또는 대표, 재배정·취소·내용 변경은 맡긴 사람 또는 대표만 가능하다. 모든 변경은 note와 최신 assignment_revision이 필요하고 성공마다 이 값이 1 증가한다. REASSIGN은 assignee_id와 현재 contract_revision도 필수며 OPEN으로 돌아간다. UPDATE/REASSIGN은 title/memo/due_on 변경 가능, due_on=null은 기한 해제다. 완료·취소는 되돌릴 수 없고 필요하면 새 업무를 생성한다. 변경 이력은 기존 `/api/pilot/audit?contract_id=3`의 ASSIGNMENT_CREATED/ASSIGNMENT_CHANGED에 before/after/note로 남긴다.
+
+계약 자료 revision/fingerprint가 바뀌면 is_stale=true다. 과거 자료의 업무를 START/COMPLETE하면 409다. 계약 단위 업무는 최신 자료로 재배정할 수 있고, 재발행된 이전 문서의 업무는 취소 후 새 문서에 새 업무를 맡긴다. 맡기기는 계약 revision/fingerprint와 결재 상태를 변경하지 않는다. 기한은 KST 날짜로 overdue를 계산한다. 기한을 놓쳤다고 자동 상태 변경하지 않는다.
+
+로그인 실패 401, 권한 부족 403, 다른 계약의 업무/문서·없는 계약은 404, 오래된 assignment_revision/contract_revision·이미 종료/자료 변경은 `409 {"detail":"다른 사용자가 업무를 변경했습니다. 새로 불러오세요."}` 등 구체 사유, 비활성 담당자는 400, 스키마 누락·잘못된 action은 422다. 대표가 다른 사람의 업무를 완료해도 결재가 자동 완료되지 않는다.

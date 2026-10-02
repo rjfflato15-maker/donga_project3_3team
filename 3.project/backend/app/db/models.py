@@ -250,3 +250,24 @@ class DocumentVersion(Base):
         Index("uq_current_logical_document", "logical_document_id", unique=True,
               sqlite_where=is_current.is_(True), postgresql_where=is_current.is_(True)),
     )
+
+
+class WorkAssignment(Base):
+    __tablename__ = "pilot_work_assignments"
+    assignment_id = Column(Integer, primary_key=True, autoincrement=True)
+    contract_id = Column(Integer, ForeignKey("contracts.contract_id", ondelete="CASCADE"), nullable=False, index=True)
+    document_id = Column(Integer, nullable=True)
+    contract_revision = Column(Integer, nullable=False)
+    contract_fingerprint = Column(String(64), nullable=False)
+    assignment_revision = Column(Integer, nullable=False, default=1)
+    assigner_id = Column(Integer, nullable=False)
+    assigner_name = Column(String(80), nullable=False)
+    assignee_id = Column(Integer, nullable=False, index=True)
+    assignee_name = Column(String(80), nullable=False)
+    title = Column(String(200), nullable=False)
+    memo = Column(Text, nullable=False, default="")
+    due_on = Column(String(10), nullable=True)
+    status = Column(String(30), nullable=False, default="OPEN")
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    completed_at = Column(DateTime, nullable=True)
