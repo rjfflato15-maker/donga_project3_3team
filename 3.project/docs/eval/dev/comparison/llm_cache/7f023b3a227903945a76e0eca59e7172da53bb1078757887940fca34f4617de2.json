@@ -1,0 +1,67 @@
+{
+  "request_sha256": "7f023b3a227903945a76e0eca59e7172da53bb1078757887940fca34f4617de2",
+  "run_sha256": "bbcc4bbca20bd1a7b18b7e139a565f009e983ee4bc6bd5fbc617c426f716a34a",
+  "run": {
+    "ok": true,
+    "error": null,
+    "attempts": 1,
+    "proposals": {
+      "company_name": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소 9",
+        "page": 1,
+        "line": 3,
+        "quote": "상호. 가상 솔빛제작소 9"
+      },
+      "business_registration_no": {
+        "state": "VALUE",
+        "value": "000-00-01090",
+        "page": 1,
+        "line": 4,
+        "quote": "사업 자등록 번호. 000-00-01090"
+      },
+      "issue_date": {
+        "state": "VALUE",
+        "value": "2026-09-09",
+        "page": 1,
+        "line": 8,
+        "quote": "발행일. 2026-09-09"
+      }
+    },
+    "model": "qwen3:latest",
+    "settings": {
+      "url": "http://127.0.0.1:11434",
+      "model": "qwen3:latest",
+      "timeout_seconds": 45,
+      "retries": 1,
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 1600,
+      "max_input_chars": 10000
+    },
+    "prompt_version": "grounded-fields-v3",
+    "manual_review_required": true,
+    "model_metadata": {
+      "name": "qwen3:latest",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "size": 5225388164,
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3",
+        "families": [
+          "qwen3"
+        ],
+        "parameter_size": "8.2B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 40960,
+        "embedding_length": 4096
+      }
+    },
+    "server_seconds": 5.0572422,
+    "load_seconds": 0.006671,
+    "eval_count": 215,
+    "elapsed_seconds": 5.061862700000347
+  }
+}

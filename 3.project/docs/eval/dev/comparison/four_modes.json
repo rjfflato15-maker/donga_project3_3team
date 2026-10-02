@@ -1,0 +1,2304 @@
+{
+  "metadata": {
+    "split": "dev",
+    "preliminary": false,
+    "final_test": false,
+    "model": "qwen3:latest",
+    "evaluated_at": "2026-10-02T11:08:45.585858+09:00",
+    "settings": {
+      "url": "http://127.0.0.1:11434",
+      "model": "qwen3:latest",
+      "timeout_seconds": 45,
+      "retries": 1,
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 1600,
+      "max_input_chars": 10000
+    },
+    "labels_sha256": "6361b13bd820f40cea38edf5df66da1714d1b0b1fb045763c3795d28d1d84f5b",
+    "manifest_sha256": "ba103e8a64f08c41c6f511cdcf5c908b0ab7e57aa827f38d8137f795af53258f",
+    "label_review": {
+      "confirmed": true,
+      "reviewer_type": "human",
+      "reviewer": "이창헌",
+      "confirmed_at": "2026-10-02T10:32:24.742579+09:00",
+      "review_method": "independent_reconciliation_with_human_sampling",
+      "human_full_review": false,
+      "human_direct_count": 113,
+      "ai_agreement_count": 781,
+      "required_human_count": 113,
+      "source_reference_sha256": "87b636d1a8830ed194a65ac44099d45e13d992b407c6a8d3ffc7c71e9f0cb283",
+      "comparison_sha256": "6cff64be208e2b553fb67b1c5bc98bd9b45521295f4c8b0683a4b0cb32af583a",
+      "independent_reply_sha256": {
+        "case_01.json": "61db2758738232a58f48668b6de7599565538c46c94406aca66fc662079766c3",
+        "case_02.json": "5e4b55b413748e088703f331b653db5e882335512371bf3f432707c25afe8576",
+        "case_03.json": "f037ab5bbb44e8c2692a3d2abcc1a92a6134502eb22685db8f9f71e9a61147af",
+        "case_04.json": "a1babb27a9249848cd8d01033e88e37347310e45c519304b9a6b16232b6c4387",
+        "case_05.json": "ebcd1d049c269e4e6dbcc53b6a111380f6d1778364c3af8d69eb2834e52e02a5",
+        "case_06.json": "ac636e47dc60faf60997e600379fe2247c871dcb999bf1a8353978dd14534061",
+        "case_07.json": "5c0f01eeee742e509227a0dff18fc1d6cb0d6373a2b4d945fe83a1768cf42de7",
+        "case_08.json": "653bf6f58c25c0d280ab50dc2778c23f6e9098898189fbd52dfc0d735e458500",
+        "case_09.json": "6a6f0e885255f21713680bae5d75793755d776804530f0d87b81dd29cc2b17b9",
+        "case_10.json": "f9a002fe3e41b1f9527991aa906a86aeda8807d95a57c02875b36c2d53001fce"
+      },
+      "sampling": {
+        "seed": 42,
+        "rate": 0.1,
+        "method": "stratified_random_by_case_document_type",
+        "eligible_agreements": 868,
+        "sampled_count": 87,
+        "coverage": [
+          {
+            "contract_id": 101,
+            "scenario": "normal",
+            "selected_document_ids": [
+              10101,
+              10102,
+              10103,
+              10105,
+              10106
+            ]
+          },
+          {
+            "contract_id": 102,
+            "scenario": "missing",
+            "selected_document_ids": [
+              10203,
+              10204
+            ]
+          },
+          {
+            "contract_id": 103,
+            "scenario": "wrong_business_no",
+            "selected_document_ids": [
+              10301,
+              10302,
+              10303,
+              10304,
+              10305,
+              10306
+            ]
+          },
+          {
+            "contract_id": 104,
+            "scenario": "amount_mismatch",
+            "selected_document_ids": [
+              10402,
+              10404,
+              10406
+            ]
+          },
+          {
+            "contract_id": 105,
+            "scenario": "vat_separate",
+            "selected_document_ids": [
+              10501,
+              10502,
+              10503,
+              10504,
+              10505,
+              10506
+            ]
+          },
+          {
+            "contract_id": 106,
+            "scenario": "installments",
+            "selected_document_ids": [
+              10601,
+              10602,
+              10603,
+              10604,
+              10605,
+              10606
+            ]
+          },
+          {
+            "contract_id": 107,
+            "scenario": "scan_noise",
+            "selected_document_ids": [
+              10701,
+              10702,
+              10703,
+              10706
+            ]
+          },
+          {
+            "contract_id": 108,
+            "scenario": "amount_table",
+            "selected_document_ids": [
+              10801,
+              10802,
+              10804,
+              10805,
+              10806
+            ]
+          },
+          {
+            "contract_id": 109,
+            "scenario": "ambiguous_amount",
+            "selected_document_ids": [
+              10901,
+              10902,
+              10903,
+              10904,
+              10905,
+              10906
+            ]
+          },
+          {
+            "contract_id": 110,
+            "scenario": "arithmetic_mismatch",
+            "selected_document_ids": [
+              11003,
+              11004,
+              11006
+            ]
+          }
+        ],
+        "strata": [
+          {
+            "contract_id": "101",
+            "document_type": "bank_account",
+            "eligible_count": 11,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "101",
+            "document_type": "business_registration",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "101",
+            "document_type": "contract",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "101",
+            "document_type": "contract_checks",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "101",
+            "document_type": "estimate",
+            "eligible_count": 15,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "101",
+            "document_type": "inspection_confirmation",
+            "eligible_count": 10,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "101",
+            "document_type": "tax_invoice",
+            "eligible_count": 16,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "102",
+            "document_type": "business_registration",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "102",
+            "document_type": "contract",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "102",
+            "document_type": "contract_checks",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "102",
+            "document_type": "estimate",
+            "eligible_count": 15,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "102",
+            "document_type": "tax_invoice",
+            "eligible_count": 16,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "103",
+            "document_type": "bank_account",
+            "eligible_count": 11,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "103",
+            "document_type": "business_registration",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "103",
+            "document_type": "contract",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "103",
+            "document_type": "contract_checks",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "103",
+            "document_type": "estimate",
+            "eligible_count": 15,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "103",
+            "document_type": "inspection_confirmation",
+            "eligible_count": 10,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "103",
+            "document_type": "tax_invoice",
+            "eligible_count": 16,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "104",
+            "document_type": "bank_account",
+            "eligible_count": 11,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "104",
+            "document_type": "business_registration",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "104",
+            "document_type": "contract",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "104",
+            "document_type": "contract_checks",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "104",
+            "document_type": "estimate",
+            "eligible_count": 15,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "104",
+            "document_type": "inspection_confirmation",
+            "eligible_count": 10,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "104",
+            "document_type": "tax_invoice",
+            "eligible_count": 16,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "105",
+            "document_type": "bank_account",
+            "eligible_count": 11,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "105",
+            "document_type": "business_registration",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "105",
+            "document_type": "contract",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "105",
+            "document_type": "contract_checks",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "105",
+            "document_type": "estimate",
+            "eligible_count": 15,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "105",
+            "document_type": "inspection_confirmation",
+            "eligible_count": 10,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "105",
+            "document_type": "tax_invoice",
+            "eligible_count": 16,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "106",
+            "document_type": "bank_account",
+            "eligible_count": 11,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "106",
+            "document_type": "business_registration",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "106",
+            "document_type": "contract",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "106",
+            "document_type": "contract_checks",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "106",
+            "document_type": "estimate",
+            "eligible_count": 15,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "106",
+            "document_type": "inspection_confirmation",
+            "eligible_count": 10,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "106",
+            "document_type": "tax_invoice",
+            "eligible_count": 32,
+            "sampled_count": 3
+          },
+          {
+            "contract_id": "107",
+            "document_type": "bank_account",
+            "eligible_count": 11,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "107",
+            "document_type": "business_registration",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "107",
+            "document_type": "contract",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "107",
+            "document_type": "contract_checks",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "107",
+            "document_type": "estimate",
+            "eligible_count": 15,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "107",
+            "document_type": "inspection_confirmation",
+            "eligible_count": 10,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "107",
+            "document_type": "tax_invoice",
+            "eligible_count": 16,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "108",
+            "document_type": "bank_account",
+            "eligible_count": 11,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "108",
+            "document_type": "business_registration",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "108",
+            "document_type": "contract",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "108",
+            "document_type": "contract_checks",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "108",
+            "document_type": "estimate",
+            "eligible_count": 15,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "108",
+            "document_type": "inspection_confirmation",
+            "eligible_count": 10,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "108",
+            "document_type": "tax_invoice",
+            "eligible_count": 16,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "109",
+            "document_type": "bank_account",
+            "eligible_count": 11,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "109",
+            "document_type": "business_registration",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "109",
+            "document_type": "contract",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "109",
+            "document_type": "contract_checks",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "109",
+            "document_type": "estimate",
+            "eligible_count": 10,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "109",
+            "document_type": "inspection_confirmation",
+            "eligible_count": 10,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "109",
+            "document_type": "tax_invoice",
+            "eligible_count": 16,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "110",
+            "document_type": "bank_account",
+            "eligible_count": 11,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "110",
+            "document_type": "business_registration",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "110",
+            "document_type": "contract",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "110",
+            "document_type": "contract_checks",
+            "eligible_count": 12,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "110",
+            "document_type": "estimate",
+            "eligible_count": 15,
+            "sampled_count": 2
+          },
+          {
+            "contract_id": "110",
+            "document_type": "inspection_confirmation",
+            "eligible_count": 10,
+            "sampled_count": 1
+          },
+          {
+            "contract_id": "110",
+            "document_type": "tax_invoice",
+            "eligible_count": 14,
+            "sampled_count": 1
+          }
+        ]
+      },
+      "human_result_sha256": "02eca6f48c0ee57bae8192e8b7060e9e30e18d7eddf08cbb48bc19e1912bb781",
+      "human_result_file": "human_review_result_이창헌.json",
+      "reviewed_from": "2026-10-02T01:08:33.561000+00:00",
+      "reviewed_until": "2026-10-02T01:21:46.808000+00:00"
+    },
+    "prompt_version": "grounded-fields-v3",
+    "guard_version": "grounding-v2-ocr-separator",
+    "same_hybrid_response": true,
+    "nts_mode": "disabled",
+    "classification": "common_rule_classifier"
+  },
+  "metrics": {
+    "rule": {
+      "contract_count": 10,
+      "document_count": 59,
+      "classification_macro_f1": 1.0,
+      "classification_by_type": {
+        "contract": {
+          "support": 10,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "estimate": {
+          "support": 10,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "business_registration": {
+          "support": 10,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "bank_account": {
+          "support": 9,
+          "tp": 9,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "tax_invoice": {
+          "support": 11,
+          "tp": 11,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "inspection_confirmation": {
+          "support": 9,
+          "tp": 9,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        }
+      },
+      "field_accuracy": 0.7833827893175074,
+      "present_field_accuracy": 0.7807807807807807,
+      "ambiguous_field_accuracy": 1.0,
+      "false_extraction_on_absent_rate": 0.0,
+      "field_counts": {
+        "all": 413,
+        "provided": 260,
+        "scored": 337,
+        "correct": 264,
+        "present": 333,
+        "present_correct": 260,
+        "absent": 76,
+        "ambiguous": 4,
+        "ambiguous_correct": 4
+      },
+      "fields": {
+        "company_name": {
+          "all": 59,
+          "provided": 47,
+          "scored": 59,
+          "correct": 47,
+          "present": 59,
+          "present_correct": 47
+        },
+        "business_registration_no": {
+          "all": 59,
+          "provided": 59,
+          "scored": 59,
+          "correct": 59,
+          "present": 59,
+          "present_correct": 59
+        },
+        "supply_amount": {
+          "all": 59,
+          "provided": 22,
+          "scored": 40,
+          "correct": 23,
+          "present": 39,
+          "present_correct": 22,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "tax_amount": {
+          "all": 59,
+          "provided": 26,
+          "scored": 40,
+          "correct": 27,
+          "present": 39,
+          "present_correct": 26,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "total_amount": {
+          "all": 59,
+          "provided": 22,
+          "scored": 40,
+          "correct": 23,
+          "present": 39,
+          "present_correct": 22,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "issue_date": {
+          "all": 59,
+          "provided": 59,
+          "scored": 59,
+          "correct": 59,
+          "present": 59,
+          "present_correct": 59
+        },
+        "amount_scope": {
+          "all": 59,
+          "provided": 25,
+          "scored": 40,
+          "correct": 26,
+          "present": 39,
+          "present_correct": 25,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        }
+      },
+      "extraction_coverage": 0.6295399515738499,
+      "missing_recall": 1.0,
+      "missing_precision": 1.0,
+      "missing_counts": {
+        "tp": 2,
+        "fn": 0,
+        "fp": 0
+      },
+      "cross_validation_macro_f1": 0.7530070754716981,
+      "checks_by_status": {
+        "PASS": {
+          "support": 57,
+          "tp": 49,
+          "fp": 0,
+          "fn": 8,
+          "f1": 0.9245283018867925
+        },
+        "FAIL": {
+          "support": 4,
+          "tp": 1,
+          "fp": 0,
+          "fn": 3,
+          "f1": 0.4
+        },
+        "REVIEW": {
+          "support": 11,
+          "tp": 11,
+          "fp": 10,
+          "fn": 0,
+          "f1": 0.6875
+        },
+        "MISSING": {
+          "support": 2,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        }
+      },
+      "wrong_pass_rate": 0.0,
+      "wrong_pass_among_passes": 0.0,
+      "wrong_pass_counts": {
+        "unsafe_expected": 17,
+        "wrong_pass": 0,
+        "predicted_pass": 49
+      },
+      "check_review_rate": 0.25,
+      "failures": [
+        {
+          "kind": "field",
+          "document_id": "10101",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10102",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10102",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10102",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10102",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10105",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10105",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10105",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "check",
+          "contract_id": "101",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10102",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "check",
+          "contract_id": "101",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10105",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "check",
+          "contract_id": "101",
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10102",
+          "expected": "PASS",
+          "actual": "N/A"
+        },
+        {
+          "kind": "check",
+          "contract_id": "101",
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10105",
+          "expected": "PASS",
+          "actual": "N/A"
+        },
+        {
+          "kind": "field",
+          "document_id": "10201",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10201",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10201",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10201",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10201",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10204",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10204",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10204",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "check",
+          "contract_id": "102",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10204",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "check",
+          "contract_id": "102",
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10204",
+          "expected": "PASS",
+          "actual": "N/A"
+        },
+        {
+          "kind": "field",
+          "document_id": "10301",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10306",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10306",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10306",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10306",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10401",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10402",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10402",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10402",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10402",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10405",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10405",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10405",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "check",
+          "contract_id": "104",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10402",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "check",
+          "contract_id": "104",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10405",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "check",
+          "contract_id": "104",
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10402",
+          "expected": "FAIL",
+          "actual": "N/A"
+        },
+        {
+          "kind": "check",
+          "contract_id": "104",
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10405",
+          "expected": "PASS",
+          "actual": "N/A"
+        },
+        {
+          "kind": "field",
+          "document_id": "10501",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10501",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10501",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10501",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10501",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10504",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10601",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10605",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10606",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10606",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10606",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10606",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10607",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "check",
+          "contract_id": "106",
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "expected": "PASS",
+          "actual": "N/A"
+        },
+        {
+          "kind": "check",
+          "contract_id": "106",
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "field",
+          "document_id": "10701",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10701",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10701",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10701",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10702",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10702",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10702",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10705",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10705",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10706",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10706",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10706",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "check",
+          "contract_id": "107",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10702",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "check",
+          "contract_id": "107",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10705",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "check",
+          "contract_id": "107",
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10702",
+          "expected": "PASS",
+          "actual": "N/A"
+        },
+        {
+          "kind": "check",
+          "contract_id": "107",
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10705",
+          "expected": "PASS",
+          "actual": "N/A"
+        },
+        {
+          "kind": "field",
+          "document_id": "10801",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10801",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10801",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10801",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10801",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10804",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10901",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10906",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10906",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10906",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10906",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "11001",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "11002",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "11002",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "11002",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "11002",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "11005",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "11005",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "11005",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "check",
+          "contract_id": "110",
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "11005",
+          "expected": "FAIL",
+          "actual": "N/A"
+        },
+        {
+          "kind": "check",
+          "contract_id": "110",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "11002",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "check",
+          "contract_id": "110",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "11005",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "check",
+          "contract_id": "110",
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "11002",
+          "expected": "PASS",
+          "actual": "N/A"
+        },
+        {
+          "kind": "check",
+          "contract_id": "110",
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "11005",
+          "expected": "FAIL",
+          "actual": "N/A"
+        }
+      ],
+      "check_state_accuracy": 0.75,
+      "check_state_counts": {
+        "correct": 63,
+        "scored": 84,
+        "both_not_applicable": 328,
+        "accuracy": 0.75
+      },
+      "guard_rejected_count": 0,
+      "guard_rejection_reasons": {},
+      "source_warnings": {},
+      "mean_document_seconds": 0.05062146610170958,
+      "mean_guard_seconds": 0.0,
+      "mean_cache_execution_seconds": 0.0,
+      "llm_failure_count": 0
+    },
+    "llm": {
+      "contract_count": 10,
+      "document_count": 59,
+      "classification_macro_f1": 1.0,
+      "classification_by_type": {
+        "contract": {
+          "support": 10,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "estimate": {
+          "support": 10,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "business_registration": {
+          "support": 10,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "bank_account": {
+          "support": 9,
+          "tp": 9,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "tax_invoice": {
+          "support": 11,
+          "tp": 11,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "inspection_confirmation": {
+          "support": 9,
+          "tp": 9,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        }
+      },
+      "field_accuracy": 0.9465875370919882,
+      "present_field_accuracy": 0.948948948948949,
+      "ambiguous_field_accuracy": 0.75,
+      "false_extraction_on_absent_rate": 0.0,
+      "field_counts": {
+        "all": 413,
+        "provided": 319,
+        "scored": 337,
+        "correct": 319,
+        "present": 333,
+        "present_correct": 316,
+        "absent": 76,
+        "ambiguous": 4,
+        "ambiguous_correct": 3
+      },
+      "fields": {
+        "company_name": {
+          "all": 59,
+          "provided": 59,
+          "scored": 59,
+          "correct": 57,
+          "present": 59,
+          "present_correct": 57
+        },
+        "business_registration_no": {
+          "all": 59,
+          "provided": 59,
+          "scored": 59,
+          "correct": 59,
+          "present": 59,
+          "present_correct": 59
+        },
+        "supply_amount": {
+          "all": 59,
+          "provided": 39,
+          "scored": 40,
+          "correct": 40,
+          "present": 39,
+          "present_correct": 39,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "tax_amount": {
+          "all": 59,
+          "provided": 39,
+          "scored": 40,
+          "correct": 40,
+          "present": 39,
+          "present_correct": 39,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "total_amount": {
+          "all": 59,
+          "provided": 39,
+          "scored": 40,
+          "correct": 40,
+          "present": 39,
+          "present_correct": 39,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "issue_date": {
+          "all": 59,
+          "provided": 59,
+          "scored": 59,
+          "correct": 59,
+          "present": 59,
+          "present_correct": 59
+        },
+        "amount_scope": {
+          "all": 59,
+          "provided": 25,
+          "scored": 40,
+          "correct": 24,
+          "present": 39,
+          "present_correct": 24,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 0
+        }
+      },
+      "extraction_coverage": 0.7723970944309927,
+      "missing_recall": 1.0,
+      "missing_precision": 1.0,
+      "missing_counts": {
+        "tp": 2,
+        "fn": 0,
+        "fp": 0
+      },
+      "cross_validation_macro_f1": 1.0,
+      "checks_by_status": {
+        "PASS": {
+          "support": 57,
+          "tp": 57,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "FAIL": {
+          "support": 4,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "REVIEW": {
+          "support": 11,
+          "tp": 11,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "MISSING": {
+          "support": 2,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        }
+      },
+      "wrong_pass_rate": 0.0,
+      "wrong_pass_among_passes": 0.0,
+      "wrong_pass_counts": {
+        "unsafe_expected": 17,
+        "wrong_pass": 0,
+        "predicted_pass": 57
+      },
+      "check_review_rate": 0.14864864864864866,
+      "failures": [
+        {
+          "kind": "field",
+          "document_id": "10106",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10201",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10301",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10306",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10406",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10501",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10506",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10601",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10606",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10701",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10701",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10702",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10702",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10706",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10901",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10902",
+          "field": "amount_scope",
+          "expected_state": "REVIEW"
+        },
+        {
+          "kind": "field",
+          "document_id": "10906",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "11006",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        }
+      ],
+      "check_state_accuracy": 1.0,
+      "check_state_counts": {
+        "correct": 74,
+        "scored": 74,
+        "both_not_applicable": 338,
+        "accuracy": 1.0
+      },
+      "guard_rejected_count": 0,
+      "guard_rejection_reasons": {},
+      "source_warnings": {
+        "SOURCE_ARITHMETIC_MISMATCH": 32
+      },
+      "mean_document_seconds": 10.019704140678064,
+      "mean_guard_seconds": 0.0,
+      "mean_cache_execution_seconds": 0.00024684915255636304,
+      "llm_failure_count": 0
+    },
+    "hybrid_unguarded": {
+      "contract_count": 10,
+      "document_count": 59,
+      "classification_macro_f1": 1.0,
+      "classification_by_type": {
+        "contract": {
+          "support": 10,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "estimate": {
+          "support": 10,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "business_registration": {
+          "support": 10,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "bank_account": {
+          "support": 9,
+          "tp": 9,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "tax_invoice": {
+          "support": 11,
+          "tp": 11,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "inspection_confirmation": {
+          "support": 9,
+          "tp": 9,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        }
+      },
+      "field_accuracy": 0.9910979228486647,
+      "present_field_accuracy": 0.993993993993994,
+      "ambiguous_field_accuracy": 0.75,
+      "false_extraction_on_absent_rate": 0.0,
+      "field_counts": {
+        "all": 413,
+        "provided": 333,
+        "scored": 337,
+        "correct": 334,
+        "present": 333,
+        "present_correct": 331,
+        "absent": 76,
+        "ambiguous": 4,
+        "ambiguous_correct": 3
+      },
+      "fields": {
+        "company_name": {
+          "all": 59,
+          "provided": 59,
+          "scored": 59,
+          "correct": 58,
+          "present": 59,
+          "present_correct": 58
+        },
+        "business_registration_no": {
+          "all": 59,
+          "provided": 59,
+          "scored": 59,
+          "correct": 59,
+          "present": 59,
+          "present_correct": 59
+        },
+        "supply_amount": {
+          "all": 59,
+          "provided": 39,
+          "scored": 40,
+          "correct": 40,
+          "present": 39,
+          "present_correct": 39,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "tax_amount": {
+          "all": 59,
+          "provided": 39,
+          "scored": 40,
+          "correct": 40,
+          "present": 39,
+          "present_correct": 39,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "total_amount": {
+          "all": 59,
+          "provided": 39,
+          "scored": 40,
+          "correct": 40,
+          "present": 39,
+          "present_correct": 39,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "issue_date": {
+          "all": 59,
+          "provided": 59,
+          "scored": 59,
+          "correct": 59,
+          "present": 59,
+          "present_correct": 59
+        },
+        "amount_scope": {
+          "all": 59,
+          "provided": 39,
+          "scored": 40,
+          "correct": 38,
+          "present": 39,
+          "present_correct": 38,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 0
+        }
+      },
+      "extraction_coverage": 0.8062953995157385,
+      "missing_recall": 1.0,
+      "missing_precision": 1.0,
+      "missing_counts": {
+        "tp": 2,
+        "fn": 0,
+        "fp": 0
+      },
+      "cross_validation_macro_f1": 1.0,
+      "checks_by_status": {
+        "PASS": {
+          "support": 57,
+          "tp": 57,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "FAIL": {
+          "support": 4,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "REVIEW": {
+          "support": 11,
+          "tp": 11,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "MISSING": {
+          "support": 2,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        }
+      },
+      "wrong_pass_rate": 0.0,
+      "wrong_pass_among_passes": 0.0,
+      "wrong_pass_counts": {
+        "unsafe_expected": 17,
+        "wrong_pass": 0,
+        "predicted_pass": 57
+      },
+      "check_review_rate": 0.14864864864864866,
+      "failures": [
+        {
+          "kind": "field",
+          "document_id": "10701",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10706",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10902",
+          "field": "amount_scope",
+          "expected_state": "REVIEW"
+        }
+      ],
+      "check_state_accuracy": 1.0,
+      "check_state_counts": {
+        "correct": 74,
+        "scored": 74,
+        "both_not_applicable": 338,
+        "accuracy": 1.0
+      },
+      "guard_rejected_count": 0,
+      "guard_rejection_reasons": {},
+      "source_warnings": {
+        "SOURCE_ARITHMETIC_MISMATCH": 16
+      },
+      "mean_document_seconds": 2.1639332542373437,
+      "mean_guard_seconds": 0.0,
+      "mean_cache_execution_seconds": 0.002720357627121133,
+      "llm_failure_count": 0
+    },
+    "hybrid_guarded": {
+      "contract_count": 10,
+      "document_count": 59,
+      "classification_macro_f1": 1.0,
+      "classification_by_type": {
+        "contract": {
+          "support": 10,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "estimate": {
+          "support": 10,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "business_registration": {
+          "support": 10,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "bank_account": {
+          "support": 9,
+          "tp": 9,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "tax_invoice": {
+          "support": 11,
+          "tp": 11,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "inspection_confirmation": {
+          "support": 9,
+          "tp": 9,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        }
+      },
+      "field_accuracy": 0.9228486646884273,
+      "present_field_accuracy": 0.9219219219219219,
+      "ambiguous_field_accuracy": 1.0,
+      "false_extraction_on_absent_rate": 0.0,
+      "field_counts": {
+        "all": 413,
+        "provided": 308,
+        "scored": 337,
+        "correct": 311,
+        "present": 333,
+        "present_correct": 307,
+        "absent": 76,
+        "ambiguous": 4,
+        "ambiguous_correct": 4
+      },
+      "fields": {
+        "company_name": {
+          "all": 59,
+          "provided": 51,
+          "scored": 59,
+          "correct": 50,
+          "present": 59,
+          "present_correct": 50
+        },
+        "business_registration_no": {
+          "all": 59,
+          "provided": 59,
+          "scored": 59,
+          "correct": 59,
+          "present": 59,
+          "present_correct": 59
+        },
+        "supply_amount": {
+          "all": 59,
+          "provided": 36,
+          "scored": 40,
+          "correct": 37,
+          "present": 39,
+          "present_correct": 36,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "tax_amount": {
+          "all": 59,
+          "provided": 39,
+          "scored": 40,
+          "correct": 40,
+          "present": 39,
+          "present_correct": 39,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "total_amount": {
+          "all": 59,
+          "provided": 38,
+          "scored": 40,
+          "correct": 39,
+          "present": 39,
+          "present_correct": 38,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "issue_date": {
+          "all": 59,
+          "provided": 59,
+          "scored": 59,
+          "correct": 59,
+          "present": 59,
+          "present_correct": 59
+        },
+        "amount_scope": {
+          "all": 59,
+          "provided": 26,
+          "scored": 40,
+          "correct": 27,
+          "present": 39,
+          "present_correct": 26,
+          "absent": 19,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        }
+      },
+      "extraction_coverage": 0.7457627118644068,
+      "missing_recall": 1.0,
+      "missing_precision": 1.0,
+      "missing_counts": {
+        "tp": 2,
+        "fn": 0,
+        "fp": 0
+      },
+      "cross_validation_macro_f1": 0.9869180454020777,
+      "checks_by_status": {
+        "PASS": {
+          "support": 57,
+          "tp": 56,
+          "fp": 0,
+          "fn": 1,
+          "f1": 0.9911504424778761
+        },
+        "FAIL": {
+          "support": 4,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "REVIEW": {
+          "support": 11,
+          "tp": 11,
+          "fp": 1,
+          "fn": 0,
+          "f1": 0.9565217391304348
+        },
+        "MISSING": {
+          "support": 2,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        }
+      },
+      "wrong_pass_rate": 0.0,
+      "wrong_pass_among_passes": 0.0,
+      "wrong_pass_counts": {
+        "unsafe_expected": 17,
+        "wrong_pass": 0,
+        "predicted_pass": 56
+      },
+      "check_review_rate": 0.16,
+      "failures": [
+        {
+          "kind": "field",
+          "document_id": "10102",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10201",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10201",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10301",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10306",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10306",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10402",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10405",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10501",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10501",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10504",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10601",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10606",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10607",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "check",
+          "contract_id": "106",
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "expected": "PASS",
+          "actual": "N/A"
+        },
+        {
+          "kind": "check",
+          "contract_id": "106",
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "field",
+          "document_id": "10701",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10701",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10701",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10702",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10706",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10706",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10801",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10801",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10804",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10901",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "10906",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "11002",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        }
+      ],
+      "check_state_accuracy": 0.9733333333333334,
+      "check_state_counts": {
+        "correct": 73,
+        "scored": 75,
+        "both_not_applicable": 337,
+        "accuracy": 0.9733333333333334
+      },
+      "guard_rejected_count": 29,
+      "guard_rejection_reasons": {
+        "PAGE_UNVERIFIED": 15,
+        "EVIDENCE_NOT_FOUND": 11,
+        "FIELD_LABEL_OR_VALUE_MISMATCH": 21,
+        "WRONG_PARTY": 3,
+        "VALUE_NOT_IN_QUOTE": 4,
+        "UNSUPPORTED_ABSTENTION": 1
+      },
+      "source_warnings": {
+        "SOURCE_ARITHMETIC_MISMATCH": 16
+      },
+      "mean_document_seconds": 2.1640169864408025,
+      "mean_guard_seconds": 8.373220345859763e-05,
+      "mean_cache_execution_seconds": 0.0,
+      "llm_failure_count": 0
+    }
+  }
+}

@@ -93,8 +93,8 @@ def run_ocr_on_image(image_input: Any) -> str:
                 return "\n".join(lines).strip()
             elif res.get("text", "").strip():
                 return res.get("text", "").strip()
-    except Exception as e:
-        print(f"[Warning] WinOCR attempt failed: {e}")
+    except Exception:
+        print("[Warning] WinOCR attempt failed")
 
     # 2. PyTesseract fallback
     try:

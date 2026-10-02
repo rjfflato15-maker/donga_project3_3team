@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, ConfigDict
 from .common import DocumentType, ProcessingStatus, MaskStatus
 
@@ -31,6 +31,7 @@ class MaskInfo(BaseModel):
 class DocumentAnalysis(BaseModel):
     fields: AnalysisFields = AnalysisFields()
     warnings: List[str] = []
+    ai_review: Optional[Dict[str, Any]] = None
 
 
 class DocumentAnalysisResponse(BaseModel):
@@ -39,6 +40,7 @@ class DocumentAnalysisResponse(BaseModel):
     mask: MaskInfo
     fields: AnalysisFields
     warnings: List[str] = []
+    ai_review: Optional[Dict[str, Any]] = None
 
 
 class DocumentResponse(BaseModel):

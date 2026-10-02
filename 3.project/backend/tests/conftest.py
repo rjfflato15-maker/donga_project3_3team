@@ -11,6 +11,7 @@ from pathlib import Path
 IMPORT_STORAGE = Path(tempfile.mkdtemp(prefix="c-pilot-pytest-import-"))
 os.environ["APP_DEPLOYMENT_MODE"] = "pilot"
 os.environ["APP_NTS_MODE"] = "disabled"
+os.environ["APP_LLM_ENABLED"] = "false"
 os.environ["APP_STORAGE_ROOT"] = str(IMPORT_STORAGE)
 os.environ["APP_COOKIE_SECURE"] = "false"
 os.environ["APP_ALLOWED_ORIGINS"] = "http://testserver"

@@ -12,7 +12,7 @@ from ..schemas.document import (
 from ..schemas.common import DocumentType, MaskStatus
 
 
-def analyze_document(file_path: str, file_name: str = "", target_document_type: str = "") -> Tuple[DocumentAnalysisResponse, str, str]:
+def analyze_document(file_path: str, file_name: str = "", target_document_type: str = "", *, use_llm=None) -> Tuple[DocumentAnalysisResponse, str, str]:
     """
     Executes the full local AI processing pipeline:
     1. Local text extraction from file (.txt, .pdf, .png, .jpg, etc.)
@@ -32,6 +32,12 @@ def analyze_document(file_path: str, file_name: str = "", target_document_type: 
 
     # Step 4: Extraction
     fields = extract_fields(raw_text, doc_type=doc_type)
+    enabled = os.getenv("APP_LLM_ENABLED", "false").lower() == "true" if use_llm is None else use_llm
+    ai_review = None
+    if enabled:
+        from .llm_supplement import supplement_document
+        values, ai_review = supplement_document(file_path, raw_text, fields.model_dump(), doc_type.value)
+        fields = AnalysisFields.model_validate(values)
 
     warnings = []
     if doc_type == DocumentType.UNKNOWN:
@@ -51,6 +57,7 @@ def analyze_document(file_path: str, file_name: str = "", target_document_type: 
         mask=mask_info,
         fields=fields,
         warnings=warnings,
+        ai_review=ai_review,
     )
 
     return response, raw_text, masked_text

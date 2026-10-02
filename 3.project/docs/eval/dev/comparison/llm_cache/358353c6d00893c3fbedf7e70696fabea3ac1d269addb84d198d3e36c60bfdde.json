@@ -1,0 +1,95 @@
+{
+  "request_sha256": "358353c6d00893c3fbedf7e70696fabea3ac1d269addb84d198d3e36c60bfdde",
+  "run_sha256": "a830b5f884f0416e28a5226ee7e43760e997577622451328ae56a629f4ad5904",
+  "run": {
+    "ok": true,
+    "error": null,
+    "attempts": 1,
+    "proposals": {
+      "company_name": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "business_registration_no": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "supply_amount": {
+        "state": "REVIEW",
+        "value": null,
+        "page": 1,
+        "line": 9,
+        "quote": "공급가액. 1,100,000원"
+      },
+      "tax_amount": {
+        "state": "REVIEW",
+        "value": null,
+        "page": 1,
+        "line": 10,
+        "quote": "세액. 110,000원"
+      },
+      "total_amount": {
+        "state": "REVIEW",
+        "value": null,
+        "page": 1,
+        "line": 11,
+        "quote": "합계금액. 1,210,000원"
+      },
+      "issue_date": {
+        "state": "REVIEW",
+        "value": "2026-09-01",
+        "page": 1,
+        "line": 12,
+        "quote": "발행일. 2026-09-01"
+      },
+      "amount_scope": {
+        "state": "REVIEW",
+        "value": null,
+        "page": 1,
+        "line": null,
+        "quote": ""
+      }
+    },
+    "model": "qwen3:latest",
+    "settings": {
+      "url": "http://127.0.0.1:11434",
+      "model": "qwen3:latest",
+      "timeout_seconds": 45,
+      "retries": 1,
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 1600,
+      "max_input_chars": 10000
+    },
+    "prompt_version": "grounded-fields-v1",
+    "manual_review_required": true,
+    "model_metadata": {
+      "name": "qwen3:latest",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "size": 5225388164,
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3",
+        "families": [
+          "qwen3"
+        ],
+        "parameter_size": "8.2B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 40960,
+        "embedding_length": 4096
+      }
+    },
+    "server_seconds": 8.5648978,
+    "load_seconds": 0.0122,
+    "eval_count": 371,
+    "elapsed_seconds": 8.568389600000046
+  }
+}

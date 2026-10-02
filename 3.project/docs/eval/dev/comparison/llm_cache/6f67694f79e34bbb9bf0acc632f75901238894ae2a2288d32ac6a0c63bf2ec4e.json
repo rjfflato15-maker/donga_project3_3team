@@ -1,0 +1,60 @@
+{
+  "request_sha256": "6f67694f79e34bbb9bf0acc632f75901238894ae2a2288d32ac6a0c63bf2ec4e",
+  "run_sha256": "ab2cfc1326fbb4722f9e87019ed4b4f56e7c5eabffc0b27a7c3a05be76390627",
+  "run": {
+    "ok": true,
+    "error": null,
+    "attempts": 1,
+    "proposals": {
+      "company_name": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소 8",
+        "page": 1,
+        "line": 3,
+        "quote": "예금주• 가상 솔빛제작소 8"
+      },
+      "issue_date": {
+        "state": "VALUE",
+        "value": "2026-09-08",
+        "page": 1,
+        "line": 7,
+        "quote": "발행일. 2026-09-08"
+      }
+    },
+    "model": "qwen3:latest",
+    "settings": {
+      "url": "http://127.0.0.1:11434",
+      "model": "qwen3:latest",
+      "timeout_seconds": 45,
+      "retries": 1,
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 1600,
+      "max_input_chars": 10000
+    },
+    "prompt_version": "grounded-fields-v3",
+    "manual_review_required": true,
+    "model_metadata": {
+      "name": "qwen3:latest",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "size": 5225388164,
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3",
+        "families": [
+          "qwen3"
+        ],
+        "parameter_size": "8.2B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 40960,
+        "embedding_length": 4096
+      }
+    },
+    "server_seconds": 2.8988352,
+    "load_seconds": 0.0080686,
+    "eval_count": 119,
+    "elapsed_seconds": 2.901454900000317
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "method": "post-evaluation audit against frozen dev gold; labels are never passed to production guard",
+  "counts": {
+    "rejected_gold_matching_value_or_abstention": 27,
+    "rejected_gold_mismatching_value_or_abstention": 2
+  },
+  "rejected_fields": {
+    "amount_scope": 14,
+    "company_name": 8,
+    "business_registration_no": 3,
+    "total_amount": 1,
+    "supply_amount": 3
+  },
+  "incorrect_examples": [
+    {
+      "document_id": "10706",
+      "field": "amount_scope",
+      "reasons": [
+        "UNSUPPORTED_ABSTENTION"
+      ]
+    },
+    {
+      "document_id": "10902",
+      "field": "amount_scope",
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ]
+    }
+  ],
+  "shared_hybrid_response_all_documents": true,
+  "document_count": 59,
+  "audit_scope": "Field value or abstention only; gold agreement does not establish correct page, line, or party evidence."
+}

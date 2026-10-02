@@ -125,7 +125,10 @@ class PipelineService:
             extract.extracted_date = analysis.fields.issue_date
             extract.extracted_status = "FAILED" if failed else "COMPLETED"
             extract.confidence = analysis.confidence
-            extract.raw_fields = analysis.fields.model_dump_json()
+            stored_fields = analysis.fields.model_dump()
+            if analysis.ai_review is not None:
+                stored_fields["ai_review"] = analysis.ai_review
+            extract.raw_fields = json.dumps(stored_fields, ensure_ascii=False)
             verification = db.query(BusinessVerification).filter_by(document_id=doc.document_id).first()
             if verification is None:
                 verification = BusinessVerification(document_id=doc.document_id)

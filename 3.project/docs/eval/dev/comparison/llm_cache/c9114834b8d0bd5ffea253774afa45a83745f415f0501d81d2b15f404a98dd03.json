@@ -1,0 +1,95 @@
+{
+  "request_sha256": "c9114834b8d0bd5ffea253774afa45a83745f415f0501d81d2b15f404a98dd03",
+  "run_sha256": "6b37d21fd59c5cbfe2586f83691877fbc11a40ee8f10ded48d3a987363feea03",
+  "run": {
+    "ok": true,
+    "error": null,
+    "attempts": 1,
+    "proposals": {
+      "company_name": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소 7",
+        "page": 1,
+        "line": 3,
+        "quote": "계약상대자. 가상 솔빛제작소 7"
+      },
+      "business_registration_no": {
+        "state": "VALUE",
+        "value": "000-00-01071",
+        "page": 1,
+        "line": 4,
+        "quote": "사업자등록번호. 000-00-01071"
+      },
+      "supply_amount": {
+        "state": "VALUE",
+        "value": "1700000",
+        "page": 1,
+        "line": 7,
+        "quote": "공급가액. 1 700,000원"
+      },
+      "tax_amount": {
+        "state": "VALUE",
+        "value": "170000",
+        "page": 1,
+        "line": 8,
+        "quote": "세액 170,000원"
+      },
+      "total_amount": {
+        "state": "VALUE",
+        "value": "1870000",
+        "page": 1,
+        "line": 9,
+        "quote": "합계금액. 1,870,000원"
+      },
+      "issue_date": {
+        "state": "VALUE",
+        "value": "2026-09-07",
+        "page": 1,
+        "line": 10,
+        "quote": "발행일. 2026-09-07"
+      },
+      "amount_scope": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      }
+    },
+    "model": "qwen3:latest",
+    "settings": {
+      "url": "http://127.0.0.1:11434",
+      "model": "qwen3:latest",
+      "timeout_seconds": 45,
+      "retries": 1,
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 1600,
+      "max_input_chars": 10000
+    },
+    "prompt_version": "grounded-fields-v3",
+    "manual_review_required": true,
+    "model_metadata": {
+      "name": "qwen3:latest",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "size": 5225388164,
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3",
+        "families": [
+          "qwen3"
+        ],
+        "parameter_size": "8.2B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 40960,
+        "embedding_length": 4096
+      }
+    },
+    "server_seconds": 10.751019,
+    "load_seconds": 0.0051773,
+    "eval_count": 442,
+    "elapsed_seconds": 10.753804900000432
+  }
+}

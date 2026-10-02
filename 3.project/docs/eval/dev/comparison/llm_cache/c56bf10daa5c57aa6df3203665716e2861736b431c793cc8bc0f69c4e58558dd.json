@@ -1,0 +1,95 @@
+{
+  "request_sha256": "c56bf10daa5c57aa6df3203665716e2861736b431c793cc8bc0f69c4e58558dd",
+  "run_sha256": "b4f99ff7fe97994f83ba7f46a263df7076d3b257113b38eb825125001da0c7c3",
+  "run": {
+    "ok": true,
+    "error": null,
+    "attempts": 1,
+    "proposals": {
+      "company_name": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소",
+        "page": 1,
+        "line": 1,
+        "quote": ""
+      },
+      "business_registration_no": {
+        "state": "VALUE",
+        "value": "000-00-01014",
+        "page": 1,
+        "line": 6,
+        "quote": ""
+      },
+      "supply_amount": {
+        "state": "VALUE",
+        "value": "REVIEW",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "tax_amount": {
+        "state": "VALUE",
+        "value": "REVIEW",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "total_amount": {
+        "state": "VALUE",
+        "value": "REVIEW",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "issue_date": {
+        "state": "VALUE",
+        "value": "2026-09-01",
+        "page": 1,
+        "line": 7,
+        "quote": ""
+      },
+      "amount_scope": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      }
+    },
+    "model": "gemma3:latest",
+    "settings": {
+      "url": "http://127.0.0.1:11434",
+      "model": "gemma3:latest",
+      "timeout_seconds": 45,
+      "retries": 1,
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 1600,
+      "max_input_chars": 10000
+    },
+    "prompt_version": "grounded-fields-v3",
+    "manual_review_required": true,
+    "model_metadata": {
+      "name": "gemma3:latest",
+      "digest": "a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+      "size": 3338801804,
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "gemma3",
+        "families": [
+          "gemma3"
+        ],
+        "parameter_size": "4.3B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 131072,
+        "embedding_length": 2560
+      }
+    },
+    "server_seconds": 5.2388758,
+    "load_seconds": 0.006613,
+    "eval_count": 329,
+    "elapsed_seconds": 5.240200300000652
+  }
+}

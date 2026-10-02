@@ -1,0 +1,42 @@
+{
+  "request_sha256": "db92e3ed83558b836755fa7cb1e935cff4793b1ca30b87dea5c888c2c21956fe",
+  "run_sha256": "f6604eb1c08ca976821cc1170d9e36297e857f99bf64697718699193b1922e26",
+  "run": {
+    "ok": false,
+    "error": "INVALID_JSON_OR_TRANSPORT",
+    "attempts": 2,
+    "proposals": {},
+    "model": "gemma3:latest",
+    "settings": {
+      "url": "http://127.0.0.1:11434",
+      "model": "gemma3:latest",
+      "timeout_seconds": 45,
+      "retries": 1,
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 1600,
+      "max_input_chars": 10000
+    },
+    "prompt_version": "grounded-fields-v3",
+    "manual_review_required": true,
+    "model_metadata": {
+      "name": "gemma3:latest",
+      "digest": "a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+      "size": 3338801804,
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "gemma3",
+        "families": [
+          "gemma3"
+        ],
+        "parameter_size": "4.3B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 131072,
+        "embedding_length": 2560
+      }
+    },
+    "elapsed_seconds": 13.871582799999487
+  }
+}

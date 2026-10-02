@@ -1,0 +1,106 @@
+{
+  "selection_basis": "DEV 8-document guarded field accuracy, raw field accuracy, then original call time",
+  "label_status": "confirmed",
+  "labels_sha256": "6361b13bd820f40cea38edf5df66da1714d1b0b1fb045763c3795d28d1d84f5b",
+  "prompt_version": "grounded-fields-v3",
+  "results": [
+    {
+      "model": "qwen3:latest",
+      "model_metadata": {
+        "name": "qwen3:latest",
+        "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+        "size": 5225388164,
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3",
+          "families": [
+            "qwen3"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 40960,
+          "embedding_length": 4096
+        }
+      },
+      "document_ids": [
+        "10101",
+        "10102",
+        "10103",
+        "10104",
+        "10105",
+        "10106",
+        "10902",
+        "11005"
+      ],
+      "raw_fields": {
+        "correct": 46,
+        "scored": 48,
+        "accuracy": 0.9583333333333334,
+        "absent": 8,
+        "false_extraction_on_absent": 0
+      },
+      "guarded_fields": {
+        "correct": 18,
+        "scored": 48,
+        "accuracy": 0.375,
+        "absent": 8,
+        "false_extraction_on_absent": 0
+      },
+      "mean_original_call_seconds": 10.430085575000021,
+      "errors": []
+    },
+    {
+      "model": "gemma3:latest",
+      "model_metadata": {
+        "name": "gemma3:latest",
+        "digest": "a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+        "size": 3338801804,
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "gemma3",
+          "families": [
+            "gemma3"
+          ],
+          "parameter_size": "4.3B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 131072,
+          "embedding_length": 2560
+        }
+      },
+      "document_ids": [
+        "10101",
+        "10102",
+        "10103",
+        "10104",
+        "10105",
+        "10106",
+        "10902",
+        "11005"
+      ],
+      "raw_fields": {
+        "correct": 37,
+        "scored": 48,
+        "accuracy": 0.7708333333333334,
+        "absent": 8,
+        "false_extraction_on_absent": 2
+      },
+      "guarded_fields": {
+        "correct": 10,
+        "scored": 48,
+        "accuracy": 0.20833333333333334,
+        "absent": 8,
+        "false_extraction_on_absent": 0
+      },
+      "mean_original_call_seconds": 8.13187516249991,
+      "errors": [
+        {
+          "document_id": "10902",
+          "reason": "INVALID_JSON_OR_TRANSPORT"
+        }
+      ]
+    }
+  ],
+  "selected_model": "qwen3:latest"
+}

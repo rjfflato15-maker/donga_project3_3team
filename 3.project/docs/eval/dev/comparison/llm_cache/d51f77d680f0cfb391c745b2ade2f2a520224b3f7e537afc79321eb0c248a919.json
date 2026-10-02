@@ -1,0 +1,74 @@
+{
+  "request_sha256": "d51f77d680f0cfb391c745b2ade2f2a520224b3f7e537afc79321eb0c248a919",
+  "run_sha256": "5721b05f400eca8c6fbfe52440dcb7706b34a00a848ac2e50b1d65f74ffa822d",
+  "run": {
+    "ok": true,
+    "error": null,
+    "attempts": 1,
+    "proposals": {
+      "supply_amount": {
+        "state": "VALUE",
+        "value": "1600000",
+        "page": 1,
+        "line": 7,
+        "quote": "공급가액. 1,600,000원"
+      },
+      "tax_amount": {
+        "state": "VALUE",
+        "value": "160000",
+        "page": 1,
+        "line": 8,
+        "quote": "세액. 160,000원"
+      },
+      "total_amount": {
+        "state": "VALUE",
+        "value": "1760000",
+        "page": 1,
+        "line": 9,
+        "quote": "합계금액. 1,760,000원"
+      },
+      "amount_scope": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      }
+    },
+    "model": "qwen3:latest",
+    "settings": {
+      "url": "http://127.0.0.1:11434",
+      "model": "qwen3:latest",
+      "timeout_seconds": 45,
+      "retries": 1,
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 1600,
+      "max_input_chars": 10000
+    },
+    "prompt_version": "grounded-fields-v3",
+    "manual_review_required": true,
+    "model_metadata": {
+      "name": "qwen3:latest",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "size": 5225388164,
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3",
+        "families": [
+          "qwen3"
+        ],
+        "parameter_size": "8.2B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 40960,
+        "embedding_length": 4096
+      }
+    },
+    "server_seconds": 5.6631513,
+    "load_seconds": 0.01927,
+    "eval_count": 236,
+    "elapsed_seconds": 5.664149700000053
+  }
+}

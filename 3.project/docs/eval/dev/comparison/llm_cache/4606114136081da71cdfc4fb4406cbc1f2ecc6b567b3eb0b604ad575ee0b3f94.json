@@ -1,0 +1,95 @@
+{
+  "request_sha256": "4606114136081da71cdfc4fb4406cbc1f2ecc6b567b3eb0b604ad575ee0b3f94",
+  "run_sha256": "f9f6bfe1760a8856b53b435cc066c9cee72e5b39ebb1f9aba41bd3ab8f7ab8ac",
+  "run": {
+    "ok": true,
+    "error": null,
+    "attempts": 1,
+    "proposals": {
+      "company_name": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소",
+        "page": 1,
+        "line": 5,
+        "quote": "가상 솔빛제작소"
+      },
+      "business_registration_no": {
+        "state": "VALUE",
+        "value": "000-00-01106",
+        "page": 1,
+        "line": 5,
+        "quote": "000-00-01106"
+      },
+      "supply_amount": {
+        "state": "VALUE",
+        "value": "2,000,000원",
+        "page": 1,
+        "line": 9,
+        "quote": "2,000,000원"
+      },
+      "tax_amount": {
+        "state": "VALUE",
+        "value": "200,000원",
+        "page": 1,
+        "line": 10,
+        "quote": "200,000원"
+      },
+      "total_amount": {
+        "state": "VALUE",
+        "value": "2,201,000원",
+        "page": 1,
+        "line": 11,
+        "quote": "2,201,000원"
+      },
+      "issue_date": {
+        "state": "VALUE",
+        "value": "2026-09-10",
+        "page": 1,
+        "line": 13,
+        "quote": "2026-09-10"
+      },
+      "amount_scope": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": 1,
+        "line": 12,
+        "quote": "전액 청구 전제 계약 대금"
+      }
+    },
+    "model": "gemma3:latest",
+    "settings": {
+      "url": "http://127.0.0.1:11434",
+      "model": "gemma3:latest",
+      "timeout_seconds": 45,
+      "retries": 1,
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 1600,
+      "max_input_chars": 10000
+    },
+    "prompt_version": "grounded-fields-v2",
+    "manual_review_required": true,
+    "model_metadata": {
+      "name": "gemma3:latest",
+      "digest": "a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+      "size": 3338801804,
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "gemma3",
+        "families": [
+          "gemma3"
+        ],
+        "parameter_size": "4.3B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 131072,
+        "embedding_length": 2560
+      }
+    },
+    "server_seconds": 6.6234249,
+    "load_seconds": 0.0053399,
+    "eval_count": 423,
+    "elapsed_seconds": 6.624726600000031
+  }
+}

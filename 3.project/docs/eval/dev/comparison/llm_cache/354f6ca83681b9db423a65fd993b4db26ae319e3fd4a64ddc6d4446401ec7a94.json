@@ -1,0 +1,53 @@
+{
+  "request_sha256": "354f6ca83681b9db423a65fd993b4db26ae319e3fd4a64ddc6d4446401ec7a94",
+  "run_sha256": "9a684b26b28f7f88d0173aaaafc035e914988daa72c7ea1c2539758eeda900e7",
+  "run": {
+    "ok": true,
+    "error": null,
+    "attempts": 1,
+    "proposals": {
+      "company_name": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소 1",
+        "page": 1,
+        "line": 5,
+        "quote": "수급인(을): 가상 솔빛제작소 1"
+      }
+    },
+    "model": "qwen3:latest",
+    "settings": {
+      "url": "http://127.0.0.1:11434",
+      "model": "qwen3:latest",
+      "timeout_seconds": 45,
+      "retries": 1,
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 1600,
+      "max_input_chars": 10000
+    },
+    "prompt_version": "grounded-fields-v3",
+    "manual_review_required": true,
+    "model_metadata": {
+      "name": "qwen3:latest",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "size": 5225388164,
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3",
+        "families": [
+          "qwen3"
+        ],
+        "parameter_size": "8.2B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 40960,
+        "embedding_length": 4096
+      }
+    },
+    "server_seconds": 7.0289207,
+    "load_seconds": 4.9910776,
+    "eval_count": 64,
+    "elapsed_seconds": 7.030490699999973
+  }
+}

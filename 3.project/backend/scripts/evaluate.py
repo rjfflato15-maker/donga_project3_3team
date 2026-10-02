@@ -36,7 +36,7 @@ def run_rule(root, contracts):
                 started = perf_counter()
                 try:
                     with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-                        analysis, raw, _ = analyze_document(str(dataset_file(root, document["path"])), file_name=Path(document["path"]).name)
+                        analysis, raw, _ = analyze_document(str(dataset_file(root, document["path"])), file_name=Path(document["path"]).name, use_llm=False)
                     fields = analysis.fields.model_dump()
                     dtype = analysis.document_type.value
                     body = raw.partition("\n")[2] if raw.startswith("[파일명:") else raw

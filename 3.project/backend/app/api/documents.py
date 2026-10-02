@@ -138,7 +138,10 @@ def correct_fields(document_id: int, req: Correction, db: Session = Depends(get_
                 raise HTTPException(400, "금액은 0 이상의 유효한 숫자로 입력하세요.")
         before = json.loads(doc.extract.raw_fields or "{}")
         doc.document_type = req.document_type.value
-        doc.extract.raw_fields = req.fields.model_dump_json()
+        after = req.fields.model_dump()
+        if before.get("ai_review"):
+            after["ai_review"] = {**before["ai_review"], "human_confirmed": True, "manual_review_required": False}
+        doc.extract.raw_fields = json.dumps(after, ensure_ascii=False)
         doc.extract.extracted_vendor_name = req.fields.company_name
         doc.extract.extracted_vendor_reg_no = req.fields.business_registration_no
         doc.extract.extracted_amount = req.fields.total_amount if req.fields.total_amount is not None else req.fields.amount

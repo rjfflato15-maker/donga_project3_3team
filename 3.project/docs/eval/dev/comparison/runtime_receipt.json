@@ -1,0 +1,16 @@
+{
+  "verification_scope": "local runtime configuration, installed tags and initial server log; no system-wide traffic audit",
+  "ollama_version": "0.35.0",
+  "cloud_disabled_config": true,
+  "cloud_disabled_actual_server_log": true,
+  "server_config": "%USERPROFILE%/.ollama/server.json",
+  "http_endpoint": "http://127.0.0.1:11434",
+  "gpu": "NVIDIA RTX 4070 Laptop GPU",
+  "gpu_total_mib": 8188,
+  "models_downloaded": false,
+  "weights_committed": false,
+  "actual_test_executed": false,
+  "prompt_version": "grounded-fields-v3",
+  "recorded_at": "2026-10-02T10:55:09.873291+09:00",
+  "guard_version": "grounding-v2-ocr-separator"
+}

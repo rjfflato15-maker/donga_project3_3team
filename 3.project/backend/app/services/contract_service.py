@@ -44,9 +44,12 @@ def get_document_response(doc: Document) -> DocumentResponse:
     raw_text, masked_text = read_texts(doc)
     source = resolve_path(doc.storage_path)
     fields = AnalysisFields()
+    ai_review = None
     if doc.extract:
         try:
-            fields = AnalysisFields(**json.loads(doc.extract.raw_fields or "{}"))
+            stored_fields = json.loads(doc.extract.raw_fields or "{}")
+            fields = AnalysisFields(**stored_fields)
+            ai_review = stored_fields.get("ai_review")
         except (ValueError, TypeError):
             fields = AnalysisFields(company_name=doc.extract.extracted_vendor_name,
                                     business_registration_no=doc.extract.extracted_vendor_reg_no,
@@ -62,7 +65,7 @@ def get_document_response(doc: Document) -> DocumentResponse:
         confidence=doc.class_confidence or 0.0,
         processing_status=ProcessingStatus(doc.processing_status) if doc.processing_status in [s.value for s in ProcessingStatus] else ProcessingStatus.REVIEW,
         mask_status=MaskStatus(doc.masking.masking_status) if doc.masking and doc.masking.masking_status in [m.value for m in MaskStatus] else MaskStatus.NOT_STARTED,
-        analysis=DocumentAnalysis(fields=fields, warnings=warnings), raw_text=raw_text, masked_text=masked_text,
+        analysis=DocumentAnalysis(fields=fields, warnings=warnings, ai_review=ai_review), raw_text=raw_text, masked_text=masked_text,
         business_status="미연동" if NTS_MODE == "disabled" else (
             "데모 데이터 · 실제 조회 아님" if NTS_MODE == "demo" else (
                 doc.verification.business_status if doc.verification else "미확인")),
