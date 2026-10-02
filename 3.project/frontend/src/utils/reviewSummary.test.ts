@@ -68,3 +68,11 @@ describe('작은 도우미', () => {
     expect(isReadingCheck(check('BUSINESS_NO_MATCH', 'FAIL', '5'))).toBe(false);
   });
 });
+
+describe('회사 내부 서류', () => {
+  it('납품 검수확인서는 거래처 요청 대상이 아니다', async () => {
+    const { isInternalDocument } = await import('./reviewSummary');
+    expect(isInternalDocument('inspection_confirmation')).toBe(true);
+    expect(isInternalDocument('bank_account')).toBe(false);
+  });
+});

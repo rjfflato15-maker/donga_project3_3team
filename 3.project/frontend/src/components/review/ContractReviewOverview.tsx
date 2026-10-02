@@ -9,6 +9,7 @@ import {
   IssueGroup,
   plainMessage,
   showsValues,
+  isInternalDocument,
 } from '../../utils/reviewSummary';
 import { maskVendorName } from '../../utils/masking';
 import { AlertTriangle, CheckCircle2, ChevronDown, ChevronRight, Copy, Eye, Info, Upload } from 'lucide-react';
@@ -198,6 +199,9 @@ export const ContractReviewOverview: React.FC<Props> = ({
                   </li>
                 ))}
               </ul>
+              {issue.kind === 'missing' && isInternalDocument(issue.missingType) && (
+                <p className="px-5 pb-2 text-xs text-slate-500">회사 안에서 작성하는 서류입니다. 거래처에 요청하지 않고, 작성한 파일을 올리면 됩니다.</p>
+              )}
               {issue.kind === 'reading' && (
                 <p className="px-5 pb-2 text-xs text-slate-500">앱이 원문에서 값을 정확히 읽지 못한 항목입니다. 거래처에 요청하기 전에 원문을 보고 값을 확인해 주세요.</p>
               )}
@@ -220,7 +224,7 @@ export const ContractReviewOverview: React.FC<Props> = ({
                     <Upload className="w-4 h-4" /> 파일 올리기
                   </button>
                 )}
-                {(issue.kind === 'vendor' || issue.kind === 'missing') && canEdit && (
+                {(issue.kind === 'vendor' || (issue.kind === 'missing' && !isInternalDocument(issue.missingType))) && canEdit && (
                   <button
                     onClick={() => setDraftFor(issue)}
                     className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-indigo-700"

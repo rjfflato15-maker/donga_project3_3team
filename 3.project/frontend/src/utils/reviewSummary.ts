@@ -37,6 +37,10 @@ const RULE_KO: Record<string, string> = {
 
 export const ruleLabel = (ruleId: string) => RULE_KO[ruleId] ?? ruleId;
 
+/** 회사 안에서 만드는 서류라 거래처에 요청할 대상이 아닌 종류 */
+export const INTERNAL_DOCUMENT_TYPES: DocumentType[] = ['inspection_confirmation'];
+export const isInternalDocument = (t?: DocumentType) => !!t && INTERNAL_DOCUMENT_TYPES.includes(t);
+
 /** 카드 제목에 서류 이름이 있으므로 메시지 앞의 '파일명: '은 뺀다. */
 export const plainMessage = (message: string) => message.replace(/^[^:：]{1,80}\.(pdf|png|jpe?g|docx?|hwp|tiff?)\s*[:：]\s*/i, '');
 
