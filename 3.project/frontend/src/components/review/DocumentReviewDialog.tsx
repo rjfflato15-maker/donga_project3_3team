@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { DocumentResponse, ValidationCheck } from '../../types';
-import { requestJson, downloadProtected } from '../../api/client';
+import { AnalysisFields, DocumentResponse, ValidationCheck } from '../../types';
+import { api, requestJson, downloadProtected } from '../../api/client';
 import { DOCUMENT_TYPE_KO, STATUS_KO, plainMessage, ruleLabel, isUnverifiedBusinessStatus } from '../../utils/reviewSummary';
 import { maskBusinessNumber, maskAccountNumber, maskVendorName } from '../../utils/masking';
-import { X, Pencil, Download, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { X, Pencil, Download, ChevronLeft, ChevronRight, Loader2, Save } from 'lucide-react';
 
 interface BBox { page: number; x: number; y: number; width: number; height: number }
 interface Anchor { page: number | null; line: number | null; quote: string; location_kind?: string; page_layout_verified?: boolean; bbox?: BBox | null }
@@ -24,7 +24,7 @@ interface Props {
   isMaskingEnabled: boolean;
   canEdit: boolean;
   onClose: () => void;
-  onCorrect: () => void;
+  onChanged: () => Promise<void>;
 }
 
 const FIELD_ORDER: { key: string; label: string; types?: string[] }[] = [
@@ -61,7 +61,28 @@ function display(key: string, value: FieldProvenance['value'], masked: boolean):
   return String(value);
 }
 
-export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, isMaskingEnabled, canEdit, onClose, onCorrect }) => {
+const AMOUNT_KEYS = new Set(['supply_amount', 'tax_amount', 'total_amount']);
+
+export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, isMaskingEnabled, canEdit, onClose, onChanged }) => {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState<AnalysisFields>(doc.analysis.fields);
+  const [note, setNote] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  useEffect(() => { setEditing(false); setDraft(doc.analysis.fields); setNote(''); setSaveError(''); }, [doc.document_id, revision]);
+  const changedKeys = Object.keys(draft).filter((k) => (draft as Record<string, unknown>)[k] !== (doc.analysis.fields as Record<string, unknown>)[k]);
+  const save = async () => {
+    setSaving(true); setSaveError('');
+    try {
+      await api.correctFields(doc.document_id, draft, doc.document_type, revision, note.trim());
+      await onChanged();
+      setEditing(false);
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : '저장하지 못했습니다.');
+    } finally {
+      setSaving(false);
+    }
+  };
   const [prov, setProv] = useState<Provenance | null>(null);
   const [provError, setProvError] = useState('');
   const [page, setPage] = useState(0);
@@ -225,7 +246,48 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
             </div>
             {provError && <div className="rounded-lg bg-rose-50 p-3 text-sm text-rose-700">{provError}</div>}
             {!prov && !provError && <div className="flex items-center gap-2 text-sm text-slate-500"><Loader2 className="h-4 w-4 animate-spin" /> 값을 불러오는 중…</div>}
-            {prov && (
+            {editing && (
+              <div className="space-y-2 rounded-xl border-2 border-indigo-200 bg-indigo-50/40 p-3 text-sm">
+                <div className="font-semibold text-indigo-900">원문을 보면서 틀린 값만 고치세요</div>
+                {rows.map(({ key, label }) => {
+                  const v = (draft as Record<string, unknown>)[key];
+                  const changed = changedKeys.includes(key);
+                  return (
+                    <label key={key} className="grid gap-1 text-xs text-slate-600">
+                      <span>{label}{changed && <b className="ml-1 text-indigo-700">· 바뀜</b>}</span>
+                      {key === 'amount_scope' ? (
+                        <select value={(v as string) || 'UNKNOWN'} onChange={(e) => setDraft({ ...draft, amount_scope: e.target.value as AnalysisFields['amount_scope'] })}
+                          className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800">
+                          <option value="UNKNOWN">확인 필요</option><option value="FULL">전액 청구</option><option value="PARTIAL">일부(분할) 청구</option>
+                        </select>
+                      ) : (
+                        <input
+                          type={AMOUNT_KEYS.has(key) ? 'number' : key === 'issue_date' ? 'date' : 'text'}
+                          min={AMOUNT_KEYS.has(key) ? 0 : undefined}
+                          value={v == null ? '' : String(v)}
+                          onChange={(e) => setDraft({ ...draft, [key]: AMOUNT_KEYS.has(key) ? (e.target.value === '' ? null : Number(e.target.value)) : (e.target.value || null) })}
+                          className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800" />
+                      )}
+                    </label>
+                  );
+                })}
+                <label className="grid gap-1 text-xs text-slate-600">고친 이유 (기록에 남습니다)
+                  <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2} maxLength={1000}
+                    placeholder="예: 원문 1쪽 합계금액 줄을 보고 2,200,000원으로 입력"
+                    className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800" />
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  <button onClick={() => void save()} disabled={saving || !note.trim() || changedKeys.length === 0}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 font-semibold text-white disabled:opacity-40">
+                    <Save className="h-4 w-4" /> {saving ? '저장 중…' : `저장하고 다시 검사 (${changedKeys.length}칸)`}
+                  </button>
+                  <button onClick={() => { setEditing(false); setDraft(doc.analysis.fields); }} className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-600">취소</button>
+                </div>
+                {saveError && <p role="alert" className="text-xs text-rose-600">{saveError}</p>}
+                <p className="text-[11px] text-slate-500">저장하면 고친 사람·이유가 기록되고, 이 값은 '사람 확인'으로 표시됩니다. 이전 결재는 다시 확인이 필요해집니다.</p>
+              </div>
+            )}
+            {prov && !editing && (
               <ul className="space-y-2">
                 {rows.map(({ key, label }) => {
                   const f = prov.fields[key];
@@ -260,10 +322,10 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                 })}
               </ul>
             )}
-            {canEdit && (
+            {canEdit && !editing && (
               <div className="rounded-xl border border-dashed border-slate-300 p-3 text-sm">
-                <div className="mb-2 text-slate-600">값이 원문과 다르거나 못 읽은 값이 있으면 직접 고칩니다. 고친 사람과 이유가 기록되고 검사가 다시 돌아갑니다.</div>
-                <button onClick={onCorrect} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 font-semibold text-white hover:bg-indigo-700">
+                <div className="mb-2 text-slate-600">값이 원문과 다르거나 못 읽은 값이 있으면 여기서 바로 고칩니다. 고친 사람과 이유가 기록되고 검사가 다시 돌아갑니다.</div>
+                <button onClick={() => setEditing(true)} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 font-semibold text-white hover:bg-indigo-700">
                   <Pencil className="h-4 w-4" /> 값 고치기
                 </button>
               </div>

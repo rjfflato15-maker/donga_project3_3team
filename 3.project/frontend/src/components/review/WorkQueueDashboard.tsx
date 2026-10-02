@@ -51,9 +51,11 @@ interface Props {
   /** 'list'이면 모든 계약을 등록 순서로 보여 주는 계약 목록 화면 */
   mode?: 'queue' | 'list';
   onNewManual?: () => void;
+  /** 대표는 결재할 것을 먼저 본다 */
+  representative?: boolean;
 }
 
-export const WorkQueueDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, canEdit, onOpen, onNewFromDocuments, onUpload, mode = 'queue', onNewManual }) => {
+export const WorkQueueDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, canEdit, onOpen, onNewFromDocuments, onUpload, mode = 'queue', onNewManual, representative = false }) => {
   const [query, setQuery] = useState('');
   const grouped = useMemo(() => {
     const map: Record<Bucket, DashboardItem[]> = { check: [], waiting: [], approval: [], returned: [], done: [] };
@@ -63,7 +65,7 @@ export const WorkQueueDashboard: React.FC<Props> = ({ contracts, isMaskingEnable
     return map;
   }, [contracts]);
   const [filter, setFilter] = useState<Bucket | 'all'>('all');
-  const order: Bucket[] = ['returned', 'check', 'waiting', 'approval', 'done'];
+  const order: Bucket[] = representative ? ['approval', 'check', 'returned', 'waiting', 'done'] : ['returned', 'check', 'waiting', 'approval', 'done'];
   const listMode = mode === 'list';
   const q = query.trim().toLowerCase();
   const base = listMode
@@ -76,8 +78,8 @@ export const WorkQueueDashboard: React.FC<Props> = ({ contracts, isMaskingEnable
     <div className="space-y-5">
       <div className="flex flex-wrap items-end gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">{listMode ? '계약 목록' : '검수 할 일'}</h1>
-          <p className="text-sm text-slate-500">{listMode ? `등록된 계약 ${contracts.length}건을 최근 등록 순서로 보여 줍니다.` : '처리할 계약부터 보여 줍니다. 상태를 누르면 그 계약만 모아 볼 수 있어요.'}</p>
+          <h1 className="text-2xl font-bold text-slate-900">{listMode ? '계약 목록' : representative ? '결재할 일' : '검수 할 일'}</h1>
+          <p className="text-sm text-slate-500">{listMode ? `등록된 계약 ${contracts.length}건을 최근 등록 순서로 보여 줍니다.` : representative ? '결재할 계약부터 보여 줍니다. 담당자가 처리 중인 계약은 아래에 있어요.' : '처리할 계약부터 보여 줍니다. 상태를 누르면 그 계약만 모아 볼 수 있어요.'}</p>
         </div>
         {canEdit && (
           <div className="ml-auto flex flex-wrap gap-2">
@@ -166,7 +168,7 @@ export const WorkQueueDashboard: React.FC<Props> = ({ contracts, isMaskingEnable
                       onClick={(e) => { e.stopPropagation(); onOpen(c.contract_id); }}
                       className={b === 'done' ? 'rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700' : 'rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700'}
                     >
-                      {b === 'done' ? '보기' : '검수하기'}
+                      {b === 'done' ? '보기' : representative ? (b === 'approval' ? '결재하기' : '보기') : '검수하기'}
                     </button>
                   </td>
                 </tr>
