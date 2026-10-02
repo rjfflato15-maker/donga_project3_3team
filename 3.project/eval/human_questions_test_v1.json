@@ -1,0 +1,46 @@
+[
+  {
+    "review_id": "201/20106/amount_scope",
+    "reason": "검수확인서의 계약 전체 금액을 FULL로 보는 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "203/20306/amount_scope",
+    "reason": "검수확인서의 계약 전체 금액을 FULL로 보는 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "204/20406/amount_scope",
+    "reason": "검수확인서의 계약 전체 금액을 FULL로 보는 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "205/20506/amount_scope",
+    "reason": "검수확인서의 계약 전체 금액을 FULL로 보는 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "206/20606/amount_scope",
+    "reason": "검수확인서의 계약 전체 금액을 FULL로 보는 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "207/20706/amount_scope",
+    "reason": "검수확인서의 계약 전체 금액을 FULL로 보는 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "208/20806/amount_scope",
+    "reason": "검수확인서의 계약 전체 금액을 FULL로 보는 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "209/20906/amount_scope",
+    "reason": "검수확인서의 계약 전체 금액을 FULL로 보는 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "210/21006/amount_scope",
+    "reason": "검수확인서의 계약 전체 금액을 FULL로 보는 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "210/contract/AMOUNT_COMPONENTS/21005",
+    "reason": "원문 표시 합계, 공급가액+세액, 전액 청구와 등록 금액을 대조해 FAIL 여부를 확인합니다."
+  },
+  {
+    "review_id": "210/contract/AMOUNT_MATCH_TAX_INVOICE/21005",
+    "reason": "원문 표시 합계, 공급가액+세액, 전액 청구와 등록 금액을 대조해 FAIL 여부를 확인합니다."
+  }
+]

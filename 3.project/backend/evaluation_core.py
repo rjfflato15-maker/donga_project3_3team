@@ -88,10 +88,10 @@ def validate_labels(manifest, labels, split, *, allow_unreviewed=False):
     if labels.get("dataset_version") != manifest.get("dataset_version") or labels.get("split") != split:
         raise EvaluationNotReady("정답표와 자료 버전이 다릅니다.")
     sampled = not preliminary and review.get("review_method") == "independent_reconciliation_with_human_sampling"
-    if sampled and (split != "dev" or not isinstance(review.get("human_full_review"), bool)
+    if sampled and (split not in {"dev", "test"} or not isinstance(review.get("human_full_review"), bool)
                     or not review.get("comparison_sha256") or not review.get("source_reference_sha256")
                     or not review.get("independent_reply_sha256")):
-        raise EvaluationNotReady("표본 검수는 dev의 대조 출처와 실제 확인 범위를 기록해야 합니다.")
+        raise EvaluationNotReady("표본 검수는 대조 출처와 실제 확인 범위를 기록해야 합니다.")
     contracts = [row for row in manifest["contracts"] if row["split"] == split]
     if not contracts:
         raise EvaluationNotReady("평가할 계약이 없습니다.")

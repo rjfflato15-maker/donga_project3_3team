@@ -8,13 +8,14 @@ from pathlib import Path
 PROJECT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT))
 from backend.evaluation_core import EvaluationNotReady, file_hash, validate_labels, verify_dataset, verify_freeze
-from backend.evaluation_review import compare_labels, merge_independent_parts
+from backend.evaluation_review import compare_labels, merge_independent_parts, validate_reference_draft
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="생성 정보 초안과 Claude 실제 판독의 대조 및 사람 확인 목록")
     parser.add_argument("replies", type=Path, nargs="+", help="계약별 Claude JSON 파일, 중복 ID 없이")
     parser.add_argument("--dataset", type=Path, default=PROJECT / "eval/dataset")
+    parser.add_argument("--split", choices=["dev", "test"], default="dev")
     parser.add_argument("--reference", type=Path)
     parser.add_argument("--output", type=Path, default=PROJECT / "eval/reconciliation")
     parser.add_argument("--seed", type=int, default=42)
@@ -26,12 +27,12 @@ def main(argv=None):
         root = args.dataset.resolve()
         manifest_path = root / "manifest.json"
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        reference_path = args.reference or root / "reference_labels_dev.json"
+        reference_path = args.reference or root / f"reference_labels_{args.split}.json"
         reference = json.loads(reference_path.read_text(encoding="utf-8"))
-        verify_dataset(root, manifest)
-        validate_labels(manifest, reference, "dev", allow_unreviewed=True)
+        verify_dataset(root, manifest, split=args.split)
+        validate_reference_draft(manifest, reference, args.split)
         verify_freeze(manifest_path, reference_path)
-        independent = merge_independent_parts([json.loads(path.read_text(encoding="utf-8-sig")) for path in args.replies])
+        independent = merge_independent_parts([json.loads(path.read_text(encoding="utf-8-sig")) for path in args.replies], split=args.split)
         if len({path.name for path in args.replies}) != len(args.replies):
             raise EvaluationNotReady("독립 판독 파일의 이름이 중복됩니다. 파일별 해시를 구분할 수 없습니다.")
         requests = json.loads(args.human_questions.read_text(encoding="utf-8")) if args.human_questions else []

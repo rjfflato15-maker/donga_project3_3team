@@ -1,7 +1,7 @@
-"""Derive DEV reference labels from fixture design, never app predictions.
+"""Derive reference labels from fixture design, never app predictions.
 
-These are source-checked AI drafts, not human-confirmed ground truth. Existing
-human templates and the held-out test split are left untouched.
+These are source-checked drafts, not human-confirmed ground truth. Explicit
+--split test prepares heldout labels without scoring, tuning or predictions.
 """
 import argparse
 import json
@@ -15,6 +15,7 @@ from pathlib import Path
 PROJECT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT))
 from backend.evaluation_core import DOCUMENT_TYPES, FIELDS, EvaluationNotReady, file_hash, validate_labels, verify_dataset
+from backend.evaluation_review import validate_reference_draft
 from backend.scripts.generate_evaluation_dataset import fictional_business_number, make_lines, write_image
 
 
@@ -154,22 +155,22 @@ def reference_checks(contract, documents):
     return missing, [{**slot, "status": answers[(slot["rule_id"], slot["field"])]} for slot in contract["check_slots"]]
 
 
-def build(root, font_path, output=None):
+def build(root, font_path, output=None, *, split="dev"):
     manifest_path = root / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if manifest.get("dataset_version") != "synthetic-v1" or manifest.get("created_for") != "local-evaluation":
         raise EvaluationNotReady("이 생성 정보는 synthetic-v1 가상 자료에만 적용됩니다.")
-    verify_dataset(root, manifest)
-    output = output or root / "reference_labels_dev.json"
+    verify_dataset(root, manifest, split=split)
+    output = output or root / f"reference_labels_{split}.json"
     if output.exists() or output.with_suffix(".freeze.json").exists():
         raise EvaluationNotReady("기존 정답 초안과 버전 기록을 덮어쓰지 않습니다.")
-    labels = {"dataset_version": manifest["dataset_version"], "split": "dev", "reference_version": "source-reference-v1",
+    labels = {"dataset_version": manifest["dataset_version"], "split": split, "reference_version": "source-reference-v1",
               "review": {"confirmed": False, "reviewer_type": "source_reference", "author": "Codex",
                          "created_at": datetime.now(timezone(timedelta(hours=9))).isoformat(),
                          "human_reviewed": False, "claude_reviewed": False,
                          "docx_page_visual_verified": False}, "documents": {}, "contracts": {}}
     methods = Counter()
-    for contract in (row for row in manifest["contracts"] if row["split"] == "dev"):
+    for contract in (row for row in manifest["contracts"] if row["split"] == split):
         rows = {}
         for document, answer, lines in design_documents(contract):
             method = verify_source(root / document["path"], lines, contract["layout_family"], document["document_id"], font_path)
@@ -180,7 +181,7 @@ def build(root, font_path, output=None):
                                          "source_check_method": method, "source_sha256": document["sha256"]}
         missing, checks = reference_checks(contract, rows)
         labels["contracts"][str(contract["contract_id"])] = {"reviewed": False, "source_checked": True, "missing_types": missing, "checks": checks}
-    validate_labels(manifest, labels, "dev", allow_unreviewed=True)
+    validate_reference_draft(manifest, labels, split)
     output.write_text(json.dumps(labels, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     source_files = {path: file_hash(PROJECT / path) for path in (
         "backend/scripts/generate_evaluation_dataset.py", "backend/scripts/build_reference_labels.py", "eval/LABELING_GUIDE.md")}
@@ -193,11 +194,12 @@ def build(root, font_path, output=None):
 def main(argv=None):
     parser = argparse.ArgumentParser(description="합성 생성 정보에서 dev 정답 초안 작성")
     parser.add_argument("--dataset", type=Path, default=PROJECT / "eval/dataset")
+    parser.add_argument("--split", choices=["dev", "test"], default="dev")
     parser.add_argument("--font", type=Path, default=Path("C:/Windows/Fonts/malgun.ttf"))
     args = parser.parse_args(argv)
     try:
-        labels = build(args.dataset.resolve(), args.font)
-        print(f"dev 생성 정보 정답 초안: 계약 {len(labels['contracts'])}건, 문서 {len(labels['documents'])}개. 사람과 Claude 검수는 미완료입니다.")
+        labels = build(args.dataset.resolve(), args.font, split=args.split)
+        print(f"{args.split} 생성 정보 정답 초안: 계약 {len(labels['contracts'])}건, 문서 {len(labels['documents'])}개. 사람과 Claude 검수는 미완료입니다.")
         return 0
     except (EvaluationNotReady, OSError, ValueError) as exc:
         print("정답 초안 생성 중단: " + str(exc), file=sys.stderr)

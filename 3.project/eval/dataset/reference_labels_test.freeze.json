@@ -1,0 +1,22 @@
+{
+  "labels_sha256": "f13263203a504d7c1ca7b8f33d6916d57d4b954065a361bbb8a6e369d2f24c4c",
+  "manifest_sha256": "ba103e8a64f08c41c6f511cdcf5c908b0ab7e57aa827f38d8137f795af53258f",
+  "source_files": {
+    "backend/scripts/generate_evaluation_dataset.py": "f62eddd6ffebdfe68f4b297a8dc2433b53b25d7cdf069d05f3076ea6dfc15be3",
+    "backend/scripts/build_reference_labels.py": "72162c7b9fb4b87c3315053d130abfea3c135b610775b1db4bacb65ae026df1a",
+    "eval/LABELING_GUIDE.md": "1a493424d136d040ea3652937bfea86213135e5537ee555a30bb6c8063d0d38c"
+  },
+  "source_check_counts": {
+    "png_design_pixels": 22,
+    "independent_docx_content": 18,
+    "independent_pdf_content": 18,
+    "scanned_pdf_design_pixels": 1
+  },
+  "confirmed": false,
+  "reviewer_type": "source_reference",
+  "author": "Codex",
+  "created_at": "2026-10-02T18:35:07.997646+09:00",
+  "human_reviewed": false,
+  "claude_reviewed": false,
+  "docx_page_visual_verified": false
+}
