@@ -6,7 +6,10 @@ from datetime import date
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
-GUARD_VERSION = "grounding-v2-ocr-separator"
+GUARD_VERSION = "grounding-v3-dev-audit"
+
+# A space is a thousands separator only in complete groups of three digits.
+MONEY_TOKEN = r"(?:\d{1,3}(?:[ ,]\d{3})+|\d+)(?:\.\d+)?"
 
 LABELS = {
     "company_name": r"상\s*호|업체명|예금주|수급인(?:명|\s*\(을\))?|공급자명|계약상대자",
@@ -27,7 +30,10 @@ def canonical(field, value):
     token = str(value).strip()
     if field.endswith("amount"):
         try:
-            number = Decimal(token.replace(",", "").replace("원", "").strip())
+            token = token.removesuffix("원").strip()
+            if not re.fullmatch(MONEY_TOKEN, token):
+                return None
+            number = Decimal(token.replace(",", "").replace(" ", ""))
             return str(number.normalize()) if number.is_finite() and number >= 0 else None
         except InvalidOperation:
             return None
@@ -44,9 +50,70 @@ def canonical(field, value):
     return re.sub(r"\s+", " ", token)
 
 
+def docx_locations(path, body):
+    """Map the existing flat extraction back to native paragraphs/table cells.
+
+    This verifies text, not Word's physical page layout. A changed/mismatching
+    flat extraction has no verified structural locations and fails closed.
+    """
+    from docx import Document
+    document = Document(path)
+    parts, spans = [], []
+    offset = 0
+
+    def append(text, segments):
+        nonlocal offset
+        if parts:
+            offset += 1  # the extractor's newline
+        parts.append(text)
+        spans.extend({**position, "start": offset + start, "end": offset + end}
+                     for start, end, position in segments)
+        offset += len(text)
+
+    for pi, paragraph in enumerate(document.paragraphs, 1):
+        text = paragraph.text.strip()
+        if text:
+            append(text, [(0, len(text), {"location_kind": "paragraph", "paragraph": pi})])
+    for ti, table in enumerate(document.tables, 1):
+        for ri, row in enumerate(table.rows, 1):
+            cells, segments, cursor = [], [], 0
+            for ci, cell in enumerate(row.cells, 1):
+                text = cell.text.strip()
+                if not text or cells and cells[-1] == text:
+                    continue
+                if cells:
+                    cursor += 1  # tab between cells, as in preprocessor
+                trim = len(cell.text) - len(cell.text.lstrip())
+                paragraph_offset = 0
+                for pi, paragraph in enumerate(cell.paragraphs, 1):
+                    start = max(0, paragraph_offset - trim)
+                    end = min(len(text), paragraph_offset + len(paragraph.text) - trim)
+                    if end > start:
+                        segments.append((cursor + start, cursor + end, {
+                            "location_kind": "table_cell", "table": ti, "row": ri,
+                            "cell": ci, "paragraph": pi}))
+                    paragraph_offset += len(paragraph.text) + 1
+                cells.append(text)
+                cursor += len(text)
+            if cells:
+                append("\t".join(cells), segments)
+    if "\n".join(parts).strip() != body:
+        return {}
+    locations, offset = {}, 0
+    for li, line in enumerate(body.splitlines(), 1):
+        locations[str(li)] = [dict(span) for span in spans
+                              if span["start"] < offset + len(line) and span["end"] > offset]
+        offset += len(line) + 1
+    return locations
+
+
 def source_pages(file_path, raw_text):
     path = Path(file_path)
     body = raw_text.partition("\n")[2] if raw_text.startswith("[파일명:") else raw_text
+    if path.suffix.lower() == ".docx":
+        return [{"page": None, "location_kind": "document_block", "text": body,
+                 "document_format": "docx", "page_layout_verified": False,
+                 "line_locations": docx_locations(path, body)}]
     if path.suffix.lower() != ".pdf":
         physical = path.suffix.lower() in {".png", ".jpg", ".jpeg", ".bmp", ".webp"}
         return [{"page": 1 if physical else None, "location_kind": "page" if physical else "document_block", "text": body}]
@@ -94,14 +161,19 @@ def candidates(pages, field, document_type):
             for label in re.finditer(LABELS[field], line):
                 # OCR can render the colon as a dot followed by whitespace.
                 # A leading decimal dot without whitespace is never a separator.
-                tail = re.sub(r"^\s*(?:[:：=]|[.。](?=\s))?\s*", "", line[label.end():])
-                if not tail and index + 1 < len(lines):
+                tail = re.sub(r"^\s*(?:[:：=]|[.。•·](?=\s))?\s*", "", line[label.end():])
+                value_index = index
+                if field != "amount_scope" and not tail and index + 1 < len(lines):
                     tail = lines[index + 1]
+                    value_index += 1
                 value = None
                 if field.endswith("amount"):
-                    match = re.match(r"(?:[₩￦]|금)?\s*(\d[\d,]*(?:\.\d+)?)", tail)
-                    if match and not re.match(r"\s*(?:[%년월일]|[./-]\s*\d)", tail[match.end():]):
+                    match = re.match(r"(?:[₩￦]|금)?\s*(" + MONEY_TOKEN + r")(?![\d,])", tail)
+                    if match and not re.match(r"\s*(?:[%년월일]|[./-]\s*\d|\d)", tail[match.end():]):
                         value = match.group(1)
+                        if " " in value and not (re.match(r"\s*원(?:$|\s|[.,(])", tail[match.end():])
+                                                     or re.match(r"[₩￦]", tail)):
+                            value = None
                     if field == "total_amount" and re.search(r"부가세\s*(?:별도|미포함)|VAT\s*(?:별도|제외)|공급가액\s*기준", line, re.I):
                         value = None
                 elif field == "business_registration_no":
@@ -118,8 +190,9 @@ def candidates(pages, field, document_type):
                     value = "PARTIAL" if re.search(r"선금|잔금|부분\s*청구|분할", line) else "FULL"
                 token = canonical(field, value)
                 if token is not None:
-                    found.append({"value": token, "page": page["page"], "line": index + 1,
-                                  "label": label.group(), "party": party_at(lines, index, document_type)})
+                    found.append({"value": token, "page": page["page"], "line": value_index + 1,
+                                  "label_line": index + 1, "label": label.group(),
+                                  "party": party_at(lines, value_index, document_type)})
     return found
 
 
@@ -129,6 +202,25 @@ def checksum_valid(number):
     digits = list(map(int, number))
     total = sum(n * weight for n, weight in zip(digits[:9], (1, 3, 7, 1, 3, 7, 1, 3, 5))) + digits[8] * 5 // 10
     return (10 - total % 10) % 10 == digits[9]
+
+
+def evidence_anchor(page, line_no, quote):
+    lines = page["text"].splitlines()
+    if not isinstance(line_no, int) or not 1 <= line_no <= len(lines) or not quote or quote not in lines[line_no - 1]:
+        return None
+    start = sum(len(line) + 1 for line in lines[:line_no - 1]) + lines[line_no - 1].index(quote)
+    anchor = {"page": page["page"], "line": line_no, "start": start, "end": start + len(quote),
+              "quote": quote, "location_kind": page["location_kind"]}
+    if page.get("document_format") == "docx":
+        locations = [p for p in page.get("line_locations", {}).get(str(line_no), [])
+                     if p["start"] < anchor["end"] and p["end"] > start]
+        if not locations:
+            return None
+        anchor.update(location_kind="docx_structure", positions=locations,
+                      page_layout_verified=False, text_verified=True)
+    elif page["location_kind"] != "page":
+        return None
+    return anchor
 
 
 def guard_proposal(field, proposal, pages, document_type):
@@ -146,26 +238,59 @@ def guard_proposal(field, proposal, pages, document_type):
             reasons.append("INVALID_FORMAT")
         if state == "ABSENT" and options or state == "REVIEW" and len(distinct) == 1:
             reasons.append("UNSUPPORTED_ABSTENTION")
+        if (state == "ABSENT" and field in {"supply_amount", "tax_amount", "total_amount", "amount_scope"}
+                and any(re.search(r"참고값\s*[A-ZＡ-Ｚ]?\s*[:：.]?\s*\d", p["text"]) for p in pages)):
+            reasons.append("AMBIGUOUS_UNLABELED_AMOUNT")
         return {"field": field, "proposal": proposal, "accepted": not reasons, "reasons": reasons,
                 "warnings": warnings, "anchor": None, "human_confirmed": False}
     if state != "VALUE" or token is None:
         reasons.append("INVALID_FORMAT")
-    matching_page = next((p for p in pages if p["page"] == proposal.get("page")), None)
-    if proposal.get("page") is None or not matching_page or matching_page["location_kind"] != "page":
-        reasons.append("PAGE_UNVERIFIED")
     quote, line_no = proposal.get("quote", ""), proposal.get("line")
+    page_no = proposal.get("page")
+    # Scope is a semantic enum, not literal FULL/PARTIAL text. Recover a missing
+    # anchor only from one scope meaning AND one explicitly labeled total. A
+    # supplied but wrong quote/position is never replaced by this recovery.
+    if (field == "amount_scope" and state == "VALUE" and page_no is None and line_no is None
+            and not quote and len(distinct) == 1 and token in distinct
+            and len({o["value"] for o in candidates(pages, "total_amount", document_type)}) == 1):
+        scope_option = eligible[0]
+        page_no, line_no = scope_option["page"], scope_option["line"]
+        scope_page = next(p for p in pages if p["page"] == page_no)
+        quote = scope_page["text"].splitlines()[line_no - 1]
+        warnings.append("CODE_ANCHORED_SCOPE")
+    matching_page = next((p for p in pages if p["page"] == page_no), None)
+    structural = bool(matching_page and matching_page.get("document_format") == "docx")
+    if not matching_page or not structural and (page_no is None or matching_page["location_kind"] != "page"):
+        reasons.append("PAGE_UNVERIFIED")
     anchor = None
     if matching_page and isinstance(line_no, int) and line_no >= 1:
         lines = matching_page["text"].splitlines()
-        if line_no <= len(lines) and quote and quote in lines[line_no - 1]:
-            start = sum(len(line) + 1 for line in lines[:line_no - 1]) + lines[line_no - 1].index(quote)
-            anchor = {"page": proposal.get("page"), "line": line_no, "start": start, "end": start + len(quote),
-                      "quote": quote, "location_kind": matching_page["location_kind"]}
+        # Exact quote + same field/value candidate within one line, same party.
+        # The resolved position is saved separately from the original proposal.
+        choices = []
+        for resolved in range(max(1, line_no - 1), min(len(lines), line_no + 1) + 1):
+            nearby = [o for o in options if o["page"] == page_no and o["line"] == resolved and o["value"] == token]
+            if resolved != line_no and (not nearby or party_at(lines, min(line_no, len(lines)) - 1, document_type)
+                                        != party_at(lines, resolved - 1, document_type)):
+                continue
+            candidate_anchor = evidence_anchor(matching_page, resolved, quote)
+            if candidate_anchor is not None:
+                choices.append(candidate_anchor)
+        exact = [a for a in choices if a["line"] == line_no]
+        if exact:
+            anchor = exact[0]
+        elif len(choices) == 1:
+            anchor = choices[0]
+            warnings.append("LINE_OFFSET_RESOLVED")
+        if anchor:
+            line_no = anchor["line"]
     if anchor is None:
         reasons.append("EVIDENCE_NOT_FOUND")
+        if structural:
+            reasons.append("DOCX_LOCATION_UNVERIFIED")
     if field != "amount_scope" and token is not None:
         if field.endswith("amount"):
-            in_quote = any(canonical(field, m.group()) == token for m in re.finditer(r"(?<!\d)\d[\d,]*(?:\.\d+)?(?!\d)", quote))
+            in_quote = any(canonical(field, m.group()) == token for m in re.finditer(r"(?<!\d)" + MONEY_TOKEN + r"(?![\d,])", quote))
         elif field == "business_registration_no":
             in_quote = any(canonical(field, m.group()) == token for m in re.finditer(r"\d{3}[\s-]*\d{2}[\s-]*\d{5}", quote))
         elif field == "issue_date":
@@ -174,10 +299,14 @@ def guard_proposal(field, proposal, pages, document_type):
             in_quote = token in (canonical(field, quote) or "")
         if not in_quote:
             reasons.append("VALUE_NOT_IN_QUOTE")
-    local = [item for item in options if item["page"] == proposal.get("page") and item["line"] == line_no]
+    local = [item for item in options if item["page"] == page_no and item["line"] == line_no]
     matches = [item for item in local if item["value"] == token]
     if not matches:
         reasons.append("FIELD_LABEL_OR_VALUE_MISMATCH")
+    if anchor and matches:
+        anchor["label_line"] = matches[0]["label_line"]
+        anchor["label"] = matches[0]["label"]
+        anchor["party"] = matches[0]["party"]
     if field in {"company_name", "business_registration_no"} and matches and any(item["party"] != "supplier" for item in matches):
         reasons.append("WRONG_PARTY")
     if len(distinct) > 1:

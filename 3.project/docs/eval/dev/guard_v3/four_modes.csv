@@ -1,0 +1,5 @@
+﻿mode,field_accuracy,check_state_accuracy,cross_validation_macro_f1,wrong_pass,guard_rejected,mean_document_seconds,mean_guard_seconds,mean_cache_execution_seconds,labels_sha256,accepted_value_precision,human_referral_field_rate,guard_auto_validated_field_rate,human_referral_document_rate,rejected_gold_matching,rejected_gold_mismatching
+rule,0.7833827893175074,0.75,0.7530070754716981,0,0,0.05062146610170958,0.0,0.0,6361b13bd820f40cea38edf5df66da1714d1b0b1fb045763c3795d28d1d84f5b,,,,,,
+llm,0.9465875370919882,1.0,1.0,0,0,10.019704140678064,0.0,0.00021365254237395474,6361b13bd820f40cea38edf5df66da1714d1b0b1fb045763c3795d28d1d84f5b,,,,,,
+hybrid_unguarded,0.9910979228486647,1.0,1.0,0,0,2.1639332542373437,0.0,9.784576268121798e-05,6361b13bd820f40cea38edf5df66da1714d1b0b1fb045763c3795d28d1d84f5b,,,,,,
+hybrid_guarded,0.9851632047477745,1.0,1.0,0,11,2.1640358915254923,0.00010263728814853663,0.0,6361b13bd820f40cea38edf5df66da1714d1b0b1fb045763c3795d28d1d84f5b,0.9855072463768116,0.1375,0.8625,0.0847457627118644,6,5

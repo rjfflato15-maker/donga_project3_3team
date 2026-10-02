@@ -27,9 +27,13 @@ $env:APP_LLM_TIMEOUT='45'
 
 ## 근거 검증의 범위
 
-각 제안에 실제 페이지, 줄, 원문 문자 오프셋과 문구를 연결한다. 여기서 존재 확인은 PDF 텍스트·OCR 문자열 기준이며 이미지 자체의 OCR 오독 검증이나 픽셀 좌표 강조는 구현하지 않았다. 금액·날짜·사업자번호의 정규화, 필드 라벨, 공급자 구역, 복수 후보, 사업자번호 체크섬을 검사한다. 단순 원문 포함만으로 채택하지 않는다. 참고값 A/B는 의미를 확정하지 않고 REVIEW로 둔다. DOCX는 문서 내용만 읽을 수 있어 실제 페이지를 검증할 수 없으며 VALUE 제안을 `PAGE_UNVERIFIED`로 거부한다. 규칙 결과까지 검증된 것으로 바꾸지는 않는다.
+각 제안에 페이지 또는 DOCX 구조 위치, 줄, 원문 문자 오프셋과 문구를 연결한다. 여기서 존재 확인은 PDF 텍스트·OCR 문자열 기준이며 이미지 자체의 OCR 오독 검증이나 픽셀 좌표 강조는 구현하지 않았다. 금액·날짜·사업자번호의 정규화, 필드 라벨, 공급자 구역, 복수 후보, 사업자번호 체크섬을 검사한다. 단순 원문 포함만으로 채택하지 않는다. 참고값 A/B는 의미를 확정하지 않고 REVIEW로 두며, 이를 ABSENT로 답한 제안도 `AMBIGUOUS_UNLABELED_AMOUNT`로 거부한다. 규칙 결과까지 검증된 것으로 바꾸지는 않는다.
 
-원문 합계가 공급가액+세액과 다를 때는 `SOURCE_ARITHMETIC_MISMATCH`를 남긴다. 원문에 적힌 합계를 추출 정답으로 보존하며 산술 불일치의 FAIL은 RuleEngine에 맡긴다. 검증기는 원문 오류를 올바른 금액으로 고치는 도구가 아니다. OCR 자체 오류, 복잡한 표·라벨, 의미 판단에는 한계가 남는다. AI 채택값도 `human_confirmed=false`, `manual_review_required=true`로 저장한다. 기존 담당자 추출 수정 API로 사람이 확인한 뒤에만 사람 확인 상태를 기록한다.
+가드 v3는 dev 감사 결과로 조정함. DOCX는 페이지 배치는 미확인, 글자 근거는 확인. 실제 DOCX의 문단 번호 또는 표·행·셀·문단 위치와 기존 추출 문자열이 일치해야 한다. 불일치하거나 위치를 확인할 수 없으면 `DOCX_LOCATION_UNVERIFIED`로 넘긴다. `page=null`, `page_layout_verified=false`를 유지하며 Word 페이지를 확인한 것으로 표시하지 않는다. 구형 v2의 DOCX 물리 페이지 거부 정책과 수치는 `docs/eval/dev/comparison/`에 보존했다.
+
+줄 번호는 ±1 범위에서만 실제 인용문·같은 필드 라벨·같은 값·같은 당사자를 확인하고 실제 위치를 기록한다. 숫자 공백은 원화 단위 또는 기호가 있는 완전한 천 단위 묶음만 허용한다. OCR의 `•`·`·`는 알려진 라벨 뒤 구분 기호로만 처리한다. 금액 범위의 위치가 전부 비어 있으면 유일한 범위 의미와 명시된 합계 후보 하나를 함께 확인한 경우만 코드가 근거 위치를 찾아 `CODE_ANCHORED_SCOPE`를 기록한다. 모델이 낸 잘못된 인용문을 새 근거로 바꾸지는 않는다. OCR에서 공급자 라벨이 깨진 경우는 완화하지 않는다.
+
+원문 합계가 공급가액+세액과 다를 때는 `SOURCE_ARITHMETIC_MISMATCH`를 남긴다. 원문에 적힌 합계를 추출 정답으로 보존하며 산술 불일치의 FAIL은 RuleEngine에 맡긴다. 검증기는 원문 오류를 올바른 금액으로 고치는 도구가 아니다. OCR 자체 오류, 복잡한 표·라벨, 의미 판단에는 한계가 남는다. AI 채택값도 `human_confirmed=false`, `manual_review_required=true`로 저장한다. 기존 담당자 추출 수정 API로 사람이 확인한 뒤에만 사람 확인 상태를 기록한다. `guard_review_required`와 `unresolved_fields`는 기계 근거 검사 후에도 남은 추가 확인 항목을 뜻하며 최종 담당자 승인을 대체하지 않는다.
 
 ## 확정 dev 평가
 
@@ -47,15 +51,32 @@ backend/.venv/Scripts/python.exe backend/scripts/compare_llm_modes.py
 
 정답은 사람 확인 113칸(해석 26칸+일치 항목 10% 표본 87칸)과 두 AI 초안 일치 781칸을 구분한 확정 dev 자료다. 이 결과는 예비 정답에 대한 수치가 아니지만 dev 개발 평가이며 최종 test 성능이 아니다. test 문서·정답은 개발과 모델 선택에 사용하지 않았다.
 
-## 최종 test 실행 준비
+### v3의 동일 응답 감사 재생
 
-test의 독립 판독·사람 확인·정답 확정은 별도 단계다. 그것을 마친 뒤에만 아래 명령을 사용한다. `--final`과 dev에서 고정한 모델 없이 test 실행을 요청하면 test 정답이나 문서를 읽기 전에 거부한다. 모델 이름·설치 digest·프롬프트·가드 버전도 dev 선택 기록과 비교한다. test에서 모델 비교나 프롬프트 튜닝은 허용하지 않는다.
+다음 명령은 새 LLM 추출을 호출하지 않는다. v2의 원문·요청 필드·프롬프트·모델 digest·설정 및 응답 해시가 같아야 재생하며, 캐시가 없으면 중단한다. DOCX의 구조 위치는 모델에게 보이는 문자열을 바꾸지 않는다. 이번 dev 59문서는 현재 v3 대상 선정과 기존 요청 대상도 같았다. 원래 호출시간은 유지하고 가드 시간만 다시 측정한다.
 
 ```powershell
-backend/.venv/Scripts/python.exe backend/scripts/compare_llm_modes.py --split test --final --selected-model <dev에서_선택한_모델>
+backend/.venv/Scripts/python.exe backend/scripts/compare_llm_modes.py --selected-model qwen3:latest --cache docs/eval/dev/comparison/llm_cache --replay-evidence docs/eval/dev/comparison/extraction_evidence.json --output docs/eval/dev/guard_v3
+backend/.venv/Scripts/python.exe backend/scripts/audit_guard_replay.py
 ```
 
-현재 이 명령으로 실제 test는 실행하지 않았다. 결과 기본 경로는 `docs/eval/test/final/`이다.
+`guard_audit.{json,md,csv}`는 기존 맞는 값 거부 27건의 원인, 기존 오답 2건의 계속 거부 여부, 이전에 채택됐던 불일치도 함께 기록한다. 채택 VALUE 정답 일치율은 68/69(98.55%), 요청 필드 추가 확인 비율은 11/80(13.75%), 기계 근거 검증 완료율은 69/80(86.25%)다. 전체 문서 추가 확인 비율은 5/59(8.47%)이며, LLM 호출 문서에서 추가 확인 없이 근거 검사가 완료된 비율은 23/28(82.14%)다. LLM을 호출하지 않은 31문서를 가드가 검증했다고 주장하지 않는다. 거부 11건 중 6건은 정답과 일치하지만 근거가 부족하고, 5건은 값·상태가 정답과 불일치한다. 운영 시에는 모두 사람 추가 확인으로 넘긴다. 기존에 채택된 OCR 회사명 오독 1건은 남아 있다.
+
+## 최종 test 실행 준비
+
+test의 독립 판독·사람 확인·정답 확정은 별도 단계다. 그것을 마친 뒤에만 아래 명령을 사용한다. `--final`과 dev에서 고정한 모델 없이 test 실행을 요청하면 test 정답이나 문서를 읽기 전에 거부한다. 모델 이름·설치 digest·프롬프트·가드 버전·LLM 설정·관련 코드 해시도 고정 기록과 비교한다. 코드 해시는 Git의 줄바꿈 변환을 고려하여 CRLF를 LF로 정규화한다. test에서 모델 비교나 프롬프트 튜닝은 허용하지 않는다.
+
+v3 고정 기록은 아래 dev 전용 명령으로 만들었다. 기존 qwen3 선택은 v2 가드의 8문서 비교에서 결정한 것이며 v3로 모델을 다시 선택하지 않았다. 생성 명령은 이미 있는 고정 파일을 덮어쓰지 않는다.
+
+```powershell
+backend/.venv/Scripts/python.exe backend/scripts/compare_llm_modes.py --selected-model qwen3:latest --freeze-release docs/eval/dev/guard_v3/release_lock.json
+```
+
+```powershell
+backend/.venv/Scripts/python.exe backend/scripts/compare_llm_modes.py --split test --final --selected-model qwen3:latest --selection-record docs/eval/dev/guard_v3/release_lock.json
+```
+
+현재 실제 test 문서와 정답은 열지 않았고 최종 평가도 실행하지 않았다. 결과 기본 경로는 `docs/eval/test/final/`이다. 확정 test 정답과 고정 버전을 확인한 다음, test 문서를 처음 열기 전에 자료 폴더에 `final_evaluation_attempt.json`을 독점 생성한다. 출력 폴더를 바꾸어도 재실행을 차단한다. 실패·중단도 시도 기록을 남기며 자동 재실행하지 않는다. 독립 정답 준비는 별도 절차이며 평가 코드를 개발할 때 test를 열어 보지 않는다.
 
 ## 모델과 라이선스
 

@@ -20,6 +20,8 @@ from backend.evaluation_core import file_hash, dataset_file, verify_dataset, ver
 from backend.app.ai.local_llm import OllamaClient, LLMSettings, CORE_FIELDS, PROMPT_VERSION
 from backend.app.ai.grounding import source_pages, supplementation_targets, GUARD_VERSION
 from backend.app.ai.llm_supplement import apply_proposals
+from backend.evaluation_release import (create_release, verify_release, check_final_attempt,
+                                       reserve_final_attempt, finish_final_attempt)
 
 MODES = ("rule", "llm", "hybrid_unguarded", "hybrid_guarded")
 
@@ -41,10 +43,12 @@ def collect_inputs(root, contracts):
     return result
 
 
-def request_cached(client, item, targets, cache, refresh=False):
+def request_cached(client, item, targets, cache, refresh=False, replay_only=False):
     # Keys depend on the exact OCR source, target fields, prompt and model digest.
     metadata = client.model_metadata()
-    request = {"pages": item["pages"], "targets": list(targets), "document_type": item["document_type"],
+    # Native DOCX positions are guard metadata; they do not change model input.
+    visible_pages = [{k: p[k] for k in ("page", "location_kind", "text")} for p in item["pages"]]
+    request = {"pages": visible_pages, "targets": list(targets), "document_type": item["document_type"],
                "settings": asdict(client.settings), "model_digest": metadata["digest"], "prompt_version": PROMPT_VERSION}
     key = sha256(json.dumps(request, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
     path = cache / (key + ".json")
@@ -54,6 +58,8 @@ def request_cached(client, item, targets, cache, refresh=False):
         if saved["request_sha256"] != key or sha256(json.dumps(saved["run"], ensure_ascii=False, sort_keys=True).encode()).hexdigest() != saved["run_sha256"]:
             raise EvaluationNotReady("LLM 응답 캐시가 변경되었습니다.")
         return saved["run"], key, True, perf_counter() - started
+    if replay_only:
+        raise EvaluationNotReady("동일 입력의 기존 LLM 응답이 없습니다. 재생 평가는 새 호출을 하지 않습니다.")
     run = client.extract(item["pages"], targets, item["document_type"])
     cache.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({"request_sha256": key, "run_sha256": sha256(json.dumps(run, ensure_ascii=False, sort_keys=True).encode()).hexdigest(),
@@ -155,22 +161,78 @@ def verify_final_selection(model, record, client):
         raise EvaluationNotReady("설치 모델 digest가 dev 선택 때와 다릅니다.")
 
 
-def run_four_modes(inputs, contracts, labels, model, cache):
+def proposal_matches_gold(proposal, truth, field):
+    if proposal["state"] != truth["state"]:
+        return False
+    return (normalize(field, proposal["value"]) == normalize(field, truth["value"])) if truth["state"] == "VALUE" else True
+
+
+def guard_outcomes(traces, labels):
+    """Offline correctness audit; never feed labels into runtime guard decisions."""
+    counts = Counter()
+    referrals, called_documents = [], 0
+    for did, trace in traces.items():
+        review = trace.get("review", {})
+        targets = review.get("targets", [])
+        called_documents += bool(targets)
+        decisions = review.get("decisions", [])
+        unresolved = set(targets)
+        for decision in decisions:
+            field, proposal = decision["field"], decision["proposal"]
+            correct = proposal_matches_gold(proposal, labels["documents"][did]["fields"][field], field)
+            disposition = "accepted" if decision["applied"] else "rejected"
+            counts[disposition + ("_gold_matching" if correct else "_gold_mismatching")] += 1
+            if decision["applied"] and proposal["state"] == "VALUE":
+                counts["accepted_value_count"] += 1
+                counts["accepted_value_correct"] += correct
+            if decision["applied"] and proposal["state"] != "REVIEW":
+                unresolved.discard(field)
+            if not decision["applied"]:
+                counts["rejected_human_referral_count"] += 1
+        counts["requested_field_count"] += len(targets)
+        counts["human_referral_field_count"] += len(unresolved)
+        if unresolved:
+            referrals.append(did)
+    counts["accepted_value_precision"] = counts["accepted_value_correct"] / counts["accepted_value_count"] if counts["accepted_value_count"] else None
+    counts["human_referral_field_rate"] = counts["human_referral_field_count"] / counts["requested_field_count"] if counts["requested_field_count"] else 0
+    counts["guard_auto_validated_field_rate"] = 1 - counts["human_referral_field_rate"]
+    counts["document_count"] = len(traces)
+    counts["called_document_count"] = called_documents
+    counts["human_referral_document_count"] = len(referrals)
+    counts["human_referral_document_rate"] = len(referrals) / len(traces) if traces else 0
+    counts["no_additional_review_document_rate"] = 1 - counts["human_referral_document_rate"]
+    counts["guard_auto_validated_called_document_count"] = called_documents - len(referrals)
+    counts["guard_auto_validated_called_document_rate"] = (called_documents - len(referrals)) / called_documents if called_documents else None
+    counts["human_referral_document_ids"] = referrals
+    counts["definition"] = "Referral means unresolved requested field (rejected, REVIEW or failed/missing response). Auto validation is machine grounding, not final human confirmation; all AI proposals remain human_confirmed=false. Rejected correctness is an offline gold audit."
+    return dict(counts)
+
+
+def run_four_modes(inputs, contracts, labels, model, cache, replay_traces=None):
     client = OllamaClient(LLMSettings(model=model))
     fields_by_mode = {mode: {} for mode in MODES}
     traces = {mode: {} for mode in MODES}
+    if replay_traces is not None and any(set(replay_traces[mode]) != set(inputs) for mode in MODES):
+        raise EvaluationNotReady("재생 대상 dev 문서 목록이 다릅니다.")
     for did, item in inputs.items():
+        if replay_traces is not None:
+            item = dict(item, targets=replay_traces["hybrid_guarded"][did]["review"]["targets"],
+                        rule_seconds=replay_traces["rule"][did]["effective_seconds"])
         fields_by_mode["rule"][did] = item["fields"]
         traces["rule"][did] = {"effective_seconds": item["rule_seconds"], "guard_seconds": 0, "cache_execution_seconds": 0}
         print(f"네 조건 평가: {model} 문서 {did}", flush=True)
-        raw_run, key, hit, executed = request_cached(client, item, CORE_FIELDS, cache)
+        raw_run, key, hit, executed = request_cached(client, item, CORE_FIELDS, cache, replay_only=replay_traces is not None)
+        if replay_traces is not None and key != replay_traces["llm"][did]["response_id"]:
+            raise EvaluationNotReady("원래 LLM 응답 식별자와 다릅니다.")
         fields_by_mode["llm"][did], review = apply_proposals(item["fields"], raw_run, item["pages"], item["document_type"], CORE_FIELDS, guarded=False, llm_only=True)
         traces["llm"][did] = {"review": review, "response_id": key, "cache_hit": hit, "guard_seconds": 0,
                                "effective_seconds": item["rule_seconds"] + raw_run["elapsed_seconds"], "cache_execution_seconds": executed}
         if item["targets"]:
-            hybrid_run, hybrid_key, hybrid_hit, hybrid_executed = request_cached(client, item, item["targets"], cache)
+            hybrid_run, hybrid_key, hybrid_hit, hybrid_executed = request_cached(client, item, item["targets"], cache, replay_only=replay_traces is not None)
         else:
             hybrid_run, hybrid_key, hybrid_hit, hybrid_executed = {"ok": True, "proposals": {}, "elapsed_seconds": 0}, None, False, 0
+        if replay_traces is not None and hybrid_key != replay_traces["hybrid_guarded"][did]["response_id"]:
+            raise EvaluationNotReady("원래 hybrid 응답 식별자와 다릅니다.")
         for mode in ("hybrid_unguarded", "hybrid_guarded"):
             started = perf_counter()
             fields, review = apply_proposals(item["fields"], hybrid_run, item["pages"], item["document_type"], item["targets"], guarded=mode == "hybrid_guarded")
@@ -197,6 +259,8 @@ def run_four_modes(inputs, contracts, labels, model, cache):
                       mean_guard_seconds=sum(t["guard_seconds"] for t in traces[mode].values()) / len(inputs),
                       mean_cache_execution_seconds=sum(t["cache_execution_seconds"] for t in traces[mode].values()) / len(inputs),
                       llm_failure_count=sum(t.get("review", {}).get("status") == "FAILED" for t in traces[mode].values()))
+        if mode == "hybrid_guarded":
+            result["guard_outcomes"] = guard_outcomes(traces[mode], labels)
         metrics[mode] = result
     return metrics, traces
 
@@ -215,15 +279,30 @@ def write_comparison(output, metadata, metrics, traces):
              "", "| 조건 | 필드 정확도 | 검수 상태 정확도 | 검수 Macro F1 | 잘못된 PASS | 가드 거부 | 문서 평균 시간 |", "|---|---:|---:|---:|---:|---:|---:|"]
     with (output / "four_modes.csv").open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.writer(handle)
-        writer.writerow(["mode", "field_accuracy", "check_state_accuracy", "cross_validation_macro_f1", "wrong_pass", "guard_rejected", "mean_document_seconds", "mean_guard_seconds", "mean_cache_execution_seconds", "labels_sha256"])
+        writer.writerow(["mode", "field_accuracy", "check_state_accuracy", "cross_validation_macro_f1", "wrong_pass", "guard_rejected", "mean_document_seconds", "mean_guard_seconds", "mean_cache_execution_seconds", "labels_sha256",
+                         "accepted_value_precision", "human_referral_field_rate", "guard_auto_validated_field_rate",
+                         "human_referral_document_rate", "rejected_gold_matching", "rejected_gold_mismatching"])
         for mode, m in metrics.items():
             lines.append(f"| {mode} | {m['field_accuracy']:.2%} | {m['check_state_accuracy']:.2%} | {m['cross_validation_macro_f1']:.4f} | {m['wrong_pass_counts']['wrong_pass']} | {m['guard_rejected_count']} | {m['mean_document_seconds']:.3f}초 |")
-            writer.writerow([mode, m["field_accuracy"], m["check_state_accuracy"], m["cross_validation_macro_f1"], m["wrong_pass_counts"]["wrong_pass"], m["guard_rejected_count"], m["mean_document_seconds"], m["mean_guard_seconds"], m["mean_cache_execution_seconds"], metadata["labels_sha256"]])
+            outcomes = m.get("guard_outcomes", {})
+            writer.writerow([mode, m["field_accuracy"], m["check_state_accuracy"], m["cross_validation_macro_f1"], m["wrong_pass_counts"]["wrong_pass"], m["guard_rejected_count"], m["mean_document_seconds"], m["mean_guard_seconds"], m["mean_cache_execution_seconds"], metadata["labels_sha256"],
+                             *[outcomes.get(k) for k in ("accepted_value_precision", "human_referral_field_rate", "guard_auto_validated_field_rate", "human_referral_document_rate", "rejected_gold_matching", "rejected_gold_mismatching")]])
     lines += ["", "③과 ④는 문서별 response_id가 같은 LLM 응답을 재사용한다. 시간은 최초 실제 호출시간과 공통 분류·OCR 시간, 가드 시간을 합친 값이며 캐시 실행시간은 별도로 기록한다. 조건별 규칙 검수 시간과 사람 확인 시간은 포함하지 않는다.",
               "", "검수 상태 정확도의 분모는 정답 또는 출력에 적용되는 항목의 합집합이다. 양쪽 모두 N/A인 항목은 분모에서 제외하며 누락·추가 출력은 오답에 포함한다. 핵심 필드 정확도는 VALUE+REVIEW 정답을 분모로 유지하고 ABSENT 거짓 추출률은 별도 집계한다.",
-              "", "DOCX 등 물리 페이지를 확인할 수 없는 형식은 PAGE_UNVERIFIED로 LLM 제안을 거부하고 규칙 결과와 수동 검토 필요 기록을 유지한다. 원문 자체의 산술 불일치는 SOURCE_ARITHMETIC_MISMATCH로 기록하고 표시값을 계산값으로 고치지 않는다.",
+              "", "DOCX는 페이지 배치는 미확인, 글자 근거는 확인: 실제 문단·표 셀 위치로 원문을 대조한다. 물리 페이지를 확인한 것으로 표시하지 않는다. 원문 자체의 산술 불일치는 SOURCE_ARITHMETIC_MISMATCH로 기록하고 표시값을 계산값으로 고치지 않는다.",
               "", f"모델: {metadata['model']}. 정답 SHA256: {metadata['labels_sha256']}", "", "가드 거부 이유(한 제안에 여러 이유가 있을 수 있음):", json.dumps(metrics["hybrid_guarded"]["guard_rejection_reasons"], ensure_ascii=False),
               "", "근거 검증은 특정 형식·라벨·당사자 오류 위험을 줄이는 장치이며 원문 OCR 오류와 모든 의미 오류를 해결하지 않는다. 개선 여부는 조건별 실제 수치로 판단한다."]
+    outcomes = metrics["hybrid_guarded"]["guard_outcomes"]
+    precision = f"{outcomes['accepted_value_precision']:.2%}" if outcomes["accepted_value_precision"] is not None else "N/A"
+    lines += ["", f"채택 VALUE 중 맞은 비율: {outcomes['accepted_value_correct']}/{outcomes['accepted_value_count']} ({precision})",
+              f"요청 필드 중 사람 추가 확인으로 넘김: {outcomes['human_referral_field_count']}/{outcomes['requested_field_count']} ({outcomes['human_referral_field_rate']:.2%}); 기계 근거 검증 완료율 {outcomes['guard_auto_validated_field_rate']:.2%}.",
+              f"전체 문서 중 추가 확인으로 넘김: {outcomes['human_referral_document_count']}/{outcomes['document_count']} ({outcomes['human_referral_document_rate']:.2%}).",
+              "가드의 추가 확인과 최종 담당자 승인은 다른 단계다. 채택한 AI 값도 human_confirmed=false를 유지한다. 거부값을 모두 오답으로 세지 않으며, 거부 중 정답 일치·불일치는 별도 사후 감사 결과다.",
+              "", json.dumps(outcomes, ensure_ascii=False)]
+    if metadata.get("guard_tuned_on_dev"):
+        lines += ["", "가드 v3는 dev 감사 결과로 조정함."]
+    if metadata.get("fixed_response_replay"):
+        lines += ["기존 dev 호출 대상·원문·모델 응답을 고정해 가드 효과를 비교했다. 현재 실행기의 대상 선정은 별도로 기록한다. 이 실행에서 test는 열지 않았다."]
     (output / "four_modes.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -235,18 +314,32 @@ def main(argv=None):
     parser.add_argument("--benchmark-only", action="store_true")
     parser.add_argument("--split", choices=["dev", "test"], default="dev")
     parser.add_argument("--final", action="store_true")
-    parser.add_argument("--selection-record", type=Path, default=PROJECT / "docs/eval/dev/comparison/model_comparison.json")
+    parser.add_argument("--selection-record", type=Path)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--cache", type=Path)
+    parser.add_argument("--replay-evidence", type=Path)
+    parser.add_argument("--freeze-release", type=Path)
     args = parser.parse_args(argv)
+    args.selection_record = args.selection_record or PROJECT / ("docs/eval/dev/guard_v3/release_lock.json" if args.final
+                                                              else "docs/eval/dev/comparison/model_comparison.json")
+    final_attempt = None
     try:
         # Reject before reading heldout labels or documents. Model selection is DEV only.
         if args.split == "test" and (not args.final or not args.selected_model or args.benchmark_only):
             raise EvaluationNotReady("test는 --final 및 dev에서 선택한 --selected-model이 필요합니다.")
         if args.final and args.split != "test":
             raise EvaluationNotReady("--final은 test에만 허용합니다.")
+        if args.replay_evidence and (args.split != "dev" or not args.selected_model or args.benchmark_only):
+            raise EvaluationNotReady("가드 응답 재생은 선택 모델을 고정한 dev에만 허용합니다.")
+        if args.freeze_release and (args.split != "dev" or not args.selected_model or args.benchmark_only or args.replay_evidence):
+            raise EvaluationNotReady("버전 고정은 dev 선택 모델과 확정 정답으로만 수행합니다.")
         if args.final:
+            if args.cache:
+                raise EvaluationNotReady("최종 평가 캐시는 해당 최종 결과 폴더에만 저장합니다.")
+            check_final_attempt(args.dataset.resolve())
             record = json.loads(args.selection_record.read_text(encoding="utf-8"))
             verify_final_selection(args.selected_model, record, OllamaClient(LLMSettings(model=args.selected_model)))
+            verify_release(PROJECT, record, args.selected_model)
         args.output = args.output or PROJECT / f"docs/eval/{args.split}/{'final' if args.final else 'comparison'}"
         root = args.dataset.resolve()
         manifest_path, labels_path = root / "manifest.json", root / f"ground_truth_{args.split}.json"
@@ -255,30 +348,59 @@ def main(argv=None):
         if manifest.get("dataset_version") != "synthetic-v1" or manifest.get("created_for") != "local-evaluation":
             raise EvaluationNotReady("LLM 응답 캐시는 현재 합성 평가 자료에서만 저장합니다.")
         contracts = validate_labels(manifest, labels, args.split)
-        verify_dataset(root, manifest, split=args.split)
         receipt = verify_freeze(manifest_path, labels_path)
+        if args.final:
+            if record["manifest_sha256"] != receipt["manifest_sha256"]:
+                raise EvaluationNotReady("고정한 자료 목록이 달라졌습니다.")
+            # Reserve before any heldout document is opened; output changes cannot
+            # bypass the dataset-level exclusive marker. Failed attempts remain.
+            final_attempt = reserve_final_attempt(root, args.selection_record, labels_path, args.output)
+        verify_dataset(root, manifest, split=args.split)
+        if args.freeze_release:
+            selection = json.loads(args.selection_record.read_text(encoding="utf-8"))
+            release = create_release(PROJECT, selection, args.selected_model,
+                                     OllamaClient(LLMSettings(model=args.selected_model)), receipt)
+            args.freeze_release.parent.mkdir(parents=True, exist_ok=True)
+            with args.freeze_release.open("x", encoding="utf-8") as handle:
+                json.dump(release, handle, ensure_ascii=False, indent=2)
+                handle.write("\n")
+            print("가드 v3 고정 완료. test 자료는 열지 않았습니다.")
+            return 0
         with tempfile.TemporaryDirectory(prefix="llm-dev-evaluation-") as storage:
             os.environ.update(APP_DEPLOYMENT_MODE="pilot", APP_NTS_MODE="disabled", APP_STORAGE_ROOT=storage)
             inputs = collect_inputs(root, contracts)
-            cache = args.output / "llm_cache"
+            cache = args.cache or args.output / "llm_cache"
             selected = args.selected_model
             if not selected:
                 selected, _ = candidate_benchmark(inputs, labels, args.models, args.output, cache, labels_path)
             if args.benchmark_only:
                 print("모델 개발 비교 완료: " + selected)
                 return 0
-            metrics, traces = run_four_modes(inputs, contracts, labels, selected, cache)
+            replay = json.loads(args.replay_evidence.read_text(encoding="utf-8")) if args.replay_evidence else None
+            metrics, traces = run_four_modes(inputs, contracts, labels, selected, cache, replay)
             metadata = {"split": args.split, "preliminary": False, "final_test": args.final, "model": selected,
                         "evaluated_at": datetime.now(timezone(timedelta(hours=9))).isoformat(), "settings": asdict(LLMSettings(model=selected)),
                         "labels_sha256": receipt["labels_sha256"], "manifest_sha256": receipt["manifest_sha256"],
                         "label_review": labels["review"], "prompt_version": PROMPT_VERSION, "guard_version": GUARD_VERSION, "same_hybrid_response": True,
-                        "nts_mode": "disabled", "classification": "common_rule_classifier"}
+                        "nts_mode": "disabled", "classification": "common_rule_classifier",
+                        "guard_tuned_on_dev": GUARD_VERSION == "grounding-v3-dev-audit", "fixed_response_replay": bool(replay),
+                        "replay_evidence_sha256": file_hash(args.replay_evidence) if replay else None,
+                        "runtime_targets": {did: list(item["targets"]) for did, item in inputs.items()} if replay else None}
             write_comparison(args.output, metadata, metrics, traces)
             print(f"확정 정답 기준 {args.split} 네 조건 비교 완료: " + selected)
+        if final_attempt:
+            finish_final_attempt(root, final_attempt, "completed")
         return 0
     except (EvaluationNotReady, ValueError, KeyError, OSError) as exc:
         print("비교 중단: " + type(exc).__name__, file=sys.stderr)
         return 2
+    finally:
+        if final_attempt and final_attempt["status"] == "started":
+            # Read no heldout source here; even an interrupted/failed run consumes
+            # the attempt. A completed finish above changes the original marker.
+            marker = json.loads((root / "final_evaluation_attempt.json").read_text(encoding="utf-8"))
+            if marker["status"] == "started":
+                finish_final_attempt(root, final_attempt, "failed_or_interrupted")
 
 
 if __name__ == "__main__":

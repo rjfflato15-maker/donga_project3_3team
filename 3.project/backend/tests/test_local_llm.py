@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import pytest
 import requests
 
-from backend.app.ai.grounding import guard_proposal, supplementation_targets
+from backend.app.ai.grounding import guard_proposal, supplementation_targets, source_pages
 from backend.app.ai.llm_supplement import apply_proposals, supplement_document
 from backend.app.ai.local_llm import LLMSettings, OllamaClient, valid_answer
 
@@ -164,6 +164,133 @@ def test_guarded_and_unguarded_apply_exact_same_response_with_different_outcomes
     guarded, review = apply_proposals({}, run, page(text), "estimate", ["total_amount"])
     assert raw["total_amount"] == 110 and "total_amount" not in guarded
     assert review["decisions"][0]["human_confirmed"] is False
+
+
+def test_docx_paragraph_and_table_evidence_preserves_unverified_page_layout(tmp_path):
+    from docx import Document
+    from backend.app.ai.preprocessor import extract_text_from_docx
+    document = Document()
+    document.add_paragraph("공급자")
+    document.add_paragraph("상호: 테스트 회사")
+    table = document.add_table(rows=1, cols=2)
+    table.cell(0, 0).text = "합계금액"
+    table.cell(0, 1).text = "110원"
+    path = tmp_path / "source.docx"
+    document.save(path)
+    text = extract_text_from_docx(path)
+    pages = source_pages(path, text)
+    company = guard_proposal("company_name", proposal("테스트 회사", text.splitlines()[1], 2, None), pages, "tax_invoice")
+    amount = guard_proposal("total_amount", proposal("110", text.splitlines()[2], 3, None), pages, "tax_invoice")
+    assert company["accepted"] and amount["accepted"]
+    assert company["anchor"]["positions"][0]["paragraph"] == 2
+    assert amount["anchor"]["positions"][-1]["table"] == 1
+    assert amount["anchor"]["positions"][-1]["cell"] == 2
+    for decision in (company, amount):
+        assert decision["anchor"]["page"] is None
+        assert decision["anchor"]["text_verified"] is True
+        assert decision["anchor"]["page_layout_verified"] is False
+    tampered = source_pages(path, text.replace("110원", "111원"))
+    rejected = guard_proposal("total_amount", proposal("111", "합계금액\t111원", 3, None), tampered, "tax_invoice")
+    assert not rejected["accepted"] and "DOCX_LOCATION_UNVERIFIED" in rejected["reasons"]
+
+
+def test_docx_table_does_not_turn_recipient_into_supplier(tmp_path):
+    from docx import Document
+    from backend.app.ai.preprocessor import extract_text_from_docx
+    document = Document()
+    document.add_paragraph("공급자")
+    table = document.add_table(rows=2, cols=2)
+    table.cell(0, 0).text = "공급받는자"
+    table.cell(1, 0).text = "상호"
+    table.cell(1, 1).text = "수신 회사"
+    path = tmp_path / "recipient.docx"
+    document.save(path)
+    text = extract_text_from_docx(path)
+    result = guard_proposal("company_name", proposal("수신 회사", "상호\t수신 회사", 3, None), source_pages(path, text), "tax_invoice")
+    assert not result["accepted"] and "WRONG_PARTY" in result["reasons"]
+
+
+def test_docx_multiline_merged_cells_retain_native_positions(tmp_path):
+    from docx import Document
+    from backend.app.ai.preprocessor import extract_text_from_docx
+    document = Document()
+    table = document.add_table(rows=1, cols=2)
+    cell = table.cell(0, 0).merge(table.cell(0, 1))
+    cell.text = "합계금액\n110원"
+    path = tmp_path / "merged.docx"
+    document.save(path)
+    text = extract_text_from_docx(path)
+    result = guard_proposal("total_amount", proposal("110", "110원", 2, None), source_pages(path, text), "estimate")
+    assert result["accepted"] and result["anchor"]["label_line"] == 1
+    assert result["anchor"]["positions"][0]["row"] == 1
+
+
+@pytest.mark.parametrize("reported_line", [1, 3])
+def test_one_line_offset_requires_same_exact_quote_label_and_value(reported_line):
+    text = "비고\n합계금액: 110원\n작성일: 2026-09-01"
+    result = guard_proposal("total_amount", proposal("110", "합계금액: 110원", reported_line), page(text), "estimate")
+    assert result["accepted"] and result["anchor"]["line"] == 2
+    assert result["proposal"]["line"] == reported_line
+    assert "LINE_OFFSET_RESOLVED" in result["warnings"]
+
+
+def test_offset_does_not_cross_party_wrong_page_or_two_lines():
+    text = "공급자\n사업자등록번호: 000-00-01014\n공급받는자"
+    result = guard_proposal("business_registration_no", proposal("000-00-01014", text.splitlines()[1], 3), page(text), "tax_invoice")
+    assert not result["accepted"]
+    result = guard_proposal("total_amount", proposal("110", "합계금액: 110원", number=2), page("합계금액: 110원"), "estimate")
+    assert not result["accepted"] and "PAGE_UNVERIFIED" in result["reasons"]
+    result = guard_proposal("total_amount", proposal("110", "합계금액: 110원", 1), page("비고\n비고\n합계금액: 110원"), "estimate")
+    assert not result["accepted"] and "EVIDENCE_NOT_FOUND" in result["reasons"]
+    result = guard_proposal("tax_amount", proposal("110", "합계금액: 110원", 1), page("비고\n합계금액: 110원"), "estimate")
+    assert not result["accepted"]
+
+
+@pytest.mark.parametrize("text,value,accepted", [("합계금액. 1 700,000원", "1700000", True),
+    ("합계금액: 1 700 000원", "1700000", True), ("합계금액: 100 200", "100200", False),
+    ("합계금액: 1 70,000원", "170000", False), ("합계금액: 100,20원", "10020", False)])
+def test_space_grouped_currency_is_narrowly_normalized(text, value, accepted):
+    result = guard_proposal("total_amount", proposal(value, text), page(text), "estimate")
+    assert result["accepted"] is accepted
+
+
+def test_ocr_bullet_is_only_stripped_after_a_recognized_label():
+    result = guard_proposal("company_name", proposal("테스트•회사", "예금주• 테스트•회사"), page("예금주• 테스트•회사"), "bank_account")
+    assert result["accepted"]
+    text = "발주자: 수신 회사\n=(크): 테스트 회사"
+    result = guard_proposal("company_name", proposal("테스트 회사", text.splitlines()[1], 2), page(text), "contract")
+    assert not result["accepted"]
+
+
+def test_missing_scope_anchor_is_derived_only_from_unique_labeled_evidence():
+    text = "견적서\n합계금액: 110원"
+    result = guard_proposal("amount_scope", proposal("FULL", "", None, None), page(text), "estimate")
+    assert result["accepted"] and result["anchor"]["quote"] == "견적서"
+    assert "CODE_ANCHORED_SCOPE" in result["warnings"]
+    for text in ("견적서\n참고값 A: 100원\n참고값 B: 110원", "견적서\n합계금액: 110원\n잔금"):
+        result = guard_proposal("amount_scope", proposal("FULL", "", None, None), page(text), "estimate")
+        assert not result["accepted"]
+
+
+def test_original_incorrect_scope_patterns_and_absent_reference_values_stay_rejected():
+    text = "검수확인서\n합계금액: 110원"
+    result = guard_proposal("amount_scope", proposal(None, "", None, None, "ABSENT"), page(text), "inspection_confirmation")
+    assert not result["accepted"] and "UNSUPPORTED_ABSTENTION" in result["reasons"]
+    text = "견적서\n참고값 A: 100원\n참고값 B: 110원\n금액의 적용 범위가 표시되지 않음"
+    result = guard_proposal("amount_scope", proposal("PARTIAL", text.splitlines()[3], 4), page(text), "estimate")
+    assert not result["accepted"]
+    run = {"ok": True, "proposals": {"total_amount": proposal(None, "", None, None, "ABSENT")}}
+    fields, review = apply_proposals({}, run, page(text), "estimate", ["total_amount"])
+    assert "total_amount" not in fields and review["guard_review_required"]
+    assert "AMBIGUOUS_UNLABELED_AMOUNT" in review["decisions"][0]["reasons"]
+
+
+def test_machine_grounding_does_not_claim_final_human_confirmation():
+    text = "合計\n합계금액: 110원"
+    run = {"ok": True, "proposals": {"total_amount": proposal("110", text.splitlines()[1], 2)}}
+    _, review = apply_proposals({}, run, page(text), "estimate", ["total_amount"])
+    assert not review["guard_review_required"]
+    assert review["manual_review_required"] and not review["human_confirmed"]
 
 
 def test_schema_rejects_malformed_states_and_anchor_types():

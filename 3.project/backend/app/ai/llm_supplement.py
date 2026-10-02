@@ -25,10 +25,13 @@ def apply_proposals(rule_fields, run, pages, document_type, targets, *, guarded=
     if any(d["applied"] and d["field"] in {"supply_amount", "tax_amount", "total_amount"} for d in decisions):
         fields["amount"] = fields.get("total_amount")
         fields["amount_basis"] = "TOTAL" if fields.get("total_amount") is not None else "UNKNOWN"
+    unresolved = [field for field in targets if not any(
+        d["field"] == field and d["applied"] and d["proposal"]["state"] != "REVIEW" for d in decisions)]
     return fields, {"status": "COMPLETED" if run.get("ok") else "FAILED", "error": run.get("error"),
                     "model": run.get("model"), "model_metadata": run.get("model_metadata"),
                     "elapsed_seconds": run.get("elapsed_seconds", 0), "attempts": run.get("attempts", 0),
                     "targets": list(targets), "decisions": decisions, "manual_review_required": bool(targets),
+                    "guard_review_required": bool(unresolved), "unresolved_fields": unresolved,
                     "human_confirmed": False, "prompt_version": run.get("prompt_version"), "guard_version": GUARD_VERSION,
                     "settings": run.get("settings")}
 

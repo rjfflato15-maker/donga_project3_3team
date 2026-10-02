@@ -1,0 +1,1170 @@
+{
+  "scope": "confirmed dev offline audit; no test or production gold lookup",
+  "guard_tuning_disclosure": "가드 v3는 dev 감사 결과로 조정함",
+  "docx_policy": "DOCX는 페이지 배치는 미확인, 글자 근거는 확인",
+  "same_response_and_targets_all_documents": true,
+  "original_correct_rejection_causes": {
+    "SCOPE_ANCHOR_OMITTED": 11,
+    "OCR_SUPPLIER_LABEL_DAMAGED": 6,
+    "DOCX_PHYSICAL_PAGE_POLICY": 4,
+    "OCR_THOUSANDS_SPACING": 4,
+    "OCR_LABEL_BULLET": 2
+  },
+  "original_incorrect_proposals": [
+    {
+      "document_id": "10706",
+      "field": "amount_scope",
+      "reasons": [
+        "UNSUPPORTED_ABSTENTION"
+      ],
+      "still_rejected": true,
+      "new_reasons": [
+        "UNSUPPORTED_ABSTENTION"
+      ]
+    },
+    {
+      "document_id": "10902",
+      "field": "amount_scope",
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "still_rejected": true,
+      "new_reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ]
+    }
+  ],
+  "original_correct_rejections_recovered": 21,
+  "original_correct_rejections_retained_for_human": 6,
+  "newly_rejected_mismatching_abstentions": 3,
+  "newly_accepted_incorrect_count": 0,
+  "before": {
+    "accepted_gold_matching": 47,
+    "accepted_value_count": 48,
+    "accepted_value_correct": 47,
+    "requested_field_count": 80,
+    "human_referral_field_count": 29,
+    "rejected_gold_matching": 27,
+    "rejected_human_referral_count": 29,
+    "accepted_gold_mismatching": 4,
+    "rejected_gold_mismatching": 2,
+    "accepted_value_precision": 0.9791666666666666,
+    "human_referral_field_rate": 0.3625,
+    "guard_auto_validated_field_rate": 0.6375,
+    "document_count": 59,
+    "called_document_count": 28,
+    "human_referral_document_count": 20,
+    "human_referral_document_rate": 0.3389830508474576,
+    "no_additional_review_document_rate": 0.6610169491525424,
+    "guard_auto_validated_called_document_count": 8,
+    "guard_auto_validated_called_document_rate": 0.2857142857142857,
+    "human_referral_document_ids": [
+      "10102",
+      "10201",
+      "10301",
+      "10306",
+      "10402",
+      "10405",
+      "10501",
+      "10504",
+      "10601",
+      "10606",
+      "10607",
+      "10701",
+      "10702",
+      "10706",
+      "10801",
+      "10804",
+      "10901",
+      "10902",
+      "10906",
+      "11002"
+    ],
+    "definition": "Referral means unresolved requested field (rejected, REVIEW or failed/missing response). Auto validation is machine grounding, not final human confirmation; all AI proposals remain human_confirmed=false. Rejected correctness is an offline gold audit."
+  },
+  "after": {
+    "accepted_gold_matching": 68,
+    "accepted_value_count": 69,
+    "accepted_value_correct": 68,
+    "requested_field_count": 80,
+    "human_referral_field_count": 11,
+    "rejected_gold_matching": 6,
+    "rejected_human_referral_count": 11,
+    "accepted_gold_mismatching": 1,
+    "rejected_gold_mismatching": 5,
+    "accepted_value_precision": 0.9855072463768116,
+    "human_referral_field_rate": 0.1375,
+    "guard_auto_validated_field_rate": 0.8625,
+    "document_count": 59,
+    "called_document_count": 28,
+    "human_referral_document_count": 5,
+    "human_referral_document_rate": 0.0847457627118644,
+    "no_additional_review_document_rate": 0.9152542372881356,
+    "guard_auto_validated_called_document_count": 23,
+    "guard_auto_validated_called_document_rate": 0.8214285714285714,
+    "human_referral_document_ids": [
+      "10201",
+      "10501",
+      "10706",
+      "10801",
+      "10902"
+    ],
+    "definition": "Referral means unresolved requested field (rejected, REVIEW or failed/missing response). Auto validation is machine grounding, not final human confirmation; all AI proposals remain human_confirmed=false. Rejected correctness is an offline gold audit."
+  },
+  "rows": [
+    {
+      "document_id": "10102",
+      "field": "amount_scope",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "SCOPE_ANCHOR_OMITTED",
+      "old_reasons": [
+        "PAGE_UNVERIFIED",
+        "EVIDENCE_NOT_FOUND",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 1,
+        "start": 0,
+        "end": 3,
+        "quote": "견적서",
+        "location_kind": "page",
+        "label_line": 1,
+        "label": "견적서",
+        "party": "unknown"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10201",
+      "field": "company_name",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": false,
+      "cause": "OCR_SUPPLIER_LABEL_DAMAGED",
+      "old_reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소 2",
+        "page": 1,
+        "line": 6,
+        "quote": "=(크): 가상 솔빛제작소 2"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 6,
+        "start": 85,
+        "end": 101,
+        "quote": "=(크): 가상 솔빛제작소 2",
+        "location_kind": "page"
+      },
+      "new_disposition": "human_review_referral"
+    },
+    {
+      "document_id": "10201",
+      "field": "business_registration_no",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": false,
+      "cause": "OCR_SUPPLIER_LABEL_DAMAGED",
+      "old_reasons": [
+        "WRONG_PARTY"
+      ],
+      "new_reasons": [
+        "WRONG_PARTY"
+      ],
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-01028",
+        "page": 1,
+        "line": 7,
+        "quote": "사업 자등록번호. 000-00-01028"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 7,
+        "start": 102,
+        "end": 124,
+        "quote": "사업 자등록번호. 000-00-01028",
+        "location_kind": "page",
+        "label_line": 7,
+        "label": "등록번호",
+        "party": "buyer"
+      },
+      "new_disposition": "human_review_referral"
+    },
+    {
+      "document_id": "10201",
+      "field": "amount_scope",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "SCOPE_ANCHOR_OMITTED",
+      "old_reasons": [
+        "PAGE_UNVERIFIED",
+        "EVIDENCE_NOT_FOUND",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 1,
+        "start": 0,
+        "end": 8,
+        "quote": "외주용역 계약서",
+        "location_kind": "page",
+        "label_line": 1,
+        "label": "계약서",
+        "party": "unknown"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10301",
+      "field": "company_name",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "DOCX_PHYSICAL_PAGE_POLICY",
+      "old_reasons": [
+        "PAGE_UNVERIFIED"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소 3",
+        "page": null,
+        "line": 5,
+        "quote": "수급인(을): 가상 솔빛제작소 3"
+      },
+      "resolved_anchor": {
+        "page": null,
+        "line": 5,
+        "start": 76,
+        "end": 94,
+        "quote": "수급인(을): 가상 솔빛제작소 3",
+        "location_kind": "docx_structure",
+        "positions": [
+          {
+            "location_kind": "paragraph",
+            "paragraph": 5,
+            "start": 76,
+            "end": 94
+          }
+        ],
+        "page_layout_verified": false,
+        "text_verified": true,
+        "label_line": 5,
+        "label": "수급인(을)",
+        "party": "supplier"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10306",
+      "field": "total_amount",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "OCR_THOUSANDS_SPACING",
+      "old_reasons": [
+        "VALUE_NOT_IN_QUOTE",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "1430000",
+        "page": 1,
+        "line": 9,
+        "quote": "합계금액. 1 430,000원"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 9,
+        "start": 142,
+        "end": 158,
+        "quote": "합계금액. 1 430,000원",
+        "location_kind": "page",
+        "label_line": 9,
+        "label": "합계금액",
+        "party": "supplier"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10306",
+      "field": "amount_scope",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "SCOPE_ANCHOR_OMITTED",
+      "old_reasons": [
+        "PAGE_UNVERIFIED",
+        "EVIDENCE_NOT_FOUND",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 1,
+        "start": 0,
+        "end": 8,
+        "quote": "납품 검수확인서",
+        "location_kind": "page",
+        "label_line": 1,
+        "label": "검수확인서",
+        "party": "supplier"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10402",
+      "field": "amount_scope",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "SCOPE_ANCHOR_OMITTED",
+      "old_reasons": [
+        "PAGE_UNVERIFIED",
+        "EVIDENCE_NOT_FOUND",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 1,
+        "start": 0,
+        "end": 3,
+        "quote": "견적서",
+        "location_kind": "page",
+        "label_line": 1,
+        "label": "견적서",
+        "party": "unknown"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10405",
+      "field": "supply_amount",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "OCR_THOUSANDS_SPACING",
+      "old_reasons": [
+        "VALUE_NOT_IN_QUOTE",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "1400000",
+        "page": 1,
+        "line": 9,
+        "quote": "공급가액. 1 400,000원"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 9,
+        "start": 124,
+        "end": 140,
+        "quote": "공급가액. 1 400,000원",
+        "location_kind": "page",
+        "label_line": 9,
+        "label": "공급가액",
+        "party": "buyer"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10501",
+      "field": "company_name",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": false,
+      "cause": "OCR_SUPPLIER_LABEL_DAMAGED",
+      "old_reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소 5",
+        "page": 1,
+        "line": 6,
+        "quote": "=(크): 가상 솔빛제작소 5"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 6,
+        "start": 85,
+        "end": 101,
+        "quote": "=(크): 가상 솔빛제작소 5",
+        "location_kind": "page"
+      },
+      "new_disposition": "human_review_referral"
+    },
+    {
+      "document_id": "10501",
+      "field": "business_registration_no",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": false,
+      "cause": "OCR_SUPPLIER_LABEL_DAMAGED",
+      "old_reasons": [
+        "WRONG_PARTY"
+      ],
+      "new_reasons": [
+        "WRONG_PARTY"
+      ],
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-01052",
+        "page": 1,
+        "line": 7,
+        "quote": "사업 자등록번호. 000-00-01052"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 7,
+        "start": 102,
+        "end": 124,
+        "quote": "사업 자등록번호. 000-00-01052",
+        "location_kind": "page",
+        "label_line": 7,
+        "label": "등록번호",
+        "party": "buyer"
+      },
+      "new_disposition": "human_review_referral"
+    },
+    {
+      "document_id": "10501",
+      "field": "amount_scope",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "SCOPE_ANCHOR_OMITTED",
+      "old_reasons": [
+        "PAGE_UNVERIFIED",
+        "EVIDENCE_NOT_FOUND",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 1,
+        "start": 0,
+        "end": 8,
+        "quote": "외주용역 계약서",
+        "location_kind": "page",
+        "label_line": 1,
+        "label": "계약서",
+        "party": "unknown"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10504",
+      "field": "company_name",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "OCR_LABEL_BULLET",
+      "old_reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소 5",
+        "page": 1,
+        "line": 3,
+        "quote": "예금주• 가상 솔빛제작소 5"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 3,
+        "start": 36,
+        "end": 51,
+        "quote": "예금주• 가상 솔빛제작소 5",
+        "location_kind": "page",
+        "label_line": 3,
+        "label": "예금주",
+        "party": "supplier"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10601",
+      "field": "company_name",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "DOCX_PHYSICAL_PAGE_POLICY",
+      "old_reasons": [
+        "PAGE_UNVERIFIED"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소 6",
+        "page": null,
+        "line": 5,
+        "quote": "수급인(을): 가상 솔빛제작소 6"
+      },
+      "resolved_anchor": {
+        "page": null,
+        "line": 5,
+        "start": 76,
+        "end": 94,
+        "quote": "수급인(을): 가상 솔빛제작소 6",
+        "location_kind": "docx_structure",
+        "positions": [
+          {
+            "location_kind": "paragraph",
+            "paragraph": 5,
+            "start": 76,
+            "end": 94
+          }
+        ],
+        "page_layout_verified": false,
+        "text_verified": true,
+        "label_line": 5,
+        "label": "수급인(을)",
+        "party": "supplier"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10606",
+      "field": "amount_scope",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "SCOPE_ANCHOR_OMITTED",
+      "old_reasons": [
+        "PAGE_UNVERIFIED",
+        "EVIDENCE_NOT_FOUND",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 1,
+        "start": 0,
+        "end": 8,
+        "quote": "납품 검수확인서",
+        "location_kind": "page",
+        "label_line": 1,
+        "label": "검수확인서",
+        "party": "supplier"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10607",
+      "field": "amount_scope",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "DOCX_PHYSICAL_PAGE_POLICY",
+      "old_reasons": [
+        "PAGE_UNVERIFIED"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "PARTIAL",
+        "page": null,
+        "line": 12,
+        "quote": "분할 청구: 선금 또는 잔금"
+      },
+      "resolved_anchor": {
+        "page": null,
+        "line": 12,
+        "start": 170,
+        "end": 185,
+        "quote": "분할 청구: 선금 또는 잔금",
+        "location_kind": "docx_structure",
+        "positions": [
+          {
+            "location_kind": "paragraph",
+            "paragraph": 12,
+            "start": 170,
+            "end": 185
+          }
+        ],
+        "page_layout_verified": false,
+        "text_verified": true,
+        "label_line": 12,
+        "label": "분할",
+        "party": "buyer"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10701",
+      "field": "company_name",
+      "gold_matching": false,
+      "old_applied": true,
+      "new_applied": true,
+      "cause": "PREVIOUSLY_ACCEPTED_MISMATCH",
+      "old_reasons": [],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 솔및제작소 7",
+        "page": 1,
+        "line": 5,
+        "quote": "수급인(을): 가상 솔및제작소 7"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 5,
+        "start": 76,
+        "end": 94,
+        "quote": "수급인(을): 가상 솔및제작소 7",
+        "location_kind": "page",
+        "label_line": 5,
+        "label": "수급인(을)",
+        "party": "supplier"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10701",
+      "field": "supply_amount",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "OCR_THOUSANDS_SPACING",
+      "old_reasons": [
+        "VALUE_NOT_IN_QUOTE",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "1700000",
+        "page": 1,
+        "line": 7,
+        "quote": "공급가액. 1 700,000원"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 7,
+        "start": 117,
+        "end": 133,
+        "quote": "공급가액. 1 700,000원",
+        "location_kind": "page",
+        "label_line": 7,
+        "label": "공급가액",
+        "party": "supplier"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10701",
+      "field": "amount_scope",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "SCOPE_ANCHOR_OMITTED",
+      "old_reasons": [
+        "PAGE_UNVERIFIED",
+        "EVIDENCE_NOT_FOUND",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 1,
+        "start": 0,
+        "end": 8,
+        "quote": "외주용역 계약서",
+        "location_kind": "page",
+        "label_line": 1,
+        "label": "계약서",
+        "party": "unknown"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10702",
+      "field": "amount_scope",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "SCOPE_ANCHOR_OMITTED",
+      "old_reasons": [
+        "PAGE_UNVERIFIED",
+        "EVIDENCE_NOT_FOUND",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 1,
+        "start": 0,
+        "end": 3,
+        "quote": "견적서",
+        "location_kind": "page",
+        "label_line": 1,
+        "label": "견적서",
+        "party": "unknown"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10706",
+      "field": "supply_amount",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "OCR_THOUSANDS_SPACING",
+      "old_reasons": [
+        "VALUE_NOT_IN_QUOTE",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "1700000",
+        "page": 1,
+        "line": 7,
+        "quote": "공급가액. 1 700,000원"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 7,
+        "start": 111,
+        "end": 127,
+        "quote": "공급가액. 1 700,000원",
+        "location_kind": "page",
+        "label_line": 7,
+        "label": "공급가액",
+        "party": "supplier"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10706",
+      "field": "amount_scope",
+      "gold_matching": false,
+      "old_applied": false,
+      "new_applied": false,
+      "cause": "INCORRECT_PROPOSAL",
+      "old_reasons": [
+        "UNSUPPORTED_ABSTENTION"
+      ],
+      "new_reasons": [
+        "UNSUPPORTED_ABSTENTION"
+      ],
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": null,
+      "new_disposition": "human_review_referral"
+    },
+    {
+      "document_id": "10801",
+      "field": "company_name",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": false,
+      "cause": "OCR_SUPPLIER_LABEL_DAMAGED",
+      "old_reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소 8",
+        "page": 1,
+        "line": 6,
+        "quote": "=(크): 가상 솔빛제작소 8"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 6,
+        "start": 85,
+        "end": 101,
+        "quote": "=(크): 가상 솔빛제작소 8",
+        "location_kind": "page"
+      },
+      "new_disposition": "human_review_referral"
+    },
+    {
+      "document_id": "10801",
+      "field": "business_registration_no",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": false,
+      "cause": "OCR_SUPPLIER_LABEL_DAMAGED",
+      "old_reasons": [
+        "WRONG_PARTY"
+      ],
+      "new_reasons": [
+        "WRONG_PARTY"
+      ],
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-01085",
+        "page": 1,
+        "line": 7,
+        "quote": "사업 자등록번호. 000-00-01085"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 7,
+        "start": 102,
+        "end": 124,
+        "quote": "사업 자등록번호. 000-00-01085",
+        "location_kind": "page",
+        "label_line": 7,
+        "label": "등록번호",
+        "party": "buyer"
+      },
+      "new_disposition": "human_review_referral"
+    },
+    {
+      "document_id": "10801",
+      "field": "amount_scope",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "SCOPE_ANCHOR_OMITTED",
+      "old_reasons": [
+        "PAGE_UNVERIFIED",
+        "EVIDENCE_NOT_FOUND",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 1,
+        "start": 0,
+        "end": 8,
+        "quote": "외주용역 계약서",
+        "location_kind": "page",
+        "label_line": 1,
+        "label": "계약서",
+        "party": "unknown"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10804",
+      "field": "company_name",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "OCR_LABEL_BULLET",
+      "old_reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소 8",
+        "page": 1,
+        "line": 3,
+        "quote": "예금주• 가상 솔빛제작소 8"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 3,
+        "start": 36,
+        "end": 51,
+        "quote": "예금주• 가상 솔빛제작소 8",
+        "location_kind": "page",
+        "label_line": 3,
+        "label": "예금주",
+        "party": "supplier"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10901",
+      "field": "company_name",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "DOCX_PHYSICAL_PAGE_POLICY",
+      "old_reasons": [
+        "PAGE_UNVERIFIED"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 솔빛제작소 9",
+        "page": null,
+        "line": 5,
+        "quote": "수급인(을): 가상 솔빛제작소 9"
+      },
+      "resolved_anchor": {
+        "page": null,
+        "line": 5,
+        "start": 76,
+        "end": 94,
+        "quote": "수급인(을): 가상 솔빛제작소 9",
+        "location_kind": "docx_structure",
+        "positions": [
+          {
+            "location_kind": "paragraph",
+            "paragraph": 5,
+            "start": 76,
+            "end": 94
+          }
+        ],
+        "page_layout_verified": false,
+        "text_verified": true,
+        "label_line": 5,
+        "label": "수급인(을)",
+        "party": "supplier"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "10902",
+      "field": "supply_amount",
+      "gold_matching": false,
+      "old_applied": true,
+      "new_applied": false,
+      "cause": "PREVIOUSLY_ACCEPTED_MISMATCH",
+      "old_reasons": [],
+      "new_reasons": [
+        "AMBIGUOUS_UNLABELED_AMOUNT"
+      ],
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": null,
+      "new_disposition": "human_review_referral"
+    },
+    {
+      "document_id": "10902",
+      "field": "tax_amount",
+      "gold_matching": false,
+      "old_applied": true,
+      "new_applied": false,
+      "cause": "PREVIOUSLY_ACCEPTED_MISMATCH",
+      "old_reasons": [],
+      "new_reasons": [
+        "AMBIGUOUS_UNLABELED_AMOUNT"
+      ],
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": null,
+      "new_disposition": "human_review_referral"
+    },
+    {
+      "document_id": "10902",
+      "field": "total_amount",
+      "gold_matching": false,
+      "old_applied": true,
+      "new_applied": false,
+      "cause": "PREVIOUSLY_ACCEPTED_MISMATCH",
+      "old_reasons": [],
+      "new_reasons": [
+        "AMBIGUOUS_UNLABELED_AMOUNT"
+      ],
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": null,
+      "new_disposition": "human_review_referral"
+    },
+    {
+      "document_id": "10902",
+      "field": "amount_scope",
+      "gold_matching": false,
+      "old_applied": false,
+      "new_applied": false,
+      "cause": "INCORRECT_PROPOSAL",
+      "old_reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "proposal": {
+        "state": "VALUE",
+        "value": "PARTIAL",
+        "page": 1,
+        "line": 11,
+        "quote": "금액의 적용 범위가 표시되지 않음"
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 11,
+        "start": 155,
+        "end": 173,
+        "quote": "금액의 적용 범위가 표시되지 않음",
+        "location_kind": "page"
+      },
+      "new_disposition": "human_review_referral"
+    },
+    {
+      "document_id": "10906",
+      "field": "amount_scope",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "SCOPE_ANCHOR_OMITTED",
+      "old_reasons": [
+        "PAGE_UNVERIFIED",
+        "EVIDENCE_NOT_FOUND",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 1,
+        "start": 0,
+        "end": 8,
+        "quote": "납품 검수확인서",
+        "location_kind": "page",
+        "label_line": 1,
+        "label": "검수확인서",
+        "party": "supplier"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    },
+    {
+      "document_id": "11002",
+      "field": "amount_scope",
+      "gold_matching": true,
+      "old_applied": false,
+      "new_applied": true,
+      "cause": "SCOPE_ANCHOR_OMITTED",
+      "old_reasons": [
+        "PAGE_UNVERIFIED",
+        "EVIDENCE_NOT_FOUND",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "new_reasons": [],
+      "proposal": {
+        "state": "VALUE",
+        "value": "FULL",
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "resolved_anchor": {
+        "page": 1,
+        "line": 1,
+        "start": 0,
+        "end": 3,
+        "quote": "견적서",
+        "location_kind": "page",
+        "label_line": 1,
+        "label": "견적서",
+        "party": "unknown"
+      },
+      "new_disposition": "machine_grounded_awaiting_final_confirmation"
+    }
+  ],
+  "labels_sha256": "6361b13bd820f40cea38edf5df66da1714d1b0b1fb045763c3795d28d1d84f5b",
+  "previous_evidence_sha256": "99b22dac804372dbe502308cd155f4ec94156d8d4b1aa63e6e59adfe836673e8",
+  "current_evidence_sha256": "b7dbf683b210b45bb3d6741738ae0daf7ecc6008f74ddcddcfb5fb3ec3aed1b4"
+}
