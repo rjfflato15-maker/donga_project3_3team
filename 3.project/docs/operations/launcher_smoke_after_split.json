@@ -1,0 +1,13 @@
+{
+  "initial_database_absent": true,
+  "first_start": "started",
+  "repeat_start": "reused",
+  "same_server": true,
+  "ready": true,
+  "backup_has_database": true,
+  "backup_excludes_initial_passwords": true,
+  "restored_to_new_folder": true,
+  "restored_start": "started",
+  "restored_ready": true,
+  "final_server_stopped": true
+}
