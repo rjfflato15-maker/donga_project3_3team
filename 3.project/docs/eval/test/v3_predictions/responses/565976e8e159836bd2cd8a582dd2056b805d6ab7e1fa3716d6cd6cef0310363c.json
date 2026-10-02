@@ -1,0 +1,98 @@
+{
+  "sha256": "a6b642d9289a6ed90c03b2dbc8a8359d40987147129e352c357caa4e441d1475",
+  "payload": {
+    "attempt_id": "e40c42cf-cc17-4939-8f11-d8df9452f954",
+    "request_sha256": "565976e8e159836bd2cd8a582dd2056b805d6ab7e1fa3716d6cd6cef0310363c",
+    "run": {
+      "ok": true,
+      "error": null,
+      "attempts": 1,
+      "proposals": {
+        "company_name": {
+          "state": "ABSENT",
+          "value": null,
+          "page": null,
+          "line": null,
+          "quote": ""
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-02032",
+          "page": 1,
+          "line": 10,
+          "quote": "사업자등록번호 000-00-02032"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": "2300000",
+          "page": 1,
+          "line": 12,
+          "quote": "공급가액 2,300,000원"
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": "230000",
+          "page": 1,
+          "line": 14,
+          "quote": "세액 230,000원"
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": "2530000",
+          "page": 1,
+          "line": 16,
+          "quote": "합계금액 2,530,000원"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-03",
+          "page": 1,
+          "line": 18,
+          "quote": "발행일 2026-09-03"
+        },
+        "amount_scope": {
+          "state": "REVIEW",
+          "value": null,
+          "page": null,
+          "line": null,
+          "quote": ""
+        }
+      },
+      "model": "qwen3:latest",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "prompt_version": "grounded-fields-v3",
+      "manual_review_required": true,
+      "model_metadata": {
+        "name": "qwen3:latest",
+        "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+        "size": 5225388164,
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3",
+          "families": [
+            "qwen3"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 40960,
+          "embedding_length": 4096
+        }
+      },
+      "server_seconds": 13.3021974,
+      "load_seconds": 0.0098756,
+      "eval_count": 415,
+      "elapsed_seconds": 13.30508109999937
+    }
+  }
+}

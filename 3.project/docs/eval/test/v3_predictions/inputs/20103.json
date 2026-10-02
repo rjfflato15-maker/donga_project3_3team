@@ -1,0 +1,38 @@
+{
+  "sha256": "622d5a1ac8781887eaba25604cae2168de431e9f0a0d03df8c845217a7a35929",
+  "payload": {
+    "document": {
+      "document_id": 20103,
+      "path": "test/case_01/document_03.pdf",
+      "sha256": "a4afad24efcc8bb58677153f0fab643bf7e99b1bf9b93ed4b554a62b433d1406"
+    },
+    "contract_id": 201,
+    "fields": {
+      "title": "가상 달빛제작소 1 사업자등록증",
+      "company_name": "가상 달빛제작소 1",
+      "business_registration_no": "000-00-02013",
+      "amount": null,
+      "issue_date": "2026-09-01",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": null,
+      "tax_amount": null,
+      "total_amount": null,
+      "amount_basis": "UNKNOWN",
+      "amount_scope": "UNKNOWN"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "사업자등록증\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n상호\n가상 달빛제작소 1\n사업자등록번호\n000-00-02013\n대표자\n가상 담당자\n업태\n서비스업\n종목\n소프트웨어 개발\n발행일\n2026-09-01\n"
+      }
+    ],
+    "document_type": "business_registration",
+    "processing_failed": false,
+    "rule_seconds": 0.18145929999809596,
+    "targets": []
+  }
+}

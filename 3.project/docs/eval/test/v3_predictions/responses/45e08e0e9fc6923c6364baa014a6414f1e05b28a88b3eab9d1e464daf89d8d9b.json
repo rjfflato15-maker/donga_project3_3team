@@ -1,0 +1,45 @@
+{
+  "sha256": "c1b1cfc9f277eca06e4659eed3a25298860068a3508583cd9904a4e5752d953f",
+  "payload": {
+    "attempt_id": "e40c42cf-cc17-4939-8f11-d8df9452f954",
+    "request_sha256": "45e08e0e9fc6923c6364baa014a6414f1e05b28a88b3eab9d1e464daf89d8d9b",
+    "run": {
+      "ok": false,
+      "error": "INVALID_JSON_OR_TRANSPORT",
+      "attempts": 2,
+      "proposals": {},
+      "model": "qwen3:latest",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "prompt_version": "grounded-fields-v3",
+      "manual_review_required": true,
+      "model_metadata": {
+        "name": "qwen3:latest",
+        "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+        "size": 5225388164,
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3",
+          "families": [
+            "qwen3"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 40960,
+          "embedding_length": 4096
+        }
+      },
+      "elapsed_seconds": 16.84995170000184
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "sha256": "9ebbf09dc432e35c00635cc9a8b11a97a205d1e07a3ddc09590690ee160042ee",
+  "payload": {
+    "document": {
+      "document_id": 20803,
+      "path": "test/case_08/document_03.png",
+      "sha256": "26f6c6d2ad904fa4edaa02695f335d86fe1ae383381159d0f80e7758ead75c51"
+    },
+    "contract_id": 208,
+    "fields": {
+      "title": "사업자등록증",
+      "company_name": null,
+      "business_registration_no": "000-00-02084",
+      "amount": null,
+      "issue_date": "2026-09-08",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": null,
+      "tax_amount": null,
+      "total_amount": null,
+      "amount_basis": "UNKNOWN",
+      "amount_scope": "UNKNOWN"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "사업자등록증\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n사업자등록번호\n대표자\n업태\n조 모\n가상 달빛제작소 8\n000-00-02084\n가상 담당자\n서비스업\n소프트웨어 개발\n2026-09-08"
+      }
+    ],
+    "document_type": "business_registration",
+    "processing_failed": false,
+    "rule_seconds": 0.2872457999983453,
+    "targets": [
+      "company_name",
+      "business_registration_no",
+      "issue_date"
+    ]
+  }
+}

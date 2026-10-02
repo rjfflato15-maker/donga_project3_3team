@@ -1,0 +1,758 @@
+{
+  "sha256": "e1ac70d1e8cf2c9571c5128fad9846facd6ce5e497298d6319a49ac9ed2ab04d",
+  "payload": {
+    "fields": {
+      "rule": {
+        "title": "발주자",
+        "company_name": "사업자",
+        "business_registration_no": "000-00-02105",
+        "amount": null,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "llm": {
+        "title": "발주자",
+        "company_name": "가상 업무지원 시스템 구축",
+        "business_registration_no": "0000002105",
+        "amount": 3300000.0,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3000000.0,
+        "tax_amount": 300000.0,
+        "total_amount": 3300000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "UNKNOWN"
+      },
+      "hybrid_unguarded": {
+        "title": "발주자",
+        "company_name": "가상 업무지원 시스템 구축",
+        "business_registration_no": "0000002105",
+        "amount": 3300000.0,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3000000.0,
+        "tax_amount": 300000.0,
+        "total_amount": 3300000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "UNKNOWN"
+      },
+      "hybrid_guarded": {
+        "title": "발주자",
+        "company_name": "사업자",
+        "business_registration_no": "000-00-02105",
+        "amount": null,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      }
+    },
+    "traces": {
+      "rule": {
+        "effective_seconds": 0.34148350000032224,
+        "guard_seconds": 0
+      },
+      "llm": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 13.18283689999953,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date",
+            "amount_scope"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "VALUE",
+                "value": "가상 업무지원 시스템 구축",
+                "page": 1,
+                "line": 10,
+                "quote": "가상 업무지원 시스템 구축"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 10,
+                "start": 76,
+                "end": 90,
+                "quote": "가상 업무지원 시스템 구축",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-02105",
+                "page": 1,
+                "line": 13,
+                "quote": "000-00-02105"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 13,
+                "start": 115,
+                "end": 127,
+                "quote": "000-00-02105",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "supply_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "3000000",
+                "page": 1,
+                "line": 14,
+                "quote": "3,000,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 14,
+                "start": 128,
+                "end": 138,
+                "quote": "3,000,000원",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "tax_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "300000",
+                "page": 1,
+                "line": 15,
+                "quote": "300,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 15,
+                "start": 139,
+                "end": 147,
+                "quote": "300,000원",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "total_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "3300000",
+                "page": 1,
+                "line": 16,
+                "quote": "3,300,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 16,
+                "start": 148,
+                "end": 158,
+                "quote": "3,300,000원",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-10",
+                "page": 1,
+                "line": 17,
+                "quote": "2026-09-10"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 17,
+                "start": 159,
+                "end": 169,
+                "quote": "2026-09-10",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "amount_scope",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "0549906125a8a8719a44e36969ff9b5d9cc6a1d5ff5e3bacf5f9f70a56bc602f",
+        "cache_hit": false,
+        "guard_seconds": 0,
+        "effective_seconds": 13.524320399999851
+      },
+      "hybrid_unguarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 13.18283689999953,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date",
+            "amount_scope"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "VALUE",
+                "value": "가상 업무지원 시스템 구축",
+                "page": 1,
+                "line": 10,
+                "quote": "가상 업무지원 시스템 구축"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 10,
+                "start": 76,
+                "end": 90,
+                "quote": "가상 업무지원 시스템 구축",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-02105",
+                "page": 1,
+                "line": 13,
+                "quote": "000-00-02105"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 13,
+                "start": 115,
+                "end": 127,
+                "quote": "000-00-02105",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "supply_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "3000000",
+                "page": 1,
+                "line": 14,
+                "quote": "3,000,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 14,
+                "start": 128,
+                "end": 138,
+                "quote": "3,000,000원",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "tax_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "300000",
+                "page": 1,
+                "line": 15,
+                "quote": "300,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 15,
+                "start": 139,
+                "end": 147,
+                "quote": "300,000원",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "total_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "3300000",
+                "page": 1,
+                "line": 16,
+                "quote": "3,300,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 16,
+                "start": 148,
+                "end": 158,
+                "quote": "3,300,000원",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-10",
+                "page": 1,
+                "line": 17,
+                "quote": "2026-09-10"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 17,
+                "start": 159,
+                "end": 169,
+                "quote": "2026-09-10",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "amount_scope",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "0549906125a8a8719a44e36969ff9b5d9cc6a1d5ff5e3bacf5f9f70a56bc602f",
+        "cache_hit": true,
+        "shared_response_replay": false,
+        "guard_seconds": 0,
+        "effective_seconds": 13.524320399999851
+      },
+      "hybrid_guarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 13.18283689999953,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date",
+            "amount_scope"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "VALUE",
+                "value": "가상 업무지원 시스템 구축",
+                "page": 1,
+                "line": 10,
+                "quote": "가상 업무지원 시스템 구축"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 10,
+                "start": 76,
+                "end": 90,
+                "quote": "가상 업무지원 시스템 구축",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-02105",
+                "page": 1,
+                "line": 13,
+                "quote": "000-00-02105"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 13,
+                "start": 115,
+                "end": 127,
+                "quote": "000-00-02105",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "supply_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "3000000",
+                "page": 1,
+                "line": 14,
+                "quote": "3,000,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 14,
+                "start": 128,
+                "end": 138,
+                "quote": "3,000,000원",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "tax_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "300000",
+                "page": 1,
+                "line": 15,
+                "quote": "300,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 15,
+                "start": 139,
+                "end": 147,
+                "quote": "300,000원",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "total_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "3300000",
+                "page": 1,
+                "line": 16,
+                "quote": "3,300,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 16,
+                "start": 148,
+                "end": 158,
+                "quote": "3,300,000원",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-10",
+                "page": 1,
+                "line": 17,
+                "quote": "2026-09-10"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 17,
+                "start": 159,
+                "end": 169,
+                "quote": "2026-09-10",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "amount_scope",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": true,
+          "unresolved_fields": [
+            "company_name",
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date"
+          ],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "0549906125a8a8719a44e36969ff9b5d9cc6a1d5ff5e3bacf5f9f70a56bc602f",
+        "cache_hit": true,
+        "shared_response_replay": true,
+        "guard_seconds": 0.001511200000095414,
+        "effective_seconds": 13.525831599999947
+      }
+    }
+  }
+}

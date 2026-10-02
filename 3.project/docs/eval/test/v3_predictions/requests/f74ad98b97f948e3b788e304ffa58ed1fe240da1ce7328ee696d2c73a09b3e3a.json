@@ -1,0 +1,40 @@
+{
+  "sha256": "83c91e585d3dc60378479572a2a56c5f023890d4b1c794bd39db9e9aba8a8a0d",
+  "payload": {
+    "attempt_id": "e40c42cf-cc17-4939-8f11-d8df9452f954",
+    "request_sha256": "f74ad98b97f948e3b788e304ffa58ed1fe240da1ce7328ee696d2c73a09b3e3a",
+    "started_at": "2026-10-02T15:50:58.300980+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "납품 검수확인서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약상대자\n사업자등록번호\n납품 내역\n검수 결과\n가상 달빛제작소 8\n000-00-02084\n업무지원 시스\n납품 항목 확인\n품목I 수량 단가 금액\n시스템 개발 1 1 2,800,000 1 2,800,000\n공급가액\n세액\n합계금액\n2,800,000원\n280,000원\n3,080,000원\n2026-09-08"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "issue_date",
+        "amount_scope"
+      ],
+      "document_type": "inspection_confirmation",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

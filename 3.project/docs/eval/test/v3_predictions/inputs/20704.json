@@ -1,0 +1,41 @@
+{
+  "sha256": "904f9ef6027d51ee79b82277235b96779e9635d0ca6d3ee4f061eaecf0d89459",
+  "payload": {
+    "document": {
+      "document_id": 20704,
+      "path": "test/case_07/document_04.png",
+      "sha256": "e0cdfb0636cca4e06c23087a005e72ad6a0bea6be296085af54394b4c39b5208"
+    },
+    "contract_id": 207,
+    "fields": {
+      "title": "통장사본",
+      "company_name": null,
+      "business_registration_no": "000-00-02070",
+      "amount": null,
+      "issue_date": "2026-09-07",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": null,
+      "tax_amount": null,
+      "total_amount": null,
+      "amount_basis": "UNKNOWN",
+      "amount_scope": "UNKNOWN"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주\n으 ÉI•I 며\n계좌번호\n사업자등록번호\n가상 달빛제작소 7\n가상은행\nTEST-ACCOUNT-OOI\n000-00-02070\n2026-09-07"
+      }
+    ],
+    "document_type": "bank_account",
+    "processing_failed": false,
+    "rule_seconds": 0.3130802000014228,
+    "targets": [
+      "company_name",
+      "issue_date"
+    ]
+  }
+}

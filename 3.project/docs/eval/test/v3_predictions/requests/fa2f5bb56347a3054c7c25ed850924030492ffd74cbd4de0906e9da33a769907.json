@@ -1,0 +1,40 @@
+{
+  "sha256": "0f2d15a51f4d0b53803998635b3a1a6092e5b69b89905833fa014970cdb1af23",
+  "payload": {
+    "attempt_id": "e40c42cf-cc17-4939-8f11-d8df9452f954",
+    "request_sha256": "fa2f5bb56347a3054c7c25ed850924030492ffd74cbd4de0906e9da33a769907",
+    "started_at": "2026-10-02T15:42:36.746976+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "견적서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n사업자등록번호\n공급받는자\n사업자등록번호\n공급가액\n세액\n합계금액\n가상 달빛제작소 3\n000-00-22038\n가상 초록운영사 3\n000-00-12035\n2,300,000원\n230,000원\n2,530,000원\n2026-09-03"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "issue_date",
+        "amount_scope"
+      ],
+      "document_type": "estimate",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

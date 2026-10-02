@@ -1,0 +1,45 @@
+{
+  "sha256": "5a935a773c65eaa83646d87ff86da5f5940236083881adbb71fbac39f653089a",
+  "payload": {
+    "document": {
+      "document_id": 20902,
+      "path": "test/case_09/document_02.png",
+      "sha256": "29a44091cc8d80e4543d9e899552237928a49fc65ca0dc9c82c504ab20c7147f"
+    },
+    "contract_id": 209,
+    "fields": {
+      "title": "가상 달빛제작소 9 견적서",
+      "company_name": "가상 달빛제작소 9",
+      "business_registration_no": "000-00-02099",
+      "amount": null,
+      "issue_date": "2026-09-09",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": null,
+      "tax_amount": null,
+      "total_amount": null,
+      "amount_basis": "UNKNOWN",
+      "amount_scope": "UNKNOWN"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "견적서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n가상 달빛제작소 9\n사업자등록번호\n000-00-02099\n공급받는자\n가상 초록운영사 9\n사업자등록번호\n000-00-12092\n참고값 A\n2,900,000원\n참고 값 B\n3, 190,000원\n금액의 적용 범위가 표시되지 않음\n2026-09-09"
+      }
+    ],
+    "document_type": "estimate",
+    "processing_failed": false,
+    "rule_seconds": 0.3346057999988261,
+    "targets": [
+      "company_name",
+      "supply_amount",
+      "tax_amount",
+      "total_amount",
+      "issue_date",
+      "amount_scope"
+    ]
+  }
+}

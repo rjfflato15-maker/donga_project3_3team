@@ -1,0 +1,40 @@
+{
+  "sha256": "0935ffb1c01d2b2f957740b3414c510094aa5ca5e7919d2a3cefaef9751e7d1a",
+  "payload": {
+    "attempt_id": "e40c42cf-cc17-4939-8f11-d8df9452f954",
+    "request_sha256": "fe410c5dd1337532cbc102edbf0d5968db1cb24d35ba9b836044e8b1f3cb9267",
+    "started_at": "2026-10-02T15:44:27.926569+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주\n으 ÉH 며\n계좌번호\n사업자등록번호\n가상 달빛제작소 4\n가상은행\nTEST-ACCOUNT-OOI\n000-00-02046\n2026-09-04"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "issue_date",
+        "amount_scope"
+      ],
+      "document_type": "bank_account",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

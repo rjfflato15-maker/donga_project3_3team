@@ -1,0 +1,158 @@
+{
+  "sha256": "ead6b0b7878ca09f090eb3e38fc3d3137fa9f70eb2b10d8ef5780f1a75e29814",
+  "payload": {
+    "document": {
+      "document_id": 20504,
+      "path": "test/case_05/document_04.docx",
+      "sha256": "fa832122770254c7502402f150394e11bee2016df07a4a1f898f024ee9b5244d"
+    },
+    "contract_id": 205,
+    "fields": {
+      "title": "가상 달빛제작소 5 통장사본",
+      "company_name": "가상 달빛제작소 5",
+      "business_registration_no": "000-00-02051",
+      "amount": null,
+      "issue_date": "2026-09-05",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": null,
+      "tax_amount": null,
+      "total_amount": null,
+      "amount_basis": "UNKNOWN",
+      "amount_scope": "UNKNOWN"
+    },
+    "pages": [
+      {
+        "page": null,
+        "location_kind": "document_block",
+        "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주\t가상 달빛제작소 5\n은행명\t가상은행\n계좌번호\tTEST-ACCOUNT-001\n사업자등록번호\t000-00-02051\n발행일\t2026-09-05",
+        "document_format": "docx",
+        "page_layout_verified": false,
+        "line_locations": {
+          "1": [
+            {
+              "location_kind": "paragraph",
+              "paragraph": 1,
+              "start": 0,
+              "end": 4
+            }
+          ],
+          "2": [
+            {
+              "location_kind": "paragraph",
+              "paragraph": 2,
+              "start": 5,
+              "end": 35
+            }
+          ],
+          "3": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 1,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 36,
+              "end": 39
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 1,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 40,
+              "end": 50
+            }
+          ],
+          "4": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 2,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 51,
+              "end": 54
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 2,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 55,
+              "end": 59
+            }
+          ],
+          "5": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 3,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 60,
+              "end": 64
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 3,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 65,
+              "end": 81
+            }
+          ],
+          "6": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 4,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 82,
+              "end": 89
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 4,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 90,
+              "end": 102
+            }
+          ],
+          "7": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 5,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 103,
+              "end": 106
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 5,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 107,
+              "end": 117
+            }
+          ]
+        }
+      }
+    ],
+    "document_type": "bank_account",
+    "processing_failed": false,
+    "rule_seconds": 0.09159809999982826,
+    "targets": []
+  }
+}

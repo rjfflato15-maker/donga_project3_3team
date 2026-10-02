@@ -1,0 +1,218 @@
+{
+  "sha256": "a8acdb2a721ccbfaca13d543f058f0051b4da257b1caab675e38400fe1c7fc12",
+  "payload": {
+    "document": {
+      "document_id": 20201,
+      "path": "test/case_02/document_01.docx",
+      "sha256": "7c08f6f6a5de033137ce02507f5a204ec898e89fb8e402b4da7c4ccaeb07e087"
+    },
+    "contract_id": 202,
+    "fields": {
+      "title": "가상 업무지원 시스템 구축",
+      "company_name": "가상 달빛제작소 2",
+      "business_registration_no": "000-00-02027",
+      "amount": 2420000.0,
+      "issue_date": "2026-09-02",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": 2200000.0,
+      "tax_amount": 220000.0,
+      "total_amount": 2420000.0,
+      "amount_basis": "TOTAL",
+      "amount_scope": "FULL"
+    },
+    "pages": [
+      {
+        "page": null,
+        "location_kind": "document_block",
+        "text": "외주용역 계약서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약명\t가상 업무지원 시스템 구축\n발주자\t가상 초록운영사 2\n수급인(을)\t가상 달빛제작소 2\n사업자등록번호\t000-00-02027\n공급가액\t2,200,000원\n세액\t220,000원\n합계금액\t2,420,000원\n발행일\t2026-09-02",
+        "document_format": "docx",
+        "page_layout_verified": false,
+        "line_locations": {
+          "1": [
+            {
+              "location_kind": "paragraph",
+              "paragraph": 1,
+              "start": 0,
+              "end": 8
+            }
+          ],
+          "2": [
+            {
+              "location_kind": "paragraph",
+              "paragraph": 2,
+              "start": 9,
+              "end": 39
+            }
+          ],
+          "3": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 1,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 40,
+              "end": 43
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 1,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 44,
+              "end": 58
+            }
+          ],
+          "4": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 2,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 59,
+              "end": 62
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 2,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 63,
+              "end": 73
+            }
+          ],
+          "5": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 3,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 74,
+              "end": 80
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 3,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 81,
+              "end": 91
+            }
+          ],
+          "6": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 4,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 92,
+              "end": 99
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 4,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 100,
+              "end": 112
+            }
+          ],
+          "7": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 5,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 113,
+              "end": 117
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 5,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 118,
+              "end": 128
+            }
+          ],
+          "8": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 6,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 129,
+              "end": 131
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 6,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 132,
+              "end": 140
+            }
+          ],
+          "9": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 7,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 141,
+              "end": 145
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 7,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 146,
+              "end": 156
+            }
+          ],
+          "10": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 8,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 157,
+              "end": 160
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 8,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 161,
+              "end": 171
+            }
+          ]
+        }
+      }
+    ],
+    "document_type": "contract",
+    "processing_failed": false,
+    "rule_seconds": 0.04589459999988321,
+    "targets": []
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "sha256": "d5f12d50ae3ee1b45c8c36eadae8cb263901ac3a9f968305bf609c75299bb23d",
+  "payload": {
+    "document": {
+      "document_id": 21005,
+      "path": "test/case_10/document_05.docx",
+      "sha256": "a2259765b9dea7282d04788b45b45537609d1b068cd6c56e1cb83026e9f7b661"
+    },
+    "contract_id": 210,
+    "fields": {
+      "title": "가상 초록운영사 10 전자세금계산서",
+      "company_name": "가상 초록운영사 10",
+      "business_registration_no": "000-00-02105",
+      "amount": 3301000.0,
+      "issue_date": "2026-09-10",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": 3000000.0,
+      "tax_amount": 300000.0,
+      "total_amount": 3301000.0,
+      "amount_basis": "TOTAL",
+      "amount_scope": "FULL"
+    },
+    "pages": [
+      {
+        "page": null,
+        "location_kind": "document_block",
+        "text": "전자세금계산서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호\t가상 달빛제작소 10\n사업자등록번호\t000-00-02105\n공급받는자\n상호\t가상 초록운영사 10\n사업자등록번호\t000-00-12108\n공급가액\t3,000,000원\n세액\t300,000원\n합계금액\t3,301,000원\n전액 청구\t전체 계약 대금\n발행일\t2026-09-10",
+        "document_format": "docx",
+        "page_layout_verified": false,
+        "line_locations": {
+          "1": [
+            {
+              "location_kind": "paragraph",
+              "paragraph": 1,
+              "start": 0,
+              "end": 7
+            }
+          ],
+          "2": [
+            {
+              "location_kind": "paragraph",
+              "paragraph": 2,
+              "start": 8,
+              "end": 38
+            }
+          ],
+          "3": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 1,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 39,
+              "end": 42
+            }
+          ],
+          "4": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 2,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 43,
+              "end": 45
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 2,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 46,
+              "end": 57
+            }
+          ],
+          "5": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 3,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 58,
+              "end": 65
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 3,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 66,
+              "end": 78
+            }
+          ],
+          "6": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 4,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 79,
+              "end": 84
+            }
+          ],
+          "7": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 5,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 85,
+              "end": 87
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 5,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 88,
+              "end": 99
+            }
+          ],
+          "8": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 6,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 100,
+              "end": 107
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 6,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 108,
+              "end": 120
+            }
+          ],
+          "9": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 7,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 121,
+              "end": 125
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 7,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 126,
+              "end": 136
+            }
+          ],
+          "10": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 8,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 137,
+              "end": 139
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 8,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 140,
+              "end": 148
+            }
+          ],
+          "11": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 9,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 149,
+              "end": 153
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 9,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 154,
+              "end": 164
+            }
+          ],
+          "12": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 10,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 165,
+              "end": 170
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 10,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 171,
+              "end": 179
+            }
+          ],
+          "13": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 11,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 180,
+              "end": 183
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 11,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 184,
+              "end": 194
+            }
+          ]
+        }
+      }
+    ],
+    "document_type": "tax_invoice",
+    "processing_failed": false,
+    "rule_seconds": 0.08292760000040289,
+    "targets": [
+      "company_name",
+      "supply_amount",
+      "tax_amount",
+      "total_amount"
+    ]
+  }
+}

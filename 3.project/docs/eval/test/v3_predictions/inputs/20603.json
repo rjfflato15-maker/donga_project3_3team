@@ -1,0 +1,178 @@
+{
+  "sha256": "c3b3f14f83ff584125d383394621adf41b75a23b54ab90d582b2af08d2b2a9c8",
+  "payload": {
+    "document": {
+      "document_id": 20603,
+      "path": "test/case_06/document_03.docx",
+      "sha256": "7309abe483977c67d3bbfb3b9239bb5a14174d33979d6f2baa5f4aa8c67f40ab"
+    },
+    "contract_id": 206,
+    "fields": {
+      "title": "가상 달빛제작소 6 사업자등록증",
+      "company_name": "가상 달빛제작소 6",
+      "business_registration_no": "000-00-02065",
+      "amount": null,
+      "issue_date": "2026-09-06",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": null,
+      "tax_amount": null,
+      "total_amount": null,
+      "amount_basis": "UNKNOWN",
+      "amount_scope": "UNKNOWN"
+    },
+    "pages": [
+      {
+        "page": null,
+        "location_kind": "document_block",
+        "text": "사업자등록증\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n상호\t가상 달빛제작소 6\n사업자등록번호\t000-00-02065\n대표자\t가상 담당자\n업태\t서비스업\n종목\t소프트웨어 개발\n발행일\t2026-09-06",
+        "document_format": "docx",
+        "page_layout_verified": false,
+        "line_locations": {
+          "1": [
+            {
+              "location_kind": "paragraph",
+              "paragraph": 1,
+              "start": 0,
+              "end": 6
+            }
+          ],
+          "2": [
+            {
+              "location_kind": "paragraph",
+              "paragraph": 2,
+              "start": 7,
+              "end": 37
+            }
+          ],
+          "3": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 1,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 38,
+              "end": 40
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 1,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 41,
+              "end": 51
+            }
+          ],
+          "4": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 2,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 52,
+              "end": 59
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 2,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 60,
+              "end": 72
+            }
+          ],
+          "5": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 3,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 73,
+              "end": 76
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 3,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 77,
+              "end": 83
+            }
+          ],
+          "6": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 4,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 84,
+              "end": 86
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 4,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 87,
+              "end": 91
+            }
+          ],
+          "7": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 5,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 92,
+              "end": 94
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 5,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 95,
+              "end": 103
+            }
+          ],
+          "8": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 6,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 104,
+              "end": 107
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 6,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 108,
+              "end": 118
+            }
+          ]
+        }
+      }
+    ],
+    "document_type": "business_registration",
+    "processing_failed": false,
+    "rule_seconds": 0.06413450000036391,
+    "targets": []
+  }
+}

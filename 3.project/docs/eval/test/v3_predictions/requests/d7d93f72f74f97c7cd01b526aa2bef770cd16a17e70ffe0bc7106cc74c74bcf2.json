@@ -1,0 +1,37 @@
+{
+  "sha256": "125794886390c20632579bcc4886e73a0230abe64059ee234d7cf5a0150ee50f",
+  "payload": {
+    "attempt_id": "e40c42cf-cc17-4939-8f11-d8df9452f954",
+    "request_sha256": "d7d93f72f74f97c7cd01b526aa2bef770cd16a17e70ffe0bc7106cc74c74bcf2",
+    "started_at": "2026-10-02T15:54:01.770401+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": null,
+          "location_kind": "document_block",
+          "text": "전자세금계산서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호\t가상 달빛제작소 10\n사업자등록번호\t000-00-02105\n공급받는자\n상호\t가상 초록운영사 10\n사업자등록번호\t000-00-12108\n공급가액\t3,000,000원\n세액\t300,000원\n합계금액\t3,301,000원\n전액 청구\t전체 계약 대금\n발행일\t2026-09-10"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "supply_amount",
+        "tax_amount",
+        "total_amount"
+      ],
+      "document_type": "tax_invoice",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

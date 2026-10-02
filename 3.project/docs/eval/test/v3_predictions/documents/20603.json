@@ -1,0 +1,391 @@
+{
+  "sha256": "54bf7a385450c4f7c7377ad779212c6e16e7de72bdd7768b3f64f217745311e8",
+  "payload": {
+    "fields": {
+      "rule": {
+        "title": "가상 달빛제작소 6 사업자등록증",
+        "company_name": "가상 달빛제작소 6",
+        "business_registration_no": "000-00-02065",
+        "amount": null,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "llm": {
+        "title": "가상 달빛제작소 6 사업자등록증",
+        "company_name": "가상 달빛제작소 6",
+        "business_registration_no": "0000002065",
+        "amount": null,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "hybrid_unguarded": {
+        "title": "가상 달빛제작소 6 사업자등록증",
+        "company_name": "가상 달빛제작소 6",
+        "business_registration_no": "000-00-02065",
+        "amount": null,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "hybrid_guarded": {
+        "title": "가상 달빛제작소 6 사업자등록증",
+        "company_name": "가상 달빛제작소 6",
+        "business_registration_no": "000-00-02065",
+        "amount": null,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      }
+    },
+    "traces": {
+      "rule": {
+        "effective_seconds": 0.06413450000036391,
+        "guard_seconds": 0
+      },
+      "llm": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 11.292125500000111,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date",
+            "amount_scope"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "VALUE",
+                "value": "가상 달빛제작소 6",
+                "page": null,
+                "line": 3,
+                "quote": "상호\t가상 달빛제작소 6"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": null,
+                "line": 3,
+                "start": 38,
+                "end": 51,
+                "quote": "상호\t가상 달빛제작소 6",
+                "location_kind": "docx_structure",
+                "positions": [
+                  {
+                    "location_kind": "table_cell",
+                    "table": 1,
+                    "row": 1,
+                    "cell": 1,
+                    "paragraph": 1,
+                    "start": 38,
+                    "end": 40
+                  },
+                  {
+                    "location_kind": "table_cell",
+                    "table": 1,
+                    "row": 1,
+                    "cell": 2,
+                    "paragraph": 1,
+                    "start": 41,
+                    "end": 51
+                  }
+                ],
+                "page_layout_verified": false,
+                "text_verified": true,
+                "label_line": 3,
+                "label": "상호",
+                "party": "supplier"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-02065",
+                "page": null,
+                "line": 4,
+                "quote": "사업자등록번호\t000-00-02065"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": null,
+                "line": 4,
+                "start": 52,
+                "end": 72,
+                "quote": "사업자등록번호\t000-00-02065",
+                "location_kind": "docx_structure",
+                "positions": [
+                  {
+                    "location_kind": "table_cell",
+                    "table": 1,
+                    "row": 2,
+                    "cell": 1,
+                    "paragraph": 1,
+                    "start": 52,
+                    "end": 59
+                  },
+                  {
+                    "location_kind": "table_cell",
+                    "table": 1,
+                    "row": 2,
+                    "cell": 2,
+                    "paragraph": 1,
+                    "start": 60,
+                    "end": 72
+                  }
+                ],
+                "page_layout_verified": false,
+                "text_verified": true,
+                "label_line": 4,
+                "label": "사업자등록번호",
+                "party": "supplier"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "supply_amount",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "tax_amount",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "total_amount",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-06",
+                "page": null,
+                "line": 8,
+                "quote": "발행일\t2026-09-06"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": null,
+                "line": 8,
+                "start": 104,
+                "end": 118,
+                "quote": "발행일\t2026-09-06",
+                "location_kind": "docx_structure",
+                "positions": [
+                  {
+                    "location_kind": "table_cell",
+                    "table": 1,
+                    "row": 6,
+                    "cell": 1,
+                    "paragraph": 1,
+                    "start": 104,
+                    "end": 107
+                  },
+                  {
+                    "location_kind": "table_cell",
+                    "table": 1,
+                    "row": 6,
+                    "cell": 2,
+                    "paragraph": 1,
+                    "start": 108,
+                    "end": 118
+                  }
+                ],
+                "page_layout_verified": false,
+                "text_verified": true,
+                "label_line": 8,
+                "label": "발행일",
+                "party": "supplier"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "amount_scope",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "85e6db162103b3128562357943653b38dd982e78a30dc838a4839a6ed644587f",
+        "cache_hit": false,
+        "guard_seconds": 0,
+        "effective_seconds": 11.356260000000475
+      },
+      "hybrid_unguarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": null,
+          "model_metadata": null,
+          "elapsed_seconds": 0,
+          "attempts": 0,
+          "targets": [],
+          "decisions": [],
+          "manual_review_required": false,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": null,
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": null
+        },
+        "response_id": null,
+        "cache_hit": false,
+        "shared_response_replay": false,
+        "guard_seconds": 0,
+        "effective_seconds": 0.06413450000036391
+      },
+      "hybrid_guarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": null,
+          "model_metadata": null,
+          "elapsed_seconds": 0,
+          "attempts": 0,
+          "targets": [],
+          "decisions": [],
+          "manual_review_required": false,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": null,
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": null
+        },
+        "response_id": null,
+        "cache_hit": false,
+        "shared_response_replay": true,
+        "guard_seconds": 2.6699999580159783e-05,
+        "effective_seconds": 0.06416119999994407
+      }
+    }
+  }
+}

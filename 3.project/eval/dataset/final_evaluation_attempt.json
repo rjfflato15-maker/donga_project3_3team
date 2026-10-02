@@ -1,0 +1,13 @@
+{
+  "mode": "predictions-only-v1",
+  "attempt_id": "e40c42cf-cc17-4939-8f11-d8df9452f954",
+  "status": "predictions_frozen",
+  "started_at": "2026-10-02T15:40:02.741568+00:00",
+  "output": "C:\\3조 색인\\3.project\\docs\\eval\\test\\v3_predictions",
+  "release_sha256": "4c47d979eaf1ac8e1ceb8e41c9c427ca2167387b2b936c95260e35f625881ef5",
+  "manifest_sha256": "e47b4073da28f19b56a314f6350b59cf92b7e3fad4dc28689036aba4b78620aa",
+  "labels_read": false,
+  "recovery_policy": "Reuse durable inputs/responses; pending response becomes INTERRUPTED_RESPONSE_UNKNOWN without a new call.",
+  "finished_at": "2026-10-02T15:54:23.945128+00:00",
+  "receipt_sha256": "7b31e224dd9b91bb26bd0da684da2434a0496562288e36a971827cd203980b69"
+}

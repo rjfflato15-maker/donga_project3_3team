@@ -1,0 +1,529 @@
+{
+  "sha256": "83c228e5312c53a167bae56245e2734f291a816dfe83f05be2daac0a8f90617d",
+  "payload": {
+    "fields": {
+      "rule": {
+        "title": "사업자등록증",
+        "company_name": null,
+        "business_registration_no": "000-00-02051",
+        "amount": null,
+        "issue_date": "2026-09-05",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "llm": {
+        "title": "사업자등록증",
+        "company_name": null,
+        "business_registration_no": "0000002051",
+        "amount": null,
+        "issue_date": "2026-09-05",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "hybrid_unguarded": {
+        "title": "사업자등록증",
+        "company_name": "가상 달빛제작소 5",
+        "business_registration_no": "0000002051",
+        "amount": null,
+        "issue_date": "2026-09-05",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "hybrid_guarded": {
+        "title": "사업자등록증",
+        "company_name": null,
+        "business_registration_no": "000-00-02051",
+        "amount": null,
+        "issue_date": "2026-09-05",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      }
+    },
+    "traces": {
+      "rule": {
+        "effective_seconds": 0.2749612999978126,
+        "guard_seconds": 0
+      },
+      "llm": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 8.331046100000094,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date",
+            "amount_scope"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-02051",
+                "page": 1,
+                "line": 8,
+                "quote": "000-00-02051"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 8,
+                "start": 68,
+                "end": 80,
+                "quote": "000-00-02051",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "supply_amount",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "tax_amount",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "total_amount",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-05",
+                "page": 1,
+                "line": 12,
+                "quote": "2026-09-05"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 12,
+                "start": 102,
+                "end": 112,
+                "quote": "2026-09-05",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "amount_scope",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "f217b90de47cb7c5214f738c5365438bcdaabb0938fde819052a58b18e2cbc1d",
+        "cache_hit": false,
+        "guard_seconds": 0,
+        "effective_seconds": 8.606007399997907
+      },
+      "hybrid_unguarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 5.438249299997551,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "issue_date"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "VALUE",
+                "value": "가상 달빛제작소 5",
+                "page": 1,
+                "line": 7,
+                "quote": "가상 달빛제작소 5"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 7,
+                "start": 57,
+                "end": 67,
+                "quote": "가상 달빛제작소 5",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-02051",
+                "page": 1,
+                "line": 8,
+                "quote": "000-00-02051"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 8,
+                "start": 68,
+                "end": 80,
+                "quote": "000-00-02051",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-05",
+                "page": 1,
+                "line": 12,
+                "quote": "2026-09-05"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 12,
+                "start": 102,
+                "end": 112,
+                "quote": "2026-09-05",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": true
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "dedd5484c530c2eba757a5b5b7725c9fcb659d0812dcec1e527ae92e741d3369",
+        "cache_hit": false,
+        "shared_response_replay": false,
+        "guard_seconds": 0,
+        "effective_seconds": 5.713210599995364
+      },
+      "hybrid_guarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 5.438249299997551,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "issue_date"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "VALUE",
+                "value": "가상 달빛제작소 5",
+                "page": 1,
+                "line": 7,
+                "quote": "가상 달빛제작소 5"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 7,
+                "start": 57,
+                "end": 67,
+                "quote": "가상 달빛제작소 5",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-02051",
+                "page": 1,
+                "line": 8,
+                "quote": "000-00-02051"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 8,
+                "start": 68,
+                "end": 80,
+                "quote": "000-00-02051",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-05",
+                "page": 1,
+                "line": 12,
+                "quote": "2026-09-05"
+              },
+              "accepted": false,
+              "reasons": [
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 12,
+                "start": 102,
+                "end": 112,
+                "quote": "2026-09-05",
+                "location_kind": "page"
+              },
+              "human_confirmed": false,
+              "applied": false
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": true,
+          "unresolved_fields": [
+            "company_name",
+            "business_registration_no",
+            "issue_date"
+          ],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "dedd5484c530c2eba757a5b5b7725c9fcb659d0812dcec1e527ae92e741d3369",
+        "cache_hit": false,
+        "shared_response_replay": true,
+        "guard_seconds": 0.0007667999998375308,
+        "effective_seconds": 5.713977399995201
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "sha256": "4187b9ae1695e03c4e40e5a60bd2092ca1b90dde55346b4e7ea8b674ba05d5b3",
+  "payload": {
+    "attempt_id": "e40c42cf-cc17-4939-8f11-d8df9452f954",
+    "request_sha256": "17d03bef2a55db0b65deaf6bb9e205273403a03e13fd67799dee9c2735e87943",
+    "run": {
+      "ok": true,
+      "error": null,
+      "attempts": 1,
+      "proposals": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 달빛제작소 7",
+          "page": 1,
+          "line": 6,
+          "quote": "가상 달빛제작소 7"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-02070",
+          "page": 1,
+          "line": 7,
+          "quote": "000-00-02070"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-07",
+          "page": 1,
+          "line": 11,
+          "quote": "2026-09-07"
+        }
+      },
+      "model": "qwen3:latest",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "prompt_version": "grounded-fields-v3",
+      "manual_review_required": true,
+      "model_metadata": {
+        "name": "qwen3:latest",
+        "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+        "size": 5225388164,
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3",
+          "families": [
+            "qwen3"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 40960,
+          "embedding_length": 4096
+        }
+      },
+      "server_seconds": 5.403563,
+      "load_seconds": 0.0110248,
+      "eval_count": 168,
+      "elapsed_seconds": 5.409867500002292
+    }
+  }
+}

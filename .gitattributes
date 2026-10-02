@@ -3,3 +3,5 @@
 3.project/eval/**/*.pdf -diff
 3.project/backend/scripts/generate_evaluation_dataset.py -text
 3.project/backend/scripts/build_reference_labels.py -text
+3.project/docs/eval/test/v3_predictions/** -text
+3.project/docs/eval/test/v3_scores/** -text

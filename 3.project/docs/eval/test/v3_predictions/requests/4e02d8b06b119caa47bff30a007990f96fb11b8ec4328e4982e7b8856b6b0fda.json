@@ -1,0 +1,40 @@
+{
+  "sha256": "3521f79288dea0e68746cdf141c093d587e807ffa6ec5d26de16f7f16d4897ea",
+  "payload": {
+    "attempt_id": "e40c42cf-cc17-4939-8f11-d8df9452f954",
+    "request_sha256": "4e02d8b06b119caa47bff30a007990f96fb11b8ec4328e4982e7b8856b6b0fda",
+    "started_at": "2026-10-02T15:46:36.537507+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "외주용역 계약서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약명\n가상 업무지원 시스템 구축\n발주자\n가상 초록운영사 6\n수급인(을)\n가상 달빛제작소 6\n사업자등록번호\n000-00-02065\n공급가액\n2,600,000원\n세액\n260,000원\n합계금액\n2,860,000원\n발행일\n2026-09-06\n"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "issue_date",
+        "amount_scope"
+      ],
+      "document_type": "contract",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

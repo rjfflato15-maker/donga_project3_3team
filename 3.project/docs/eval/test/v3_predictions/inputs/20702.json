@@ -1,0 +1,46 @@
+{
+  "sha256": "2aadc09a721a281a1fdb78f7867cb7c5b3c4f94a1f6cf2567da117a85e9cb2d9",
+  "payload": {
+    "document": {
+      "document_id": 20702,
+      "path": "test/case_07/document_02.png",
+      "sha256": "b9138d098374d39de4c875d777ea5762af12bee21460e149a53e44d5f2e31159"
+    },
+    "contract_id": 207,
+    "fields": {
+      "title": "사업자 견적서",
+      "company_name": "사업자",
+      "business_registration_no": "000-00-02070",
+      "amount": null,
+      "issue_date": "2026-09-07",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": null,
+      "tax_amount": null,
+      "total_amount": null,
+      "amount_basis": "UNKNOWN",
+      "amount_scope": "UNKNOWN"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "견적서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n사업자등록번호\n공급받는자\n사업자등록번호\n공급가액\n세액\n합계금액\n발행일\n가상 달빛제작소 7\n000-00-02070\n가상 초록운영사 7\n000-00-12073\n2,700,000원\n270,000원\n2,970,000원\n2026-09-07"
+      }
+    ],
+    "document_type": "estimate",
+    "processing_failed": false,
+    "rule_seconds": 0.32434420000208775,
+    "targets": [
+      "company_name",
+      "business_registration_no",
+      "supply_amount",
+      "tax_amount",
+      "total_amount",
+      "issue_date",
+      "amount_scope"
+    ]
+  }
+}

@@ -1,0 +1,311 @@
+{
+  "sha256": "76d17870bf0a1ffdc9fda8730c348ca6fe78366ab278f776178700de2dde8f7e",
+  "payload": {
+    "fields": {
+      "rule": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": "가상 달빛제작소 6",
+        "business_registration_no": "000-00-02065",
+        "amount": 2860000.0,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 2600000.0,
+        "tax_amount": 260000.0,
+        "total_amount": 2860000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "llm": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "0000002065",
+        "amount": 2860000.0,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 2600000.0,
+        "tax_amount": 260000.0,
+        "total_amount": 2860000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "UNKNOWN"
+      },
+      "hybrid_unguarded": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": "가상 달빛제작소 6",
+        "business_registration_no": "000-00-02065",
+        "amount": 2860000.0,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 2600000.0,
+        "tax_amount": 260000.0,
+        "total_amount": 2860000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "hybrid_guarded": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": "가상 달빛제작소 6",
+        "business_registration_no": "000-00-02065",
+        "amount": 2860000.0,
+        "issue_date": "2026-09-06",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 2600000.0,
+        "tax_amount": 260000.0,
+        "total_amount": 2860000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      }
+    },
+    "traces": {
+      "rule": {
+        "effective_seconds": 0.008903900001314469,
+        "guard_seconds": 0
+      },
+      "llm": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 12.91905609999958,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date",
+            "amount_scope"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": false,
+              "reasons": [
+                "UNSUPPORTED_ABSTENTION"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-02065",
+                "page": 1,
+                "line": 10,
+                "quote": "사업자등록번호 000-00-02065"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "supply_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2600000",
+                "page": 1,
+                "line": 12,
+                "quote": "공급가액 2,600,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "tax_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "260000",
+                "page": 1,
+                "line": 14,
+                "quote": "세액 260,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "total_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2860000",
+                "page": 1,
+                "line": 16,
+                "quote": "합계금액 2,860,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-06",
+                "page": 1,
+                "line": 18,
+                "quote": "발행일 2026-09-06"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "amount_scope",
+              "proposal": {
+                "state": "REVIEW",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": false,
+              "reasons": [
+                "UNSUPPORTED_ABSTENTION"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": true,
+          "unresolved_fields": [
+            "amount_scope"
+          ],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "4e02d8b06b119caa47bff30a007990f96fb11b8ec4328e4982e7b8856b6b0fda",
+        "cache_hit": false,
+        "guard_seconds": 0,
+        "effective_seconds": 12.927960000000894
+      },
+      "hybrid_unguarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": null,
+          "model_metadata": null,
+          "elapsed_seconds": 0,
+          "attempts": 0,
+          "targets": [],
+          "decisions": [],
+          "manual_review_required": false,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": null,
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": null
+        },
+        "response_id": null,
+        "cache_hit": false,
+        "shared_response_replay": false,
+        "guard_seconds": 0,
+        "effective_seconds": 0.008903900001314469
+      },
+      "hybrid_guarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": null,
+          "model_metadata": null,
+          "elapsed_seconds": 0,
+          "attempts": 0,
+          "targets": [],
+          "decisions": [],
+          "manual_review_required": false,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": null,
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": null
+        },
+        "response_id": null,
+        "cache_hit": false,
+        "shared_response_replay": true,
+        "guard_seconds": 2.8800001018680632e-05,
+        "effective_seconds": 0.00893270000233315
+      }
+    }
+  }
+}

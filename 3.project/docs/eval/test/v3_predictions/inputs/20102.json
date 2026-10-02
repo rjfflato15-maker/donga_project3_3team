@@ -1,0 +1,240 @@
+{
+  "sha256": "6a5bc4a79b8debaac3ca0598500f1526950b0e0742889815d7adaa8cb458d5d0",
+  "payload": {
+    "document": {
+      "document_id": 20102,
+      "path": "test/case_01/document_02.docx",
+      "sha256": "f5fe875bcf26d587fc919b50bb54098f0f336c97fdfcf9553748e63c873f0735"
+    },
+    "contract_id": 201,
+    "fields": {
+      "title": "가상 달빛제작소 1 견적서",
+      "company_name": "가상 달빛제작소 1",
+      "business_registration_no": "000-00-02013",
+      "amount": 2310000.0,
+      "issue_date": "2026-09-01",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": 2100000.0,
+      "tax_amount": 210000.0,
+      "total_amount": 2310000.0,
+      "amount_basis": "TOTAL",
+      "amount_scope": "FULL"
+    },
+    "pages": [
+      {
+        "page": null,
+        "location_kind": "document_block",
+        "text": "견적서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호\t가상 달빛제작소 1\n사업자등록번호\t000-00-02013\n공급받는자\n상호\t가상 초록운영사 1\n사업자등록번호\t000-00-12016\n공급가액\t2,100,000원\n세액\t210,000원\n합계금액\t2,310,000원\n발행일\t2026-09-01",
+        "document_format": "docx",
+        "page_layout_verified": false,
+        "line_locations": {
+          "1": [
+            {
+              "location_kind": "paragraph",
+              "paragraph": 1,
+              "start": 0,
+              "end": 3
+            }
+          ],
+          "2": [
+            {
+              "location_kind": "paragraph",
+              "paragraph": 2,
+              "start": 4,
+              "end": 34
+            }
+          ],
+          "3": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 1,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 35,
+              "end": 38
+            }
+          ],
+          "4": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 2,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 39,
+              "end": 41
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 2,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 42,
+              "end": 52
+            }
+          ],
+          "5": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 3,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 53,
+              "end": 60
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 3,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 61,
+              "end": 73
+            }
+          ],
+          "6": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 4,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 74,
+              "end": 79
+            }
+          ],
+          "7": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 5,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 80,
+              "end": 82
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 5,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 83,
+              "end": 93
+            }
+          ],
+          "8": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 6,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 94,
+              "end": 101
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 6,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 102,
+              "end": 114
+            }
+          ],
+          "9": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 7,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 115,
+              "end": 119
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 7,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 120,
+              "end": 130
+            }
+          ],
+          "10": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 8,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 131,
+              "end": 133
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 8,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 134,
+              "end": 142
+            }
+          ],
+          "11": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 9,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 143,
+              "end": 147
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 9,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 148,
+              "end": 158
+            }
+          ],
+          "12": [
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 10,
+              "cell": 1,
+              "paragraph": 1,
+              "start": 159,
+              "end": 162
+            },
+            {
+              "location_kind": "table_cell",
+              "table": 1,
+              "row": 10,
+              "cell": 2,
+              "paragraph": 1,
+              "start": 163,
+              "end": 173
+            }
+          ]
+        }
+      }
+    ],
+    "document_type": "estimate",
+    "processing_failed": false,
+    "rule_seconds": 0.13191059999735444,
+    "targets": []
+  }
+}

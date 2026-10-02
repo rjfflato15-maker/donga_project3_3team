@@ -1,0 +1,4332 @@
+{
+  "dataset_version": "synthetic-v1",
+  "created_for": "local-evaluation",
+  "contracts": [
+    {
+      "contract_id": 101,
+      "split": "dev",
+      "scenario": "normal",
+      "description": "6종 제출 및 금액과 번호 일치",
+      "layout_family": "dev_linear",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 1",
+        "business_number": "000-00-01014",
+        "contract_amount": 1210000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 10101,
+          "path": "dev/case_01/document_01.pdf",
+          "sha256": "8bdbde16d7d46cc7873a1ee7f76f5bbc31beb975ae2cf63ac3c71bce643d4b8b"
+        },
+        {
+          "document_id": 10102,
+          "path": "dev/case_01/document_02.png",
+          "sha256": "2d0358e3d30e98b2869d187b6f1e74c37d43ed7e115f573e99f9390f14f344b9"
+        },
+        {
+          "document_id": 10103,
+          "path": "dev/case_01/document_03.docx",
+          "sha256": "f1da94085c371fe80700d0267c04a4d41260de6a791b9a1e4805b286ad319a9c"
+        },
+        {
+          "document_id": 10104,
+          "path": "dev/case_01/document_04.pdf",
+          "sha256": "a27e1468b6db7f786936be0524a9c5b2dcfbfcc7020b5fe1573ce5601e7b2c5e"
+        },
+        {
+          "document_id": 10105,
+          "path": "dev/case_01/document_05.png",
+          "sha256": "1ef6600dc3135491bbdc0a4e1c5b238214418d470df043ccad40f6b9b36835ea"
+        },
+        {
+          "document_id": 10106,
+          "path": "dev/case_01/document_06.docx",
+          "sha256": "499bcc7a938e89cf6bfb4d35c442517b79377c6a6111044442976af7c36c8d45"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10101"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10101"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10101"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10101"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10102"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10102"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10102"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10102"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10102"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10102"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10102"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10103"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10103"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10103"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10103"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10104"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10104"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10104"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10105"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10105"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10105"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10105"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10105"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10105"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10105"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10105"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10106"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10106"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10106"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 102,
+      "split": "dev",
+      "scenario": "missing",
+      "description": "통장사본과 검수확인서 미제출",
+      "layout_family": "dev_linear",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 2",
+        "business_number": "000-00-01028",
+        "contract_amount": 1320000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 10201,
+          "path": "dev/case_02/document_01.png",
+          "sha256": "9f870a8dce4afd9480dbdf1f7ef1c467ede220c1feb5e247f4dc74eea14fa1d4"
+        },
+        {
+          "document_id": 10202,
+          "path": "dev/case_02/document_02.docx",
+          "sha256": "e49887b1b45ce692235e5b357875988d096553d02f058d782e954ac3f4170fac"
+        },
+        {
+          "document_id": 10203,
+          "path": "dev/case_02/document_03.pdf",
+          "sha256": "40f02a9e732c19ee542236834bb00bcb0a83336d35f0cf794d6212a246afe7cb"
+        },
+        {
+          "document_id": 10204,
+          "path": "dev/case_02/document_04.png",
+          "sha256": "3fc0222f4d897e1082e6663b24d22e2fa2cf9d7c1500f157d798a753a9d83252"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10201"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10201"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10201"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10201"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10202"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10202"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10202"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10202"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10202"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10202"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10202"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10203"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10203"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10203"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10203"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10204"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10204"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10204"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10204"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10204"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10204"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10204"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10204"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 103,
+      "split": "dev",
+      "scenario": "wrong_business_no",
+      "description": "견적서의 공급자 사업자번호가 계약 등록 기준과 다름",
+      "layout_family": "dev_linear",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 3",
+        "business_number": "000-00-01033",
+        "contract_amount": 1430000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 10301,
+          "path": "dev/case_03/document_01.docx",
+          "sha256": "f9eb74f7e896b72cb63452dfbfda0e18d4a64858c33aaaeb0dc7b61e24238b5a"
+        },
+        {
+          "document_id": 10302,
+          "path": "dev/case_03/document_02.pdf",
+          "sha256": "74382b2f8c64077edb20b1da34e961ee91dbec2ee05ab86ebe48cdf983e7cafd"
+        },
+        {
+          "document_id": 10303,
+          "path": "dev/case_03/document_03.png",
+          "sha256": "6d82dc311e481d0c235afe65104ff6e474b0e0666053b035af7c23bbc80ef7af"
+        },
+        {
+          "document_id": 10304,
+          "path": "dev/case_03/document_04.docx",
+          "sha256": "a636a2bfb10a56aadd8e41f6d833c7cbb3d3a3a82bf00e82f559f3335fad0575"
+        },
+        {
+          "document_id": 10305,
+          "path": "dev/case_03/document_05.pdf",
+          "sha256": "f935ac3eb42dd0fa49b6ee2721c706cd462ffeac48fc7a03cf373d5d074546f2"
+        },
+        {
+          "document_id": 10306,
+          "path": "dev/case_03/document_06.png",
+          "sha256": "230051504ec9f4e82a6372fa5f5a2d595fc2c8dc53999f2382bcde3eb1390843"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10301"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10301"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10301"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10301"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10302"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10302"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10302"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10302"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10302"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10302"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10302"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10303"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10303"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10303"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10303"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10304"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10304"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10304"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10305"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10305"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10305"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10305"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10305"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10305"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10305"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10305"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10306"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10306"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10306"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 104,
+      "split": "dev",
+      "scenario": "amount_mismatch",
+      "description": "견적 합계가 계약 등록 기준과 다름",
+      "layout_family": "dev_linear",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 4",
+        "business_number": "000-00-01047",
+        "contract_amount": 1540000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 10401,
+          "path": "dev/case_04/document_01.pdf",
+          "sha256": "82edbc6dcd0223b5f6c2294d5692bebb51debd40f8cb90de8238ce1442f90935"
+        },
+        {
+          "document_id": 10402,
+          "path": "dev/case_04/document_02.png",
+          "sha256": "f5c1072618c0295df6a0e77a83f4a498f897516a920adf64d91b3374bb92a4b3"
+        },
+        {
+          "document_id": 10403,
+          "path": "dev/case_04/document_03.docx",
+          "sha256": "a2662b0da2faa1ff790c5051c0eeffe9ed1b7106aaf7c2df31e694714f42a5bb"
+        },
+        {
+          "document_id": 10404,
+          "path": "dev/case_04/document_04.pdf",
+          "sha256": "5fa892ccea7b9252bc3cc840f056619bbce745f9bf164ffb54f2678e4d3ebe39"
+        },
+        {
+          "document_id": 10405,
+          "path": "dev/case_04/document_05.png",
+          "sha256": "c7a6b5e04b26e516167df36174eb7efa604a463b3df931b78931ff444167c64d"
+        },
+        {
+          "document_id": 10406,
+          "path": "dev/case_04/document_06.docx",
+          "sha256": "d7a2572c1f5d27a9a26d477605d65fa2537e74f86bc63f1db53ee01d319ac9a8"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10401"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10401"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10401"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10401"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10402"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10402"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10402"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10402"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10402"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10402"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10402"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10403"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10403"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10403"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10403"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10404"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10404"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10404"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10405"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10405"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10405"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10405"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10405"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10405"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10405"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10405"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10406"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10406"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10406"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 105,
+      "split": "dev",
+      "scenario": "vat_separate",
+      "description": "공급가액 기준 계약과 세액을 더한 증빙 비교",
+      "layout_family": "dev_linear",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 5",
+        "business_number": "000-00-01052",
+        "contract_amount": 1500000,
+        "amount_policy": {
+          "amount_basis": "SUPPLY",
+          "tax_amount": 150000,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 10501,
+          "path": "dev/case_05/document_01.png",
+          "sha256": "834eedb33129deafc045e9151400cdaa943a483a9b4c9134cacdf1bf0f30cd97"
+        },
+        {
+          "document_id": 10502,
+          "path": "dev/case_05/document_02.docx",
+          "sha256": "73b354d3763e6f37a7242ce642760647234bec02090f53ae05c556fb75645636"
+        },
+        {
+          "document_id": 10503,
+          "path": "dev/case_05/document_03.pdf",
+          "sha256": "90f52e9bae317f5896e8e5011eb6b0f59f022e7a416c3536e0c8dd9836ef41c5"
+        },
+        {
+          "document_id": 10504,
+          "path": "dev/case_05/document_04.png",
+          "sha256": "bfe7e8457a99ea6af3e0d18d32ab0c4185f7aa7b599b4e6e7a12058b1be0bf7c"
+        },
+        {
+          "document_id": 10505,
+          "path": "dev/case_05/document_05.docx",
+          "sha256": "99e487ce6dfc109d15e1cfa1a73f5d18e738747cf7870c0a2bbdc4347fcb8fc0"
+        },
+        {
+          "document_id": 10506,
+          "path": "dev/case_05/document_06.pdf",
+          "sha256": "66a19a70699ebd28c2141853864500be47c271224bd0df21f0748cf2ec9ab0ab"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10501"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10501"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10501"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10501"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10502"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10502"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10502"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10502"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10502"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10502"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10502"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10503"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10503"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10503"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10503"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10504"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10504"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10504"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10505"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10505"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10505"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10505"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10505"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10505"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10505"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10505"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10506"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10506"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10506"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 106,
+      "split": "dev",
+      "scenario": "installments",
+      "description": "선금과 잔금 세금계산서 두 건 및 누적 합계",
+      "layout_family": "dev_linear",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 6",
+        "business_number": "000-00-01066",
+        "contract_amount": 1760000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "INSTALLMENT"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 10601,
+          "path": "dev/case_06/document_01.docx",
+          "sha256": "f36e3959ca0b43b97c20b2f387a22f2ad8898b871922bccb11af4e5c996e5157"
+        },
+        {
+          "document_id": 10602,
+          "path": "dev/case_06/document_02.pdf",
+          "sha256": "adfb3bc0815ab17faf380ccbf3d367a6bae23c18a54adb35aedc65200d637251"
+        },
+        {
+          "document_id": 10603,
+          "path": "dev/case_06/document_03.png",
+          "sha256": "e615debe1ff132c1db983eb01f348d6b00f7592437510322f886deb269bd194d"
+        },
+        {
+          "document_id": 10604,
+          "path": "dev/case_06/document_04.docx",
+          "sha256": "4775e94d82083633f4893859bfb0ca67da9c57745f1a9961b0305d48e003fb4b"
+        },
+        {
+          "document_id": 10605,
+          "path": "dev/case_06/document_05.pdf",
+          "sha256": "778549950898f4ef0e25c61d33648e00cbe07f1e4fe674895dc9d5fd4790cfe2"
+        },
+        {
+          "document_id": 10606,
+          "path": "dev/case_06/document_06.png",
+          "sha256": "4c843675dda2f4b85107a3a18f27e18c632dcfb461bcd1b7fdcf198715eb879f"
+        },
+        {
+          "document_id": 10607,
+          "path": "dev/case_06/document_07.docx",
+          "sha256": "9d9e845869fcd64eb518a13e38149d0ffa99e1bdbeeafb919961e7534f2b58cb"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10601"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10601"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10601"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10601"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10602"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10602"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10602"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10602"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10602"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10602"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10602"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10603"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10603"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10603"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10603"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10604"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10604"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10604"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10605"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10605"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10605"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10605"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10605"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10605"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10605"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10605"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10606"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10606"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10606"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10607"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10607"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10607"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10607"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10607"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10607"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10607"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10607"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 107,
+      "split": "dev",
+      "scenario": "scan_noise",
+      "description": "텍스트 없는 PDF와 회전 및 노이즈가 있는 이미지",
+      "layout_family": "dev_linear",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 7",
+        "business_number": "000-00-01071",
+        "contract_amount": 1870000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 10701,
+          "path": "dev/case_07/document_01.pdf",
+          "sha256": "e188523a2d18b194fef2277fa257510c989f55cbd7cc78e5013301a46eea4e85"
+        },
+        {
+          "document_id": 10702,
+          "path": "dev/case_07/document_02.png",
+          "sha256": "4e993c24436f04fbc52ffd68ca67487f85bbc84a9213d854e2917e0e9733f3a3"
+        },
+        {
+          "document_id": 10703,
+          "path": "dev/case_07/document_03.png",
+          "sha256": "4dd61cf4604eff019c577c8affbcee9e43db748279759114332c82c5343b11fc"
+        },
+        {
+          "document_id": 10704,
+          "path": "dev/case_07/document_04.png",
+          "sha256": "f96396f5ec6cb6bec6f84a69505f3f5285023149fdac716a58cebddf78d28ba4"
+        },
+        {
+          "document_id": 10705,
+          "path": "dev/case_07/document_05.png",
+          "sha256": "e1b4774da684b8577d43196f406b90e6620f0304ca0418eca17db913c0b953d1"
+        },
+        {
+          "document_id": 10706,
+          "path": "dev/case_07/document_06.png",
+          "sha256": "3af70e28ca154249d040457372b4c2d9dd97b79c79602c29563525e133520444"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10701"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10701"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10701"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10701"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10702"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10702"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10702"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10702"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10702"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10702"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10702"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10703"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10703"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10703"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10703"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10704"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10704"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10704"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10705"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10705"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10705"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10705"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10705"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10705"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10705"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10705"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10706"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10706"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10706"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 108,
+      "split": "dev",
+      "scenario": "amount_table",
+      "description": "품목 표와 공급가액 세액 합계",
+      "layout_family": "dev_linear",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 8",
+        "business_number": "000-00-01085",
+        "contract_amount": 1980000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 10801,
+          "path": "dev/case_08/document_01.png",
+          "sha256": "bad7b3dbc5d1f2e6eb743c08a7adaac8d44f2bc40a1743c90e54ac4ae7b00160"
+        },
+        {
+          "document_id": 10802,
+          "path": "dev/case_08/document_02.docx",
+          "sha256": "af175b490a1c019cba75e886d2df8c85dcd0344be89853b0d1c187dfa7e643d4"
+        },
+        {
+          "document_id": 10803,
+          "path": "dev/case_08/document_03.pdf",
+          "sha256": "5aadeb0591ce9743bbf345db9e0c8c41b87a191f72563055f093da2a51e3c04c"
+        },
+        {
+          "document_id": 10804,
+          "path": "dev/case_08/document_04.png",
+          "sha256": "8ebac7fe426911f3322b3dc857db153b1547b0702a1814932b72f45cd566ffe4"
+        },
+        {
+          "document_id": 10805,
+          "path": "dev/case_08/document_05.docx",
+          "sha256": "006d568e2b3f71695e681eb32dc626c9d879f61b8910ed8f030a7dea03a57bbe"
+        },
+        {
+          "document_id": 10806,
+          "path": "dev/case_08/document_06.pdf",
+          "sha256": "be3258b1b742b1b3d82991ba99501c15e9efb8e6c29d432962790e09b8150812"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10801"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10801"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10801"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10801"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10802"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10802"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10802"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10802"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10802"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10802"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10802"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10803"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10803"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10803"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10803"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10804"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10804"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10804"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10805"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10805"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10805"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10805"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10805"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10805"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10805"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10805"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10806"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10806"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10806"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 109,
+      "split": "dev",
+      "scenario": "ambiguous_amount",
+      "description": "의미와 적용 범위를 확정할 수 없는 참고 금액 두 개",
+      "layout_family": "dev_linear",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 9",
+        "business_number": "000-00-01090",
+        "contract_amount": 2090000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 10901,
+          "path": "dev/case_09/document_01.docx",
+          "sha256": "df2af685c7bf94a97ad0e08022d83ec9d12dcbfba8a6b0dabc4df76deab28832"
+        },
+        {
+          "document_id": 10902,
+          "path": "dev/case_09/document_02.pdf",
+          "sha256": "ff9f41662e6ff9674ba07a6009bb73402a931064e9065948e2ea936f0a16d5e2"
+        },
+        {
+          "document_id": 10903,
+          "path": "dev/case_09/document_03.png",
+          "sha256": "a85aac78668c0e75445c6fa9eb534b37a83fb6dedb52d340d0c4f07df8234624"
+        },
+        {
+          "document_id": 10904,
+          "path": "dev/case_09/document_04.docx",
+          "sha256": "f0110b1b28bcde1914e1cc838965925f445d145faa1ea6498a264af29f08e906"
+        },
+        {
+          "document_id": 10905,
+          "path": "dev/case_09/document_05.pdf",
+          "sha256": "2651ac5f3710f944df5f7083048f87641cc1ed42b47cf7da4a8cc6e4ac888a58"
+        },
+        {
+          "document_id": 10906,
+          "path": "dev/case_09/document_06.png",
+          "sha256": "80e85c54573171316c7786c7ed805e99f247acaf33f5e820c9b588e8dbda3f6e"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10901"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10901"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10901"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10901"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10902"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10902"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10902"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10902"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10902"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10902"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "10902"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10903"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10903"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10903"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10903"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10904"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10904"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10904"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10905"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10905"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10905"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "10905"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "10905"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "10905"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "10905"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "10905"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "10906"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "10906"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "10906"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 110,
+      "split": "dev",
+      "scenario": "arithmetic_mismatch",
+      "description": "표시 합계가 공급가액과 세액의 합과 다름",
+      "layout_family": "dev_linear",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 10",
+        "business_number": "000-00-01106",
+        "contract_amount": 2200000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 11001,
+          "path": "dev/case_10/document_01.pdf",
+          "sha256": "e0ed5cf010809e43bf554371b50b1bb4d85d7be8906cb1a277e76e64a3060d44"
+        },
+        {
+          "document_id": 11002,
+          "path": "dev/case_10/document_02.png",
+          "sha256": "30c2dac54d3f956d0bf2179224b9344642c9890c2c30ac9392be423b0646a438"
+        },
+        {
+          "document_id": 11003,
+          "path": "dev/case_10/document_03.docx",
+          "sha256": "55c86403a98f73959b39fbe763f0e51b3e4172300ad7bdce64d5e36a6a9ae9dc"
+        },
+        {
+          "document_id": 11004,
+          "path": "dev/case_10/document_04.pdf",
+          "sha256": "3d6e7ba70dbb9ff02ba43da232c7e0c22eccf4361428870c67acf9d5690f3479"
+        },
+        {
+          "document_id": 11005,
+          "path": "dev/case_10/document_05.png",
+          "sha256": "a46cc40eb5faf2bb77b405df5cbe10b29288dab8a5d82aa8d148b4594d0913c0"
+        },
+        {
+          "document_id": 11006,
+          "path": "dev/case_10/document_06.docx",
+          "sha256": "8b45f652be107e3e6b21abf6e5acbc7168af957d2e81a7487ffeacbd7abecd1c"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11001"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11001"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11001"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "11001"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11002"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11002"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11002"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "11002"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "11002"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "11002"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "11002"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11003"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11003"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11003"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "11003"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11004"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11004"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11004"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11005"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11005"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11005"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "11005"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "11005"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "11005"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "11005"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "11005"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "11006"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "11006"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "11006"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 201,
+      "split": "test",
+      "scenario": "normal",
+      "description": "6종 제출 및 금액과 번호 일치",
+      "layout_family": "test_matrix",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 달빛제작소 1",
+        "business_number": "000-00-02013",
+        "contract_amount": 2310000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 20101,
+          "path": "test/case_01/document_01.png",
+          "sha256": "a9b558fb265555cce199987c35fb57a7d51a43c8197b3c2f3912ed3a9885063f"
+        },
+        {
+          "document_id": 20102,
+          "path": "test/case_01/document_02.docx",
+          "sha256": "f5fe875bcf26d587fc919b50bb54098f0f336c97fdfcf9553748e63c873f0735"
+        },
+        {
+          "document_id": 20103,
+          "path": "test/case_01/document_03.pdf",
+          "sha256": "a4afad24efcc8bb58677153f0fab643bf7e99b1bf9b93ed4b554a62b433d1406"
+        },
+        {
+          "document_id": 20104,
+          "path": "test/case_01/document_04.png",
+          "sha256": "aab49e5b48a017a24a1931dae78fde00010a080f8a45775effe9986bdcf805fe"
+        },
+        {
+          "document_id": 20105,
+          "path": "test/case_01/document_05.docx",
+          "sha256": "0407adc8b2ed1dfc41cabc267f361b49fdcc110085000b2d0cecd3b8406ad875"
+        },
+        {
+          "document_id": 20106,
+          "path": "test/case_01/document_06.pdf",
+          "sha256": "fd1d0197c0e1811f412a6a56e5cc26fac54270dae5ecdff414ec1dacccc42717"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20101"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20101"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20101"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20101"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20102"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20102"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20102"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20102"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20102"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20102"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20102"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20103"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20103"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20103"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20103"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20104"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20104"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20104"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20105"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20105"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20105"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20105"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20105"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20105"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20105"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20105"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20106"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20106"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20106"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 202,
+      "split": "test",
+      "scenario": "missing",
+      "description": "통장사본과 검수확인서 미제출",
+      "layout_family": "test_matrix",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 달빛제작소 2",
+        "business_number": "000-00-02027",
+        "contract_amount": 2420000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 20201,
+          "path": "test/case_02/document_01.docx",
+          "sha256": "7c08f6f6a5de033137ce02507f5a204ec898e89fb8e402b4da7c4ccaeb07e087"
+        },
+        {
+          "document_id": 20202,
+          "path": "test/case_02/document_02.pdf",
+          "sha256": "7adc573a9a1b0c02d390aa03fc998a406d726aa836898a5c93c60c41fad31df5"
+        },
+        {
+          "document_id": 20203,
+          "path": "test/case_02/document_03.png",
+          "sha256": "46306f628eaf44c1e95f2ffc373216e96e56792c5d968419efd1ba9732e5044a"
+        },
+        {
+          "document_id": 20204,
+          "path": "test/case_02/document_04.docx",
+          "sha256": "8f8fb7c90cc4841fbe6de9aaa0febbd59ea55d6aa2f334eb1dcc93f3df42a434"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20201"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20201"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20201"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20201"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20202"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20202"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20202"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20202"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20202"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20202"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20202"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20203"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20203"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20203"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20203"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20204"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20204"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20204"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20204"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20204"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20204"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20204"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20204"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 203,
+      "split": "test",
+      "scenario": "wrong_business_no",
+      "description": "견적서의 공급자 사업자번호가 계약 등록 기준과 다름",
+      "layout_family": "test_matrix",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 달빛제작소 3",
+        "business_number": "000-00-02032",
+        "contract_amount": 2530000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 20301,
+          "path": "test/case_03/document_01.pdf",
+          "sha256": "26d3f50282a79f7522c27ad898d70d1a9611858eaf706d6cc9de3e555e7719c0"
+        },
+        {
+          "document_id": 20302,
+          "path": "test/case_03/document_02.png",
+          "sha256": "2a67a90712811ca2ca2107e6db5b6d06ae9e673de6c5d1e2884f20a9de056d77"
+        },
+        {
+          "document_id": 20303,
+          "path": "test/case_03/document_03.docx",
+          "sha256": "4fc3a1a508b9ee7aabc8a7be24d2ec6baee0a091b1f30ca4faaa8656e487475b"
+        },
+        {
+          "document_id": 20304,
+          "path": "test/case_03/document_04.pdf",
+          "sha256": "d24a479187bc97da3d0d8153c8db2e047659124bfe11dad68a613ab5a4ec6096"
+        },
+        {
+          "document_id": 20305,
+          "path": "test/case_03/document_05.png",
+          "sha256": "0aecb7e4e0ebfe134e0e39c39806303545972a23c4548ac7c941dbd01867fa28"
+        },
+        {
+          "document_id": 20306,
+          "path": "test/case_03/document_06.docx",
+          "sha256": "fb31013c51bf329db9d199b6aa4fbf0815c0b3625d99b1d2d9d963f21f9521ab"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20301"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20301"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20301"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20301"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20302"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20302"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20302"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20302"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20302"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20302"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20302"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20303"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20303"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20303"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20303"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20304"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20304"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20304"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20305"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20305"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20305"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20305"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20305"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20305"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20305"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20305"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20306"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20306"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20306"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 204,
+      "split": "test",
+      "scenario": "amount_mismatch",
+      "description": "견적 합계가 계약 등록 기준과 다름",
+      "layout_family": "test_matrix",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 달빛제작소 4",
+        "business_number": "000-00-02046",
+        "contract_amount": 2640000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 20401,
+          "path": "test/case_04/document_01.png",
+          "sha256": "8bc8c36d8f8ec17dd6b23426588cb9013f4999c308797e7d6541eb2c3f19ab0e"
+        },
+        {
+          "document_id": 20402,
+          "path": "test/case_04/document_02.docx",
+          "sha256": "890aab45ddc1dc243660fd88ee4b59720f80f03ae79918e550ca3f5dc32760fa"
+        },
+        {
+          "document_id": 20403,
+          "path": "test/case_04/document_03.pdf",
+          "sha256": "c70a2b1292c2dfeb6eabf15e63e9b273fef27d752e51df86ac9e173c3c2fbf1a"
+        },
+        {
+          "document_id": 20404,
+          "path": "test/case_04/document_04.png",
+          "sha256": "dba10e70612c59d89fe562a1a9e43a224b92a8280ac85471eef1b8daa1778eb0"
+        },
+        {
+          "document_id": 20405,
+          "path": "test/case_04/document_05.docx",
+          "sha256": "054cf91f2966fd02ca544f9d13eae418bae35f1e78560d83c52435d8c387cc17"
+        },
+        {
+          "document_id": 20406,
+          "path": "test/case_04/document_06.pdf",
+          "sha256": "c2301ca603445f1758904584506c0289151161ddc04896f6a006d5f2cecc50ad"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20401"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20401"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20401"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20401"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20402"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20402"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20402"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20402"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20402"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20402"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20402"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20403"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20403"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20403"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20403"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20404"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20404"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20404"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20405"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20405"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20405"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20405"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20405"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20405"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20405"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20405"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20406"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20406"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20406"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 205,
+      "split": "test",
+      "scenario": "vat_separate",
+      "description": "공급가액 기준 계약과 세액을 더한 증빙 비교",
+      "layout_family": "test_matrix",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 달빛제작소 5",
+        "business_number": "000-00-02051",
+        "contract_amount": 2500000,
+        "amount_policy": {
+          "amount_basis": "SUPPLY",
+          "tax_amount": 250000,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 20501,
+          "path": "test/case_05/document_01.docx",
+          "sha256": "851bfe75512a2fc53d7cf45494f32b42ec2a5b2eebab504baa474e7e1ea83f81"
+        },
+        {
+          "document_id": 20502,
+          "path": "test/case_05/document_02.pdf",
+          "sha256": "132a36948cff79dcd0b763a2d641f6356014c160edf72d8fa65204770f89c19b"
+        },
+        {
+          "document_id": 20503,
+          "path": "test/case_05/document_03.png",
+          "sha256": "b097c79679b1305c2df5cd1d24399fb6d3b79b75464976412a44a85f71818233"
+        },
+        {
+          "document_id": 20504,
+          "path": "test/case_05/document_04.docx",
+          "sha256": "fa832122770254c7502402f150394e11bee2016df07a4a1f898f024ee9b5244d"
+        },
+        {
+          "document_id": 20505,
+          "path": "test/case_05/document_05.pdf",
+          "sha256": "f479862a1474523a6875e16843939d43ca4ab460fe19433ada610281733c3718"
+        },
+        {
+          "document_id": 20506,
+          "path": "test/case_05/document_06.png",
+          "sha256": "8c0669b1970802631d6c94dd30c6259af4c120dbf85f05a20ee6a7413962c5c5"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20501"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20501"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20501"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20501"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20502"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20502"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20502"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20502"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20502"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20502"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20502"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20503"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20503"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20503"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20503"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20504"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20504"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20504"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20505"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20505"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20505"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20505"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20505"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20505"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20505"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20505"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20506"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20506"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20506"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 206,
+      "split": "test",
+      "scenario": "installments",
+      "description": "선금과 잔금 세금계산서 두 건 및 누적 합계",
+      "layout_family": "test_matrix",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 달빛제작소 6",
+        "business_number": "000-00-02065",
+        "contract_amount": 2860000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "INSTALLMENT"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 20601,
+          "path": "test/case_06/document_01.pdf",
+          "sha256": "040d7ea75526dfb451881182b6c0b3cb802b4c012af3823c1422d7a04d6ffac6"
+        },
+        {
+          "document_id": 20602,
+          "path": "test/case_06/document_02.png",
+          "sha256": "765cf9e7a0e8bcf86ba4c4b1cde7bc7d8a95e6648a76948f820b37ff1f37bf92"
+        },
+        {
+          "document_id": 20603,
+          "path": "test/case_06/document_03.docx",
+          "sha256": "7309abe483977c67d3bbfb3b9239bb5a14174d33979d6f2baa5f4aa8c67f40ab"
+        },
+        {
+          "document_id": 20604,
+          "path": "test/case_06/document_04.pdf",
+          "sha256": "7acc55581f446c8eb5d5495e6d90aba97ba3f01fea76055392aa4c8e76740a8a"
+        },
+        {
+          "document_id": 20605,
+          "path": "test/case_06/document_05.png",
+          "sha256": "34c63644f8caf50a4ad766bfd5236665f9f03128bbf4b3f7b6f1d9896213fb79"
+        },
+        {
+          "document_id": 20606,
+          "path": "test/case_06/document_06.docx",
+          "sha256": "94bf1c7fb48f5abf09ad68b61e9661ec111c4310762bb096a71e4674f69e7623"
+        },
+        {
+          "document_id": 20607,
+          "path": "test/case_06/document_07.pdf",
+          "sha256": "5d091d4ffa50c15a9c07361dfa73b4e9c8b006cdfc773936390a644c5cea15a1"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20601"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20601"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20601"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20601"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20602"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20602"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20602"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20602"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20602"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20602"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20602"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20603"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20603"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20603"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20603"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20604"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20604"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20604"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20605"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20605"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20605"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20605"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20605"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20605"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20605"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20605"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20606"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20606"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20606"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20607"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20607"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20607"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20607"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20607"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20607"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20607"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20607"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 207,
+      "split": "test",
+      "scenario": "scan_noise",
+      "description": "텍스트 없는 PDF와 회전 및 노이즈가 있는 이미지",
+      "layout_family": "test_matrix",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 달빛제작소 7",
+        "business_number": "000-00-02070",
+        "contract_amount": 2970000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 20701,
+          "path": "test/case_07/document_01.pdf",
+          "sha256": "1c1cb7851e92a9fea4ed984796bc039102ce7cdfb2c3072747447f01f5aa89c1"
+        },
+        {
+          "document_id": 20702,
+          "path": "test/case_07/document_02.png",
+          "sha256": "b9138d098374d39de4c875d777ea5762af12bee21460e149a53e44d5f2e31159"
+        },
+        {
+          "document_id": 20703,
+          "path": "test/case_07/document_03.png",
+          "sha256": "9f178f32093ac02cb74cf2678444349e4e3c4a0a927c1f9bac249435cbae8e50"
+        },
+        {
+          "document_id": 20704,
+          "path": "test/case_07/document_04.png",
+          "sha256": "e0cdfb0636cca4e06c23087a005e72ad6a0bea6be296085af54394b4c39b5208"
+        },
+        {
+          "document_id": 20705,
+          "path": "test/case_07/document_05.png",
+          "sha256": "92ff8905ef85cf013caeaf5b0068f829dcb293222629b494554ba4f749e470cd"
+        },
+        {
+          "document_id": 20706,
+          "path": "test/case_07/document_06.png",
+          "sha256": "0e1cb1c0cfb4f86b3bae035fbe44763a1d434d18608e073963409d0d7d7f70a4"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20701"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20701"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20701"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20701"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20702"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20702"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20702"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20702"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20702"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20702"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20702"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20703"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20703"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20703"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20703"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20704"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20704"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20704"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20705"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20705"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20705"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20705"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20705"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20705"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20705"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20705"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20706"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20706"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20706"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 208,
+      "split": "test",
+      "scenario": "amount_table",
+      "description": "품목 표와 공급가액 세액 합계",
+      "layout_family": "test_matrix",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 달빛제작소 8",
+        "business_number": "000-00-02084",
+        "contract_amount": 3080000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 20801,
+          "path": "test/case_08/document_01.docx",
+          "sha256": "eeb02f071df23d8adeef3472cf9fcf7706556c6f0d0cc2325ea0a02ba147a4fb"
+        },
+        {
+          "document_id": 20802,
+          "path": "test/case_08/document_02.pdf",
+          "sha256": "5f0ee92ab65c47789f1082e539bc68fb789a4dac816023880077467320a9fa0b"
+        },
+        {
+          "document_id": 20803,
+          "path": "test/case_08/document_03.png",
+          "sha256": "26f6c6d2ad904fa4edaa02695f335d86fe1ae383381159d0f80e7758ead75c51"
+        },
+        {
+          "document_id": 20804,
+          "path": "test/case_08/document_04.docx",
+          "sha256": "6fddbe21987fea37ad5d7b69deb098e16d6d4712ebd723a2afb8a67660b0601d"
+        },
+        {
+          "document_id": 20805,
+          "path": "test/case_08/document_05.pdf",
+          "sha256": "e80690e0b732523b72efc89dce72a1908c2d54bec5715a9674682e74613ab5b0"
+        },
+        {
+          "document_id": 20806,
+          "path": "test/case_08/document_06.png",
+          "sha256": "c8d819c94fe013f72c62767eb9a4ecd26fa93744a0da8078100b0de0e058ff45"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20801"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20801"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20801"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20801"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20802"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20802"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20802"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20802"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20802"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20802"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20802"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20803"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20803"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20803"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20803"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20804"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20804"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20804"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20805"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20805"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20805"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20805"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20805"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20805"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20805"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20805"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20806"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20806"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20806"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 209,
+      "split": "test",
+      "scenario": "ambiguous_amount",
+      "description": "의미와 적용 범위를 확정할 수 없는 참고 금액 두 개",
+      "layout_family": "test_matrix",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 달빛제작소 9",
+        "business_number": "000-00-02099",
+        "contract_amount": 3190000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 20901,
+          "path": "test/case_09/document_01.pdf",
+          "sha256": "78565a521aba867dbe19a1f5727df2c26525e9ed830df5f6d6028b0b87e64741"
+        },
+        {
+          "document_id": 20902,
+          "path": "test/case_09/document_02.png",
+          "sha256": "29a44091cc8d80e4543d9e899552237928a49fc65ca0dc9c82c504ab20c7147f"
+        },
+        {
+          "document_id": 20903,
+          "path": "test/case_09/document_03.docx",
+          "sha256": "5a0895e3f067071efc2f7748221e71477e4052411db55b54d0f83ab6ecd59016"
+        },
+        {
+          "document_id": 20904,
+          "path": "test/case_09/document_04.pdf",
+          "sha256": "45392645eb6c00a15deca49e43d4e9eedd60cacf7afdd68944ff21dc0e28fda7"
+        },
+        {
+          "document_id": 20905,
+          "path": "test/case_09/document_05.png",
+          "sha256": "e451bb0469001ab78da23b5e65471578efdd2fa1dd4f4e5aff3ae7646daabe03"
+        },
+        {
+          "document_id": 20906,
+          "path": "test/case_09/document_06.docx",
+          "sha256": "53947ec2018c5133f7ebb5ba211037ed57e73e94900d1fb10093dc98b2672a11"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20901"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20901"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20901"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20901"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20902"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20902"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20902"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20902"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20902"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20902"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20902"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20903"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20903"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20903"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20903"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20904"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20904"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20904"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20905"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20905"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20905"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20905"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20905"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20905"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20905"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20905"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20906"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20906"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20906"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    },
+    {
+      "contract_id": 210,
+      "split": "test",
+      "scenario": "arithmetic_mismatch",
+      "description": "표시 합계가 공급가액과 세액의 합과 다름",
+      "layout_family": "test_matrix",
+      "input": {
+        "title": "가상 업무지원 시스템 구축",
+        "vendor_name": "가상 달빛제작소 10",
+        "business_number": "000-00-02105",
+        "contract_amount": 3300000,
+        "amount_policy": {
+          "amount_basis": "TOTAL",
+          "tax_amount": null,
+          "payment_mode": "FULL"
+        }
+      },
+      "documents": [
+        {
+          "document_id": 21001,
+          "path": "test/case_10/document_01.png",
+          "sha256": "092bb7c53299e58ac375eec70faf29d2906c397fb2edd8cecd714ff5dcf4174c"
+        },
+        {
+          "document_id": 21002,
+          "path": "test/case_10/document_02.docx",
+          "sha256": "75a17309a09cbb7661c5e84d59a3275ed448a1522f41c279d1547b6d018a1129"
+        },
+        {
+          "document_id": 21003,
+          "path": "test/case_10/document_03.pdf",
+          "sha256": "150410a4f79fcc5c2318fac586946936c879f7afd858004f705db16864a0445a"
+        },
+        {
+          "document_id": 21004,
+          "path": "test/case_10/document_04.png",
+          "sha256": "5aca81c7c7ce9d3673d11752f812b899a3a433deff5903f245c501d53d3f92ed"
+        },
+        {
+          "document_id": 21005,
+          "path": "test/case_10/document_05.docx",
+          "sha256": "a2259765b9dea7282d04788b45b45537609d1b068cd6c56e1cb83026e9f7b661"
+        },
+        {
+          "document_id": 21006,
+          "path": "test/case_10/document_06.pdf",
+          "sha256": "a2d203c166372316ab0dedc26b22bf19853783b3c13962273e1120049a962c97"
+        }
+      ],
+      "check_slots": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "21001"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "21001"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "21001"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "21001"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "21002"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "21002"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "21002"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "21002"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "21002"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "21002"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "21002"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "21003"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "21003"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "21003"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "21003"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "21004"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "21004"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "21004"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "21005"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "21005"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "21005"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "21005"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "21005"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "21005"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "21005"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "21005"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "21006"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "21006"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "21006"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice"
+        }
+      ]
+    }
+  ]
+}

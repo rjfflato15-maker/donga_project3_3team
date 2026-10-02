@@ -1,0 +1,38 @@
+{
+  "sha256": "4fe98912486f721d16e4eaefe4c564ac214d4bed9f6d1c08c54a63f12a229425",
+  "payload": {
+    "document": {
+      "document_id": 20802,
+      "path": "test/case_08/document_02.pdf",
+      "sha256": "5f0ee92ab65c47789f1082e539bc68fb789a4dac816023880077467320a9fa0b"
+    },
+    "contract_id": 208,
+    "fields": {
+      "title": "가상 달빛제작소 8 견적서",
+      "company_name": "가상 달빛제작소 8",
+      "business_registration_no": "000-00-02084",
+      "amount": 3080000.0,
+      "issue_date": "2026-09-08",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": 2800000.0,
+      "tax_amount": 280000.0,
+      "total_amount": 3080000.0,
+      "amount_basis": "TOTAL",
+      "amount_scope": "FULL"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "견적서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호\n가상 달빛제작소 8\n사업자등록번호\n000-00-02084\n공급받는자\n상호\n가상 초록운영사 8\n사업자등록번호\n000-00-12087\n품목 | 수량 | 단가 | 금액\n시스템 개발 | 1 | 2,800,000 | 2,800,000\n공급가액\n2,800,000원\n세액\n280,000원\n합계금액\n3,080,000원\n발행일\n2026-09-08\n"
+      }
+    ],
+    "document_type": "estimate",
+    "processing_failed": false,
+    "rule_seconds": 0.05411890000323183,
+    "targets": []
+  }
+}

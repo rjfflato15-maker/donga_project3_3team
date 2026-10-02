@@ -1,0 +1,41 @@
+{
+  "sha256": "5f293d388352bbf9cdecc980c3ff19072a2458b8f8b0819c5a2f2317a8db21f1",
+  "payload": {
+    "document": {
+      "document_id": 21004,
+      "path": "test/case_10/document_04.png",
+      "sha256": "5aca81c7c7ce9d3673d11752f812b899a3a433deff5903f245c501d53d3f92ed"
+    },
+    "contract_id": 210,
+    "fields": {
+      "title": "통장사본",
+      "company_name": null,
+      "business_registration_no": "000-00-02105",
+      "amount": null,
+      "issue_date": "2026-09-10",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": null,
+      "tax_amount": null,
+      "total_amount": null,
+      "amount_basis": "UNKNOWN",
+      "amount_scope": "UNKNOWN"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주\n으 ÉH 며\n계좌번호\n사업자등록번호\n가상 달빛제작소 10\n가상은행\nTEST-ACCOUNT-OOI\n000-00-02105\n2026-09-10"
+      }
+    ],
+    "document_type": "bank_account",
+    "processing_failed": false,
+    "rule_seconds": 0.30264879999958794,
+    "targets": [
+      "company_name",
+      "issue_date"
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "sha256": "17ee2ed7b9a6a77d8777d8020c199ce3b7b1b2b96d6fb74cec3fff8986c032eb",
+  "payload": {
+    "attempt_id": "e40c42cf-cc17-4939-8f11-d8df9452f954",
+    "request_sha256": "478ac05a96397d012923b2bbd4a72ec822072239d83659787f94876cc0a2bfd1",
+    "run": {
+      "ok": true,
+      "error": null,
+      "attempts": 1,
+      "proposals": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 달빛제작소 3",
+          "page": 1,
+          "line": 4,
+          "quote": "가상 달빛제작소 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-02032",
+          "page": 1,
+          "line": 10,
+          "quote": "000-00-02032"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "page": null,
+          "line": null,
+          "quote": ""
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "page": null,
+          "line": null,
+          "quote": ""
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "page": null,
+          "line": null,
+          "quote": ""
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-03",
+          "page": 1,
+          "line": 12,
+          "quote": "2026-09-03"
+        },
+        "amount_scope": {
+          "state": "REVIEW",
+          "value": null,
+          "page": null,
+          "line": null,
+          "quote": ""
+        }
+      },
+      "model": "qwen3:latest",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "prompt_version": "grounded-fields-v3",
+      "manual_review_required": true,
+      "model_metadata": {
+        "name": "qwen3:latest",
+        "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+        "size": 5225388164,
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3",
+          "families": [
+            "qwen3"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 40960,
+          "embedding_length": 4096
+        }
+      },
+      "server_seconds": 10.8385353,
+      "load_seconds": 0.0081721,
+      "eval_count": 357,
+      "elapsed_seconds": 10.843746400001692
+    }
+  }
+}

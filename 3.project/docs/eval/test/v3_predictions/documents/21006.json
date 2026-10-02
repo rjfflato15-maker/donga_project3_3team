@@ -1,0 +1,367 @@
+{
+  "sha256": "69a82d2f3076ff04445cc32d2c0d3b6acea05f0da120f77f53e252c29e480ee3",
+  "payload": {
+    "fields": {
+      "rule": {
+        "title": "가상 달빛제작소 10 검수확인서",
+        "company_name": "가상 달빛제작소 10",
+        "business_registration_no": "000-00-02105",
+        "amount": 3300000.0,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3000000.0,
+        "tax_amount": 300000.0,
+        "total_amount": 3300000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "llm": {
+        "title": "가상 달빛제작소 10 검수확인서",
+        "company_name": "가상 달빛제작소 10",
+        "business_registration_no": "0000002105",
+        "amount": 3300000.0,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3000000.0,
+        "tax_amount": 300000.0,
+        "total_amount": 3300000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "hybrid_unguarded": {
+        "title": "가상 달빛제작소 10 검수확인서",
+        "company_name": "가상 달빛제작소 10",
+        "business_registration_no": "000-00-02105",
+        "amount": 3300000.0,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3000000.0,
+        "tax_amount": 300000.0,
+        "total_amount": 3300000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "hybrid_guarded": {
+        "title": "가상 달빛제작소 10 검수확인서",
+        "company_name": "가상 달빛제작소 10",
+        "business_registration_no": "000-00-02105",
+        "amount": 3300000.0,
+        "issue_date": "2026-09-10",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3000000.0,
+        "tax_amount": 300000.0,
+        "total_amount": 3300000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      }
+    },
+    "traces": {
+      "rule": {
+        "effective_seconds": 0.03806389999954263,
+        "guard_seconds": 0
+      },
+      "llm": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 12.701400400001148,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date",
+            "amount_scope"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "VALUE",
+                "value": "가상 달빛제작소 10",
+                "page": 1,
+                "line": 4,
+                "quote": "가상 달빛제작소 10"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 4,
+                "start": 46,
+                "end": 57,
+                "quote": "가상 달빛제작소 10",
+                "location_kind": "page",
+                "label_line": 3,
+                "label": "계약상대자",
+                "party": "supplier"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-02105",
+                "page": 1,
+                "line": 6,
+                "quote": "000-00-02105"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 6,
+                "start": 66,
+                "end": 78,
+                "quote": "000-00-02105",
+                "location_kind": "page",
+                "label_line": 5,
+                "label": "사업자등록번호",
+                "party": "supplier"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "supply_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "3000000",
+                "page": 1,
+                "line": 12,
+                "quote": "3,000,000원"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 12,
+                "start": 114,
+                "end": 124,
+                "quote": "3,000,000원",
+                "location_kind": "page",
+                "label_line": 11,
+                "label": "공급가액",
+                "party": "supplier"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "tax_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "300000",
+                "page": 1,
+                "line": 14,
+                "quote": "300,000원"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 14,
+                "start": 128,
+                "end": 136,
+                "quote": "300,000원",
+                "location_kind": "page",
+                "label_line": 13,
+                "label": "세액",
+                "party": "supplier"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "total_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "3300000",
+                "page": 1,
+                "line": 16,
+                "quote": "3,300,000원"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 16,
+                "start": 142,
+                "end": 152,
+                "quote": "3,300,000원",
+                "location_kind": "page",
+                "label_line": 15,
+                "label": "합계금액",
+                "party": "supplier"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-10",
+                "page": 1,
+                "line": 18,
+                "quote": "2026-09-10"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 18,
+                "start": 157,
+                "end": 167,
+                "quote": "2026-09-10",
+                "location_kind": "page",
+                "label_line": 17,
+                "label": "발행일",
+                "party": "supplier"
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "amount_scope",
+              "proposal": {
+                "state": "VALUE",
+                "value": "FULL",
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [
+                "CODE_ANCHORED_SCOPE"
+              ],
+              "anchor": {
+                "page": 1,
+                "line": 1,
+                "start": 0,
+                "end": 8,
+                "quote": "납품 검수확인서",
+                "location_kind": "page",
+                "label_line": 1,
+                "label": "검수확인서",
+                "party": "supplier"
+              },
+              "human_confirmed": false,
+              "applied": true
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "2852b4893c7c24c8792ac832ee2ed5d2e324f93238fbc8874c63a3c7dc7c4414",
+        "cache_hit": false,
+        "guard_seconds": 0,
+        "effective_seconds": 12.73946430000069
+      },
+      "hybrid_unguarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": null,
+          "model_metadata": null,
+          "elapsed_seconds": 0,
+          "attempts": 0,
+          "targets": [],
+          "decisions": [],
+          "manual_review_required": false,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": null,
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": null
+        },
+        "response_id": null,
+        "cache_hit": false,
+        "shared_response_replay": false,
+        "guard_seconds": 0,
+        "effective_seconds": 0.03806389999954263
+      },
+      "hybrid_guarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": null,
+          "model_metadata": null,
+          "elapsed_seconds": 0,
+          "attempts": 0,
+          "targets": [],
+          "decisions": [],
+          "manual_review_required": false,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": null,
+          "guard_version": "grounding-v3-dev-audit",
+          "settings": null
+        },
+        "response_id": null,
+        "cache_hit": false,
+        "shared_response_replay": true,
+        "guard_seconds": 2.7499998395796865e-05,
+        "effective_seconds": 0.038091399997938424
+      }
+    }
+  }
+}

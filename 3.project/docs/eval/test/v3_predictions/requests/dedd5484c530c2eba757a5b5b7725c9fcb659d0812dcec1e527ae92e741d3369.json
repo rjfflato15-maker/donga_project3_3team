@@ -1,0 +1,36 @@
+{
+  "sha256": "f1fc934cede273433f32974dfd08a72bf430f224328e99b7aa4543141a2d3df9",
+  "payload": {
+    "attempt_id": "e40c42cf-cc17-4939-8f11-d8df9452f954",
+    "request_sha256": "dedd5484c530c2eba757a5b5b7725c9fcb659d0812dcec1e527ae92e741d3369",
+    "started_at": "2026-10-02T15:45:49.147707+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "사업자등록증\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n사업자등록번호\n대표자\n업태\n조 모\n가상 달빛제작소 5\n000-00-02051\n가상 담당자\n서비스업\n소프트웨어 개발\n2026-09-05"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "issue_date"
+      ],
+      "document_type": "business_registration",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

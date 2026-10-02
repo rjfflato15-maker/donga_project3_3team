@@ -1,0 +1,46 @@
+{
+  "sha256": "0227babbec39973619d55b33a879b218c5a2d7bd70d940e93e16b1f20e4597c3",
+  "payload": {
+    "document": {
+      "document_id": 21001,
+      "path": "test/case_10/document_01.png",
+      "sha256": "092bb7c53299e58ac375eec70faf29d2906c397fb2edd8cecd714ff5dcf4174c"
+    },
+    "contract_id": 210,
+    "fields": {
+      "title": "발주자",
+      "company_name": "사업자",
+      "business_registration_no": "000-00-02105",
+      "amount": null,
+      "issue_date": "2026-09-10",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": null,
+      "tax_amount": null,
+      "total_amount": null,
+      "amount_basis": "UNKNOWN",
+      "amount_scope": "UNKNOWN"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "외주용역 계약서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약명\n발주자\n수급인(을)\n사업자등록번호\n공급가액\n세액\n합계금액\n가상 업무지원 시스템 구축\n가상 초록운영사 10\n가상 달빛제작소 10\n000-00-02105\n3,000,000원\n300,000원\n3,300,000원\n2026-09-10"
+      }
+    ],
+    "document_type": "contract",
+    "processing_failed": false,
+    "rule_seconds": 0.34148350000032224,
+    "targets": [
+      "company_name",
+      "business_registration_no",
+      "supply_amount",
+      "tax_amount",
+      "total_amount",
+      "issue_date",
+      "amount_scope"
+    ]
+  }
+}
