@@ -5,6 +5,8 @@ import pytest
 
 from backend.app.db.models import Document
 from backend.app.schemas.contract import ContractListItem
+from backend.app.schemas.validation import ValidationCheck
+from backend.app.services.review_summary_service import display_issue_counts
 from test_api import create_contract
 from test_review_workflow_api import configured_contract, upload
 
@@ -20,6 +22,10 @@ def assert_summary_matches(client, contract_id, item):
     assert context.status_code == 200, context.text
     assert item["action_summary"] == context.json()["action_summary"]
     assert item["approval_next_step"] == context.json()["approval"]["next_step"]
+    assert item["open_issue_count"] == sum(
+        check['status'] in {'FAIL', 'MISSING', 'REVIEW'} and
+        not (check['rule_id'] == 'BUSINESS_STATUS' and check['status'] == 'REVIEW')
+        for check in context.json()['checks'])
 
 
 def test_dashboard_keeps_existing_fields_and_empty_contract_defaults(operator_client):
@@ -41,6 +47,29 @@ def test_dashboard_keeps_existing_fields_and_empty_contract_defaults(operator_cl
     assert item["waiting_request_count"] == 0
     assert item["earliest_due_on"] is None
     assert item["approval_next_step"] == 1
+    assert_summary_matches(operator_client, cid, item)
+
+
+@pytest.mark.parametrize('mode,expected_review', [('disabled', 1), ('api', 2), ('demo', 2)])
+def test_issue_counts_exclude_only_disabled_nts_review(mode, expected_review):
+    checks = [ValidationCheck(rule_id=rule, field='unit', status=status, message='unit fixture')
+              for rule, status in [('BUSINESS_STATUS', 'REVIEW'), ('BUSINESS_STATUS', 'FAIL'),
+                                   ('AMOUNT_EXTRACTION', 'REVIEW'), ('REQUIRED_DOCUMENTS', 'MISSING'),
+                                   ('BUSINESS_NO_MATCH', 'PASS')]]
+    assert display_issue_counts(checks, nts_mode=mode) == {'FAIL': 1, 'MISSING': 1, 'REVIEW': expected_review}
+
+
+def test_nts_review_remains_in_checks_and_summary_but_not_dashboard_count(operator_client):
+    cid = create_contract(operator_client)['contract_id']
+    context = operator_client.get(f'/api/contracts/{cid}/review-context').json()
+    item = dashboard(operator_client)[cid]
+    nts = [check for check in context['checks'] if check['rule_id'] == 'BUSINESS_STATUS']
+    assert len(nts) == 1 and nts[0]['status'] == 'REVIEW'
+    summary = context['summary']
+    assert item['open_issue_count'] == summary['fail_count'] + summary['missing_count'] + summary['review_count'] - 1
+    shown_review = summary['review_count'] - 1
+    assert (f'미확인 {shown_review}건' in item['action_summary']) == (shown_review > 0)
+    assert item['review_status'] == 'REVIEW'
     assert_summary_matches(operator_client, cid, item)
 
 

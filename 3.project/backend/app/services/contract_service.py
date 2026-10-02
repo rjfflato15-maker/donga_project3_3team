@@ -39,6 +39,7 @@ from .company_policy_service import approval_state
 from .review_summary_service import (
     ContractDashboardListItem,
     build_action_summary,
+    display_issue_counts,
     pending_ai_count,
     waiting_request_stats,
 )
@@ -105,6 +106,7 @@ class ContractService:
             )
             waiting_count, earliest_due_on = waiting_by_contract.get(contract.contract_id, (0, None))
             ai_pending = pending_ai_count(d["fields"].get("ai_review") for d in inputs)
+            issue_counts = display_issue_counts(current_checks)
             result.append(ContractDashboardListItem(
                 contract_id=contract.contract_id, title=contract.title, vendor_name=contract.vendor_name,
                 business_number=contract.business_number, contract_amount=contract.contract_amount,
@@ -113,7 +115,8 @@ class ContractService:
                 submitted_document_types=[t.value for t in required if t.value in submitted], created_at=contract.created_at,
                 approval_status=workflow["approval_status"], revision=workflow["revision"],
                 missing_original_count=sum(resolve_path(d.storage_path) is None for d in contract.documents),
-                action_summary=build_action_summary(summary, workflow, approval, waiting_count, ai_pending),
+                action_summary=build_action_summary(issue_counts, workflow, approval, waiting_count, ai_pending),
+                open_issue_count=sum(issue_counts.values()),
                 waiting_request_count=waiting_count, earliest_due_on=earliest_due_on,
                 approval_next_step=approval["next_step"],
             ))

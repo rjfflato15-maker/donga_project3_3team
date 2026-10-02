@@ -6,12 +6,14 @@ from sqlalchemy import func
 
 from ..db.models import ResubmissionRequest
 from ..schemas.contract import ContractListItem
+from ..config import NTS_MODE
 
 
 class ContractDashboardListItem(ContractListItem):
     """Extend the API projection without changing the frozen evaluation schema."""
 
     action_summary: str
+    open_issue_count: int = Field(default=0, ge=0)
     waiting_request_count: int = Field(default=0, ge=0)
     earliest_due_on: date | None = None
     approval_next_step: int | None = Field(default=None, ge=1, le=2)
@@ -43,7 +45,20 @@ def pending_ai_count(reviews):
     )
 
 
-def build_action_summary(summary, workflow, approval, waiting_count, ai_pending_count):
+def display_issue_counts(checks, *, nts_mode=None):
+    """Count displayed issues without changing checks or evaluation summaries."""
+    mode = NTS_MODE if nts_mode is None else nts_mode
+    counts = {"FAIL": 0, "MISSING": 0, "REVIEW": 0}
+    for check in checks:
+        if check.status not in counts:
+            continue
+        if mode == "disabled" and check.rule_id == "BUSINESS_STATUS" and check.status == "REVIEW":
+            continue
+        counts[check.status] += 1
+    return counts
+
+
+def build_action_summary(issue_counts, workflow, approval, waiting_count, ai_pending_count):
     """Keep list and review-context wording consistent for the same snapshot."""
     parts = []
     state = workflow["approval_status"]
@@ -58,9 +73,9 @@ def build_action_summary(summary, workflow, approval, waiting_count, ai_pending_
     if waiting_count:
         parts.append(f"회신 대기 {waiting_count}건")
     for count, label in (
-        (summary.missing_count, "필수 서류 누락"),
-        (summary.fail_count, "불일치"),
-        (summary.review_count, "미확인"),
+        (issue_counts["MISSING"], "필수 서류 누락"),
+        (issue_counts["FAIL"], "불일치"),
+        (issue_counts["REVIEW"], "미확인"),
     ):
         if count:
             parts.append(f"{label} {count}건")

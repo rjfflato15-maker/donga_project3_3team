@@ -12,7 +12,7 @@ from ..schemas.document import AnalysisFields
 from .contract_service import ContractService
 from .storage_service import read_texts, resolve_path
 from .company_policy_service import approval_state
-from .review_summary_service import build_action_summary, pending_ai_count
+from .review_summary_service import build_action_summary, display_issue_counts, pending_ai_count
 SOURCE_NAMES = {'RULE': '규칙', 'AI_SUPPLEMENT': 'AI 보완', 'HUMAN_CONFIRMATION': '사람 확인', 'UNAVAILABLE': '미추출'}
 
 
@@ -109,5 +109,5 @@ def review_context(db, contract_id):
     summary = detail.summary
     approval = approval_state(db, contract_id, detail.workflow['revision'], detail.workflow['fingerprint'])
     ai_pending = pending_ai_count(d['ai_review'] for d in documents)
-    action_summary = build_action_summary(summary, detail.workflow, approval, waiting, ai_pending)
+    action_summary = build_action_summary(display_issue_counts(detail.checks), detail.workflow, approval, waiting, ai_pending)
     return {'contract_id': contract_id, 'revision': detail.workflow['revision'], 'fingerprint': detail.workflow['fingerprint'], 'action_summary': action_summary, 'summary': summary.model_dump(), 'checks': checks, 'documents': documents, 'workflow': detail.workflow, 'follow_up': {'status': 'WAITING_RESPONSE' if waiting else 'NO_PENDING_REQUEST', 'waiting_count': waiting, 'requests': [request_response(r) for r in requests]}, 'approval': approval}

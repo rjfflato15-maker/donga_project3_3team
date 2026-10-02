@@ -6,7 +6,7 @@
 
 | 메서드·경로 | 화면에서 사용할 값 |
 | --- | --- |
-| GET `/api/contracts` | 기존 목록 필드 + `action_summary`, `waiting_request_count`, `earliest_due_on`, `approval_next_step` |
+| GET `/api/contracts` | 기존 목록 필드 + `action_summary`, `open_issue_count`, `waiting_request_count`, `earliest_due_on`, `approval_next_step` |
 | GET `/api/contracts/{id}/review-context` | `checks`, `documents`, `action_summary`, `follow_up`, `approval`, `revision`, `fingerprint` |
 | GET `/api/documents/{id}/provenance` | `fields.{필드명}`의 값·출처·근거·AI 제안 사유, 원본 버전 확인 상태 |
 | GET `/api/pilot/contracts/{id}/resubmission-requests` | 재제출 요청 기록 목록, 최근 기록부터 |
@@ -18,20 +18,24 @@
 
 ### 대시보드 계약 목록
 
-기존 `/api/contracts`의 배열 구조·필드·정렬 순서를 유지하고 계약마다 네 값을 추가했다. 한 줄 요약은 `review-context`와 같은 함수로 만들며, 목록 조회에는 상세 원문 읽기·OCR·LLM 호출이 추가되지 않는다.
+기존 `/api/contracts`의 배열 구조·필드·정렬 순서를 유지한다. 한 줄 요약은 `review-context`와 같은 함수로 만들며, 목록 조회에는 상세 원문 읽기·OCR·LLM 호출이 추가되지 않는다.
 
 | 추가 필드 | 반환 기준 |
 | --- | --- |
 | `action_summary` | 결재 상태·회신 대기·검사 상태·AI 확인 필요를 반영한 한 줄 문장 |
+| `open_issue_count` | FAIL + MISSING + REVIEW 검사 수. NTS disabled의 BUSINESS_STATUS REVIEW는 제외. 없으면 `0` |
 | `waiting_request_count` | `WAITING_RESPONSE` 요청 수. 없으면 `0` |
 | `earliest_due_on` | 대기 요청 중 기한이 있는 요청의 최솟값(`YYYY-MM-DD`). 없으면 `null` |
 | `approval_next_step` | 현재 자료에서 다음 결재 단계 `1` 또는 `2`. 최종 확인 완료면 `null` |
 
 회신 완료·취소된 요청은 건수와 기한에서 제외한다. 기한을 넘긴 미회신 요청도 대기 건수에 남는다. 자료 변경·반려로 이전 결재가 무효가 되면 다시 필요한 단계가 표시된다. 회신 대기 건수·기한은 목록 전체를 한 번에 집계하며 결재 이력과 원문 근거를 목록 응답에 싣지 않는다.
 
+목록·상세 `review-context`의 두 `action_summary` 모두 NTS 미연동 알림을 “미확인 N건”에 세지 않는다. `open_issue_count`에도 같은 기준을 쓴다. 상세 `checks`, 원래 `summary`와 `review_status`, 검사·평가 판정은 그대로이므로 미연동이 PASS로 바뀐 것은 아니다. API 조회 실패·데모 조회의 REVIEW와 BUSINESS_STATUS FAIL, 다른 REVIEW는 제외하지 않는다. 회신 대기·결재·AI 추가 확인 문서 수는 `open_issue_count`에 더하지 않고 각각 표시한다.
+
 ```json
 {
   "action_summary": "2단계 결재 대기 · 회신 대기 2건 · 미확인 1건",
+  "open_issue_count": 1,
   "waiting_request_count": 2,
   "earliest_due_on": "2026-10-05",
   "approval_next_step": 2
