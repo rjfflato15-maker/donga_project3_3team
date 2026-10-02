@@ -1,0 +1,2 @@
+# Preserve the fixed development inputs/responses and their SHA256 receipts.
+*.json -text

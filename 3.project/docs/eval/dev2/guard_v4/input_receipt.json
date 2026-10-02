@@ -1,0 +1,37 @@
+{
+  "dataset_manifest_sha256": "46f9e929e82cce4475d06d93ba20b3cd97d0ba7b2ba10553a5edecc9c14a64cb",
+  "labels_sha256": "2d66ff4b6db717332e6ad27d394d92614c43e70ced5ca67ca7d8a9e1953f7317",
+  "inputs_sha256": "c47d9ee57bbd874645239e9e393ec9200470b97aecd92aa314280fc5c76b17b7",
+  "model": {
+    "name": "qwen3:latest",
+    "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "size": 5225388164,
+    "details": {
+      "parent_model": "",
+      "format": "gguf",
+      "family": "qwen3",
+      "families": [
+        "qwen3"
+      ],
+      "parameter_size": "8.2B",
+      "quantization_level": "Q4_K_M",
+      "context_length": 40960,
+      "embedding_length": 4096
+    }
+  },
+  "settings": {
+    "url": "http://127.0.0.1:11434",
+    "model": "qwen3:latest",
+    "timeout_seconds": 45,
+    "retries": 1,
+    "temperature": 0,
+    "seed": 42,
+    "num_ctx": 4096,
+    "num_predict": 1600,
+    "max_input_chars": 10000
+  },
+  "prompt_version": "grounded-fields-v3",
+  "human_confirmed": false,
+  "split": "dev2",
+  "test_sources_opened": false
+}

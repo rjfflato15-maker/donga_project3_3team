@@ -1,0 +1,5 @@
+phase,mode,contracts,documents,field_correct,field_scored,field_accuracy_percent,check_correct,check_scored,check_accuracy_percent,wrong_pass_on_unsafe,unexpected_pass_on_not_applicable,accepted_value_correct,accepted_value_count,accepted_value_precision_percent,rejected_gold_matching,rejected_gold_mismatching,requested_fields,human_referral_fields,human_referral_percent
+preliminary_dev2_unconfirmed,rule,6,36,193,204,94.607843,40,44,90.909091,0,1,,,,,,,,
+preliminary_dev2_unconfirmed,hybrid_unguarded,6,36,203,204,99.509804,41,43,95.348837,0,1,,,,,,,,
+preliminary_dev2_unconfirmed,hybrid_guard_v3,6,36,199,204,97.549020,40,44,90.909091,0,1,6,6,100,5,1,12,6,50
+preliminary_dev2_unconfirmed,hybrid_guard_v4,6,36,203,204,99.509804,41,43,95.348837,0,1,10,10,100,1,1,12,2,16.666667

@@ -1,0 +1,1254 @@
+{
+  "sha256": "78497753ab161f4657ffc9d3be787f57c17c8e812f340277a0143e5cafd7cdf2",
+  "payload": {
+    "30101": {
+      "document": {
+        "document_id": 30101,
+        "path": "dev2/case_01/document_01.pdf",
+        "sha256": "9fc658e90007358376d32a4e690e7a800809826278449154cf670d0fd973d04e"
+      },
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-03012",
+        "amount": 4068900.0,
+        "issue_date": "2026-09-16",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3699000.0,
+        "tax_amount": 369900.0,
+        "total_amount": 4068900.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "외주용역 계약서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약명: 가상 업무지원 시스템 구축\n발주자: 가상 북쪽연구소 1\n수급인(을): 가상 한결기획 1\n사업자등록번호: 000-00-03012\n공급가액: 3,699,000원\n세액: 369,900원\n합계금액: 4,068,900원\n발행일: 2026-09-16\n"
+        }
+      ],
+      "document_type": "contract",
+      "processing_failed": false,
+      "rule_seconds": 0.1827488999988418,
+      "targets": [
+        "company_name"
+      ]
+    },
+    "30102": {
+      "document": {
+        "document_id": 30102,
+        "path": "dev2/case_01/document_02.pdf",
+        "sha256": "a230f196610aeefb91ffdb819fe36047f462f0d3ffbb5d2583573ec0368f81cf"
+      },
+      "fields": {
+        "title": "가상 한결기획 1 견적서",
+        "company_name": "가상 한결기획 1",
+        "business_registration_no": "000-00-03012",
+        "amount": null,
+        "issue_date": "2026-09-16",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "견적서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호: 가상 한결기획 1\n사업자등록번호: 000-00-03012\n공급받는자\n상호: 가상 북쪽연구소 1\n사업자등록번호: 000-00-15013\n세전 대금: 3,699,000원\n부가세액: 369,900원\n총 청구액: 4,068,900원\n발행일: 2026-09-16\n"
+        }
+      ],
+      "document_type": "estimate",
+      "processing_failed": false,
+      "rule_seconds": 0.018606500001624227,
+      "targets": [
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "amount_scope"
+      ]
+    },
+    "30103": {
+      "document": {
+        "document_id": 30103,
+        "path": "dev2/case_01/document_03.pdf",
+        "sha256": "bc743b487b2be012b5ef02e26510f00b08f19ddecf771b14a03af88357e1277a"
+      },
+      "fields": {
+        "title": "가상 한결기획 1 사업자등록증",
+        "company_name": "가상 한결기획 1",
+        "business_registration_no": "000-00-03012",
+        "amount": null,
+        "issue_date": "2026-09-16",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "사업자등록증\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n상호: 가상 한결기획 1\n사업자등록번호: 000-00-03012\n대표자: 가상 담당자\n업태: 서비스업\n종목: 소프트웨어 개발\n발행일: 2026-09-16\n"
+        }
+      ],
+      "document_type": "business_registration",
+      "processing_failed": false,
+      "rule_seconds": 0.010792699999001343,
+      "targets": []
+    },
+    "30104": {
+      "document": {
+        "document_id": 30104,
+        "path": "dev2/case_01/document_04.pdf",
+        "sha256": "95fef53e08847a19bfec006ce604c7ae7b191efef5106adf3d43b8fc33342dcc"
+      },
+      "fields": {
+        "title": "가상 한결기획 1 통장사본",
+        "company_name": "가상 한결기획 1",
+        "business_registration_no": "000-00-03012",
+        "amount": null,
+        "issue_date": "2026-09-16",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주: 가상 한결기획 1\n은행명: 가상은행\n계좌번호: TEST-ACCOUNT-001\n사업자등록번호: 000-00-03012\n발행일: 2026-09-16\n"
+        }
+      ],
+      "document_type": "bank_account",
+      "processing_failed": false,
+      "rule_seconds": 0.009904300000926014,
+      "targets": []
+    },
+    "30105": {
+      "document": {
+        "document_id": 30105,
+        "path": "dev2/case_01/document_05.pdf",
+        "sha256": "9e89088047ce0935c22eff88d015ed451fa9287dda7e45f881607ca4691f6da2"
+      },
+      "fields": {
+        "title": "가상 한결기획 1 전자세금계산서",
+        "company_name": "가상 한결기획 1",
+        "business_registration_no": "000-00-03012",
+        "amount": 4068900.0,
+        "issue_date": "2026-09-16",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3699000.0,
+        "tax_amount": 369900.0,
+        "total_amount": 4068900.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "전자세금계산서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호: 가상 한결기획 1\n사업자등록번호: 000-00-03012\n공급받는자\n상호: 가상 북쪽연구소 1\n사업자등록번호: 000-00-15013\n공급가액: 3,699,000원\n세액: 369,900원\n합계금액: 4,068,900원\n전액 청구: 전체 계약 대금\n발행일: 2026-09-16\n"
+        }
+      ],
+      "document_type": "tax_invoice",
+      "processing_failed": false,
+      "rule_seconds": 0.01638269999966724,
+      "targets": []
+    },
+    "30106": {
+      "document": {
+        "document_id": 30106,
+        "path": "dev2/case_01/document_06.pdf",
+        "sha256": "366bbbccf17686dcd90d2c0a014376344e3e15add5075db1a7a3e2d1c61dcdd6"
+      },
+      "fields": {
+        "title": "가상 한결기획 1 검수확인서",
+        "company_name": "가상 한결기획 1",
+        "business_registration_no": "000-00-03012",
+        "amount": 4068900.0,
+        "issue_date": "2026-09-16",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3699000.0,
+        "tax_amount": 369900.0,
+        "total_amount": 4068900.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "납품 검수확인서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약상대자: 가상 한결기획 1\n사업자등록번호: 000-00-03012\n납품 내역: 업무지원 시스템\n검수 결과: 납품 항목 확인\n공급가액: 3,699,000원\n세액: 369,900원\n합계금액: 4,068,900원\n발행일: 2026-09-16\n"
+        }
+      ],
+      "document_type": "inspection_confirmation",
+      "processing_failed": false,
+      "rule_seconds": 0.010903700000199024,
+      "targets": []
+    },
+    "30201": {
+      "document": {
+        "document_id": 30201,
+        "path": "dev2/case_02/document_01.pdf",
+        "sha256": "33986124c24fc7298f8dc103daea53de5eb34d0d05f76baa39ddf4775bcb4066"
+      },
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-03026",
+        "amount": 4219600.0,
+        "issue_date": "2026-09-17",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3836000.0,
+        "tax_amount": 383600.0,
+        "total_amount": 4219600.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "외주용역 계약서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약명: 가상 업무지원 시스템 구축\n발주자: 가상 북쪽연구소 2\n수급인(을): 가상 한결기획 2\n사업자등록번호: 000-00-03026\n공급가액: 3,836,000원\n세액: 383,600원\n합계금액: 4,219,600원\n발행일: 2026-09-17\n"
+        }
+      ],
+      "document_type": "contract",
+      "processing_failed": false,
+      "rule_seconds": 0.013686399997823173,
+      "targets": [
+        "company_name"
+      ]
+    },
+    "30202": {
+      "document": {
+        "document_id": 30202,
+        "path": "dev2/case_02/document_02.pdf",
+        "sha256": "a8b4f4ca13ab3698adf73dd8e4bfa1408a79adb144023c1259acb8d4ea8c6e65"
+      },
+      "fields": {
+        "title": "가상 한결기획 2 견적서",
+        "company_name": "가상 한결기획 2",
+        "business_registration_no": "000-00-03026",
+        "amount": 4219600.0,
+        "issue_date": "2026-09-17",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3836000.0,
+        "tax_amount": 383600.0,
+        "total_amount": 4219600.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "견적서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호: 가상 한결기획 2\n사업자등록번호: 000-00-03026\n공급받는자\n상호: 가상 북쪽연구소 2\n사업자등록번호: 000-00-15027\n공급가액\n3,836,000원\n세액\n383,600원\n합계금액\n4,219,600원\n발행일\n2026-09-17\n"
+        }
+      ],
+      "document_type": "estimate",
+      "processing_failed": false,
+      "rule_seconds": 0.013876900000468595,
+      "targets": []
+    },
+    "30203": {
+      "document": {
+        "document_id": 30203,
+        "path": "dev2/case_02/document_03.pdf",
+        "sha256": "a10bbcfa2e526e970934b13846681724d79d66a05c05e8c6f3b57e4eb94eeb9a"
+      },
+      "fields": {
+        "title": "가상 한결기획 2 사업자등록증",
+        "company_name": "가상 한결기획 2",
+        "business_registration_no": "000-00-03026",
+        "amount": null,
+        "issue_date": "2026-09-17",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "사업자등록증\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n상호: 가상 한결기획 2\n사업자등록번호: 000-00-03026\n대표자: 가상 담당자\n업태: 서비스업\n종목: 소프트웨어 개발\n발행일: 2026-09-17\n"
+        }
+      ],
+      "document_type": "business_registration",
+      "processing_failed": false,
+      "rule_seconds": 0.01002899999730289,
+      "targets": []
+    },
+    "30204": {
+      "document": {
+        "document_id": 30204,
+        "path": "dev2/case_02/document_04.pdf",
+        "sha256": "ec1de959c7fc948e4b274dbe88a75fccadb14755162eaa90c6f638c0e0484185"
+      },
+      "fields": {
+        "title": "가상 한결기획 2 통장사본",
+        "company_name": "가상 한결기획 2",
+        "business_registration_no": "000-00-03026",
+        "amount": null,
+        "issue_date": "2026-09-17",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주: 가상 한결기획 2\n은행명: 가상은행\n계좌번호: TEST-ACCOUNT-001\n사업자등록번호: 000-00-03026\n발행일: 2026-09-17\n"
+        }
+      ],
+      "document_type": "bank_account",
+      "processing_failed": false,
+      "rule_seconds": 0.009592599999450613,
+      "targets": []
+    },
+    "30205": {
+      "document": {
+        "document_id": 30205,
+        "path": "dev2/case_02/document_05.pdf",
+        "sha256": "ac37d3b5a3e4be891ad4c551ede7b82fca1730a5ec720545f8fe8f5512eaf6e5"
+      },
+      "fields": {
+        "title": "가상 한결기획 2 전자세금계산서",
+        "company_name": "가상 한결기획 2",
+        "business_registration_no": "000-00-03026",
+        "amount": 4219600.0,
+        "issue_date": "2026-09-17",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3836000.0,
+        "tax_amount": 383600.0,
+        "total_amount": 4219600.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "전자세금계산서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호: 가상 한결기획 2\n사업자등록번호: 000-00-03026\n공급받는자\n상호: 가상 북쪽연구소 2\n사업자등록번호: 000-00-15027\n공급가액: 3,836,000원\n세액: 383,600원\n합계금액: 4,219,600원\n전액 청구: 전체 계약 대금\n발행일: 2026-09-17\n"
+        }
+      ],
+      "document_type": "tax_invoice",
+      "processing_failed": false,
+      "rule_seconds": 0.012979900002392242,
+      "targets": []
+    },
+    "30206": {
+      "document": {
+        "document_id": 30206,
+        "path": "dev2/case_02/document_06.pdf",
+        "sha256": "db79f82f13dc4c1ce0d690148bc17f75ce8b0e748c3c7ddfa43693a219fd31ba"
+      },
+      "fields": {
+        "title": "가상 한결기획 2 검수확인서",
+        "company_name": "가상 한결기획 2",
+        "business_registration_no": "000-00-03026",
+        "amount": 4219600.0,
+        "issue_date": "2026-09-17",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3836000.0,
+        "tax_amount": 383600.0,
+        "total_amount": 4219600.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "납품 검수확인서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약상대자: 가상 한결기획 2\n사업자등록번호: 000-00-03026\n납품 내역: 업무지원 시스템\n검수 결과: 납품 항목 확인\n공급가액: 3,836,000원\n세액: 383,600원\n합계금액: 4,219,600원\n발행일: 2026-09-17\n"
+        }
+      ],
+      "document_type": "inspection_confirmation",
+      "processing_failed": false,
+      "rule_seconds": 0.009353800000099,
+      "targets": []
+    },
+    "30301": {
+      "document": {
+        "document_id": 30301,
+        "path": "dev2/case_03/document_01.pdf",
+        "sha256": "ca90ba257ff6bcf5c454476d21e7021c032e55c1b7d115b6535194e15ec68c5f"
+      },
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-03031",
+        "amount": 4370300.0,
+        "issue_date": "2026-09-18",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3973000.0,
+        "tax_amount": 397300.0,
+        "total_amount": 4370300.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "외주용역 계약서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약명: 가상 업무지원 시스템 구축\n발주자: 가상 북쪽연구소 3\n수급인(을): 가상 한결기획 3\n사업자등록번호: 000-00-03031\n공급가액: 3,973,000원\n세액: 397,300원\n합계금액: 4,370,300원\n발행일: 2026-09-18\n"
+        }
+      ],
+      "document_type": "contract",
+      "processing_failed": false,
+      "rule_seconds": 0.010990699996909825,
+      "targets": [
+        "company_name"
+      ]
+    },
+    "30302": {
+      "document": {
+        "document_id": 30302,
+        "path": "dev2/case_03/document_02.pdf",
+        "sha256": "2c26769ce814598c4f2d785b23eb620b7295bdb3e364afd72d3d6025a72f6a14"
+      },
+      "fields": {
+        "title": "가상 한결기획 3 견적서",
+        "company_name": "가상 한결기획 3",
+        "business_registration_no": "000-00-03031",
+        "amount": 4370300.0,
+        "issue_date": "2026-09-18",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3973000.0,
+        "tax_amount": 397300.0,
+        "total_amount": 4370300.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "견적서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호: 가상 한결기획 3\n사업자등록번호: 000-00-03031\n공급받는자\n상호: 가상 북쪽연구소 3\n사업자등록번호: 000-00-15032\n공급가액: 3,973,000원\n세액: 397,300원\n합계금액: 4,370,300원\n발행일: 2026-09-18"
+        }
+      ],
+      "document_type": "estimate",
+      "processing_failed": false,
+      "rule_seconds": 0.731344200001331,
+      "targets": []
+    },
+    "30303": {
+      "document": {
+        "document_id": 30303,
+        "path": "dev2/case_03/document_03.pdf",
+        "sha256": "c2b0b6df009379d4a05c27aff3bbd078819b42548128978c81c48ea588f970b0"
+      },
+      "fields": {
+        "title": "가상 한결기획 3 사업자등록증",
+        "company_name": "가상 한결기획 3",
+        "business_registration_no": "000-00-03031",
+        "amount": null,
+        "issue_date": "2026-09-18",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "사업자등록증\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n상호: 가상 한결기획 3\n사업자등록번호: 000-00-03031\n대표자: 가상 담당자\n업태: 서비스업\n종목: 소프트웨어 개발\n발행일: 2026-09-18\n"
+        }
+      ],
+      "document_type": "business_registration",
+      "processing_failed": false,
+      "rule_seconds": 0.01593440000215196,
+      "targets": []
+    },
+    "30304": {
+      "document": {
+        "document_id": 30304,
+        "path": "dev2/case_03/document_04.pdf",
+        "sha256": "60cb4860ff26e82475dfa7820321d04c04a8e06a3e91ade0dd917b88c0198b66"
+      },
+      "fields": {
+        "title": "가상 한결기획 3 통장사본",
+        "company_name": "가상 한결기획 3",
+        "business_registration_no": "000-00-03031",
+        "amount": null,
+        "issue_date": "2026-09-18",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주: 가상 한결기획 3\n은행명: 가상은행\n계좌번호: TEST-ACCOUNT-001\n사업자등록번호: 000-00-03031\n발행일: 2026-09-18\n"
+        }
+      ],
+      "document_type": "bank_account",
+      "processing_failed": false,
+      "rule_seconds": 0.009942799999407725,
+      "targets": []
+    },
+    "30305": {
+      "document": {
+        "document_id": 30305,
+        "path": "dev2/case_03/document_05.pdf",
+        "sha256": "b35e33a18179119a812c77a1745e72b63da9d486258ed049d1de91c510893fbf"
+      },
+      "fields": {
+        "title": "가상 한결기획 3 전자세금계산서",
+        "company_name": "가상 한결기획 3",
+        "business_registration_no": "000-00-03031",
+        "amount": 4370300.0,
+        "issue_date": "2026-09-18",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3973000.0,
+        "tax_amount": 397300.0,
+        "total_amount": 4370300.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "전자세금계산서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호: 가상 한결기획 3\n사업자등록번호: 000-00-03031\n공급받는자\n상호: 가상 북쪽연구소 3\n사업자등록번호: 000-00-15032\n공급가액: 3,973,000원\n세액: 397,300원\n합계금액: 4,370,300원\n전액 청구: 전체 계약 대금\n발행일: 2026-09-18\n"
+        }
+      ],
+      "document_type": "tax_invoice",
+      "processing_failed": false,
+      "rule_seconds": 0.008428000001003966,
+      "targets": []
+    },
+    "30306": {
+      "document": {
+        "document_id": 30306,
+        "path": "dev2/case_03/document_06.pdf",
+        "sha256": "c6a0fc7020723633cff8516b4f9f60e4d542b740a7279a49ac6ca7b08f405bba"
+      },
+      "fields": {
+        "title": "가상 한결기획 3 검수확인서",
+        "company_name": "가상 한결기획 3",
+        "business_registration_no": "000-00-03031",
+        "amount": 4370300.0,
+        "issue_date": "2026-09-18",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 3973000.0,
+        "tax_amount": 397300.0,
+        "total_amount": 4370300.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "납품 검수확인서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약상대자: 가상 한결기획 3\n사업자등록번호: 000-00-03031\n납품 내역: 업무지원 시스템\n검수 결과: 납품 항목 확인\n공급가액: 3,973,000원\n세액: 397,300원\n합계금액: 4,370,300원\n발행일: 2026-09-18\n"
+        }
+      ],
+      "document_type": "inspection_confirmation",
+      "processing_failed": false,
+      "rule_seconds": 0.0083639000004041,
+      "targets": []
+    },
+    "30401": {
+      "document": {
+        "document_id": 30401,
+        "path": "dev2/case_04/document_01.pdf",
+        "sha256": "abd9c5c2f2f6f79efa6319e886890f4b79cba34a6092fda4476f0ee6e5e93579"
+      },
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-03045",
+        "amount": 4521000.0,
+        "issue_date": "2026-09-19",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4110000.0,
+        "tax_amount": 411000.0,
+        "total_amount": 4521000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "외주용역 계약서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약명: 가상 업무지원 시스템 구축\n발주자: 가상 북쪽연구소 4\n수급인(을): 가상 한결기획 4\n사업자등록번호: 000-00-03045\n공급가액: 4,110,000원\n세액: 411,000원\n합계금액: 4,521,000원\n발행일: 2026-09-19\n"
+        }
+      ],
+      "document_type": "contract",
+      "processing_failed": false,
+      "rule_seconds": 0.008122899998852517,
+      "targets": [
+        "company_name"
+      ]
+    },
+    "30402": {
+      "document": {
+        "document_id": 30402,
+        "path": "dev2/case_04/document_02.pdf",
+        "sha256": "c378162a9bac3ea2e5acb8945a2e23b731f3445b6add3bf7b52fb5f6d63ac039"
+      },
+      "fields": {
+        "title": "가상 한결기획 4 견적서",
+        "company_name": "가상 한결기획 4",
+        "business_registration_no": "000-00-03045",
+        "amount": 4521000.0,
+        "issue_date": "2026-09-19",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4110000.0,
+        "tax_amount": 411000.0,
+        "total_amount": null,
+        "amount_basis": "SUPPLY",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "견적서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호: 가상 한결기획 4\n사업자등록번호: 000-00-03045\n공급받는자\n상호: 가상 북쪽연구소 4\n사업자등록 번호: 000-00-15046\n공급가액: 4,110,000원\n세액: 411,000원\n확 인 인\n발행일: 2026-09-19"
+        }
+      ],
+      "document_type": "estimate",
+      "processing_failed": false,
+      "rule_seconds": 0.3728036000029533,
+      "targets": [
+        "total_amount",
+        "amount_scope"
+      ]
+    },
+    "30403": {
+      "document": {
+        "document_id": 30403,
+        "path": "dev2/case_04/document_03.pdf",
+        "sha256": "c210ab2236a5e68e549603fb18ec45ce13793dd97056d26f1d651beb9b6ac3bb"
+      },
+      "fields": {
+        "title": "가상 한결기획 4 사업자등록증",
+        "company_name": "가상 한결기획 4",
+        "business_registration_no": "000-00-03045",
+        "amount": null,
+        "issue_date": "2026-09-19",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "사업자등록증\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n상호: 가상 한결기획 4\n사업자등록번호: 000-00-03045\n대표자: 가상 담당자\n업태: 서비스업\n종목: 소프트웨어 개발\n발행일: 2026-09-19\n"
+        }
+      ],
+      "document_type": "business_registration",
+      "processing_failed": false,
+      "rule_seconds": 0.01017860000138171,
+      "targets": []
+    },
+    "30404": {
+      "document": {
+        "document_id": 30404,
+        "path": "dev2/case_04/document_04.pdf",
+        "sha256": "54dedfbe34a3f981abb190d83585b377b45af1e6e5d84c4305437bf3cc1a5615"
+      },
+      "fields": {
+        "title": "가상 한결기획 4 통장사본",
+        "company_name": "가상 한결기획 4",
+        "business_registration_no": "000-00-03045",
+        "amount": null,
+        "issue_date": "2026-09-19",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주: 가상 한결기획 4\n은행명: 가상은행\n계좌번호: TEST-ACCOUNT-001\n사업자등록번호: 000-00-03045\n발행일: 2026-09-19\n"
+        }
+      ],
+      "document_type": "bank_account",
+      "processing_failed": false,
+      "rule_seconds": 0.011446800002886448,
+      "targets": []
+    },
+    "30405": {
+      "document": {
+        "document_id": 30405,
+        "path": "dev2/case_04/document_05.pdf",
+        "sha256": "1a6150aca8372eb29fce0c86766fe8e3b51d6d971592126c4c5cd408647f3791"
+      },
+      "fields": {
+        "title": "가상 한결기획 4 전자세금계산서",
+        "company_name": "가상 한결기획 4",
+        "business_registration_no": "000-00-03045",
+        "amount": 4521000.0,
+        "issue_date": "2026-09-19",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4110000.0,
+        "tax_amount": 411000.0,
+        "total_amount": 4521000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "전자세금계산서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호: 가상 한결기획 4\n사업자등록번호: 000-00-03045\n공급받는자\n상호: 가상 북쪽연구소 4\n사업자등록번호: 000-00-15046\n공급가액: 4,110,000원\n세액: 411,000원\n합계금액: 4,521,000원\n전액 청구: 전체 계약 대금\n발행일: 2026-09-19\n"
+        }
+      ],
+      "document_type": "tax_invoice",
+      "processing_failed": false,
+      "rule_seconds": 0.009667499998613494,
+      "targets": []
+    },
+    "30406": {
+      "document": {
+        "document_id": 30406,
+        "path": "dev2/case_04/document_06.pdf",
+        "sha256": "edb43bdc37168997e8986c46247dfc2803375c5bc0351986e0d7e8556791f850"
+      },
+      "fields": {
+        "title": "가상 한결기획 4 검수확인서",
+        "company_name": "가상 한결기획 4",
+        "business_registration_no": "000-00-03045",
+        "amount": 4521000.0,
+        "issue_date": "2026-09-19",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4110000.0,
+        "tax_amount": 411000.0,
+        "total_amount": 4521000.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "납품 검수확인서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약상대자: 가상 한결기획 4\n사업자등록번호: 000-00-03045\n납품 내역: 업무지원 시스템\n검수 결과: 납품 항목 확인\n공급가액: 4,110,000원\n세액: 411,000원\n합계금액: 4,521,000원\n발행일: 2026-09-19\n"
+        }
+      ],
+      "document_type": "inspection_confirmation",
+      "processing_failed": false,
+      "rule_seconds": 0.008389900001930073,
+      "targets": []
+    },
+    "30501": {
+      "document": {
+        "document_id": 30501,
+        "path": "dev2/case_05/document_01.pdf",
+        "sha256": "dc3eaaa0b87af69e944edf2f8f501e02ce62a23eb6e6dfc0eb940dc1bc8c79b6"
+      },
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-03050",
+        "amount": 4671700.0,
+        "issue_date": "2026-09-20",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4247000.0,
+        "tax_amount": 424700.0,
+        "total_amount": 4671700.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "외주용역 계약서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약명: 가상 업무지원 시스템 구축\n발주자: 가상 북쪽연구소 5\n수급인(을): 가상 한결기획 5\n사업자등록번호: 000-00-03050\n공급가액: 4,247,000원\n세액: 424,700원\n합계금액: 4,671,700원\n발행일: 2026-09-20\n"
+        }
+      ],
+      "document_type": "contract",
+      "processing_failed": false,
+      "rule_seconds": 0.012418800000887131,
+      "targets": [
+        "company_name"
+      ]
+    },
+    "30502": {
+      "document": {
+        "document_id": 30502,
+        "path": "dev2/case_05/document_02.pdf",
+        "sha256": "d517580b45864e1445ae7fb33b7c8a688846a990db5820493f6f81c622d9e410"
+      },
+      "fields": {
+        "title": "가상 한결기획 5 견적서",
+        "company_name": "가상 한결기획 5",
+        "business_registration_no": "000-00-03050",
+        "amount": 4671700.0,
+        "issue_date": "2026-09-20",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4247000.0,
+        "tax_amount": 424700.0,
+        "total_amount": 4671700.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "견적서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호: 가상 한결기획 5\n사업자등록번호: 000-00-03050\n공급받는자\n상호: 가상 북쪽연구소 5\n사업자등록번호: 000-00-15051\n금액 상세는 다음 쪽에 기재\n"
+        },
+        {
+          "page": 2,
+          "location_kind": "page",
+          "text": "견적 금액 상세 - 전체 계약 대금\n공급가액: 4,247,000원\n세액: 424,700원\n합계금액: 4,671,700원\n발행일: 2026-09-20\n"
+        }
+      ],
+      "document_type": "estimate",
+      "processing_failed": false,
+      "rule_seconds": 0.012878300000011222,
+      "targets": []
+    },
+    "30503": {
+      "document": {
+        "document_id": 30503,
+        "path": "dev2/case_05/document_03.pdf",
+        "sha256": "4e62f6dbe312e9a99aa4a5e2a80ae79a68a8f18e9822de36ec429d8d17b0aa9f"
+      },
+      "fields": {
+        "title": "가상 한결기획 5 사업자등록증",
+        "company_name": "가상 한결기획 5",
+        "business_registration_no": "000-00-03050",
+        "amount": null,
+        "issue_date": "2026-09-20",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "사업자등록증\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n상호: 가상 한결기획 5\n사업자등록번호: 000-00-03050\n대표자: 가상 담당자\n업태: 서비스업\n종목: 소프트웨어 개발\n발행일: 2026-09-20\n"
+        }
+      ],
+      "document_type": "business_registration",
+      "processing_failed": false,
+      "rule_seconds": 0.008195300000807038,
+      "targets": []
+    },
+    "30504": {
+      "document": {
+        "document_id": 30504,
+        "path": "dev2/case_05/document_04.pdf",
+        "sha256": "6d38f0146ceb61e2960f3f5a1ba7a7232772360185bd5ae6fb96f7a0004b07f0"
+      },
+      "fields": {
+        "title": "가상 한결기획 5 통장사본",
+        "company_name": "가상 한결기획 5",
+        "business_registration_no": "000-00-03050",
+        "amount": null,
+        "issue_date": "2026-09-20",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주: 가상 한결기획 5\n은행명: 가상은행\n계좌번호: TEST-ACCOUNT-001\n사업자등록번호: 000-00-03050\n발행일: 2026-09-20\n"
+        }
+      ],
+      "document_type": "bank_account",
+      "processing_failed": false,
+      "rule_seconds": 0.009333000001788605,
+      "targets": []
+    },
+    "30505": {
+      "document": {
+        "document_id": 30505,
+        "path": "dev2/case_05/document_05.pdf",
+        "sha256": "25381a4dedd106580c35ed6ce95c5ac56c208be37ef3173833ddd81eefba4302"
+      },
+      "fields": {
+        "title": "가상 한결기획 5 전자세금계산서",
+        "company_name": "가상 한결기획 5",
+        "business_registration_no": "000-00-03050",
+        "amount": 4671700.0,
+        "issue_date": "2026-09-20",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4247000.0,
+        "tax_amount": 424700.0,
+        "total_amount": 4671700.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "전자세금계산서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호: 가상 한결기획 5\n사업자등록번호: 000-00-03050\n공급받는자\n상호: 가상 북쪽연구소 5\n사업자등록번호: 000-00-15051\n공급가액: 4,247,000원\n세액: 424,700원\n합계금액: 4,671,700원\n전액 청구: 전체 계약 대금\n발행일: 2026-09-20\n"
+        }
+      ],
+      "document_type": "tax_invoice",
+      "processing_failed": false,
+      "rule_seconds": 0.008979399997770088,
+      "targets": []
+    },
+    "30506": {
+      "document": {
+        "document_id": 30506,
+        "path": "dev2/case_05/document_06.pdf",
+        "sha256": "edc54d8482f4c2c9ca2b6aeebe340ce980df6eea30da966489e86146a5710d9c"
+      },
+      "fields": {
+        "title": "가상 한결기획 5 검수확인서",
+        "company_name": "가상 한결기획 5",
+        "business_registration_no": "000-00-03050",
+        "amount": 4671700.0,
+        "issue_date": "2026-09-20",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4247000.0,
+        "tax_amount": 424700.0,
+        "total_amount": 4671700.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "납품 검수확인서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약상대자: 가상 한결기획 5\n사업자등록번호: 000-00-03050\n납품 내역: 업무지원 시스템\n검수 결과: 납품 항목 확인\n공급가액: 4,247,000원\n세액: 424,700원\n합계금액: 4,671,700원\n발행일: 2026-09-20\n"
+        }
+      ],
+      "document_type": "inspection_confirmation",
+      "processing_failed": false,
+      "rule_seconds": 0.008801300002232892,
+      "targets": []
+    },
+    "30601": {
+      "document": {
+        "document_id": 30601,
+        "path": "dev2/case_06/document_01.pdf",
+        "sha256": "1836fa401b8ddb9eaa20f0aab01f33f4e8a00022f3afa093f53d190aed4f46a9"
+      },
+      "fields": {
+        "title": "가상 업무지원 시스템 구축",
+        "company_name": null,
+        "business_registration_no": "000-00-03064",
+        "amount": 4822400.0,
+        "issue_date": "2026-09-21",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4384000.0,
+        "tax_amount": 438400.0,
+        "total_amount": 4822400.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "외주용역 계약서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약명: 가상 업무지원 시스템 구축\n발주자: 가상 북쪽연구소 6\n수급인(을): 가상 한결기획 6\n사업자등록번호: 000-00-03064\n공급가액: 4,384,000원\n세액: 438,400원\n합계금액: 4,822,400원\n발행일: 2026-09-21\n"
+        }
+      ],
+      "document_type": "contract",
+      "processing_failed": false,
+      "rule_seconds": 0.009045300001162104,
+      "targets": [
+        "company_name"
+      ]
+    },
+    "30602": {
+      "document": {
+        "document_id": 30602,
+        "path": "dev2/case_06/document_02.pdf",
+        "sha256": "4a676aefb2e62919fc71465e37038c1c87b9644ecd7b2f9adcc280e8e9f67754"
+      },
+      "fields": {
+        "title": "가상 한결기획 6 견적서",
+        "company_name": "가상 한결기획 6",
+        "business_registration_no": "000-00-03064",
+        "amount": 4822400.0,
+        "issue_date": "2026-09-21",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4384000.0,
+        "tax_amount": 438400.0,
+        "total_amount": 4822400.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "견적서\n공급자\n상호: 가상 한결기획 6\n사업자등록번호: 000-00-03064\n공급받는자\n상호: 가상 북쪽연구소 6\n사업자등록번호: 000-00-15065\n공급가액: 4,384,000원\n세액: 438,400원\n합계금액: 4,822,400원\n발행일: 2026-09-21\n"
+        }
+      ],
+      "document_type": "estimate",
+      "processing_failed": false,
+      "rule_seconds": 0.009720400001242524,
+      "targets": []
+    },
+    "30603": {
+      "document": {
+        "document_id": 30603,
+        "path": "dev2/case_06/document_03.pdf",
+        "sha256": "8ef647d8a2553315e1a2a47ced2c453306006e47495b22875e2b097a4b4a32fa"
+      },
+      "fields": {
+        "title": "가상 한결기획 6 사업자등록증",
+        "company_name": "가상 한결기획 6",
+        "business_registration_no": "000-00-03064",
+        "amount": null,
+        "issue_date": "2026-09-21",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "사업자등록증\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n상호: 가상 한결기획 6\n사업자등록번호: 000-00-03064\n대표자: 가상 담당자\n업태: 서비스업\n종목: 소프트웨어 개발\n발행일: 2026-09-21\n"
+        }
+      ],
+      "document_type": "business_registration",
+      "processing_failed": false,
+      "rule_seconds": 0.010180499997659354,
+      "targets": []
+    },
+    "30604": {
+      "document": {
+        "document_id": 30604,
+        "path": "dev2/case_06/document_04.pdf",
+        "sha256": "99688a932ffd77c2a9614625876e2bcd7ff109bf87933801579813e88f435a16"
+      },
+      "fields": {
+        "title": "가상 한결기획 6 통장사본",
+        "company_name": "가상 한결기획 6",
+        "business_registration_no": "000-00-03064",
+        "amount": null,
+        "issue_date": "2026-09-21",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주: 가상 한결기획 6\n은행명: 가상은행\n계좌번호: TEST-ACCOUNT-001\n사업자등록번호: 000-00-03064\n발행일: 2026-09-21\n"
+        }
+      ],
+      "document_type": "bank_account",
+      "processing_failed": false,
+      "rule_seconds": 0.01391940000030445,
+      "targets": []
+    },
+    "30605": {
+      "document": {
+        "document_id": 30605,
+        "path": "dev2/case_06/document_05.pdf",
+        "sha256": "ec902687974105746f08572471a96fc058f41c66e220b86363d4fc70e796ca4e"
+      },
+      "fields": {
+        "title": "가상 한결기획 6 전자세금계산서",
+        "company_name": "가상 한결기획 6",
+        "business_registration_no": "000-00-03064",
+        "amount": 4822400.0,
+        "issue_date": "2026-09-21",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4384000.0,
+        "tax_amount": 438400.0,
+        "total_amount": 4822400.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "전자세금계산서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호: 가상 한결기획 6\n사업자등록번호: 000-00-03064\n공급받는자\n상호: 가상 북쪽연구소 6\n사업자등록번호: 000-00-15065\n공급가액: 4,384,000원\n세액: 438,400원\n합계금액: 4,822,400원\n전액 청구: 전체 계약 대금\n발행일: 2026-09-21\n"
+        }
+      ],
+      "document_type": "tax_invoice",
+      "processing_failed": false,
+      "rule_seconds": 0.009122800001932774,
+      "targets": []
+    },
+    "30606": {
+      "document": {
+        "document_id": 30606,
+        "path": "dev2/case_06/document_06.pdf",
+        "sha256": "cbe7619d460997d4a52dfa5d5c9d1049e0b93e809292c59ef24060acec70de56"
+      },
+      "fields": {
+        "title": "가상 한결기획 6 검수확인서",
+        "company_name": "가상 한결기획 6",
+        "business_registration_no": "000-00-03064",
+        "amount": 4822400.0,
+        "issue_date": "2026-09-21",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4384000.0,
+        "tax_amount": 438400.0,
+        "total_amount": 4822400.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "납품 검수확인서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약상대자: 가상 한결기획 6\n사업자등록번호: 000-00-03064\n납품 내역: 업무지원 시스템\n검수 결과: 납품 항목 확인\n공급가액: 4,384,000원\n세액: 438,400원\n합계금액: 4,822,400원\n발행일: 2026-09-21\n"
+        }
+      ],
+      "document_type": "inspection_confirmation",
+      "processing_failed": false,
+      "rule_seconds": 0.011921299999812618,
+      "targets": []
+    }
+  }
+}

@@ -1,0 +1,1034 @@
+{
+  "metadata": {
+    "phase": "preliminary_dev2_unconfirmed",
+    "human_confirmed": false,
+    "test_sources_opened": false,
+    "model": "qwen3:latest",
+    "prompt_version": "grounded-fields-v3",
+    "same_inputs_targets_responses": true,
+    "new_inference_calls": 0,
+    "labels_sha256": "2d66ff4b6db717332e6ad27d394d92614c43e70ced5ca67ca7d8a9e1953f7317",
+    "fixed_responses_sha256": "2be1b94cd2586ca63b4d099c8df8527562afe997789770293d24d7eba7d19f53",
+    "v4_sha256": "bb69719a812e1b2b0fa4fc327d047720e83ba148b1edaa107f38b38406746d53",
+    "code_hash_policy": "SHA256 with CRLF normalized to LF",
+    "implementation_sha256": {
+      "backend/app/ai/grounding.py": "b94137a16b39ddd5e6ee67f8e2dfdaa2e797ded729683047e9de90222e4614cb",
+      "backend/app/ai/grounding_v4.py": "bb69719a812e1b2b0fa4fc327d047720e83ba148b1edaa107f38b38406746d53",
+      "backend/app/ai/local_llm.py": "4a5e44b743663a4da3c9f9000dc026b02498a2ab372059850d2a1ba8c2c65419",
+      "backend/app/ai/llm_supplement.py": "321ea2465268d92e372abc3b980994170600ca2c75b2cb47fcfdce7ce1e0c064",
+      "backend/evaluation_core.py": "69ce027289862a39873a01c93dd4d3472105752de2b7570c6d96dff4088b68ef",
+      "backend/scripts/compare_guard_dev2.py": "f9e9eb4066ca296a13cfc4fe57f93a5b541bc545565e466c0d188bcfddc4e339"
+    },
+    "evaluated_at": "2026-10-02T16:19:54.865431+00:00"
+  },
+  "metrics": {
+    "rule": {
+      "contract_count": 6,
+      "document_count": 36,
+      "classification_macro_f1": 1.0,
+      "classification_by_type": {
+        "contract": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "estimate": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "business_registration": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "bank_account": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "tax_invoice": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "inspection_confirmation": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        }
+      },
+      "field_accuracy": 0.946078431372549,
+      "present_field_accuracy": 0.9458128078817734,
+      "ambiguous_field_accuracy": 1.0,
+      "false_extraction_on_absent_rate": 0.0,
+      "field_counts": {
+        "all": 252,
+        "provided": 192,
+        "scored": 204,
+        "correct": 193,
+        "present": 203,
+        "present_correct": 192,
+        "absent": 48,
+        "ambiguous": 1,
+        "ambiguous_correct": 1
+      },
+      "fields": {
+        "company_name": {
+          "all": 36,
+          "provided": 30,
+          "scored": 36,
+          "correct": 30,
+          "present": 36,
+          "present_correct": 30
+        },
+        "business_registration_no": {
+          "all": 36,
+          "provided": 36,
+          "scored": 36,
+          "correct": 36,
+          "present": 36,
+          "present_correct": 36
+        },
+        "supply_amount": {
+          "all": 36,
+          "provided": 23,
+          "scored": 24,
+          "correct": 23,
+          "present": 24,
+          "present_correct": 23,
+          "absent": 12,
+          "false_extraction": 0
+        },
+        "tax_amount": {
+          "all": 36,
+          "provided": 23,
+          "scored": 24,
+          "correct": 23,
+          "present": 24,
+          "present_correct": 23,
+          "absent": 12,
+          "false_extraction": 0
+        },
+        "total_amount": {
+          "all": 36,
+          "provided": 22,
+          "scored": 24,
+          "correct": 23,
+          "present": 23,
+          "present_correct": 22,
+          "absent": 12,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "issue_date": {
+          "all": 36,
+          "provided": 36,
+          "scored": 36,
+          "correct": 36,
+          "present": 36,
+          "present_correct": 36
+        },
+        "amount_scope": {
+          "all": 36,
+          "provided": 22,
+          "scored": 24,
+          "correct": 22,
+          "present": 24,
+          "present_correct": 22,
+          "absent": 12,
+          "false_extraction": 0
+        }
+      },
+      "extraction_coverage": 0.7619047619047619,
+      "missing_recall": null,
+      "missing_precision": null,
+      "missing_counts": {
+        "tp": 0,
+        "fn": 0,
+        "fp": 0
+      },
+      "cross_validation_macro_f1": 0.45714285714285713,
+      "checks_by_status": {
+        "PASS": {
+          "support": 35,
+          "tp": 34,
+          "fp": 1,
+          "fn": 1,
+          "f1": 0.9714285714285714
+        },
+        "FAIL": {
+          "support": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "f1": 0.0
+        },
+        "REVIEW": {
+          "support": 7,
+          "tp": 6,
+          "fp": 1,
+          "fn": 1,
+          "f1": 0.8571428571428571
+        },
+        "MISSING": {
+          "support": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "f1": 0.0
+        }
+      },
+      "wrong_pass_rate": 0.0,
+      "wrong_pass_among_passes": 0.0,
+      "wrong_pass_counts": {
+        "unsafe_expected": 7,
+        "wrong_pass": 0,
+        "predicted_pass": 35
+      },
+      "check_review_rate": 0.1590909090909091,
+      "failures": [
+        {
+          "kind": "field",
+          "document_id": "30101",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "30102",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "30102",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "30102",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "30102",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "check",
+          "contract_id": "301",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "30102",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "check",
+          "contract_id": "301",
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "30102",
+          "expected": "PASS",
+          "actual": "N/A"
+        },
+        {
+          "kind": "field",
+          "document_id": "30201",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "30301",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "30401",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "30402",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "check",
+          "contract_id": "304",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "30402",
+          "expected": "REVIEW",
+          "actual": "N/A"
+        },
+        {
+          "kind": "check",
+          "contract_id": "304",
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "30402",
+          "expected": "N/A",
+          "actual": "PASS"
+        },
+        {
+          "kind": "field",
+          "document_id": "30501",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "30601",
+          "field": "company_name",
+          "expected_state": "VALUE"
+        }
+      ],
+      "check_state_counts": {
+        "correct": 40,
+        "scored": 44,
+        "both_not_applicable": 202,
+        "accuracy": 0.9090909090909091
+      },
+      "check_state_accuracy": 0.9090909090909091,
+      "unexpected_pass_on_not_applicable": 1
+    },
+    "hybrid_unguarded": {
+      "contract_count": 6,
+      "document_count": 36,
+      "classification_macro_f1": 1.0,
+      "classification_by_type": {
+        "contract": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "estimate": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "business_registration": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "bank_account": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "tax_invoice": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "inspection_confirmation": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        }
+      },
+      "field_accuracy": 0.9950980392156863,
+      "present_field_accuracy": 1.0,
+      "ambiguous_field_accuracy": 0.0,
+      "false_extraction_on_absent_rate": 0.0,
+      "field_counts": {
+        "all": 252,
+        "provided": 204,
+        "scored": 204,
+        "correct": 203,
+        "present": 203,
+        "present_correct": 203,
+        "absent": 48,
+        "ambiguous": 1
+      },
+      "fields": {
+        "company_name": {
+          "all": 36,
+          "provided": 36,
+          "scored": 36,
+          "correct": 36,
+          "present": 36,
+          "present_correct": 36
+        },
+        "business_registration_no": {
+          "all": 36,
+          "provided": 36,
+          "scored": 36,
+          "correct": 36,
+          "present": 36,
+          "present_correct": 36
+        },
+        "supply_amount": {
+          "all": 36,
+          "provided": 24,
+          "scored": 24,
+          "correct": 24,
+          "present": 24,
+          "present_correct": 24,
+          "absent": 12,
+          "false_extraction": 0
+        },
+        "tax_amount": {
+          "all": 36,
+          "provided": 24,
+          "scored": 24,
+          "correct": 24,
+          "present": 24,
+          "present_correct": 24,
+          "absent": 12,
+          "false_extraction": 0
+        },
+        "total_amount": {
+          "all": 36,
+          "provided": 24,
+          "scored": 24,
+          "correct": 23,
+          "present": 23,
+          "present_correct": 23,
+          "absent": 12,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 0
+        },
+        "issue_date": {
+          "all": 36,
+          "provided": 36,
+          "scored": 36,
+          "correct": 36,
+          "present": 36,
+          "present_correct": 36
+        },
+        "amount_scope": {
+          "all": 36,
+          "provided": 24,
+          "scored": 24,
+          "correct": 24,
+          "present": 24,
+          "present_correct": 24,
+          "absent": 12,
+          "false_extraction": 0
+        }
+      },
+      "extraction_coverage": 0.8095238095238095,
+      "missing_recall": null,
+      "missing_precision": null,
+      "missing_counts": {
+        "tp": 0,
+        "fn": 0,
+        "fp": 0
+      },
+      "cross_validation_macro_f1": 0.4772481040086674,
+      "checks_by_status": {
+        "PASS": {
+          "support": 35,
+          "tp": 35,
+          "fp": 1,
+          "fn": 0,
+          "f1": 0.9859154929577465
+        },
+        "FAIL": {
+          "support": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "f1": 0.0
+        },
+        "REVIEW": {
+          "support": 7,
+          "tp": 6,
+          "fp": 0,
+          "fn": 1,
+          "f1": 0.9230769230769231
+        },
+        "MISSING": {
+          "support": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "f1": 0.0
+        }
+      },
+      "wrong_pass_rate": 0.0,
+      "wrong_pass_among_passes": 0.0,
+      "wrong_pass_counts": {
+        "unsafe_expected": 7,
+        "wrong_pass": 0,
+        "predicted_pass": 36
+      },
+      "check_review_rate": 0.13953488372093023,
+      "failures": [
+        {
+          "kind": "field",
+          "document_id": "30402",
+          "field": "total_amount",
+          "expected_state": "REVIEW"
+        },
+        {
+          "kind": "check",
+          "contract_id": "304",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "30402",
+          "expected": "REVIEW",
+          "actual": "N/A"
+        },
+        {
+          "kind": "check",
+          "contract_id": "304",
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "30402",
+          "expected": "N/A",
+          "actual": "PASS"
+        }
+      ],
+      "check_state_counts": {
+        "correct": 41,
+        "scored": 43,
+        "both_not_applicable": 203,
+        "accuracy": 0.9534883720930233
+      },
+      "check_state_accuracy": 0.9534883720930233,
+      "unexpected_pass_on_not_applicable": 1
+    },
+    "hybrid_guard_v3": {
+      "contract_count": 6,
+      "document_count": 36,
+      "classification_macro_f1": 1.0,
+      "classification_by_type": {
+        "contract": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "estimate": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "business_registration": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "bank_account": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "tax_invoice": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "inspection_confirmation": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        }
+      },
+      "field_accuracy": 0.9754901960784313,
+      "present_field_accuracy": 0.9753694581280788,
+      "ambiguous_field_accuracy": 1.0,
+      "false_extraction_on_absent_rate": 0.0,
+      "field_counts": {
+        "all": 252,
+        "provided": 198,
+        "scored": 204,
+        "correct": 199,
+        "present": 203,
+        "present_correct": 198,
+        "absent": 48,
+        "ambiguous": 1,
+        "ambiguous_correct": 1
+      },
+      "fields": {
+        "company_name": {
+          "all": 36,
+          "provided": 36,
+          "scored": 36,
+          "correct": 36,
+          "present": 36,
+          "present_correct": 36
+        },
+        "business_registration_no": {
+          "all": 36,
+          "provided": 36,
+          "scored": 36,
+          "correct": 36,
+          "present": 36,
+          "present_correct": 36
+        },
+        "supply_amount": {
+          "all": 36,
+          "provided": 23,
+          "scored": 24,
+          "correct": 23,
+          "present": 24,
+          "present_correct": 23,
+          "absent": 12,
+          "false_extraction": 0
+        },
+        "tax_amount": {
+          "all": 36,
+          "provided": 23,
+          "scored": 24,
+          "correct": 23,
+          "present": 24,
+          "present_correct": 23,
+          "absent": 12,
+          "false_extraction": 0
+        },
+        "total_amount": {
+          "all": 36,
+          "provided": 22,
+          "scored": 24,
+          "correct": 23,
+          "present": 23,
+          "present_correct": 22,
+          "absent": 12,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "issue_date": {
+          "all": 36,
+          "provided": 36,
+          "scored": 36,
+          "correct": 36,
+          "present": 36,
+          "present_correct": 36
+        },
+        "amount_scope": {
+          "all": 36,
+          "provided": 22,
+          "scored": 24,
+          "correct": 22,
+          "present": 24,
+          "present_correct": 22,
+          "absent": 12,
+          "false_extraction": 0
+        }
+      },
+      "extraction_coverage": 0.7857142857142857,
+      "missing_recall": null,
+      "missing_precision": null,
+      "missing_counts": {
+        "tp": 0,
+        "fn": 0,
+        "fp": 0
+      },
+      "cross_validation_macro_f1": 0.45714285714285713,
+      "checks_by_status": {
+        "PASS": {
+          "support": 35,
+          "tp": 34,
+          "fp": 1,
+          "fn": 1,
+          "f1": 0.9714285714285714
+        },
+        "FAIL": {
+          "support": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "f1": 0.0
+        },
+        "REVIEW": {
+          "support": 7,
+          "tp": 6,
+          "fp": 1,
+          "fn": 1,
+          "f1": 0.8571428571428571
+        },
+        "MISSING": {
+          "support": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "f1": 0.0
+        }
+      },
+      "wrong_pass_rate": 0.0,
+      "wrong_pass_among_passes": 0.0,
+      "wrong_pass_counts": {
+        "unsafe_expected": 7,
+        "wrong_pass": 0,
+        "predicted_pass": 35
+      },
+      "check_review_rate": 0.1590909090909091,
+      "failures": [
+        {
+          "kind": "field",
+          "document_id": "30102",
+          "field": "supply_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "30102",
+          "field": "tax_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "30102",
+          "field": "total_amount",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "field",
+          "document_id": "30102",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "check",
+          "contract_id": "301",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "30102",
+          "expected": "N/A",
+          "actual": "REVIEW"
+        },
+        {
+          "kind": "check",
+          "contract_id": "301",
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "30102",
+          "expected": "PASS",
+          "actual": "N/A"
+        },
+        {
+          "kind": "field",
+          "document_id": "30402",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "check",
+          "contract_id": "304",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "30402",
+          "expected": "REVIEW",
+          "actual": "N/A"
+        },
+        {
+          "kind": "check",
+          "contract_id": "304",
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "30402",
+          "expected": "N/A",
+          "actual": "PASS"
+        }
+      ],
+      "check_state_counts": {
+        "correct": 40,
+        "scored": 44,
+        "both_not_applicable": 202,
+        "accuracy": 0.9090909090909091
+      },
+      "check_state_accuracy": 0.9090909090909091,
+      "unexpected_pass_on_not_applicable": 1,
+      "guard_outcomes": {
+        "accepted_gold_matching": 6,
+        "accepted_value_count": 6,
+        "accepted_value_correct": 6,
+        "requested_field_count": 12,
+        "human_referral_field_count": 6,
+        "rejected_gold_matching": 5,
+        "rejected_human_referral_count": 6,
+        "rejected_gold_mismatching": 1,
+        "accepted_value_precision": 1.0,
+        "human_referral_field_rate": 0.5,
+        "guard_auto_validated_field_rate": 0.5,
+        "document_count": 36,
+        "called_document_count": 8,
+        "human_referral_document_count": 2,
+        "human_referral_document_rate": 0.05555555555555555,
+        "no_additional_review_document_rate": 0.9444444444444444,
+        "guard_auto_validated_called_document_count": 6,
+        "guard_auto_validated_called_document_rate": 0.75,
+        "human_referral_document_ids": [
+          "30102",
+          "30402"
+        ],
+        "definition": "Referral means unresolved requested field (rejected, REVIEW or failed/missing response). Auto validation is machine grounding, not final human confirmation; all AI proposals remain human_confirmed=false. Rejected correctness is an offline gold audit."
+      }
+    },
+    "hybrid_guard_v4": {
+      "contract_count": 6,
+      "document_count": 36,
+      "classification_macro_f1": 1.0,
+      "classification_by_type": {
+        "contract": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "estimate": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "business_registration": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "bank_account": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "tax_invoice": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        },
+        "inspection_confirmation": {
+          "support": 6,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "f1": 1.0
+        }
+      },
+      "field_accuracy": 0.9950980392156863,
+      "present_field_accuracy": 0.9950738916256158,
+      "ambiguous_field_accuracy": 1.0,
+      "false_extraction_on_absent_rate": 0.0,
+      "field_counts": {
+        "all": 252,
+        "provided": 202,
+        "scored": 204,
+        "correct": 203,
+        "present": 203,
+        "present_correct": 202,
+        "absent": 48,
+        "ambiguous": 1,
+        "ambiguous_correct": 1
+      },
+      "fields": {
+        "company_name": {
+          "all": 36,
+          "provided": 36,
+          "scored": 36,
+          "correct": 36,
+          "present": 36,
+          "present_correct": 36
+        },
+        "business_registration_no": {
+          "all": 36,
+          "provided": 36,
+          "scored": 36,
+          "correct": 36,
+          "present": 36,
+          "present_correct": 36
+        },
+        "supply_amount": {
+          "all": 36,
+          "provided": 24,
+          "scored": 24,
+          "correct": 24,
+          "present": 24,
+          "present_correct": 24,
+          "absent": 12,
+          "false_extraction": 0
+        },
+        "tax_amount": {
+          "all": 36,
+          "provided": 24,
+          "scored": 24,
+          "correct": 24,
+          "present": 24,
+          "present_correct": 24,
+          "absent": 12,
+          "false_extraction": 0
+        },
+        "total_amount": {
+          "all": 36,
+          "provided": 23,
+          "scored": 24,
+          "correct": 24,
+          "present": 23,
+          "present_correct": 23,
+          "absent": 12,
+          "false_extraction": 0,
+          "ambiguous": 1,
+          "ambiguous_correct": 1
+        },
+        "issue_date": {
+          "all": 36,
+          "provided": 36,
+          "scored": 36,
+          "correct": 36,
+          "present": 36,
+          "present_correct": 36
+        },
+        "amount_scope": {
+          "all": 36,
+          "provided": 23,
+          "scored": 24,
+          "correct": 23,
+          "present": 24,
+          "present_correct": 23,
+          "absent": 12,
+          "false_extraction": 0
+        }
+      },
+      "extraction_coverage": 0.8015873015873016,
+      "missing_recall": null,
+      "missing_precision": null,
+      "missing_counts": {
+        "tp": 0,
+        "fn": 0,
+        "fp": 0
+      },
+      "cross_validation_macro_f1": 0.4772481040086674,
+      "checks_by_status": {
+        "PASS": {
+          "support": 35,
+          "tp": 35,
+          "fp": 1,
+          "fn": 0,
+          "f1": 0.9859154929577465
+        },
+        "FAIL": {
+          "support": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "f1": 0.0
+        },
+        "REVIEW": {
+          "support": 7,
+          "tp": 6,
+          "fp": 0,
+          "fn": 1,
+          "f1": 0.9230769230769231
+        },
+        "MISSING": {
+          "support": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "f1": 0.0
+        }
+      },
+      "wrong_pass_rate": 0.0,
+      "wrong_pass_among_passes": 0.0,
+      "wrong_pass_counts": {
+        "unsafe_expected": 7,
+        "wrong_pass": 0,
+        "predicted_pass": 36
+      },
+      "check_review_rate": 0.13953488372093023,
+      "failures": [
+        {
+          "kind": "field",
+          "document_id": "30402",
+          "field": "amount_scope",
+          "expected_state": "VALUE"
+        },
+        {
+          "kind": "check",
+          "contract_id": "304",
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "30402",
+          "expected": "REVIEW",
+          "actual": "N/A"
+        },
+        {
+          "kind": "check",
+          "contract_id": "304",
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "30402",
+          "expected": "N/A",
+          "actual": "PASS"
+        }
+      ],
+      "check_state_counts": {
+        "correct": 41,
+        "scored": 43,
+        "both_not_applicable": 203,
+        "accuracy": 0.9534883720930233
+      },
+      "check_state_accuracy": 0.9534883720930233,
+      "unexpected_pass_on_not_applicable": 1,
+      "guard_outcomes": {
+        "accepted_gold_matching": 10,
+        "accepted_value_count": 10,
+        "accepted_value_correct": 10,
+        "requested_field_count": 12,
+        "human_referral_field_count": 2,
+        "rejected_gold_mismatching": 1,
+        "rejected_human_referral_count": 2,
+        "rejected_gold_matching": 1,
+        "accepted_value_precision": 1.0,
+        "human_referral_field_rate": 0.16666666666666666,
+        "guard_auto_validated_field_rate": 0.8333333333333334,
+        "document_count": 36,
+        "called_document_count": 8,
+        "human_referral_document_count": 1,
+        "human_referral_document_rate": 0.027777777777777776,
+        "no_additional_review_document_rate": 0.9722222222222222,
+        "guard_auto_validated_called_document_count": 7,
+        "guard_auto_validated_called_document_rate": 0.875,
+        "human_referral_document_ids": [
+          "30402"
+        ],
+        "definition": "Referral means unresolved requested field (rejected, REVIEW or failed/missing response). Auto validation is machine grounding, not final human confirmation; all AI proposals remain human_confirmed=false. Rejected correctness is an offline gold audit."
+      }
+    }
+  }
+}

@@ -48,6 +48,8 @@ dev의 113칸은 사람이 원문으로 확인했고, 나머지 781칸은 두 AI
 
 [확정 test 결과](../eval/test/final/four_modes.md)의 필드 정확도는 규칙만 75.67%, LLM만 83.09%, 규칙+LLM 가드 없음 94.66%, 가드 있음 77.74%다. 가드가 정답 일치 제안 100건도 거부해 test에서 성능을 크게 제한했다. 가드 적용은 필드 정확도 목표 90%에 미달했다. 잘못된 PASS는 네 조건 모두 0건으로 이번 평가에서 가드의 안전성 우월성은 입증하지 못했다. 기존 dev 수치와 test 수치를 혼합하지 않는다. 개선은 별도 dev2·test2에서 다루며 v3 test는 튜닝이나 재추론에 사용하지 않는다.
 
+별도 [가드 v4 dev2 예비 비교](../eval/dev2/guard_v4/preliminary_comparison.md)에서는 동일 AI 응답으로 필드 정확도 97.55%→99.51%, 보완 대상 필드의 미해결·추가 확인 비율 50%→16.67%를 확인했다. dev2 정답은 아직 설계 초안이며 독립 판독·사람 확인 전이다. 도장 가림 사례의 N/A→PASS 오류 1건은 남아 있다. v4는 명시 선택 옵션이고 기본 v3·LLM 꺼짐은 유지했다. v3 test 결과를 본 뒤 개선을 선택했으므로 v4의 독립 최종 성능은 버전 고정 뒤 미사용 test2로 확인해야 한다.
+
 검사 이유·근거, 값별 출처와 AI 제안 사유, 계약별 확인 요약, 재제출 연락 기록, 회사 유형·필수 서류·역할 표시·최대 2단계 결재 API를 추가했다. 계약 목록은 공통 한 줄 요약·회신 대기 건수·가장 이른 대기 기한·다음 결재 단계와 `open_issue_count`를 제공한다. 두 한 줄 요약과 문제 수는 NTS disabled의 BUSINESS_STATUS REVIEW를 제외하지만 원래 검사·판정은 유지한다. [frontend 담당자용 안내](../api/frontend_handoff.md)에 사용법을 정리했다. 통합 실행기·운영 안내와 역할별 소스·문서 정리, 승인한 EXE 아이콘과 [팀 공유 문안](team_update.md)은 이전 작업으로 완료했다.
 
 C업체는 직원 6명·월 약 150건·담당자 1명과 대표 최종 확인이라는 시범 가정으로 [프로필](../architecture/c_company_profile.md)을 정리했다. 소기업 1단계 결재와 중견 2단계 확장 설계를 구분하고 법적 규모는 단정하지 않는다. dev 다섯 사례·원본 28개로 규칙만/기존 AI 보완 결과 두 개의 [시연 전용 업무함](../operations/demo_inbox.md)을 준비했다. AI 비교는 고정 dev 응답 캐시 재생이며 실시간 LLM 시연이 아니다. [설명 문서 목차](../submission/explanation_outline.md)는 작성 재료와 test 결과 자리를 정리한 초안이다.
@@ -80,6 +82,7 @@ v3 test 정답 확정·예측 보존·확정 채점과 결과 기록은 완료�
 | Claude UI 병합·전체 테스트·팀원 접속 안내 | [UI 통합과 팀원 테스트](history/18_ui_integration_and_team_test.md) |
 | test 134칸 사람 확인·정답 확정 | [test 정답 확정](history/19_test_human_confirmation.md) |
 | 고정 v3 test 확정 수치·가드 한계 | [최종 test 채점](history/20_test_final_scores.md) |
+| dev2 가드 v4 개선·예비 수치·남은 규칙 문제 | [가드 v4 개발](history/21_guard_v4_dev2.md) |
 
 [전체 문서 목록](../README.md) · [변경할 파일 찾기](../architecture/module_map.md)
 
