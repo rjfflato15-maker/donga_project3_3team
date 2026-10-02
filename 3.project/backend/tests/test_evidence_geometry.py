@@ -105,3 +105,35 @@ def test_preview_exif_orientation_matches_coordinate_image(operator_client, db_f
     assert response.status_code == 200
     with Image.open(io.BytesIO(response.content)) as image:
         assert image.size == (40, 80)
+
+
+def test_v4_adjacent_label_value_coordinates_survive_unchanged_human_confirmation(operator_client,db_factory,monkeypatch):
+    import io,json
+    from test_api import create_contract
+    from backend.app.db.models import Document,DocumentExtract,DocumentFileInfo
+    from backend.app.services import storage_service,review_context_service
+    from backend.app.ai import preprocessor
+    cid=create_contract(operator_client)['contract_id'];buffer=io.BytesIO()
+    with Image.new('RGB',(1400,1600)) as image:image.save(buffer,format='PNG')
+    key,_,sha=storage_service.store_original(cid,'v4.png',buffer.getvalue())
+    text='견적서\n총 청구액\n1100원'
+    storage_service.store_text(key,text,text)
+    raw={'total_amount':1100,'ai_review':{'guard_version':'grounding-v4-dev2','decisions':[
+        {'field':'total_amount','accepted':True,'applied':True,'proposal':{'state':'VALUE','value':'1100'},
+         'anchor':{'page':1,'line':3,'quote':'1100원','label_anchor':{'page':1,'line':2,'quote':'총 청구액'}}}]}}
+    with db_factory() as db:
+        doc=Document(contract_id=cid,file_name='v4.png',storage_path=key,document_type='estimate',processing_status='COMPLETED')
+        db.add(doc);db.flush();did=doc.document_id
+        db.add(DocumentExtract(document_id=did,raw_fields=json.dumps(raw,ensure_ascii=False)))
+        db.add(DocumentFileInfo(document_id=did,sha256=sha,byte_size=len(buffer.getvalue())));db.commit()
+    monkeypatch.setattr(review_context_service,'source_pages',lambda *a:[{'page':1,'location_kind':'page','text':text}])
+    monkeypatch.setattr(preprocessor,'_safe_winocr_recognize',lambda *a,**kw:{'lines':[
+        {'text':'총 청구액','words':[{'bounding_rect':{'x':100,'y':200,'width':300,'height':50}}]},
+        {'text':'1100원','words':[{'bounding_rect':{'x':100,'y':300,'width':200,'height':50}}]}]})
+    result=operator_client.get(f'/api/documents/{did}/provenance').json()['fields']['total_amount']
+    assert result['evidence'][0]['bbox'] and result['evidence'][0]['label_anchor']['bbox']
+    detail=operator_client.get(f'/api/contracts/{cid}').json()
+    fields=detail['documents'][0]['analysis']['fields']
+    assert operator_client.put(f'/api/documents/{did}/fields',json={'fields':fields,'document_type':'estimate','revision':detail['workflow']['revision'],'note':'같은 원문 값을 사람이 확인'}).status_code==200
+    confirmed=operator_client.get(f'/api/documents/{did}/provenance').json()['fields']['total_amount']
+    assert confirmed['source']=='HUMAN_CONFIRMATION' and confirmed['evidence'][0]['label_anchor']['bbox']

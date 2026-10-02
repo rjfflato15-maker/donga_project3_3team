@@ -83,14 +83,20 @@ def document_provenance(db, doc):
                 anchor.update(document_id=doc.document_id, field=key, label=option['label'], party=option['party'], text_verified=True)
                 anchors.append(anchor)
         proposal_token = canonical(lookup, (decision or {}).get('proposal', {}).get('value'))
-        if not anchors and (not manual) and pages and (token is not None) and (token == proposal_token) and decision and decision.get('applied') and decision.get('anchor'):
+        if not anchors and pages and (token is not None) and (token == proposal_token) and decision and decision.get('applied') and decision.get('anchor'):
             stored_anchor = decision['anchor']
             page = next((p for p in pages if p['page'] == stored_anchor.get('page')), None)
             verified = display_anchor(page, stored_anchor.get('line'), stored_anchor.get('quote'), text_only) if page else None
             if verified:
                 anchors = [{**verified, 'document_id': doc.document_id, 'field': key}]
+                label = stored_anchor.get('label_anchor')
+                label_page = next((p for p in pages if p['page'] == label.get('page')), None) if isinstance(label, dict) else None
+                label_verified = display_anchor(label_page, label.get('line'), label.get('quote'), text_only) if label_page else None
+                if label_verified and (label_verified.get('line'), label_verified.get('quote')) != (verified.get('line'), verified.get('quote')):
+                    anchors[0]['label_anchor'] = {**label_verified, 'document_id': doc.document_id, 'field': key, 'evidence_role': 'LABEL_LINE'}
         results[key] = {'value': value, 'source': source, 'source_label': SOURCE_NAMES[source], 'original_source': origin, 'human_confirmation': confirmation, 'evidence': anchors, 'evidence_status': 'AMBIGUOUS' if len(anchors) > 1 else 'AVAILABLE' if anchors else 'UNAVAILABLE', 'evidence_error': None if anchors else source_error or 'SOURCE_LABEL_OR_VALUE_NOT_FOUND', 'ai_decision': decision or derived}
     anchors = [anchor for field in results.values() for anchor in field['evidence']]
+    anchors += [anchor['label_anchor'] for anchor in list(anchors) if isinstance(anchor.get('label_anchor'), dict)]
     if path and version_verified:
         attach_coordinates(path, anchors, expected_sha)
     else:
