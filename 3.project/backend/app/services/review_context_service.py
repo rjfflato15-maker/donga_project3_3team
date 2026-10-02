@@ -14,6 +14,7 @@ from .storage_service import read_texts, resolve_path
 from .company_policy_service import approval_state
 from .review_summary_service import build_action_summary, display_issue_counts, pending_ai_count
 from .evidence_geometry_service import attach_coordinates
+from .document_version_service import active_documents
 SOURCE_NAMES = {'RULE': '규칙', 'AI_SUPPLEMENT': 'AI 보완', 'HUMAN_CONFIRMATION': '사람 확인', 'UNAVAILABLE': '미추출'}
 
 
@@ -104,12 +105,13 @@ def review_context(db, contract_id):
         return None
     from ..db.models import Contract
     contract = db.get(Contract, contract_id)
-    documents = [document_provenance(db, d) for d in contract.documents]
+    current_docs = active_documents(contract)
+    documents = [document_provenance(db, d) for d in current_docs]
     by_id = {str(d['document_id']): d for d in documents}
     keys = {'BUSINESS_NO_MATCH': ['business_registration_no'], 'AMOUNT_COMPONENTS': ['supply_amount', 'tax_amount', 'total_amount'], 'AMOUNT_EXTRACTION': ['supply_amount', 'tax_amount', 'total_amount', 'amount'], 'AMOUNT_MATCH_ESTIMATE': ['total_amount', 'amount'], 'AMOUNT_MATCH_TAX_INVOICE': ['total_amount', 'amount_scope'], 'PAYMENT_SCOPE': ['amount_scope', 'total_amount'], 'INSTALLMENT_TOTAL': ['total_amount', 'amount_scope']}
     checks = []
     for check in detail.checks:
-        targets = [by_id[check.field]] if check.field in by_id else [by_id[str(d.document_id)] for d in contract.documents if d.document_type == 'tax_invoice'] if check.rule_id in {'INSTALLMENT_TOTAL', 'PAYMENT_SCOPE'} else []
+        targets = [by_id[check.field]] if check.field in by_id else [by_id[str(d.document_id)] for d in current_docs if d.document_type == 'tax_invoice'] if check.rule_id in {'INSTALLMENT_TOTAL', 'PAYMENT_SCOPE'} else []
         evidence = [a for doc in targets for field in keys.get(check.rule_id, []) for a in doc['fields'][field]['evidence']]
         checks.append({**check.model_dump(mode='json'), 'reason': check.message, 'evidence': evidence, 'evidence_status': 'AVAILABLE' if evidence else 'UNAVAILABLE' if targets else 'NOT_APPLICABLE'})
     requests = db.query(ResubmissionRequest).filter_by(contract_id=contract_id).order_by(ResubmissionRequest.request_id.desc()).all()

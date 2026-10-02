@@ -17,6 +17,7 @@ from ..services.contract_service import get_document_response
 from ..services.pipeline_service import PipelineService
 from ..services.storage_service import read_upload, resolve_path, STORAGE_LOCK, read_texts
 from ..services.workflow_service import audit, touch_contract, policy_for
+from ..services.document_version_service import require_current, version_history, compare_versions
 from ..security import Actor, get_current_user, require_operator
 
 router = APIRouter(tags=["Documents"])
@@ -45,8 +46,20 @@ def sensitive_values(doc):
 
 @router.post("/api/contracts/{contract_id}/documents", response_model=List[DocumentResponse])
 def upload_contract_documents(contract_id: int, files: List[UploadFile] = File(...),
-                              target_document_type: Optional[str] = Form(None), db: Session = Depends(get_db),
+                              target_document_type: Optional[str] = Form(None), upload_mode: str = Form('ADD'),
+                              replaces_document_id: Optional[int] = Form(None), revision: Optional[int] = Form(None),
+                              change_note: str = Form(''), db: Session = Depends(get_db),
                               actor: Actor = Depends(require_operator)):
+    if upload_mode not in {'ADD', 'REISSUE'}:
+        raise HTTPException(400,'upload_mode는 ADD 또는 REISSUE입니다.')
+    if upload_mode == 'REISSUE' and (len(files) != 1 or replaces_document_id is None or revision is None or not change_note.strip()):
+        raise HTTPException(400,'재발행은 파일 1개·이전 문서 ID·revision·변경 사유가 필요합니다.')
+    if upload_mode == 'ADD' and replaces_document_id is not None:
+        raise HTTPException(400,'문서 교체에는 REISSUE를 명시하세요.')
+    if revision is not None and len(files) != 1:
+        raise HTTPException(400,'revision을 검사하는 등록은 파일 1개씩 요청하세요.')
+    if len(change_note) > 2000:
+        raise HTTPException(400,'변경 사유는 2000자 이하로 입력하세요.')
     if not 1 <= len(files) <= 20:
         raise HTTPException(400, "한 번에 1~20개 파일을 등록하세요.")
     if target_document_type and target_document_type not in [t.value for t in DocumentType]:
@@ -55,7 +68,8 @@ def upload_contract_documents(contract_id: int, files: List[UploadFile] = File(.
     result = []
     for file, content in contents:
         try:
-            doc = pipeline_service.process_document_upload(db, contract_id, file.filename, content, target_document_type or "")
+            doc = pipeline_service.process_document_upload(db, contract_id, file.filename, content, target_document_type or "",
+                replaces_document_id=replaces_document_id, expected_contract_revision=revision, change_note=change_note,actor=actor)
         except ValueError as exc:
             raise HTTPException(404, str(exc)) from exc
         audit(db, actor, "DOCUMENT_UPLOAD", contract_id, doc.document_id, {"file_name": doc.file_name})
@@ -71,12 +85,32 @@ def get_document(document_id: int, db: Session = Depends(get_db)):
     return get_document_response(doc)
 
 
+@router.get('/api/documents/{document_id}/versions')
+def get_versions(document_id: int, db: Session = Depends(get_db)):
+    doc = db.get(Document,document_id)
+    if not doc:
+        raise HTTPException(404,'문서를 찾을 수 없습니다.')
+    return {'contract_id':doc.contract_id,'revision':policy_for(db,doc.contract_id)['revision'], 'versions':version_history(db,doc)}
+
+
+@router.get('/api/documents/{document_id}/compare')
+def get_version_comparison(document_id: int, previous_document_id: Optional[int] = None, db: Session = Depends(get_db)):
+    doc=db.get(Document,document_id)
+    if not doc:
+        raise HTTPException(404,'문서를 찾을 수 없습니다.')
+    return {'contract_id':doc.contract_id,'revision':policy_for(db,doc.contract_id)['revision'],**compare_versions(db,doc,previous_document_id)}
+
+
 @router.delete("/api/documents/{document_id}", status_code=204)
 def delete_document(document_id: int, db: Session = Depends(get_db), actor: Actor = Depends(require_operator)):
     with STORAGE_LOCK:
         doc = db.get(Document, document_id)
         if not doc:
             raise HTTPException(404, "문서를 찾을 수 없습니다.")
+        if doc.version:
+            from ..db.models import DocumentVersion
+            if db.query(DocumentVersion).filter_by(logical_document_id=doc.version.logical_document_id).count() > 1:
+                raise HTTPException(409,'재발행 이력이 있는 문서는 삭제할 수 없습니다. 버전 이력을 보관합니다.')
         contract_id, name = doc.contract_id, doc.file_name
         db.query(ValidationResult).filter(ValidationResult.extract_id == (doc.extract.extract_id if doc.extract else -1)).delete()
         db.query(DocumentFileInfo).filter(DocumentFileInfo.document_id == document_id).delete()
@@ -94,6 +128,7 @@ def restore_original(document_id: int, file: UploadFile = File(...), db: Session
     doc = db.get(Document, document_id)
     if not doc:
         raise HTTPException(404, "문서를 찾을 수 없습니다.")
+    require_current(doc)
     if resolve_path(doc.storage_path):
         raise HTTPException(409, "원본이 이미 보관되어 있습니다. 새 문서는 증빙 업로드로 등록하세요.")
     if Path(file.filename or "").suffix.lower() != Path(doc.file_name).suffix.lower():
@@ -125,6 +160,7 @@ def correct_fields(document_id: int, req: Correction, db: Session = Depends(get_
         doc = db.get(Document, document_id)
         if not doc or not doc.extract:
             raise HTTPException(404, "추출 결과를 찾을 수 없습니다.")
+        require_current(doc)
         if req.revision != policy_for(db, doc.contract_id)["revision"]:
             raise HTTPException(409, "자료가 변경되었습니다. 새로고침 후 다시 수정하세요.")
         if not req.note.strip():

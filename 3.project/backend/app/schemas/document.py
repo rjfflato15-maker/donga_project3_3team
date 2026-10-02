@@ -57,5 +57,6 @@ class DocumentResponse(BaseModel):
     business_status: Optional[str] = None
     file_available: bool = False
     file_size: Optional[int] = None
+    version: Dict[str, Any] = {}
 
     model_config = ConfigDict(from_attributes=True)

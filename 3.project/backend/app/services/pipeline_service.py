@@ -34,11 +34,13 @@ class PipelineService:
 
     def process_document_upload(self, db: Session, contract_id: int, file_name: str, file_bytes: bytes,
                                 target_document_type: str = "", existing_document_id=None,
-                                restoration_revision=None) -> Document:
+                                restoration_revision=None, replaces_document_id=None,
+                                expected_contract_revision=None, change_note="", actor=None) -> Document:
         from fastapi import HTTPException
         from .storage_service import STORAGE_LOCK, store_original, store_text, clean_name, resolve_path
         from .workflow_service import touch_contract, policy_for
-        from ..db.models import DocumentFileInfo
+        from ..db.models import DocumentFileInfo, DocumentVersion, AuditEvent
+        from .document_version_service import require_current, metadata
         from ..schemas.document import DocumentAnalysisResponse, MaskInfo
 
         # Read the small precondition snapshot, then release the transaction
@@ -49,6 +51,18 @@ class PipelineService:
         if not contract:
             raise ValueError("계약을 찾을 수 없습니다.")
         expected_revision = None
+        if expected_contract_revision is not None and policy_for(db, contract_id)['revision'] != expected_contract_revision:
+            raise HTTPException(409,"계약 자료가 변경되었습니다. 새로고침 후 등록하세요.")
+        if replaces_document_id is not None:
+            previous = db.get(Document, replaces_document_id)
+            if not previous or previous.contract_id != contract_id:
+                raise HTTPException(404,"재발행할 문서를 찾을 수 없습니다.")
+            require_current(previous)
+            if expected_contract_revision is None or not change_note.strip():
+                raise HTTPException(400,"재발행에는 revision과 변경 사유가 필요합니다.")
+            if target_document_type and target_document_type != previous.document_type:
+                raise HTTPException(400,"재발행 문서는 이전 문서와 같은 종류로 등록하세요.")
+            target_document_type = previous.document_type
         if existing_document_id is not None:
             existing = db.get(Document, existing_document_id)
             if not existing or existing.contract_id != contract_id:
@@ -78,6 +92,10 @@ class PipelineService:
             analysis = DocumentAnalysisResponse(document_type=DocumentType.UNKNOWN, confidence=0,
                 mask=MaskInfo(status=MaskStatus.FAILED), fields=AnalysisFields(), warnings=["문서 인식 실패"])
         masked_key = store_text(raw_key, raw_text, masked_text)
+        if replaces_document_id is not None and failed:
+            raise HTTPException(422,"재발행본을 읽지 못했습니다. 이전 버전은 유지됩니다. 파일을 확인하세요.")
+        if replaces_document_id is not None and analysis.document_type.value != target_document_type:
+            raise HTTPException(422,"재발행본의 문서 종류를 확인하지 못했습니다. 이전 버전은 유지됩니다.")
         b_no = analysis.fields.business_registration_no or business_number
         verification_status = self.nts_client.check_business_status(b_no).get("status", "확인 불가")
 
@@ -89,6 +107,13 @@ class PipelineService:
             contract = db.get(Contract, contract_id)
             if not contract:
                 raise ValueError("계약을 찾을 수 없습니다.")
+            if expected_contract_revision is not None and policy_for(db, contract_id)['revision'] != expected_contract_revision:
+                raise HTTPException(409,"분석 중 계약 자료가 변경되었습니다. 새로고침 후 다시 등록하세요.")
+            previous = db.get(Document,replaces_document_id) if replaces_document_id is not None else None
+            if replaces_document_id is not None:
+                if not previous or previous.contract_id != contract_id:
+                    raise HTTPException(409,"분석 중 이전 문서가 삭제되었습니다.")
+                require_current(previous)
             doc = db.get(Document, existing_document_id) if existing_document_id is not None else None
             if existing_document_id is not None:
                 if not doc or doc.contract_id != contract_id:
@@ -141,6 +166,30 @@ class PipelineService:
                 info = DocumentFileInfo(document_id=doc.document_id)
                 db.add(info)
             info.sha256, info.byte_size = digest, len(file_bytes)
+            if existing_document_id is None:
+                group, number = doc.document_id, 1
+                if previous is not None:
+                    if previous.version is None:
+                        db.add(DocumentVersion(document_id=previous.document_id,logical_document_id=previous.document_id,
+                            version_number=1,is_current=False,actor_name="기존 기록",change_note="버전 관리 이전 등록",
+                            initial_fields_json=previous.extract.raw_fields if previous.extract else '{}',
+                            created_at=previous.uploaded_at,superseded_at=datetime.utcnow()))
+                        db.flush()
+                        db.refresh(previous)
+                    else:
+                        previous.version.is_current=False
+                        previous.version.superseded_at=datetime.utcnow()
+                        db.flush()
+                    group,number=metadata(previous)['logical_document_id'],metadata(previous)['version_number']+1
+                db.add(DocumentVersion(document_id=doc.document_id,logical_document_id=group,version_number=number,
+                    previous_document_id=replaces_document_id,is_current=True,actor_id=actor.user_id if actor else None,
+                    actor_name=actor.display_name if actor else "시스템",change_note=change_note.strip() or "새 증빙 추가",
+                    initial_fields_json=extract.raw_fields))
+                if previous is not None:
+                    db.add(AuditEvent(actor_id=actor.user_id if actor else None,actor_name=actor.display_name if actor else "시스템",
+                        action="DOCUMENT_REISSUED",contract_id=contract_id,document_id=doc.document_id,
+                        details=json.dumps({"previous_document_id":previous.document_id,"logical_document_id":group,
+                                            "version_number":number,"note":change_note.strip()},ensure_ascii=False)))
             touch_contract(db, contract_id)
             db.commit()
             db.refresh(doc)
@@ -152,7 +201,8 @@ class PipelineService:
         from .storage_service import resolve_path
         from ..db.models import DocumentFileInfo
         result = []
-        for doc in contract.documents:
+        from .document_version_service import active_documents
+        for doc in active_documents(contract):
             try:
                 fields = json.loads(doc.extract.raw_fields or "{}") if doc.extract else {}
             except (ValueError, TypeError):
@@ -230,7 +280,8 @@ class PipelineService:
         if not contract:
             raise ValueError(f"Contract {contract_id} not found")
 
-        docs = db.query(Document).filter(Document.contract_id == contract_id).all()
+        from .document_version_service import active_documents
+        docs = active_documents(contract)
 
         step1 = {
             "step": 1,

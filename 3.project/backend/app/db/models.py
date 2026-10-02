@@ -8,6 +8,8 @@ from sqlalchemy import (
     ForeignKey,
     Boolean,
     Text,
+    UniqueConstraint,
+    Index,
 )
 from sqlalchemy.orm import relationship
 from .database import Base
@@ -73,6 +75,7 @@ class Document(Base):
     masking = relationship("DocumentMasking", back_populates="document", uselist=False, cascade="all, delete-orphan")
     extract = relationship("DocumentExtract", back_populates="document", uselist=False, cascade="all, delete-orphan")
     verification = relationship("BusinessVerification", back_populates="document", uselist=False, cascade="all, delete-orphan")
+    version = relationship("DocumentVersion", uselist=False, cascade="all, delete-orphan")
 
 
 class DocumentMasking(Base):
@@ -227,3 +230,23 @@ class ApprovalSignoff(Base):
     actor_name = Column(String(80), nullable=False)
     note = Column(Text, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class DocumentVersion(Base):
+    __tablename__ = "pilot_document_versions"
+    document_id = Column(Integer, ForeignKey("documents.document_id", ondelete="CASCADE"), primary_key=True)
+    logical_document_id = Column(Integer, nullable=False, index=True)
+    version_number = Column(Integer, nullable=False)
+    previous_document_id = Column(Integer, nullable=True)
+    is_current = Column(Boolean, nullable=False, default=True)
+    actor_id = Column(Integer, nullable=True)
+    actor_name = Column(String(80), nullable=False)
+    change_note = Column(Text, nullable=False)
+    initial_fields_json = Column(Text, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    superseded_at = Column(DateTime, nullable=True)
+    __table_args__ = (
+        UniqueConstraint("logical_document_id", "version_number", name="uq_document_version_number"),
+        Index("uq_current_logical_document", "logical_document_id", unique=True,
+              sqlite_where=is_current.is_(True), postgresql_where=is_current.is_(True)),
+    )

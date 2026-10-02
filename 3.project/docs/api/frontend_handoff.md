@@ -110,3 +110,26 @@ POST `/api/pilot/contracts/{id}/approvals` 요청은 기존 최종 확인 요청
 ```
 
 evidence.page는 1부터 시작하고 preview-image의 page query는 0부터 시작한다. `GET /api/documents/42/preview-image?page=0&masked=false&revision=7&source_sha256=...`로 같은 근거의 이미지를 요청한다. revision 또는 원본 해시가 다르면 `409 {"detail":"계약 자료가 변경되었습니다. 근거와 미리보기를 새로 불러오세요."}`(원본 충돌도 같은 409), 해당 페이지가 없으면 404, 이미지/마스킹 실패는 503이다. 로그인은 필수(401)다. null일 때 기존 쪽·줄 표시를 사용한다. 이 API는 계약 revision을 증가시키지 않는다.
+## 추가 등록과 재발행 버전 (2026-10-03)
+
+기존 `POST /api/contracts/{id}/documents`의 multipart `upload_mode` 기본값은 ADD다. 같은 종류 문서도 서로 독립된 증빙으로 추가한다. 분할 세금계산서 추가는 ADD를 사용한다. 재발행은 파일 한 개와 `upload_mode=REISSUE`, `replaces_document_id=42`, `revision=7`, `change_note=금액 정정 재발행`을 보낸다. 문서 종류는 교체 대상과 같아야 하며 생략하면 이전 종류를 사용한다. 담당자 권한만 등록할 수 있다.
+
+```json
+[{"document_id": 45, "contract_id": 3, "version": {"logical_document_id": 42, "version_number": 2, "is_current": true, "previous_document_id": 42}}]
+```
+
+응답은 기존 DocumentResponse 배열이며 위 version 필드가 추가된다. 성공 시 계약 revision이 증가하고 이전 확인·1차 결재·최종 결재가 현재 자료에 적용되지 않는다. 새 문서는 이전 사람 확인 상태를 이어받지 않는다. 최신 상세를 다시 불러온 다음 근거 확인과 재결재를 진행한다. 이전 원문·추출값·수정 기록은 보관하고 검수/목록 완성률/결재 자료에서 제외한다. 이전 문서는 직접 GET/다운로드 가능하다. 버전 이력이 있는 문서의 DELETE나 이전 버전 값 수정은 409로 보호한다.
+
+`GET /api/documents/45/versions`:
+
+```json
+{"contract_id": 3, "revision": 8, "versions": [{"document_id":42,"logical_document_id":42,"version_number":1,"is_current":false,"previous_document_id":null,"file_name":"원본.pdf","fields":{"total_amount":111},"source_sha256":"...","change_note":"새 증빙 추가"},{"document_id":45,"logical_document_id":42,"version_number":2,"is_current":true,"previous_document_id":42,"file_name":"재발행.pdf","fields":{"total_amount":110},"source_sha256":"...","change_note":"금액 정정 재발행"}]}
+```
+
+`GET /api/documents/45/compare`는 바로 이전 버전과 비교한다. `?previous_document_id=42`로 더 이전 버전을 지정할 수 있다. comparison_basis=CURRENT_SAVED_FIELDS이므로 각 버전에 마지막으로 저장된 사람 수정값도 반영된다.
+
+```json
+{"contract_id":3,"revision":8,"logical_document_id":42,"previous_document_id":42,"new_document_id":45,"previous_version":1,"new_version":2,"comparison_basis":"CURRENT_SAVED_FIELDS","changed_field_count":1,"changes":[{"field":"total_amount","previous_value":111,"new_value":110}],"previous_fields":{"total_amount":111},"new_fields":{"total_amount":110}}
+```
+
+예시의 fields는 일부만 표기했다. 실제로 모든 AnalysisFields를 반환한다. 읽기 API는 revision을 바꾸지 않는다. 등록 조건 누락/다른 종류는 400, 대상 없음/다른 계약 문서/비교 불가 대상은 404, 오래된 revision·이미 교체된 문서는 `409 {"detail":"분석 중 계약 자료가 변경되었습니다. 새로고침 후 다시 등록하세요."}` 등 충돌 사유를 반환한다. 재발행 OCR 실패는 `422 {"detail":"재발행본을 읽지 못했습니다. 이전 버전은 유지됩니다. 파일을 확인하세요."}`다. 실패 시 이전 활성 문서·값·revision·결재가 그대로 유지된다. 분석은 DB 게시 잠금 밖에서 실행하고 게시 직전에 revision을 다시 검사한다. 기존 자료에 버전 행이 없어도 버전 1로 읽으며 재발행 시 이력을 생성한다. 새 DB 테이블만 추가해 기존 DB를 재생성하지 않는다.

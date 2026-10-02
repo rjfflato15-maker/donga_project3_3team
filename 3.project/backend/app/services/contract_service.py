@@ -36,6 +36,7 @@ from ..schemas.validation import (
 )
 from .pipeline_service import PipelineService
 from .company_policy_service import approval_state
+from .document_version_service import active_documents, metadata as version_metadata
 from .review_summary_service import (
     ContractDashboardListItem,
     build_action_summary,
@@ -76,7 +77,7 @@ def get_document_response(doc: Document) -> DocumentResponse:
         business_status="미연동" if NTS_MODE == "disabled" else (
             "데모 데이터 · 실제 조회 아님" if NTS_MODE == "demo" else (
                 doc.verification.business_status if doc.verification else "미확인")),
-        file_available=source is not None, file_size=source.stat().st_size if source else None,
+        file_available=source is not None, file_size=source.stat().st_size if source else None, version=version_metadata(doc),
     )
 
 
@@ -91,7 +92,7 @@ class ContractService:
         waiting_by_contract = waiting_request_stats(db)
         result = []
         for contract in db.query(Contract).order_by(Contract.contract_id.desc()).all():
-            submitted = {d.document_type for d in contract.documents}
+            submitted = {d.document_type for d in active_documents(contract)}
             count = sum(t.value in submitted for t in required)
             inputs = self.pipeline_service.validation_inputs(db, contract)
             workflow = review_state(db, contract.contract_id, fingerprint_for(db, contract, inputs))
@@ -114,7 +115,7 @@ class ContractService:
                 submitted_docs_count=count, total_docs_count=len(required),
                 submitted_document_types=[t.value for t in required if t.value in submitted], created_at=contract.created_at,
                 approval_status=workflow["approval_status"], revision=workflow["revision"],
-                missing_original_count=sum(resolve_path(d.storage_path) is None for d in contract.documents),
+                missing_original_count=sum(resolve_path(d.storage_path) is None for d in active_documents(contract)),
                 action_summary=build_action_summary(issue_counts, workflow, approval, waiting_count, ai_pending),
                 open_issue_count=sum(issue_counts.values()),
                 waiting_request_count=waiting_count, earliest_due_on=earliest_due_on,
@@ -136,7 +137,7 @@ class ContractService:
         return ContractDetailResponse(
             contract_id=contract.contract_id, title=contract.title, vendor_name=contract.vendor_name,
             business_number=contract.business_number, contract_amount=contract.contract_amount, review_status=status,
-            required_document_types=required, documents=[get_document_response(d) for d in contract.documents],
+            required_document_types=required, documents=[get_document_response(d) for d in active_documents(contract)],
             summary=summary, checks=checks, created_at=contract.created_at, updated_at=contract.updated_at,
             workflow=review_state(db, contract_id, fingerprint_for(db, contract, docs)),
         )
