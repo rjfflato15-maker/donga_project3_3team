@@ -196,3 +196,18 @@ action은 START/COMPLETE/CANCEL/REASSIGN/UPDATE. START는 현재 맡은 사람, 
 ```
 
 화면에는 text를 일반 텍스트로 표시한다. facts/template/sources도 반환해 숫자 출처를 확인할 수 있다. 임의 LLM 문장 대신 검증된 코드 템플릿을 사용하며 LLM 요약은 현재 호출하지 않는다. 자리표시자 누락·중복·다른 금액을 직접 쓴 템플릿은 허용하지 않는다. 재발행 뒤에는 ‘자료 변경으로 재확인 필요’가 된다. 존재하지 않는 계약은 404, 오래된 revision 또는 생성 중 변경은 409, 잘못된 style은 422, 미로그인은 401이다. DB·검수 결과·revision을 변경하지 않는다.
+## 검수 도우미 미리보기 (2026-10-03)
+
+`POST /api/pilot/contracts/3/assistant-preview`는 저장된 현재 자료를 읽고 메모리에서 규칙을 재실행한 뒤 확인 항목별 초안을 준비한다. 실제 OCR/LLM을 새로 실행하지 않으며 DB 검수 결과·감사 로그·요청·업무·revision을 변경하지 않는다. 국세청은 DisabledNtsClient를 명시해 외부 호출이 없다.
+
+```json
+{"revision":8,"fingerprint":"현재 상세의 64자리 fingerprint"}
+```
+
+```json
+{"contract_id":3,"revision":8,"fingerprint":"...","preview_only":true,"persisted":false,"automatic_send":false,"llm_used":false,"external_api_calls":0,"item_count":1,"items":[{"issue_id":"현재 항목의 안정 ID","rule_id":"REQUIRED_DOCUMENTS","field":"tax_invoice","status":"MISSING","reason":"세금계산서가 제출되지 않았습니다.","next_action":"DRAFT_REQUEST_AFTER_REVIEW","recheck":{"tool":"LOCAL_RULE_RECHECK","completed":true,"revision":8,"fingerprint":"..."},"request_draft":{"recipient_name":"가상 업체","document_type":"tax_invoice","subject":"외주 계약 · 세금계산서 확인 요청 초안","body":"가상 업체 담당자님, ... 원문을 보내 주세요.","review_before_use":true,"sent":false},"assignment_draft":null,"persisted":false}],"recheck_differences":[],"steps":[{"tool":"READ_CURRENT_STORED_EVIDENCE","status":"COMPLETED"},{"tool":"LOCAL_RULE_RECHECK","status":"COMPLETED","writes":0,"nts_mode":"disabled"},{"tool":"PREPARE_DRAFTS","status":"COMPLETED","saved":0,"sent":0}]}
+```
+
+items는 PASS 이외의 확인 항목을 반환한다. 계약서·검수확인서는 사내 준비용 assignment_draft를 반환하고 거래처 요청 초안을 만들지 않는다. 사업자 영업 상태는 MANUAL_CONFIRMATION으로 담당자가 따로 확인한다. 견적서·세금계산서·사업자등록증·통장사본은 원문과 추출값을 사람이 확인한 뒤 사용할 거래처 요청 초안을 준비한다.
+
+응답의 summary는 이번 메모리 재검사 결과다. recheck_differences는 저장된 규칙 결과와 이번 결과의 차이를 보여 주며 저장하지 않는다. `issue_ids`에 이전 응답의 특정 항목 ID 배열을 주면 그 항목만 준비한다. 없는 ID는 422다. 오래된 revision/fingerprint 또는 처리 중 자료 변경은 409, 없는 계약은 404, 미로그인은 401이다. 생성된 초안은 별도 저장 버튼을 통해 기존 요청 기록/맡기기 API를 호출할 때만 저장하며, 이 API에는 저장·발송 옵션이 없다. 예시는 일부 필드만 표기했다.
