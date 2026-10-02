@@ -30,14 +30,15 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged }) => {
   const overview = useMemo(() => buildReviewOverview(contract), [contract]);
   const wf = contract.workflow;
 
+  const [reload, setReload] = useState(0);
   useEffect(() => {
-    setNote(''); setAck(false); setError('');
+    setNote(''); setAck(false);
     const controller = new AbortController();
     requestJson<ApprovalState>(`/api/pilot/contracts/${contract.contract_id}/approvals`, { signal: controller.signal })
-      .then(setState)
+      .then((v) => { setState(v); setError(''); })
       .catch((e) => { if (!controller.signal.aborted) setError(e.message); });
     return () => controller.abort();
-  }, [contract.contract_id, contract.updated_at, wf?.revision, wf?.approval_status]);
+  }, [contract.contract_id, contract.updated_at, wf?.revision, wf?.approval_status, reload]);
 
   if (!wf) return null;
   const approval = wf.approval_status;
@@ -59,6 +60,7 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ step: state.next_step, decision, note: note.trim(), revision: wf.revision, fingerprint: wf.fingerprint, acknowledge_unverified: ack }),
       });
+      setReload((n) => n + 1);
       await onChanged();
     } catch (e) {
       setError(e instanceof Error ? e.message : '처리하지 못했습니다.');
@@ -83,7 +85,7 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged }) => {
           })}
         </ol>
         {approval === 'RETURNED' && <span className="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-bold text-rose-700">반려됨 · 다시 처리 필요</span>}
-        {approval === 'STALE' && <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-800">자료가 바뀌어 다시 결재 필요</span>}
+        {approval === 'STALE' && !state?.completed_steps && <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-800">자료가 바뀌어 다시 결재 필요</span>}
       </div>
 
       {approval === 'CONFIRMED' ? (

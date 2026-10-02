@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Download, KeyRound, Save, ShieldCheck, Users } from 'lucide-react';
 import { api, downloadProtected } from '../api/client';
 import { useAuth } from '../context/AuthContext';
-import { DocumentType, PilotInfo, PilotMetrics } from '../types';
-import { documentLabels } from './PilotDocumentDialog';
+import { PilotInfo, PilotMetrics } from '../types';
 import { PilotPasswordChange } from './PilotPasswordChange';
+import { CompanyPolicySection } from './review/CompanyPolicySection';
 
 type TeamUser = Awaited<ReturnType<typeof api.users>>[number];
 const field = 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm';
@@ -14,7 +14,6 @@ export const PilotOperations: React.FC<{ info: PilotInfo; onChanged: () => Promi
   const { user } = useAuth();
   const representative = user?.role === 'representative' || user?.role === 'admin';
   const [name, setName] = useState(info.company_name);
-  const [required, setRequired] = useState<DocumentType[]>(info.required_document_types);
   const [users, setUsers] = useState<TeamUser[]>([]);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -31,7 +30,7 @@ export const PilotOperations: React.FC<{ info: PilotInfo; onChanged: () => Promi
       .catch(reason => { if (active) setMetricsError(reason.message); });
     return () => { active = false; };
   }, [info]);
-  useEffect(() => { setName(info.company_name); setRequired(info.required_document_types); }, [info]);
+  useEffect(() => { setName(info.company_name); }, [info]);
   useEffect(() => {
     if (!representative) return;
     let active = true;
@@ -73,12 +72,11 @@ export const PilotOperations: React.FC<{ info: PilotInfo; onChanged: () => Promi
       </>}
     </section>
     <section className="rounded-2xl border border-slate-200 bg-white p-6">
-      <h2 className="font-bold">회사 · 필수 증빙</h2>
-      <p className="mt-1 text-sm text-slate-600">필수 문서 정책을 바꾸면 모든 계약을 다시 검수하고, 이전 최종 확인도 재확인 대상으로 바뀝니다.</p>
-      <label className="mt-4 block text-sm">회사 이름<input disabled={!representative || busy} className={field + ' mt-1'} value={name} maxLength={80} onChange={e => setName(e.target.value)} /></label>
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">{(Object.keys(documentLabels) as DocumentType[]).filter(type => type !== 'unknown').map(type => <label key={type} className="flex items-center gap-2 text-sm"><input type="checkbox" disabled={!representative || busy} checked={required.includes(type)} onChange={e => setRequired(old => e.target.checked ? [...old, type] : old.filter(item => item !== type))} />{documentLabels[type]}</label>)}</div>
-      {representative && <button className={button + ' mt-5 flex items-center gap-2'} disabled={busy || !name.trim() || !required.length} onClick={() => void act(async () => { await api.savePilotSettings(name.trim(), required); await onChanged(); }, '회사 정책을 저장했습니다. 계약 자료를 다시 확인하세요.')}><Save size={16} />정책 저장 · 재검수</button>}
+      <h2 className="font-bold">회사 이름</h2>
+      <label className="mt-3 block text-sm">화면과 백업 파일에 표시되는 이름<input disabled={!representative || busy} className={field + ' mt-1'} value={name} maxLength={80} onChange={e => setName(e.target.value)} /></label>
+      {representative && <button className={button + ' mt-4 flex items-center gap-2'} disabled={busy || !name.trim() || name.trim() === info.company_name} onClick={() => void act(async () => { await api.savePilotSettings(name.trim(), info.required_document_types); await onChanged(); }, '회사 이름을 저장했습니다.')}><Save size={16} />이름 저장</button>}
     </section>
+    <CompanyPolicySection canEdit={representative} onSaved={onChanged} />
     {representative && <>
       <section className="rounded-2xl border border-slate-200 bg-white p-6">
         <h2 className="flex items-center gap-2 font-bold"><Users size={20} />사용자 관리</h2>
