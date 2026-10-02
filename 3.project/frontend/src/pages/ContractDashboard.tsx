@@ -11,6 +11,7 @@ import { OverallDashboardView } from '../components/OverallDashboardView';
 import { ValidationReportView } from '../components/ValidationReportView';
 import { ContractReviewOverview } from '../components/review/ContractReviewOverview';
 import { DocumentReviewDialog } from '../components/review/DocumentReviewDialog';
+import { WorkQueueDashboard, DashboardItem } from '../components/review/WorkQueueDashboard';
 import { DocumentViewerModal } from '../components/DocumentViewerModal';
 import { UploadModal } from '../components/UploadModal';
 import { NewContractModal } from '../components/NewContractModal';
@@ -448,6 +449,17 @@ export const ContractDashboard: React.FC = () => {
 
     switch (activeTab) {
       case 'dashboard':
+        if (isPilot) {
+          return (
+            <WorkQueueDashboard
+              contracts={contracts as DashboardItem[]}
+              isMaskingEnabled={isMaskingEnabled}
+              canEdit={canEdit}
+              onOpen={(id) => handleSelectContract(id, 'contracts', 'detail')}
+              onNewFromDocuments={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+            />
+          );
+        }
         return (
           <OverallDashboardView
             contracts={contracts}
@@ -622,7 +634,7 @@ export const ContractDashboard: React.FC = () => {
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2 text-xs font-bold text-slate-700">
               <span className="text-indigo-600 font-extrabold">
-                {activeTab === 'dashboard' && '대시보드'}
+                {activeTab === 'dashboard' && (isPilot ? '검수 할 일' : '대시보드')}
                 {activeTab === 'contracts' && (contractViewMode === 'list' ? '계약 목록' : '계약 검수')}
                 {/* {activeTab === 'documents' && '증빙서류 관리'} */}
                 {activeTab === 'reports' && 'AI 교차검수 리포트'}
