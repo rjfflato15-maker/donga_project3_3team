@@ -86,6 +86,7 @@ v3 test 정답 확정·예측 보존·확정 채점과 결과 기록은 완료�
 | 고정 v3 test 확정 수치·가드 한계 | [최종 test 채점](history/20_test_final_scores.md) |
 | dev2 가드 v4 개선·예비 수치·남은 규칙 문제 | [가드 v4 개발](history/21_guard_v4_dev2.md) |
 | test2 버전 고정·독립 판독 묶음·검수 절차 | [test2 확인 준비](history/22_test2_review_preparation.md) |
+| 고객 역할 실사용·공식 제품 비교·다음 개선 우선순위 | [고객 관점 점검 보고서](../research/customer-audit-2026-10-03/README.md) |
 
 [전체 문서 목록](../README.md) · [변경할 파일 찾기](../architecture/module_map.md)
 
