@@ -60,6 +60,20 @@ export interface DocumentResponse {
   business_status?: string | null;
   file_available?: boolean;
   file_size?: number | null;
+  version?: { logical_document_id: number; version_number: number; is_current: boolean; previous_document_id: number | null } | null;
+  llm?: DocumentLlm | null;
+}
+
+export interface DocumentLlm {
+  configured_enabled_at_analysis?: boolean | null;
+  status?: string;
+  inference_invoked?: boolean | null;
+  invocation_count?: number | null;
+  error?: string | null;
+  applied_value_field_count?: number;
+  current_matching_ai_value_field_count?: number;
+  human_confirmed?: boolean;
+  manual_review_required?: boolean;
 }
 
 export interface ValidationCheck {

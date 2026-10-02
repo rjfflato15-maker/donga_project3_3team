@@ -6,7 +6,8 @@ import { maskBusinessNumber, maskAccountNumber, maskVendorName } from '../../uti
 import { X, Pencil, Download, ChevronLeft, ChevronRight, Loader2, Save } from 'lucide-react';
 
 interface BBox { page: number; x: number; y: number; width: number; height: number }
-interface Anchor { page: number | null; line: number | null; quote: string; location_kind?: string; page_layout_verified?: boolean; bbox?: BBox | null }
+interface Anchor { page: number | null; line: number | null; quote: string; location_kind?: string; page_layout_verified?: boolean; bbox?: BBox | null; bboxes?: BBox[] }
+interface Comparison { previous_version: number; new_version: number; changed_field_count: number; changes: { field: string; previous_value: unknown; new_value: unknown }[] }
 interface FieldProvenance {
   value: string | number | null;
   source: 'RULE' | 'AI_SUPPLEMENT' | 'HUMAN_CONFIRMATION' | 'UNAVAILABLE';
@@ -70,6 +71,32 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
   useEffect(() => { setEditing(false); setDraft(doc.analysis.fields); setNote(''); setSaveError(''); }, [doc.document_id, revision]);
+  const [cmp, setCmp] = useState<Comparison | null>(null);
+  const [reissueFile, setReissueFile] = useState<File | null>(null);
+  const [reissueNote, setReissueNote] = useState('');
+  const [reissuing, setReissuing] = useState(false);
+  const [reissueError, setReissueError] = useState('');
+  const versionNo = doc.version?.version_number ?? 1;
+  useEffect(() => {
+    setCmp(null); setReissueFile(null); setReissueNote(''); setReissueError('');
+    if (versionNo < 2) return;
+    const controller = new AbortController();
+    requestJson<Comparison>(`/api/documents/${doc.document_id}/compare`, { signal: controller.signal }).then(setCmp).catch(() => undefined);
+    return () => controller.abort();
+  }, [doc.document_id, versionNo]);
+  const reissue = async () => {
+    if (!reissueFile) return;
+    setReissuing(true); setReissueError('');
+    try {
+      await api.reissueDocument(doc.contract_id, reissueFile, doc.document_id, revision, reissueNote.trim());
+      await onChanged();
+      onClose();
+    } catch (e) {
+      setReissueError(e instanceof Error ? e.message : '재발행본을 올리지 못했습니다.');
+    } finally {
+      setReissuing(false);
+    }
+  };
   const changedKeys = Object.keys(draft).filter((k) => (draft as Record<string, unknown>)[k] !== (doc.analysis.fields as Record<string, unknown>)[k]);
   const save = async () => {
     setSaving(true); setSaveError('');
@@ -142,9 +169,9 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
 
   const rows = FIELD_ORDER.filter((f) => (!f.types || f.types.includes(doc.document_type)) && !(NO_AMOUNT.has(doc.document_type) && /amount|scope/.test(f.key)));
   const anchor: Anchor | undefined = selected ? prov?.fields[selected]?.evidence?.[0] : undefined;
-  // 좌표는 백엔드가 확인한 경우에만 그린다. 없으면 쪽·줄 안내만 한다.
-  const rawBox = anchor?.bbox;
-  const box = rawBox && (rawBox.page ?? 1) === page + 1 && [rawBox.x, rawBox.y, rawBox.width, rawBox.height].every((v) => typeof v === 'number' && v >= 0 && v <= 1) ? rawBox : null;
+  // 좌표는 백엔드가 원본 해시까지 확인한 경우에만 온다. 없으면 쪽·줄 안내만 한다.
+  const validBox = (b?: BBox | null): b is BBox => !!b && (b.page ?? 1) === page + 1 && [b.x, b.y, b.width, b.height].every((v) => typeof v === 'number' && v >= 0 && v <= 1);
+  const boxes: BBox[] = (anchor?.bboxes?.length ? anchor.bboxes : anchor?.bbox ? [anchor.bbox] : []).filter(validBox);
 
   const pick = (key: string) => {
     setSelected(key);
@@ -166,6 +193,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-5 py-3">
           <h2 id="doc-review-title" className="font-bold text-slate-900">{DOCUMENT_TYPE_KO[doc.document_type]}</h2>
           <span className="truncate text-xs text-slate-500">{doc.original_file_name}</span>
+          {versionNo > 1 && <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold text-sky-700">재발행본 · 버전 {versionNo}</span>}
           {problems.length > 0 ? (
             <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-rose-700">확인할 것 {problems.length}</span>
           ) : (
@@ -200,13 +228,14 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
               imageUrl ? (
                 <div className="relative">
                   <img src={imageUrl} alt={`${DOCUMENT_TYPE_KO[doc.document_type]} 원문`} className="block w-full rounded bg-white shadow-lg" />
-                  {box && (
+                  {boxes.map((box, i) => (
                     <div
+                      key={i}
                       aria-hidden="true"
                       className="pointer-events-none absolute rounded-sm bg-amber-300/30 outline outline-2 outline-amber-500 transition-all"
                       style={{ left: `${box.x * 100}%`, top: `${box.y * 100}%`, width: `${box.width * 100}%`, height: `${box.height * 100}%` }}
                     />
-                  )}
+                  ))}
                 </div>
               ) : imageError ? (
                 <div className="rounded-lg bg-white p-6 text-sm text-rose-600">{imageError}</div>
@@ -228,6 +257,20 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
 
           {/* 읽은 값 */}
           <div className="min-w-0 space-y-3 p-5">
+            {cmp && (
+              <div className="rounded-xl border border-sky-200 bg-sky-50 p-3 text-sm">
+                <div className="font-semibold text-sky-900">무엇이 바뀌었나 · 버전 {cmp.previous_version} → {cmp.new_version}</div>
+                {cmp.changes.length === 0 ? <div className="text-sky-800">읽은 값은 이전 버전과 같습니다.</div> : (
+                  <ul className="mt-1 space-y-1">
+                    {cmp.changes.map((c) => {
+                      const label = FIELD_ORDER.find((f) => f.key === c.field)?.label ?? c.field;
+                      const fmt = (v: unknown) => display(c.field, v as FieldProvenance['value'], isMaskingEnabled) || '없음';
+                      return <li key={c.field} className="tabular-nums"><span className="text-slate-500">{label}</span> <span className="text-rose-600 line-through">{fmt(c.previous_value)}</span> → <b className="text-emerald-700">{fmt(c.new_value)}</b></li>;
+                    })}
+                  </ul>
+                )}
+              </div>
+            )}
             {problems.length > 0 && (
               <div className="space-y-2">
                 {problems.map((c, i) => (
@@ -321,6 +364,21 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                   );
                 })}
               </ul>
+            )}
+            {canEdit && !editing && doc.version?.is_current !== false && (
+              <div className="rounded-xl border border-dashed border-sky-300 p-3 text-sm space-y-2">
+                <div className="text-slate-600">거래처에서 <b>고쳐서 다시 보낸 서류</b>를 받았다면 여기서 바꿔 올리세요. 이전 서류는 보관되고 검사에서 빠지며, 결재는 다시 받아야 합니다.</div>
+                <input type="file" aria-label="재발행본 파일" onChange={(e) => setReissueFile(e.target.files?.[0] ?? null)} className="block w-full text-xs text-slate-600" />
+                {reissueFile && (
+                  <>
+                    <input value={reissueNote} onChange={(e) => setReissueNote(e.target.value)} maxLength={500} placeholder="무엇을 고친 재발행본인지 (예: 합계 금액 정정)"
+                      className="w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800" />
+                    <button onClick={() => void reissue()} disabled={reissuing || !reissueNote.trim()}
+                      className="rounded-lg bg-sky-600 px-3 py-1.5 font-semibold text-white disabled:opacity-40">{reissuing ? '올리는 중… (서류를 읽고 있어요)' : '재발행본으로 바꾸기'}</button>
+                  </>
+                )}
+                {reissueError && <p role="alert" className="text-xs text-rose-600">{reissueError}</p>}
+              </div>
             )}
             {canEdit && !editing && (
               <div className="rounded-xl border border-dashed border-slate-300 p-3 text-sm">

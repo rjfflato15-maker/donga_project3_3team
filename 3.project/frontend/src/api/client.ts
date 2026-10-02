@@ -41,6 +41,15 @@ export const api = {
   uploadDocuments: (id: number, files: File[], target?: string) =>
     requestJson<DocumentResponse[]>('/api/contracts/' + id + '/documents', { method: 'POST', body: uploadBody(files, target) }),
   getDocument: (id: number) => requestJson<DocumentResponse>('/api/documents/' + id),
+  reissueDocument: (contractId: number, file: File, replacesId: number, revision: number, changeNote: string) => {
+    const body = new FormData();
+    body.append('files', file);
+    body.append('upload_mode', 'REISSUE');
+    body.append('replaces_document_id', String(replacesId));
+    body.append('revision', String(revision));
+    body.append('change_note', changeNote);
+    return requestJson<DocumentResponse[]>('/api/contracts/' + contractId + '/documents', { method: 'POST', body });
+  },
   deleteDocument: (id: number) => requestJson<void>('/api/documents/' + id, { method: 'DELETE' }),
   restoreOriginal: (id: number, file: File) => {
     const body = new FormData(); body.append('file', file);
