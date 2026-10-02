@@ -10,6 +10,7 @@ import { Sidebar, NavigationTab } from '../components/Sidebar';
 import { OverallDashboardView } from '../components/OverallDashboardView';
 import { ValidationReportView } from '../components/ValidationReportView';
 import { ContractReviewOverview } from '../components/review/ContractReviewOverview';
+import { DocumentReviewDialog } from '../components/review/DocumentReviewDialog';
 import { DocumentViewerModal } from '../components/DocumentViewerModal';
 import { UploadModal } from '../components/UploadModal';
 import { NewContractModal } from '../components/NewContractModal';
@@ -555,6 +556,8 @@ export const ContractDashboard: React.FC = () => {
               ntsMode={pilotInfo?.nts_mode}
               onOpenDocument={handleOpenDocumentModal}
               onUploadType={(type) => handleOpenUploadModal(type)}
+              pilot={isPilot}
+              onChanged={() => refreshCurrentContract()}
             />
             {isPilot && <PilotReviewPanel contract={currentContract} onChanged={refreshCurrentContract} />}
           </div>
@@ -722,8 +725,19 @@ export const ContractDashboard: React.FC = () => {
 
       {/* Modals */}
       {advancedDocOpen && selectedDoc && currentContract?.workflow && <PilotDocumentDialog doc={selectedDoc} revision={currentContract.workflow.revision} canEdit={canEdit} onClose={() => setAdvancedDocOpen(false)} onChanged={refreshCurrentContract} />}
+      {isPilot && selectedDoc && !advancedDocOpen && currentContract && (
+        <DocumentReviewDialog
+          doc={selectedDoc}
+          checks={currentContract.checks}
+          revision={currentContract.workflow?.revision ?? 0}
+          isMaskingEnabled={isMaskingEnabled}
+          canEdit={canEdit}
+          onClose={() => setSelectedDoc(null)}
+          onCorrect={() => setAdvancedDocOpen(true)}
+        />
+      )}
       <DocumentViewerModal
-        document={advancedDocOpen ? null : selectedDoc}
+        document={advancedDocOpen || isPilot ? null : selectedDoc}
         onManage={isPilot && canEdit ? () => setAdvancedDocOpen(true) : undefined}
         onClose={() => setSelectedDoc(null)}
         onDelete={canEdit ? handleDeleteDocument : undefined}

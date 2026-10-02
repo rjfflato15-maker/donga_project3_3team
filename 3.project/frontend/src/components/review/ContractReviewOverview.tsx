@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ContractDetail, DocumentResponse, DocumentType, ValidationStatus } from '../../types';
 import {
   buildReviewOverview,
@@ -13,6 +13,7 @@ import {
 import { maskVendorName } from '../../utils/masking';
 import { AlertTriangle, CheckCircle2, ChevronDown, ChevronRight, Copy, Eye, Info, Upload } from 'lucide-react';
 import { RequestDraftDialog } from './RequestDraftDialog';
+import { followUpApi, ResubmissionRequest, CONTACT_VIA } from '../../api/followUp';
 
 interface Props {
   contract: ContractDetail;
@@ -21,6 +22,8 @@ interface Props {
   ntsMode?: string;
   onOpenDocument: (doc: DocumentResponse) => void;
   onUploadType: (type: DocumentType) => void;
+  pilot?: boolean;
+  onChanged?: () => Promise<void>;
 }
 
 const STATUS_STYLE: Record<ValidationStatus, string> = {
@@ -46,7 +49,29 @@ export const ContractReviewOverview: React.FC<Props> = ({
   ntsMode,
   onOpenDocument,
   onUploadType,
+  pilot = false,
+  onChanged,
 }) => {
+  const [requests, setRequests] = useState<ResubmissionRequest[]>([]);
+  const [resolving, setResolving] = useState<{ id: number; status: 'RECEIVED' | 'CANCELLED' } | null>(null);
+  const [resolveNote, setResolveNote] = useState('');
+  const [followError, setFollowError] = useState('');
+  const loadRequests = async () => {
+    if (!pilot) return;
+    try { setRequests(await followUpApi.list(contract.contract_id)); setFollowError(''); }
+    catch (e) { setFollowError(e instanceof Error ? e.message : '요청 기록을 불러오지 못했습니다.'); }
+  };
+  useEffect(() => { void loadRequests(); }, [contract.contract_id, contract.updated_at, pilot]);
+  const waiting = requests.filter((r) => r.status === 'WAITING_RESPONSE');
+  const submitResolve = async () => {
+    if (!resolving || !resolveNote.trim()) return;
+    try {
+      await followUpApi.resolve(contract.contract_id, resolving.id, resolving.status, resolveNote.trim());
+      setResolving(null); setResolveNote('');
+      await loadRequests();
+      await onChanged?.();
+    } catch (e) { setFollowError(e instanceof Error ? e.message : '처리하지 못했습니다.'); }
+  };
   const overview = useMemo(() => buildReviewOverview(contract), [contract]);
   const verdict = verdictText(overview);
   const [showPassed, setShowPassed] = useState(false);
@@ -99,6 +124,36 @@ export const ContractReviewOverview: React.FC<Props> = ({
           <div className={`text-sm ${clean ? 'text-emerald-800' : 'text-amber-800'}`}>{verdict.detail}</div>
         </div>
       </div>
+      {waiting.length > 0 && (
+        <div className="rounded-2xl border-2 border-sky-300 bg-sky-50 px-5 py-4 space-y-2">
+          <div className="font-bold text-sky-900">회신 대기 {waiting.length}건</div>
+          {waiting.map((r) => (
+            <div key={r.request_id} className="rounded-xl bg-white/80 px-3 py-2 text-sm">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <span className="font-semibold text-slate-800">{r.requested_on} {CONTACT_VIA[r.contact_method]} 요청</span>
+                {r.due_on && <span className={`text-xs ${r.due_on < new Date().toISOString().slice(0, 10) ? 'font-bold text-rose-600' : 'text-slate-500'}`}>기한 {r.due_on}</span>}
+                <span className="text-xs text-slate-400">{r.actor_name}</span>
+                {canEdit && (
+                  <span className="ml-auto flex gap-1.5">
+                    <button onClick={() => { setResolving({ id: r.request_id, status: 'RECEIVED' }); setResolveNote('보완 서류를 받음'); }} className="rounded-lg bg-sky-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-sky-700">회신 받음</button>
+                    <button onClick={() => { setResolving({ id: r.request_id, status: 'CANCELLED' }); setResolveNote(''); }} className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600">요청 취소</button>
+                  </span>
+                )}
+              </div>
+              <div className="text-xs text-slate-600 mt-0.5 break-words">{r.memo}</div>
+              {resolving?.id === r.request_id && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <input value={resolveNote} onChange={(e) => setResolveNote(e.target.value)} placeholder={resolving.status === 'RECEIVED' ? '받은 내용 (예: 수정 세금계산서 받음)' : '취소 이유'} className="min-w-0 flex-1 rounded-lg border border-slate-200 px-2 py-1 text-sm" aria-label="처리 메모" />
+                  <button onClick={submitResolve} disabled={!resolveNote.trim()} className="rounded-lg bg-slate-900 px-3 py-1 text-xs font-semibold text-white disabled:opacity-40">{resolving.status === 'RECEIVED' ? '회신 받음으로 기록' : '취소 기록'}</button>
+                  <button onClick={() => setResolving(null)} className="text-xs text-slate-500">닫기</button>
+                </div>
+              )}
+            </div>
+          ))}
+          <p className="text-xs text-sky-800">새 서류를 받았다면 '서류 추가'로 올리면 자동으로 다시 검사합니다. 회신 처리는 따로 눌러 기록합니다.</p>
+        </div>
+      )}
+      {followError && <p className="text-xs text-rose-600">{followError}</p>}
       {overview.notices.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
           <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 font-semibold text-slate-600">
@@ -252,7 +307,9 @@ export const ContractReviewOverview: React.FC<Props> = ({
           contract={contract}
           issue={draftFor}
           isMaskingEnabled={isMaskingEnabled}
+          canRecord={pilot && canEdit}
           onClose={() => setDraftFor(null)}
+          onRecorded={async () => { await loadRequests(); await onChanged?.(); }}
         />
       )}
     </div>

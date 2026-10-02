@@ -2,12 +2,15 @@ import React, { useMemo, useState } from 'react';
 import { ContractDetail } from '../../types';
 import { IssueGroup, DOCUMENT_TYPE_KO } from '../../utils/reviewSummary';
 import { X } from 'lucide-react';
+import { followUpApi, ContactMethod, CONTACT_KO } from '../../api/followUp';
 
 interface Props {
   contract: ContractDetail;
   issue: IssueGroup;
   isMaskingEnabled: boolean;
+  canRecord: boolean;
   onClose: () => void;
+  onRecorded: () => Promise<void> | void;
 }
 
 const AMOUNT_RULES = new Set(['AMOUNT_COMPONENTS', 'AMOUNT_MATCH_TAX_INVOICE', 'PAYMENT_SCOPE', 'INSTALLMENT_TOTAL']);
@@ -40,11 +43,33 @@ function buildDrafts(contract: ContractDetail, issue: IssueGroup) {
   return { short, long };
 }
 
-export const RequestDraftDialog: React.FC<Props> = ({ contract, issue, onClose }) => {
+export const RequestDraftDialog: React.FC<Props> = ({ contract, issue, canRecord, onClose, onRecorded }) => {
   const drafts = useMemo(() => buildDrafts(contract, issue), [contract, issue]);
   const [mode, setMode] = useState<'short' | 'long'>('short');
   const [text, setText] = useState(drafts.short);
   const [copied, setCopied] = useState<string>('');
+  const [method, setMethod] = useState<ContactMethod>('KAKAO');
+  const [due, setDue] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [recordError, setRecordError] = useState('');
+
+  const record = async () => {
+    setBusy(true); setRecordError('');
+    try {
+      const reason = issue.checks.map((c) => c.message.replace(/^[^:]+:\s*/, '')).join(' ');
+      await followUpApi.record(contract.contract_id, {
+        contact_method: method,
+        due_on: due || null,
+        memo: `${issue.title}: ${reason}`.slice(0, 2000),
+      });
+      await onRecorded();
+      onClose();
+    } catch (e) {
+      setRecordError(e instanceof Error ? e.message : '기록하지 못했습니다.');
+    } finally {
+      setBusy(false);
+    }
+  };
 
   const switchMode = (next: 'short' | 'long') => {
     setMode(next);
@@ -93,9 +118,27 @@ export const RequestDraftDialog: React.FC<Props> = ({ contract, issue, onClose }
             <button onClick={copy} className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">문구 복사</button>
             <span className="text-xs text-slate-500">{copied}</span>
           </div>
-          <p className="text-xs text-slate-500">
-            앱은 메시지를 직접 보내지 않습니다. 평소 쓰는 방법으로 보내 주세요. 요청 기록(연락 방법·기한)과 '회신 대기' 상태는 다음 단계에서 연결됩니다.
-          </p>
+          <p className="text-xs text-slate-500">앱은 메시지를 직접 보내지 않습니다. 평소 쓰는 방법으로 보낸 뒤 아래에서 기록해 주세요.</p>
+          {canRecord && (
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 space-y-2">
+              <div className="text-sm font-semibold text-slate-800">보냈다면 기록하기</div>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <label className="grid gap-1 text-xs text-slate-600">어떻게 요청했나요?
+                  <select value={method} onChange={(e) => setMethod(e.target.value as ContactMethod)} className="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-sm text-slate-800">
+                    {(Object.keys(CONTACT_KO) as ContactMethod[]).map((m) => <option key={m} value={m}>{CONTACT_KO[m]}</option>)}
+                  </select>
+                </label>
+                <label className="grid gap-1 text-xs text-slate-600">회신 기한 (선택)
+                  <input type="date" value={due} onChange={(e) => setDue(e.target.value)} className="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-sm text-slate-800" />
+                </label>
+              </div>
+              <button onClick={record} disabled={busy} className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 disabled:opacity-50">
+                {busy ? '기록 중…' : '요청했어요 · 기록하기'}
+              </button>
+              {recordError && <p className="text-xs text-rose-600">{recordError}</p>}
+              <p className="text-[11px] text-slate-500">기록하면 이 계약이 '회신 대기'로 표시됩니다. 언제·어떻게 요청했는지만 남기고, 메시지 내용은 저장하지 않습니다.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
