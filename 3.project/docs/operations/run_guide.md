@@ -11,5 +11,6 @@
 | 백업·복원·예약 작업 | [백업과 복원](backup_restore.md) | 자료 관리자 |
 | 업데이트·장애 대응 | [유지보수](maintenance.md) | 지원 담당 |
 | 판매용 배포·지원 조건 | [배포와 판매](distribution.md) | 제품 책임자 |
+| 실제 업무와 분리한 시연 | [시연 전용 업무함](demo_inbox.md) | 시연 담당 |
 
 역할은 작업 책임 구분이며 새 앱 권한을 추가한 것이 아니다. [전체 문서 목록](../README.md) · [개발자 작업 안내](../development/maintenance.md)
