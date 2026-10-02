@@ -1,0 +1,186 @@
+[
+  {
+    "review_id": "201/20101/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "201/20102/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "201/20106/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "201/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "201/contract/AMOUNT_MATCH_ESTIMATE/20102",
+    "reason": "금액 대조는 견적서·세금계산서에 적용합니다. 계약서·검수확인서의 FULL은 금액 범위 뜻이며 같은 대조 검사를 적용한다는 뜻이 아닙니다. 원문 금액과 등록 합계를 비교하세요."
+  },
+  {
+    "review_id": "201/contract/AMOUNT_MATCH_TAX_INVOICE/20105",
+    "reason": "금액 대조는 견적서·세금계산서에 적용합니다. 계약서·검수확인서의 FULL은 금액 범위 뜻이며 같은 대조 검사를 적용한다는 뜻이 아닙니다. 원문 금액과 등록 합계를 비교하세요."
+  },
+  {
+    "review_id": "202/20201/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "202/20202/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "202/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "203/20301/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "203/20302/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "203/20306/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "203/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "204/20401/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "204/20402/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "204/20406/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "204/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "205/20501/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "205/20502/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "205/20506/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "205/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "206/20601/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "206/20602/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "206/20605/amount_scope",
+    "reason": "'분할 청구 선금 또는 잔금'은 어느 회차인지 몰라도 일부 청구(PARTIAL)입니다."
+  },
+  {
+    "review_id": "206/20606/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "206/20607/amount_scope",
+    "reason": "'분할 청구 선금 또는 잔금'은 어느 회차인지 몰라도 일부 청구(PARTIAL)입니다."
+  },
+  {
+    "review_id": "206/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "207/20701/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "207/20702/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "207/20706/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "207/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "208/20801/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "208/20802/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "208/20806/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "208/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "209/20901/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "209/20902/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "209/20902/tax_amount",
+    "reason": "참고값 A/B의 뜻을 확정할 수 없으면 세액도 REVIEW입니다. 세액이 명확히 없는 ABSENT와 구분합니다."
+  },
+  {
+    "review_id": "209/20906/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "209/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "210/21001/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "210/21002/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "210/21006/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "210/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "210/contract/AMOUNT_COMPONENTS/21005",
+    "reason": "원문 표시 합계, 공급가액+세액, 전액 청구와 등록 금액을 대조합니다. 전액 청구가 명시되고 합계가 다르면 FAIL입니다."
+  },
+  {
+    "review_id": "210/contract/AMOUNT_MATCH_TAX_INVOICE/21005",
+    "reason": "원문 표시 합계, 공급가액+세액, 전액 청구와 등록 금액을 대조합니다. 전액 청구가 명시되고 합계가 다르면 FAIL입니다."
+  }
+]

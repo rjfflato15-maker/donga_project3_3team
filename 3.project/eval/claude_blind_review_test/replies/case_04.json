@@ -1,0 +1,620 @@
+{
+  "dataset_version": "synthetic-v1",
+  "split": "test",
+  "review": {
+    "author": "Claude",
+    "reviewer_type": "ai_independent_review",
+    "confirmed": false,
+    "used_reference_answers": false,
+    "used_app_predictions": false
+  },
+  "documents": {
+    "20401": {
+      "document_type": "contract",
+      "original_read": {
+        "readable": true,
+        "method": "visual",
+        "notes": "PNG 페이지 이미지를 직접 확인"
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 달빛제작소 4",
+          "evidence": "p1: '수급인(을) 가상 달빛제작소 4' (발주자 가상 초록운영사 4는 추출 대상 아님)"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-02046",
+          "evidence": "p1: '사업자등록번호 000-00-02046' (수급인 아래 기재)"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 2400000,
+          "evidence": "p1: '공급가액 2,400,000원'"
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 240000,
+          "evidence": "p1: '세액 240,000원'"
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2640000,
+          "evidence": "p1: '합계금액 2,640,000원'"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-04",
+          "evidence": "p1: '발행일 2026-09-04'"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "evidence": "p1: 외주용역 계약서 자체의 계약 금액(문서 종류로 전체 계약 금액 확정)"
+        }
+      }
+    },
+    "20402": {
+      "document_type": "estimate",
+      "original_read": {
+        "readable": true,
+        "method": "text_content",
+        "notes": "내용 판독, 페이지 배치 미확인 (DOCX 본문·표 XML을 직접 읽음, 페이지 렌더링 안 함) / 견적 합계 2,750,000원이 등록 계약 합계 2,640,000원과 다름 → AMOUNT_MATCH_ESTIMATE FAIL (견적서 내부 산술 2,500,000+250,000=2,750,000은 일치)"
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 달빛제작소 4",
+          "evidence": "본문: 공급자 '상호 가상 달빛제작소 4' (공급받는자 가상 초록운영사 4 제외)"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-02046",
+          "evidence": "본문: 공급자 '사업자등록번호 000-00-02046' (공급받는자 번호 000-00-12049 제외)"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 2500000,
+          "evidence": "본문: '공급가액 2,500,000원'"
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 250000,
+          "evidence": "본문: '세액 250,000원'"
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2750000,
+          "evidence": "본문: '합계금액 2,750,000원'"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-04",
+          "evidence": "본문: '발행일 2026-09-04'"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "evidence": "본문: 견적서 전체 금액, 부분 청구 표시 없음"
+        }
+      }
+    },
+    "20403": {
+      "document_type": "business_registration",
+      "original_read": {
+        "readable": true,
+        "method": "visual_and_text",
+        "notes": "PDF 1쪽을 이미지로 렌더링해 확인, 텍스트 레이어와도 대조해 일치함"
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 달빛제작소 4",
+          "evidence": "p1: '상호 가상 달빛제작소 4'"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-02046",
+          "evidence": "p1: '사업자등록번호 000-00-02046'"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": ""
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": ""
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": ""
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-04",
+          "evidence": "p1: '발행일 2026-09-04'"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": ""
+        }
+      }
+    },
+    "20404": {
+      "document_type": "bank_account",
+      "original_read": {
+        "readable": true,
+        "method": "visual",
+        "notes": "PNG 페이지 이미지를 직접 확인"
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 달빛제작소 4",
+          "evidence": "p1: '예금주 가상 달빛제작소 4'"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-02046",
+          "evidence": "p1: '사업자등록번호 000-00-02046'"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": ""
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": ""
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": ""
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-04",
+          "evidence": "p1: '발행일 2026-09-04'"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": ""
+        }
+      }
+    },
+    "20405": {
+      "document_type": "tax_invoice",
+      "original_read": {
+        "readable": true,
+        "method": "text_content",
+        "notes": "내용 판독, 페이지 배치 미확인 (DOCX 본문·표 XML을 직접 읽음, 페이지 렌더링 안 함)"
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 달빛제작소 4",
+          "evidence": "본문: 공급자 '상호 가상 달빛제작소 4' (공급받는자 가상 초록운영사 4 제외)"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-02046",
+          "evidence": "본문: 공급자 '사업자등록번호 000-00-02046' (공급받는자 번호 000-00-12049 제외)"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 2400000,
+          "evidence": "본문: '공급가액 2,400,000원'"
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 240000,
+          "evidence": "본문: '세액 240,000원'"
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2640000,
+          "evidence": "본문: '합계금액 2,640,000원'"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-04",
+          "evidence": "본문: '발행일 2026-09-04'"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "evidence": "본문: '전액 청구 전체 계약 대금'"
+        }
+      }
+    },
+    "20406": {
+      "document_type": "inspection_confirmation",
+      "original_read": {
+        "readable": true,
+        "method": "visual_and_text",
+        "notes": "PDF 1쪽을 이미지로 렌더링해 확인, 텍스트 레이어와도 대조해 일치함"
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 달빛제작소 4",
+          "evidence": "p1: '계약상대자 가상 달빛제작소 4'"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-02046",
+          "evidence": "p1: '사업자등록번호 000-00-02046'"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 2400000,
+          "evidence": "p1: '공급가액 2,400,000원'"
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 240000,
+          "evidence": "p1: '세액 240,000원'"
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 2640000,
+          "evidence": "p1: '합계금액 2,640,000원'"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-04",
+          "evidence": "p1: '발행일 2026-09-04'"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "evidence": "p1: '납품 내역 업무지원 시스템', '검수 결과 납품 항목 확인' - 납품 전체 검수, 부분·분할 표시 없음 (해석: 청구서는 아니나 금액이 있어 ABSENT 대신 FULL로 판단)"
+        }
+      }
+    }
+  },
+  "contracts": {
+    "204": {
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20401",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20401",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20401",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20401",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20401",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20401",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20401",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20401",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20401",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20402",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20402",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20402",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20402",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20402",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20402",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20402",
+          "status": "FAIL"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20402",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20402",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20403",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20403",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20403",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20403",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20403",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20403",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20403",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20403",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20403",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20404",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20404",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20404",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20404",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20404",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20404",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20404",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20404",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20404",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20405",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20405",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20405",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "20406",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "20406",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "20406",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "20406",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "20406",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "20406",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "20406",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "20406",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "20406",
+          "status": "N/A"
+        }
+      ]
+    }
+  }
+}

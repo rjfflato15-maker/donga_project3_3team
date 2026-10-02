@@ -50,17 +50,43 @@ def page_builder():
     return module
 
 def review_questions(reference):
-    questions = []
+    questions = {}
+    first_cid = min(reference['contracts'], key=int)
+
+    def add(rid, reason):
+        if rid in questions:
+            questions[rid]['reason'] += ' ' + reason
+        else:
+            questions[rid] = {'review_id': rid, 'reason': reason}
+
     for cid, contract in reference['contracts'].items():
         for did, doc in reference['documents'].items():
             if int(did) // 100 != int(cid):
                 continue
-            if doc['document_type'] == 'inspection_confirmation':
-                questions.append({'review_id': f'{cid}/{did}/amount_scope', 'reason': '검수확인서의 계약 전체 금액을 FULL로 보는 기준을 원문으로 확인합니다.'})
+            kind = doc['document_type']
+            if kind in {'inspection_confirmation', 'contract', 'estimate'}:
+                reason = {'inspection_confirmation': '검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다.',
+                          'contract': '계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다.',
+                          'estimate': '견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다.'}[kind]
+                add(f'{cid}/{did}/amount_scope', reason)
+            scope = doc['fields']['amount_scope']
+            if kind == 'tax_invoice' and scope.get('value') == 'PARTIAL':
+                add(f'{cid}/{did}/amount_scope', "'분할 청구 선금 또는 잔금'은 어느 회차인지 몰라도 일부 청구(PARTIAL)입니다.")
+            if kind == 'estimate' and doc['fields']['tax_amount']['state'] == 'REVIEW':
+                add(f'{cid}/{did}/tax_amount', '참고값 A/B의 뜻을 확정할 수 없으면 세액도 REVIEW입니다. 세액이 명확히 없는 ABSENT와 구분합니다.')
         for check in contract['checks']:
+            rid = f"{cid}/contract/{check['rule_id']}/{check['field']}"
+            if check['rule_id'] == 'BUSINESS_STATUS':
+                add(rid, '국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다.')
             if check['status'] == 'FAIL' and check['rule_id'] in {'AMOUNT_COMPONENTS', 'AMOUNT_MATCH_TAX_INVOICE'}:
-                questions.append({'review_id': f"{cid}/contract/{check['rule_id']}/{check['field']}", 'reason': '원문 표시 합계, 공급가액+세액, 전액 청구와 등록 금액을 대조해 FAIL 여부를 확인합니다.'})
-    return questions
+                add(rid, '원문 표시 합계, 공급가액+세액, 전액 청구와 등록 금액을 대조합니다. 전액 청구가 명시되고 합계가 다르면 FAIL입니다.')
+            # Use real labelled estimate/invoice rows for the applicability topic;
+            # contract/inspection candidate checks are not scoring-label slots.
+            doc = reference['documents'].get(check['field'], {})
+            expected_kind = {'AMOUNT_MATCH_ESTIMATE': 'estimate', 'AMOUNT_MATCH_TAX_INVOICE': 'tax_invoice'}.get(check['rule_id'])
+            if cid == first_cid and expected_kind and doc.get('document_type') == expected_kind:
+                add(rid, '금액 대조는 견적서·세금계산서에 적용합니다. 계약서·검수확인서의 FULL은 금액 범위 뜻이며 같은 대조 검사를 적용한다는 뜻이 아닙니다. 원문 금액과 등록 합계를 비교하세요.')
+    return list(questions.values())
 
 def prepare(root, font):
     check_final_attempt(root)
@@ -88,6 +114,21 @@ def prepare(root, font):
     page_builder().build_page(split='test', dataset=root, blind=destination)
     return release
 
+def format_review_guide(guide):
+    from openpyxl.styles import Font, Alignment
+    for cell, label in {'A2': '자료 버전', 'A3': '대조 결과 해시', 'A4': '원문 목록 해시',
+                        'A5': '사람 확인할 칸', 'A6': '일치 표본 비율', 'A13': '평가 구분'}.items():
+        guide[cell] = label
+    guide.column_dimensions['A'].width = 26
+    guide.column_dimensions['B'].width = 94
+    guide['A1'].font = Font(bold=True, size=13)
+    guide.row_dimensions[1].height = 28
+    guide['B6'].number_format = '0%'
+    for row in guide.iter_rows():
+        for cell in row:
+            cell.alignment = Alignment(vertical='top')
+
+
 def workbook_from_comparison(root, comparison_path, output):
     import openpyxl
     from openpyxl.styles import Font, PatternFill, Alignment
@@ -103,6 +144,7 @@ def workbook_from_comparison(root, comparison_path, output):
     for cell, value in {'B2': comparison['dataset_version'], 'B3': file_hash(comparison_path), 'B4': file_hash(root / 'manifest.json'), 'B5': comparison['required_human_count'], 'B6': comparison['sampling']['rate'], 'B13': 'test'}.items():
         guide[cell] = value
     guide['A12'] = '검수자'
+    format_review_guide(guide)
     headers = ['ID', '원문', '확인할 항목', 'Codex 상태', 'Codex 값', 'Claude 상태', 'Claude 값', '선정 이유', '최종 상태', '최종 값', '사람 확인', '근거', '해석 기준']
     sheets = {name: book.create_sheet(name) for name in ('필드확인', '검수확인')}
     for sheet in sheets.values():
@@ -121,7 +163,10 @@ def workbook_from_comparison(root, comparison_path, output):
 
     def state_value(row, value):
         if isinstance(value, dict):
-            return (value['state'], value.get('value'))
+            answer = value.get('value')
+            if row['key'] == 'business_registration_no' and isinstance(answer, str) and len(answer) == 10 and answer.isdigit():
+                answer = f'{answer[:3]}-{answer[3:5]}-{answer[5:]}'
+            return (value['state'], answer)
         if row['key'] == 'document_type':
             return ('TYPE', value)
         if row['key'] == 'missing_types':
@@ -133,6 +178,8 @@ def workbook_from_comparison(root, comparison_path, output):
         a, b = (state_value(row, row['reference']), state_value(row, row['independent']))
         sheet = sheets['필드확인' if row['document_id'] is not None else '검수확인']
         sheet.append([row['review_id'], str(root / row['source_path']) if row['source_path'] else '등록 계약과 전체 문서', row['key'], *a, *b, reasons[row['selection_reason']], *a, None, None, row.get('human_question', '')])
+        if row['key'] == 'business_registration_no':
+            sheet.cell(sheet.max_row, 10).number_format = '@'
         for cell in sheet[sheet.max_row]:
             cell.alignment = Alignment(vertical='top', wrap_text=True)
             if isinstance(cell.value, str):
@@ -145,14 +192,27 @@ def workbook_from_comparison(root, comparison_path, output):
     return output
 
 def reconcile(root, replies):
+    check_final_attempt(root)
+    freeze_review_protocol()
     manifest = json.loads((root / 'manifest.json').read_text(encoding='utf-8'))
     reference = json.loads((root / 'reference_labels_test.json').read_text(encoding='utf-8'))
     files = sorted(replies.glob('*.json'))
     independent = merge_independent_parts([json.loads(p.read_text(encoding='utf-8-sig')) for p in files], split='test')
     if not compare_labels(manifest, reference, independent)['review']['independent_complete']:
         raise EvaluationNotReady('Claude의 모든 원문 판독과 답을 먼저 완료하세요. 불완전한 확인 목록은 만들지 않습니다.')
+    # Preserve the draft and blind replies. Version only the review questions;
+    # the new interpretation topics are human confirmation inputs, not scoring changes.
+    questions_path = PROJECT / 'eval/human_questions_test_v2.json'
+    questions = review_questions(reference)
+    if questions_path.exists():
+        if json.loads(questions_path.read_text(encoding='utf-8')) != questions:
+            raise EvaluationNotReady('기존 test 질문 버전을 덮어쓰지 않습니다.')
+    else:
+        save_json(questions_path, questions)
     destination = PROJECT / 'eval/reconciliation-test-v1'
-    if compare_main([*[str(p) for p in sorted(replies.glob('*.json'))], '--split', 'test', '--dataset', str(root), '--output', str(destination), '--sample-rate', '0.10', '--sample-method', 'case_document_type', '--human-questions', str(PROJECT / 'eval/human_questions_test_v1.json')]) != 0:
+    if destination.exists() or (PROJECT / 'eval/human_review_test.xlsx').exists():
+        raise EvaluationNotReady('이미 만든 test 검수 목록을 덮어쓰지 않습니다.')
+    if compare_main([*[str(p) for p in files], '--split', 'test', '--dataset', str(root), '--output', str(destination), '--sample-rate', '0.10', '--sample-method', 'case_document_type', '--human-questions', str(questions_path)]) != 0:
         raise EvaluationNotReady('독립 판독 대조를 완료하지 못했습니다.')
     workbook = workbook_from_comparison(root, destination / 'comparison.json', PROJECT / 'eval/human_review_test.xlsx')
     page_builder().build_page(split='test', dataset=root, workbook=workbook)

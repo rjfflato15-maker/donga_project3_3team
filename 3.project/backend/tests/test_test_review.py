@@ -7,7 +7,7 @@ from backend.evaluation_core import EvaluationNotReady, validate_labels, file_ha
 from backend.evaluation_review import compare_labels, merge_independent_parts, validate_reference_draft
 from backend.evaluation_confirmation import apply_human_decisions
 from backend.scripts.package_independent_review import package
-from backend.scripts.prepare_test_review import workbook_from_comparison
+from backend.scripts.prepare_test_review import workbook_from_comparison, review_questions, page_builder
 from test_evaluation import source_example, independent_example
 
 def heldout_example():
@@ -101,3 +101,48 @@ def test_test_workbook_starts_unconfirmed_and_keeps_row_ids(tmp_path):
     assert set(ids) == {row['review_id'] for row in comparison['rows'] if row['human_review_required']}
     with pytest.raises(EvaluationNotReady):
         workbook_from_comparison(tmp_path, comparison_path, output)
+
+
+def test_interpretation_requests_cover_new_topics_with_no_duplicate_ids():
+    kinds = ['contract', 'estimate', 'inspection_confirmation', 'tax_invoice']
+    docs = {str(101 + i): {'document_type': kind, 'fields': {
+        'amount_scope': {'state': 'VALUE', 'value': 'PARTIAL' if kind == 'tax_invoice' else 'FULL'},
+        'tax_amount': {'state': 'REVIEW' if kind == 'estimate' else 'VALUE', 'value': None}}}
+        for i, kind in enumerate(kinds)}
+    checks = [{'rule_id': 'BUSINESS_STATUS', 'field': 'business_status', 'status': 'REVIEW'},
+              {'rule_id': 'AMOUNT_COMPONENTS', 'field': '104', 'status': 'FAIL'},
+              {'rule_id': 'AMOUNT_MATCH_ESTIMATE', 'field': '102', 'status': 'PASS'},
+              {'rule_id': 'AMOUNT_MATCH_TAX_INVOICE', 'field': '104', 'status': 'FAIL'}]
+    checks += [{'rule_id': rule, 'field': did, 'status': 'N/A'}
+               for did in ['101', '103'] for rule in ['AMOUNT_MATCH_ESTIMATE', 'AMOUNT_MATCH_TAX_INVOICE']]
+    questions = review_questions({'documents': docs, 'contracts': {'1': {'checks': checks}}})
+    ids = [q['review_id'] for q in questions]
+    assert len(ids) == len(set(ids))
+    assert {f'1/{did}/amount_scope' for did in docs} <= set(ids)
+    assert '1/102/tax_amount' in ids
+    assert '1/contract/BUSINESS_STATUS/business_status' in ids
+    assert '1/contract/AMOUNT_MATCH_ESTIMATE/102' in ids
+    assert '1/contract/AMOUNT_MATCH_TAX_INVOICE/104' in ids
+    assert any('FULL은' in q['reason'] for q in questions)
+
+
+def test_easy_questions_keep_missing_mismatch_and_nonapplicable_meanings():
+    builder = page_builder()
+    context = {'doctype': {'101': '외주용역 계약서', '102': '통장사본'},
+               'bno': '000-00-12345', 'cmp': 110, 'pay': '일시(전액) 지급', 'fields': {}}
+    missing, _ = builder.check_q({'I': 'MISSING'}, context, 'REQUIRED_DOCUMENTS', 'bank_account')
+    mismatch, _ = builder.check_q({'I': 'FAIL'}, context, 'BUSINESS_NO_MATCH', '101')
+    not_applicable, _ = builder.check_q({'I': 'N/A'}, context, 'AMOUNT_MATCH_TAX_INVOICE', '101')
+    absent_components, _ = builder.check_q({'I': 'N/A'}, context, 'AMOUNT_COMPONENTS', '102')
+    assert '빠져 있다' in missing and '다르다' in mismatch
+    assert '대상이 아니다' in not_applicable
+    assert '적용하지 않는다' in absent_components
+
+
+def test_arithmetic_question_uses_current_document_not_dev_amounts():
+    builder = page_builder()
+    context = {'doctype': {'101': '전자세금계산서'}, 'fields': {'101': {
+        'supply_amount': {'value': 300}, 'tax_amount': {'value': 30}}}}
+    _, hint = builder.check_q({'I': 'FAIL'}, context, 'AMOUNT_COMPONENTS', '101')
+    assert '300원 + 30원 = 330원' in hint
+    assert '2,000,000' not in hint

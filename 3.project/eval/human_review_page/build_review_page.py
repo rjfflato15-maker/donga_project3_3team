@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Build a click-through human review page from human_review.xlsx (items) + originals."""
-import argparse, datetime, json, os, re, sys, zipfile
+import argparse, datetime, json, os, re, sys, tempfile, zipfile
 from pathlib import Path
 from html import escape
 from xml.etree import ElementTree as ET
@@ -51,7 +51,17 @@ def make_views(path, stem):
         m = int(im.width * 0.03)
         box = (max(0, box[0]-m), max(0, box[1]-m), min(im.width, box[2]+m), min(im.height, box[3]+m))
         name = f"{stem}_p{n+1}.png"
-        im.crop(box).save(os.path.join(vdir, name))
+        # Publish a complete new image rather than truncating a preview that
+        # a browser or Windows indexer may still have open.
+        temporary = None
+        try:
+            with tempfile.NamedTemporaryFile(dir=vdir, suffix=".png", delete=False) as stream:
+                temporary = stream.name
+                im.crop(box).save(stream, format="PNG")
+            os.replace(temporary, os.path.join(vdir, name))
+        finally:
+            if temporary and os.path.exists(temporary):
+                os.unlink(temporary)
         out.append("views/" + name)
     return out
 
@@ -88,12 +98,13 @@ def load_cases(reference):
         cases[str(rc["contract_id"])] = {
             "case": cdir, "vendor": inp["vendor_name"], "bno": inp["business_number"], "basis": basis,
             "cmp": cmp_total, "pay": "분할 지급" if pol["payment_mode"] == "INSTALLMENT" else "일시(전액) 지급",
-            "docs": docs, "doctype": {d["id"]: d["type"] for d in docs}}
+            "docs": docs, "doctype": {d["id"]: d["type"] for d in docs},
+            "fields": {d["id"]: reference["documents"][d["id"]]["fields"] for d in docs}}
     return cases
 
 # ---- questions: "정답 초안이 하는 말" + 볼 곳 + (필요 시) 기준 ----
 def Q(claim, rule=None):
-    html = '<div class="claimlbl">정답 초안</div><div class="claim">' + claim + '</div>'
+    html = '<div class="claimlbl">정답 초안:</div><div class="claim">' + claim + '</div>'
     if rule:
         html += '<div class="interp">📌 기준: ' + rule + '</div>'
     return html
@@ -112,7 +123,9 @@ def field_q(it, ctx, doc_id, field):
                         "합계금액 줄을 보고, '선금'·'잔금'·'분할' 같은 말이 없는지 보세요.")
             return Q("이 문서의 금액은 <b>계약 전체 금액</b>이다. ('선금·잔금' 같은 일부가 아님)"), "합계금액 줄과 '전액 청구'·'분할 청구' 문구를 보세요."
         if st == "VALUE" and val == "PARTIAL":
-            return Q("이 문서의 금액은 <b>일부(선금·잔금 등)</b>다."), "'분할 청구' 문구를 보세요."
+            return (Q("이 문서의 금액은 <b>일부(선금·잔금 등)</b>다.",
+                      "'분할 청구 선금 또는 잔금'이면 선금인지 잔금인지 몰라도 일부 청구입니다. 그 문구가 있으면 <b>맞아요</b>."),
+                    "'분할 청구'·'선금 또는 잔금' 문구를 보세요.")
         if st == "ABSENT":
             return Q("이 문서에는 <b>금액이 없다</b>."), "금액 줄이 있는지만 보세요."
         return (Q("금액이 전체인지 일부인지 <b>알 수 없다 → 판단 보류</b>.",
@@ -142,6 +155,17 @@ def field_q(it, ctx, doc_id, field):
 def check_q(it, ctx, rule, target):
     st = it["I"]; val = it.get("J")
     dtype = ctx["doctype"].get(target, "")
+    if st == "N/A" and rule in {"AMOUNT_MATCH_ESTIMATE", "AMOUNT_MATCH_TAX_INVOICE"}:
+        expected_type = "견적서" if rule == "AMOUNT_MATCH_ESTIMATE" else "전자세금계산서"
+        if dtype != expected_type:
+            return (Q(f"이 문서는 {dtype}이므로 <b>{expected_type} 금액 대조의 대상이 아니다</b>.",
+                      "계약서·검수확인서에 금액이 있어도 문서 종류가 다르면 이 검사는 적용하지 않습니다. 문서 제목이 맞으면 <b>맞아요</b>."),
+                    "문서 제목을 보세요. '대상 아님'은 '읽지 못함'과 달라요.")
+        if ctx["pay"] == "분할 지급" and rule == "AMOUNT_MATCH_TAX_INVOICE":
+            return (Q("분할 청구를 계약 전체 금액과 <b>건별로 비교하지 않는다</b>.",
+                      "분할 지급에서는 청구 금액을 합쳐 비교합니다. 일부 청구라면 <b>맞아요</b>."), "지급 방식과 '분할 청구' 문구를 보세요.")
+        return (Q("금액을 확정할 수 없어 <b>일치·불일치 대조는 하지 않는다</b>.",
+                  "참고값을 임의로 합계로 정하지 않습니다. 금액 뜻이 모호하면 <b>맞아요</b>."), "금액 이름과 적용 범위 문구를 보세요.")
     if rule == "missing_types":
         miss = json.loads(val) if val else []
         if miss:
@@ -161,13 +185,24 @@ def check_q(it, ctx, rule, target):
     if rule == "BUSINESS_NO_MATCH":
         if target == "business_registration_no":
             return Q("사업자번호를 대조할 서류(계약서·견적서·세금계산서·사업자등록증)가 <b>있다</b>."), "왼쪽 위 문서 버튼 목록을 보세요."
-        return (Q(f"문서의 공급자 사업자번호가 등록 번호 <b>{ctx['bno']}와 같다</b>."),
+        if st == "N/A":
+            return Q(f"{dtype}은 <b>사업자번호 대조 검사의 대상이 아니다</b>."), "이 검사는 계약서·견적서·세금계산서·사업자등록증에 적용해요. 문서 제목을 보세요."
+        return (Q(f"문서의 공급자 사업자번호가 등록 번호 <b>{ctx['bno']}와 {'다르다' if st == 'FAIL' else '같다'}</b>."),
                 "오른쪽 위 '등록 계약' 상자의 번호와 비교하세요." + (" '공급받는자' 번호 말고 '공급자' 번호예요." if dtype in ("견적서", "전자세금계산서") else ""))
     if rule == "AMOUNT_COMPONENTS":
+        values = ctx.get("fields", {}).get(target, {})
+        if st == "N/A" and any(values.get(k, {}).get("state") != "VALUE" for k in ("supply_amount", "tax_amount", "total_amount")):
+            return Q("세 금액이 모두 있는 문서가 아니므로 <b>금액 계산 오류 검사를 적용하지 않는다</b>."), "공급가액·세액·합계 세 항목이 모두 적혀 있는지 보세요."
         if st == "FAIL":
-            return Q("공급가액 + 세액이 합계금액과 <b>다르다 → 계산이 틀렸다</b>."), "2,000,000 + 200,000 = 2,200,000인데, 합계 줄에 뭐라고 적혀 있는지 보세요."
+            supply = values.get("supply_amount", {}).get("value")
+            tax = values.get("tax_amount", {}).get("value")
+            hint = (f"{won(supply)} + {won(tax)} = {won(int(supply) + int(tax))}인데, 합계 줄의 숫자와 비교하세요."
+                    if supply is not None and tax is not None else "공급가액과 세액을 더한 값이 합계 줄과 다른지 보세요.")
+            return Q("공급가액 + 세액이 합계금액과 <b>다르다 → 계산이 틀렸다</b>."), hint
         return Q("공급가액 + 세액 = 합계금액, <b>계산이 맞다</b>."), "세 줄의 숫자를 더해 보세요."
     if rule == "AMOUNT_EXTRACTION":
+        if st == "N/A" and dtype in ("통장사본", "사업자등록증"):
+            return Q(f"{dtype}은 <b>금액 추출 검사의 대상이 아니다</b>."), "청구 금액을 비교하는 증빙이 아닌지 문서 제목을 보세요."
         if st == "REVIEW":
             return (Q("금액 이름이 '참고값'뿐이라 <b>공급가액·세액·합계를 확정할 수 없다 → 판단 보류</b>.",
                       "이름 없는 숫자는 계산으로 짐작되더라도 추측해서 넣지 않습니다. 원문 금액 이름이 '참고값'이면 <b>맞아요</b>."),
@@ -184,10 +219,21 @@ def check_q(it, ctx, rule, target):
     if rule == "AMOUNT_BASIS":
         return Q(f"등록 계약의 금액 기준이 <b>분명하다</b>. ({ctx['basis']})"), "오른쪽 위 '등록 계약' 상자를 보세요."
     if rule == "REQUIRED_DOCUMENTS":
-        return Q(f"<b>{TYPE_KO.get(target, target)}</b>이 제출되어 있다."), "왼쪽 위 문서 버튼 목록을 보세요."
+        return Q(f"<b>{TYPE_KO.get(target, target)}</b>이 {'빠져 있다' if st == 'MISSING' else '제출되어 있다'}."), "왼쪽 위 문서 버튼 목록을 보세요."
+    if rule == "INSTALLMENT_TOTAL":
+        if st == "N/A":
+            return Q("이 계약은 일시 지급이므로 <b>분할 청구 합계 검사를 적용하지 않는다</b>."), "등록 계약의 지급 방식이 '일시(전액) 지급'인지 보세요."
+        return (Q(f"분할 청구 금액을 모두 더하면 계약 금액 {won(ctx['cmp'])}과 <b>{'같다' if st == 'PASS' else '다르다'}</b>."),
+                "세금계산서 두 장의 합계금액을 더해 등록 계약 금액과 비교하세요.")
+    if rule == "DUPLICATE_INVOICE":
+        return Q("분할 청구에 <b>같은 세금계산서가 중복으로 들어 있지 않다</b>."), "세금계산서 금액·내용과 파일을 비교하세요."
     if rule == "PAYMENT_SCOPE":
         if target == "tax_invoice":
             return Q(f"이 계약은 <b>{ctx['pay']}</b>이라 분할 청구 경고가 필요 없다."), "오른쪽 위 '등록 계약' 상자의 지급 방식을 보세요."
+        if dtype != "전자세금계산서":
+            return Q(f"{dtype}은 <b>세금계산서 청구 범위 검사의 대상이 아니다</b>."), "문서 제목을 보세요."
+        if ctx["pay"] == "분할 지급":
+            return Q("분할 지급 계약의 일부 청구라 <b>전액 지급 경고가 필요 없다</b>."), "등록 지급 방식과 세금계산서의 '분할 청구' 문구를 보세요."
         return Q("이 세금계산서에 <b>'전액 청구'</b>라고 적혀 있다."), "'전액 청구' 줄을 보세요."
     return Q(f"{rule} {target}: {st}"), ""
 
@@ -209,6 +255,12 @@ def make_items(items, cases):
                 if target.isdigit(): doc_id = target
             q, hint = check_q(it, ctx, rule, target)
             kind = "check"
+        note = it.get('M')
+        if note:
+            q = re.sub(r'<div class="interp">.*?</div>', '', q, flags=re.S)
+            q += '<div class="interp">📌 기준: ' + escape(note) + ' 이 기준대로면 <b>맞아요</b>.</div>'
+        elif '📌 기준:' not in q:
+            q += '<div class="interp">📌 기준: ' + escape(hint or "원문과 등록 계약을 비교하세요.") + ' 설명대로면 <b>맞아요</b>.</div>'
         val = it.get("J")
         shown = excel_date(val) if val else ""
         out.append({"key": f"{it['sheet']}!{it['row']}", "sheet": it["sheet"], "row": it["row"], "id": it["A"],
