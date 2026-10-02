@@ -1,0 +1,17 @@
+{
+  "dataset": "synthetic-hard-v2",
+  "corpus": "test2",
+  "contracts": 6,
+  "documents": 36,
+  "blind_package_verified_files": 50,
+  "independent_reply_files": 0,
+  "independent_review_complete": false,
+  "human_page_ready": false,
+  "human_labels_confirmed": false,
+  "final_inference_started": false,
+  "status": "independent_review_pending",
+  "release_sha256": "2f18ae0776a71d233d5522e1a58bbad9c7855caab0aff01c0a6dfd5232e1f794",
+  "model": "qwen3:latest",
+  "prompt_version": "grounded-fields-v3",
+  "guard_policy": "v4"
+}
