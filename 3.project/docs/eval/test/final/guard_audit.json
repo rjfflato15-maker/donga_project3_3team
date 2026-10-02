@@ -1,0 +1,2321 @@
+{
+  "prediction_attempt_id": "e40c42cf-cc17-4939-8f11-d8df9452f954",
+  "labels_sha256": "296c093264ce09b6287be02bc6351adf42aacdf155927107038307643e45d758",
+  "rejection_reasons": {
+    "FIELD_LABEL_OR_VALUE_MISMATCH": 107,
+    "VALUE_NOT_IN_QUOTE": 2,
+    "EVIDENCE_NOT_FOUND": 1,
+    "INVALID_FORMAT": 2,
+    "UNSUPPORTED_ABSTENTION": 1,
+    "AMBIGUOUS_UNLABELED_AMOUNT": 3
+  },
+  "decisions": [
+    {
+      "document_id": "20101",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": false,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 업무지원 시스템 구축",
+        "page": 1,
+        "line": 10,
+        "quote": "가상 업무지원 시스템 구축"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20101",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02013",
+        "page": 1,
+        "line": 13,
+        "quote": "000-00-02013"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20101",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": false,
+      "proposal": {
+        "state": "VALUE",
+        "value": "210000",
+        "page": 1,
+        "line": 15,
+        "quote": "210,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20101",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": false,
+      "proposal": {
+        "state": "VALUE",
+        "value": "20000",
+        "page": 1,
+        "line": 14,
+        "quote": "2, 100,000원"
+      },
+      "reasons": [
+        "VALUE_NOT_IN_QUOTE",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20101",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2310000",
+        "page": 1,
+        "line": 16,
+        "quote": "2,310,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20101",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-01",
+        "page": 1,
+        "line": 17,
+        "quote": "2026-09-01"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20101",
+      "field": "amount_scope",
+      "applied": true,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20104",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 1",
+        "page": 1,
+        "line": 7,
+        "quote": "가상 달빛제작소 1"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20104",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-01",
+        "page": 1,
+        "line": 11,
+        "quote": "2026-09-01"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20105",
+      "field": "company_name",
+      "applied": true,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 1",
+        "page": null,
+        "line": 4,
+        "quote": "상호\t가상 달빛제작소 1"
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20203",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 2",
+        "page": 1,
+        "line": 7,
+        "quote": "가상 달빛제작소 2"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20203",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02027",
+        "page": 1,
+        "line": 8,
+        "quote": "000-00-02027"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20203",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-02",
+        "page": 1,
+        "line": 12,
+        "quote": "2026-09-02"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20204",
+      "field": "company_name",
+      "applied": true,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 2",
+        "page": null,
+        "line": 4,
+        "quote": "상호\t가상 달빛제작소 2"
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20302",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 3",
+        "page": 1,
+        "line": 10,
+        "quote": "가상 달빛제작소 3"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20302",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-22038",
+        "page": 1,
+        "line": 11,
+        "quote": "000-00-22038"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20302",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2300000",
+        "page": 1,
+        "line": 14,
+        "quote": "2,300,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20302",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "230000",
+        "page": 1,
+        "line": 15,
+        "quote": "230,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20302",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2530000",
+        "page": 1,
+        "line": 16,
+        "quote": "2,530,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20302",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-03",
+        "page": 1,
+        "line": 17,
+        "quote": "2026-09-03"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20302",
+      "field": "amount_scope",
+      "applied": true,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20305",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 3",
+        "page": 1,
+        "line": 11,
+        "quote": "가상 달빛제작소 3"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20305",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02032",
+        "page": 1,
+        "line": 12,
+        "quote": "000-00-02032"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20305",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2300000",
+        "page": 1,
+        "line": 15,
+        "quote": "2,300,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20305",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "230000",
+        "page": 1,
+        "line": 16,
+        "quote": "230,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20305",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2530000",
+        "page": 1,
+        "line": 17,
+        "quote": "2,530,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20305",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-03",
+        "page": 1,
+        "line": 19,
+        "quote": "2026-09-03"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20401",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": false,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 업무지원 시스템 구축",
+        "page": 1,
+        "line": 10,
+        "quote": "가상 업무지원 시스템 구축"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20401",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02046",
+        "page": 1,
+        "line": 13,
+        "quote": "000-00-02046"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20401",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2400000",
+        "page": 1,
+        "line": 14,
+        "quote": "2,400,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20401",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "240000",
+        "page": 1,
+        "line": 15,
+        "quote": "240,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20401",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2640000",
+        "page": 1,
+        "line": 16,
+        "quote": "2,640,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20401",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-04",
+        "page": 1,
+        "line": 17,
+        "quote": "2026-09-04"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20401",
+      "field": "amount_scope",
+      "applied": true,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20404",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 4",
+        "page": 1,
+        "line": 7,
+        "quote": "가상 달빛제작소 4"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20404",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-04",
+        "page": 1,
+        "line": 11,
+        "quote": "2026-09-04"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20405",
+      "field": "company_name",
+      "applied": true,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 4",
+        "page": null,
+        "line": 4,
+        "quote": "상호\t가상 달빛제작소 4"
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20503",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 5",
+        "page": 1,
+        "line": 7,
+        "quote": "가상 달빛제작소 5"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20503",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02051",
+        "page": 1,
+        "line": 8,
+        "quote": "000-00-02051"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20503",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-05",
+        "page": 1,
+        "line": 12,
+        "quote": "2026-09-05"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20505",
+      "field": "company_name",
+      "applied": true,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 5",
+        "page": 1,
+        "line": 5,
+        "quote": "가상 달빛제작소 5"
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20506",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 5",
+        "page": 1,
+        "line": 10,
+        "quote": "가상 달빛제작소 5"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20506",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02051",
+        "page": 1,
+        "line": 11,
+        "quote": "000-00-02051"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20506",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2500000",
+        "page": 1,
+        "line": 14,
+        "quote": "2,500,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20506",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "250000",
+        "page": 1,
+        "line": 15,
+        "quote": "250,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20506",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2750000",
+        "page": 1,
+        "line": 16,
+        "quote": "2,750,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20506",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-05",
+        "page": 1,
+        "line": 17,
+        "quote": "2026-09-05"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20506",
+      "field": "amount_scope",
+      "applied": true,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20602",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 6",
+        "page": 1,
+        "line": 10,
+        "quote": "가상 달빛제작소 6"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20602",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02065",
+        "page": 1,
+        "line": 11,
+        "quote": "000-00-02065"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20602",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2600000",
+        "page": 1,
+        "line": 14,
+        "quote": "2,600,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20602",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "260000",
+        "page": 1,
+        "line": 15,
+        "quote": "260,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20602",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2860000",
+        "page": 1,
+        "line": 16,
+        "quote": "2,860,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20602",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-06",
+        "page": 1,
+        "line": 17,
+        "quote": "2026-09-06"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20602",
+      "field": "amount_scope",
+      "applied": true,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20605",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 6",
+        "page": 1,
+        "line": 11,
+        "quote": "가상 달빛제작소 6"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20605",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02065",
+        "page": 1,
+        "line": 12,
+        "quote": "000-00-02065"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20605",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "780000",
+        "page": 1,
+        "line": 15,
+        "quote": "780,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20605",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "78000",
+        "page": 1,
+        "line": 16,
+        "quote": "78,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20605",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "858000",
+        "page": 1,
+        "line": 17,
+        "quote": "858,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20605",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-06",
+        "page": 1,
+        "line": 19,
+        "quote": "2026-09-06"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20605",
+      "field": "amount_scope",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "PARTIAL",
+        "page": 1,
+        "line": 18,
+        "quote": "인하 그 CC 느 자 그"
+      },
+      "reasons": [
+        "EVIDENCE_NOT_FOUND",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20607",
+      "field": "company_name",
+      "applied": true,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 6",
+        "page": 1,
+        "line": 5,
+        "quote": "가상 달빛제작소 6"
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20607",
+      "field": "amount_scope",
+      "applied": false,
+      "gold_matching": false,
+      "proposal": {
+        "state": "VALUE",
+        "value": "분할 청구",
+        "page": 1,
+        "line": 19,
+        "quote": "분할 청구"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH",
+        "INVALID_FORMAT"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20701",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [
+        "UNSUPPORTED_ABSTENTION"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20701",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02070",
+        "page": 1,
+        "line": 14,
+        "quote": "000-00-02070"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20701",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2700000",
+        "page": 1,
+        "line": 15,
+        "quote": "2,700,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20701",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "270000",
+        "page": 1,
+        "line": 16,
+        "quote": "270,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20701",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2970000",
+        "page": 1,
+        "line": 17,
+        "quote": "2,970,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20701",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-07",
+        "page": 1,
+        "line": 18,
+        "quote": "2026-09-07"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20701",
+      "field": "amount_scope",
+      "applied": true,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20702",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 7",
+        "page": 1,
+        "line": 11,
+        "quote": "가상 달빛제작소 7"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20702",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02070",
+        "page": 1,
+        "line": 12,
+        "quote": "000-00-02070"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20702",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2700000",
+        "page": 1,
+        "line": 15,
+        "quote": "2,700,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20702",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "270000",
+        "page": 1,
+        "line": 16,
+        "quote": "270,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20702",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2970000",
+        "page": 1,
+        "line": 17,
+        "quote": "2,970,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20702",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-07",
+        "page": 1,
+        "line": 18,
+        "quote": "2026-09-07"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20702",
+      "field": "amount_scope",
+      "applied": true,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20703",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 7",
+        "page": 1,
+        "line": 6,
+        "quote": "가상 달빛제작소 7"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20703",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02070",
+        "page": 1,
+        "line": 7,
+        "quote": "000-00-02070"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20703",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-07",
+        "page": 1,
+        "line": 11,
+        "quote": "2026-09-07"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20704",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 7",
+        "page": 1,
+        "line": 7,
+        "quote": "가상 달빛제작소 7"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20704",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-07",
+        "page": 1,
+        "line": 11,
+        "quote": "2026-09-07"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20705",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 7",
+        "page": 1,
+        "line": 12,
+        "quote": "가상 달빛제작소 7"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20705",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02070",
+        "page": 1,
+        "line": 13,
+        "quote": "000-00-02070"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20705",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2700000",
+        "page": 1,
+        "line": 16,
+        "quote": "2,700,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20705",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "270000",
+        "page": 1,
+        "line": 17,
+        "quote": "270,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20705",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2970000",
+        "page": 1,
+        "line": 18,
+        "quote": "2,970,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20705",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-07",
+        "page": 1,
+        "line": 20,
+        "quote": "2026-09-07"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20706",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 7",
+        "page": 1,
+        "line": 11,
+        "quote": "가상 달빛제작소 7"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20706",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02070",
+        "page": 1,
+        "line": 12,
+        "quote": "000-00-02070"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20706",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2700000",
+        "page": 1,
+        "line": 15,
+        "quote": "2,700,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20706",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "270000",
+        "page": 1,
+        "line": 16,
+        "quote": "270,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20706",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2970000",
+        "page": 1,
+        "line": 17,
+        "quote": "2,970,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20706",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-07",
+        "page": 1,
+        "line": 18,
+        "quote": "2026-09-07"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20706",
+      "field": "amount_scope",
+      "applied": true,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20803",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 8",
+        "page": 1,
+        "line": 7,
+        "quote": "가상 달빛제작소 8"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20803",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02084",
+        "page": 1,
+        "line": 8,
+        "quote": "000-00-02084"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20803",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-08",
+        "page": 1,
+        "line": 12,
+        "quote": "2026-09-08"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20805",
+      "field": "company_name",
+      "applied": true,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 8",
+        "page": 1,
+        "line": 5,
+        "quote": "가상 달빛제작소 8"
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20806",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 8",
+        "page": 1,
+        "line": 7,
+        "quote": "가상 달빛제작소 8"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20806",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02084",
+        "page": 1,
+        "line": 8,
+        "quote": "000-00-02084"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20806",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2800000",
+        "page": 1,
+        "line": 16,
+        "quote": "2,800,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20806",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "280000",
+        "page": 1,
+        "line": 17,
+        "quote": "280,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20806",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-08",
+        "page": 1,
+        "line": 19,
+        "quote": "2026-09-08"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20902",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 9",
+        "page": 1,
+        "line": 4,
+        "quote": "가상 달빛제작소 9"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20902",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [
+        "AMBIGUOUS_UNLABELED_AMOUNT"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20902",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [
+        "AMBIGUOUS_UNLABELED_AMOUNT"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20902",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [
+        "AMBIGUOUS_UNLABELED_AMOUNT"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20902",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-09",
+        "page": 1,
+        "line": 16,
+        "quote": "2026-09-09"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20902",
+      "field": "amount_scope",
+      "applied": false,
+      "gold_matching": false,
+      "proposal": {
+        "state": "VALUE",
+        "value": "전액 청구",
+        "page": 1,
+        "line": 15,
+        "quote": "금액의 적용 범위가 표시되지 않음"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH",
+        "INVALID_FORMAT"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20905",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 9",
+        "page": 1,
+        "line": 11,
+        "quote": "가상 달빛제작소 9"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20905",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02099",
+        "page": 1,
+        "line": 12,
+        "quote": "000-00-02099"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20905",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2900000",
+        "page": 1,
+        "line": 15,
+        "quote": "2,900,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20905",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "290000",
+        "page": 1,
+        "line": 16,
+        "quote": "290,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20905",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "3190000",
+        "page": 1,
+        "line": 17,
+        "quote": "3, 190,000원"
+      },
+      "reasons": [
+        "VALUE_NOT_IN_QUOTE",
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "20905",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-09",
+        "page": 1,
+        "line": 19,
+        "quote": "2026-09-09"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21001",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": false,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 업무지원 시스템 구축",
+        "page": 1,
+        "line": 10,
+        "quote": "가상 업무지원 시스템 구축"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21001",
+      "field": "business_registration_no",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "000-00-02105",
+        "page": 1,
+        "line": 13,
+        "quote": "000-00-02105"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21001",
+      "field": "supply_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "3000000",
+        "page": 1,
+        "line": 14,
+        "quote": "3,000,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21001",
+      "field": "tax_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "300000",
+        "page": 1,
+        "line": 15,
+        "quote": "300,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21001",
+      "field": "total_amount",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "3300000",
+        "page": 1,
+        "line": 16,
+        "quote": "3,300,000원"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21001",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-10",
+        "page": 1,
+        "line": 17,
+        "quote": "2026-09-10"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21001",
+      "field": "amount_scope",
+      "applied": true,
+      "gold_matching": false,
+      "proposal": {
+        "state": "ABSENT",
+        "value": null,
+        "page": null,
+        "line": null,
+        "quote": ""
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21004",
+      "field": "company_name",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 10",
+        "page": 1,
+        "line": 7,
+        "quote": "가상 달빛제작소 10"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21004",
+      "field": "issue_date",
+      "applied": false,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "2026-09-10",
+        "page": 1,
+        "line": 11,
+        "quote": "2026-09-10"
+      },
+      "reasons": [
+        "FIELD_LABEL_OR_VALUE_MISMATCH"
+      ],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21005",
+      "field": "company_name",
+      "applied": true,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "가상 달빛제작소 10",
+        "page": null,
+        "line": 4,
+        "quote": "상호\t가상 달빛제작소 10"
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21005",
+      "field": "supply_amount",
+      "applied": true,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "3000000",
+        "page": null,
+        "line": 9,
+        "quote": "공급가액\t3,000,000원"
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21005",
+      "field": "tax_amount",
+      "applied": true,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "300000",
+        "page": null,
+        "line": 10,
+        "quote": "세액\t300,000원"
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    },
+    {
+      "document_id": "21005",
+      "field": "total_amount",
+      "applied": true,
+      "gold_matching": true,
+      "proposal": {
+        "state": "VALUE",
+        "value": "3301000",
+        "page": null,
+        "line": 11,
+        "quote": "합계금액\t3,301,000원"
+      },
+      "reasons": [],
+      "evidence": null,
+      "human_confirmed": false
+    }
+  ]
+}
