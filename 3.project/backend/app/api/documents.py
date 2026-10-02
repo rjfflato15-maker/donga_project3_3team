@@ -188,10 +188,10 @@ def serve_document(document_id, masked, disposition, db, actor):
             content = render_masked_pdf_bytes(str(path), sensitive_dict=sensitive, scale=1.5)
             media, name = "application/pdf", "masked_" + name
         elif suffix in {".png", ".jpg", ".jpeg", ".bmp", ".webp", ".gif", ".tif", ".tiff"}:
-            from PIL import Image
+            from PIL import Image, ImageOps
             from ..ai.visual_masking import mask_image_with_ocr
             with Image.open(path) as original:
-                image = original.convert("RGB")
+                image = ImageOps.exif_transpose(original).convert("RGB")
             result = None
             try:
                 result = mask_image_with_ocr(image, sensitive_dict=sensitive)
@@ -258,14 +258,25 @@ def get_document_pages_info(document_id: int, db: Session = Depends(get_db)):
 
 @router.get("/api/documents/{document_id}/preview-image")
 def get_document_preview_image(document_id: int, page: int = Query(0, ge=0), masked: bool = True,
+                               revision: Optional[int] = Query(None, ge=1), source_sha256: Optional[str] = None,
                                db: Session = Depends(get_db), actor: Actor = Depends(get_current_user)):
     doc, path = document_and_path(db, document_id)
     contract_id = doc.contract_id
+    if revision is not None and revision != policy_for(db, contract_id)['revision']:
+        raise HTTPException(409, "계약 자료가 변경되었습니다. 근거와 미리보기를 새로 불러오세요.")
+    if source_sha256 is not None:
+        info = db.get(DocumentFileInfo, document_id)
+        if not info or info.sha256 != source_sha256:
+            raise HTTPException(409, "원본 버전이 다릅니다. 근거와 미리보기를 새로 불러오세요.")
     sensitive = sensitive_values(doc) if masked else {}
     db.rollback()
     image = None
     try:
-        from PIL import Image
+        if source_sha256 is not None:
+            with path.open('rb') as stream:
+                if hashlib.file_digest(stream, 'sha256').hexdigest() != source_sha256:
+                    raise HTTPException(409, "원본 내용이 변경되었습니다. 근거를 다시 확인하세요.")
+        from PIL import Image, ImageOps
         from ..ai.visual_masking import mask_pdf_page_image, mask_image_with_ocr
         if path.suffix.lower() == ".pdf":
             from ..ai.pdf_runtime import open_pdf, open_page, page_count, page_size, render_page_image
@@ -282,7 +293,7 @@ def get_document_preview_image(document_id: int, page: int = Query(0, ge=0), mas
                         image = protected
         else:
             with Image.open(path) as original:
-                image = original.convert("RGB")
+                image = ImageOps.exif_transpose(original).convert("RGB")
             if masked:
                 protected = mask_image_with_ocr(image, sensitive_dict=sensitive)
                 image.close()
@@ -298,5 +309,9 @@ def get_document_preview_image(document_id: int, page: int = Query(0, ge=0), mas
         if image is not None:
             image.close()
     response = Response(content, media_type="image/png", headers=PRIVATE_HEADERS)
-    record_file_request(db, actor, "MASKED_PREVIEW" if masked else "ORIGINAL_PREVIEW", contract_id, document_id, {"page": page + 1})
+    with STORAGE_LOCK:
+        db.expire_all()
+        if revision is not None and revision != policy_for(db, contract_id)['revision']:
+            raise HTTPException(409, "미리보기 생성 중 계약 자료가 변경되었습니다. 새로 불러오세요.")
+        record_file_request(db, actor, "MASKED_PREVIEW" if masked else "ORIGINAL_PREVIEW", contract_id, document_id, {"page": page + 1})
     return response

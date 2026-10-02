@@ -13,6 +13,7 @@ from .contract_service import ContractService
 from .storage_service import read_texts, resolve_path
 from .company_policy_service import approval_state
 from .review_summary_service import build_action_summary, display_issue_counts, pending_ai_count
+from .evidence_geometry_service import attach_coordinates
 SOURCE_NAMES = {'RULE': '규칙', 'AI_SUPPLEMENT': 'AI 보완', 'HUMAN_CONFIRMATION': '사람 확인', 'UNAVAILABLE': '미추출'}
 
 
@@ -88,7 +89,14 @@ def document_provenance(db, doc):
             if verified:
                 anchors = [{**verified, 'document_id': doc.document_id, 'field': key}]
         results[key] = {'value': value, 'source': source, 'source_label': SOURCE_NAMES[source], 'original_source': origin, 'human_confirmation': confirmation, 'evidence': anchors, 'evidence_status': 'AMBIGUOUS' if len(anchors) > 1 else 'AVAILABLE' if anchors else 'UNAVAILABLE', 'evidence_error': None if anchors else source_error or 'SOURCE_LABEL_OR_VALUE_NOT_FOUND', 'ai_decision': decision or derived}
-    return {'document_id': doc.document_id, 'file_name': doc.file_name, 'source_version_verified': version_verified, 'fields': results, 'ai_review': ai or None}
+    anchors = [anchor for field in results.values() for anchor in field['evidence']]
+    if path and version_verified:
+        attach_coordinates(path, anchors, expected_sha)
+    else:
+        for anchor in anchors:
+            anchor.update(bbox=None, bboxes=[], coordinate_space='preview_image_normalized_top_left',
+                          source_sha256=expected_sha, coordinate_method=None)
+    return {'document_id': doc.document_id, 'file_name': doc.file_name, 'source_version_verified': version_verified, 'source_sha256': expected_sha, 'fields': results, 'ai_review': ai or None}
 
 def review_context(db, contract_id):
     detail = ContractService().get_contract_detail(db, contract_id)

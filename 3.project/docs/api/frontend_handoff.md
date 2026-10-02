@@ -101,3 +101,12 @@ POST `/api/pilot/contracts/{id}/approvals` 요청은 기존 최종 확인 요청
 2단계 설정에서는 1단계 기록이 있어야 최종 결재가 가능하며 같은 사람이 두 단계를 처리할 수 없다. 기존 `/reviews`로도 이 조건을 건너뛸 수 없다. 자료 변경·반려 후에는 현재 자료를 1단계부터 다시 검토한다. 누락 서류·원본은 먼저 보완해야 하고, 불일치·미확인 항목이 있으면 명시적인 확인과 10자 이상의 근거가 필요하다. revision/fingerprint가 오래되면 409로 최신 자료를 다시 요청한다.
 
 [진행 요약](../progress/development_report.md) · [소스 담당 영역](../architecture/module_map.md)
+## 근거 좌표 (2026-10-03)
+
+`GET /api/documents/{document_id}/provenance`와 `GET /api/contracts/{contract_id}/review-context`의 evidence에 실제 OCR 단어 상자 또는 PDF 글자 상자를 추가했다. 원본 SHA256을 확인한 뒤에만 좌표를 붙인다. EXIF 방향을 적용한 preview-image의 왼쪽 위가 원점이며 x/y/width/height는 0~1 비율이다. `bbox`는 해당 인용의 외접 상자, `bboxes`는 실제 글자/단어별 상자다. 다중 상자 지원 시 bboxes를 각각 그리면 된다. 좌표 확인 실패·반복 인용·회전된 native PDF·DOCX/TXT는 bbox=null, bboxes=[]로 유지한다.
+
+```json
+{"page": 1, "line": 6, "quote": "합계금액: 1100원", "bbox": {"page": 1, "x": 0.1, "y": 0.2, "width": 0.3, "height": 0.05}, "bboxes": [{"page": 1, "x": 0.1, "y": 0.2, "width": 0.3, "height": 0.05}], "coordinate_space": "preview_image_normalized_top_left", "coordinate_method": "OCR_WORD_BOXES", "source_sha256": "원본의 64자리 SHA256"}
+```
+
+evidence.page는 1부터 시작하고 preview-image의 page query는 0부터 시작한다. `GET /api/documents/42/preview-image?page=0&masked=false&revision=7&source_sha256=...`로 같은 근거의 이미지를 요청한다. revision 또는 원본 해시가 다르면 `409 {"detail":"계약 자료가 변경되었습니다. 근거와 미리보기를 새로 불러오세요."}`(원본 충돌도 같은 409), 해당 페이지가 없으면 404, 이미지/마스킹 실패는 503이다. 로그인은 필수(401)다. null일 때 기존 쪽·줄 표시를 사용한다. 이 API는 계약 revision을 증가시키지 않는다.
