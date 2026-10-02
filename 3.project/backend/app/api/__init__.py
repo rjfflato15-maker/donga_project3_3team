@@ -8,6 +8,7 @@ from .auto_contract import router as auto_contract_router
 from .auth import router as auth_router
 from .pilot import router as pilot_router
 from .metrics import router as metrics_router
+from .workflow import router as workflow_router
 
 api_router = APIRouter()
 api_router.include_router(contracts_router, dependencies=[Depends(authorize_company_request)])
@@ -17,6 +18,7 @@ api_router.include_router(validations_router, dependencies=[Depends(authorize_co
 api_router.include_router(pipeline_router, dependencies=[Depends(authorize_company_request)])
 api_router.include_router(pilot_router, dependencies=[Depends(authorize_company_request)])
 api_router.include_router(metrics_router, dependencies=[Depends(authorize_company_request)])
+api_router.include_router(workflow_router, dependencies=[Depends(authorize_company_request)])
 api_router.include_router(auth_router)
 
 __all__ = ["api_router"]

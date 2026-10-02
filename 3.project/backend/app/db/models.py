@@ -53,6 +53,8 @@ class Contract(Base):
     user = relationship("User", back_populates="contracts")
     documents = relationship("Document", back_populates="contract", cascade="all, delete-orphan")
     validation_results = relationship("ValidationResult", back_populates="contract", cascade="all, delete-orphan")
+    resubmission_requests = relationship("ResubmissionRequest", cascade="all, delete-orphan")
+    approval_signoffs = relationship("ApprovalSignoff", cascade="all, delete-orphan")
 
 
 class Document(Base):
@@ -196,3 +198,32 @@ class DocumentFileInfo(Base):
     document_id = Column(Integer, ForeignKey("documents.document_id", ondelete="CASCADE"), primary_key=True)
     sha256 = Column(String(64), nullable=False)
     byte_size = Column(Integer, nullable=False)
+
+
+class ResubmissionRequest(Base):
+    __tablename__ = "pilot_resubmission_requests"
+    request_id = Column(Integer, primary_key=True, autoincrement=True)
+    contract_id = Column(Integer, ForeignKey("contracts.contract_id", ondelete="CASCADE"), nullable=False, index=True)
+    contact_method = Column(String(20), nullable=False)
+    requested_on = Column(String(10), nullable=False)
+    due_on = Column(String(10), nullable=True)
+    memo = Column(Text, nullable=False)
+    status = Column(String(30), nullable=False, default="WAITING_RESPONSE")
+    actor_id = Column(Integer, nullable=False)
+    actor_name = Column(String(80), nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    resolved_at = Column(DateTime, nullable=True)
+    resolution_note = Column(Text, nullable=True)
+
+
+class ApprovalSignoff(Base):
+    __tablename__ = "pilot_approval_signoffs"
+    signoff_id = Column(Integer, primary_key=True, autoincrement=True)
+    contract_id = Column(Integer, ForeignKey("contracts.contract_id", ondelete="CASCADE"), nullable=False, index=True)
+    revision = Column(Integer, nullable=False)
+    fingerprint = Column(String(64), nullable=False)
+    cycle_review_id = Column(Integer, nullable=False, default=0)
+    actor_id = Column(Integer, nullable=False)
+    actor_name = Column(String(80), nullable=False)
+    note = Column(Text, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)

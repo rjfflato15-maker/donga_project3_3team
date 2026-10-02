@@ -23,9 +23,11 @@ npm run build
 
 ## 고정 평가 코드와 데이터
 
-가드 v3의 관련 코드·모델·프롬프트·설정은 `docs/eval/dev/guard_v3/release_lock.json`과 비교한다. 목록에 든 AI·검수·스키마·평가 코드는 현재 최종 평가를 위해 고정되어 있다. 리팩터링도 코드 변경이므로 무심코 이동하거나 다시 고정하지 않는다. 변경이 필요하면 별도 버전과 평가 계획을 정한다.
+가드 v3의 관련 코드·모델·프롬프트·설정은 `docs/eval/dev/guard_v3/release_lock.json`과 비교한다. test 준비에서는 같은 표본 검수 출처를 test에도 허용하는 정답 검증 절차만 확장했고 `docs/eval/test/preparation/release_lock.json`에 원래 기록과 변경 파일을 남겼다. AI·검수·스키마·모델·프롬프트·가드는 원래 버전과 같다. 리팩터링도 코드 변경이므로 무심코 이동하거나 다시 고정하지 않는다. 변경이 필요하면 별도 버전과 평가 계획을 정한다.
 
-확정 dev 정답과 사람 출처는 임의 수정하지 않는다. test 자료는 개발·튜닝에 열지 않고 [최종 평가 조건](../eval/final_workflow.md)을 따른다. 캐시·JSON·CSV·고정 기록은 문서 정리 대상에서 제외한다.
+확정 dev 정답과 사람 출처는 임의 수정하지 않는다. test 원본은 승인받은 [정답 준비](../eval/test_review_preparation.md)에만 읽고 개발·튜닝에 사용하지 않는다. 성능 측정은 [최종 평가 조건](../eval/final_workflow.md)을 따른다. 캐시·JSON·CSV·고정 기록은 문서 정리 대상에서 제외한다.
+
+frontend는 별도 브랜치의 화면 담당자가 맡는다. 이번 백엔드 작업에서 수정하지 않았으며 [API 인계](../api/frontend_handoff.md)를 기준으로 연결한다. 새 운영 기록 테이블은 백엔드 시작 때 생성한다. 실제 운영 서버에 적용할 때는 먼저 백업하고 통합 실행기로 재시작한다.
 
 고객 업데이트는 [운영 유지보수](../operations/maintenance.md), 배포할 폴더는 [배포 경계](distribution_boundary.md)를 참고한다.
 
