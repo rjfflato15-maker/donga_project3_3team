@@ -187,3 +187,12 @@ action은 START/COMPLETE/CANCEL/REASSIGN/UPDATE. START는 현재 맡은 사람, 
 계약 자료 revision/fingerprint가 바뀌면 is_stale=true다. 과거 자료의 업무를 START/COMPLETE하면 409다. 계약 단위 업무는 최신 자료로 재배정할 수 있고, 재발행된 이전 문서의 업무는 취소 후 새 문서에 새 업무를 맡긴다. 맡기기는 계약 revision/fingerprint와 결재 상태를 변경하지 않는다. 기한은 KST 날짜로 overdue를 계산한다. 기한을 놓쳤다고 자동 상태 변경하지 않는다.
 
 로그인 실패 401, 권한 부족 403, 다른 계약의 업무/문서·없는 계약은 404, 오래된 assignment_revision/contract_revision·이미 종료/자료 변경은 `409 {"detail":"다른 사용자가 업무를 변경했습니다. 새로 불러오세요."}` 등 구체 사유, 비활성 담당자는 400, 스키마 누락·잘못된 action은 422다. 대표가 다른 사람의 업무를 완료해도 결재가 자동 완료되지 않는다.
+## 계약 요약 문장 (2026-10-03)
+
+`GET /api/contracts/3/summary?style=brief&revision=8`은 코드가 채운 요약이다. style은 brief/detail(기본 brief), revision은 선택이다. 등록한 기준금액과 현재 활성 서류 종류 수, 표시되는 확인 항목 수, 현재 결재 상태를 자리표시자로 넣는다. 기준이 UNKNOWN이면 부가세 포함 여부 확인 필요라고 명시한다. 같은 종류의 여러 서류는 제출 종류 수에서 중복 계산하지 않는다.
+
+```json
+{"contract_id":3,"revision":8,"fingerprint":"...","text":"가상 업체의 ‘외주 계약’ 계약입니다. 등록 기준금액은 1,100원(부가세 포함 합계)입니다. 필수 서류 6종 중 5종이 있고, 확인할 항목은 2건입니다. 결재 상태: 최종 확인 대기.","style":"brief","facts":{"vendor_name":"가상 업체","title":"외주 계약","contract_amount":"1,100","amount_basis":"부가세 포함 합계","required_document_count":"6","submitted_document_count":"5","open_issue_count":"2","approval_status":"최종 확인 대기"},"numeric_placeholders_verified":true,"llm_used":false}
+```
+
+화면에는 text를 일반 텍스트로 표시한다. facts/template/sources도 반환해 숫자 출처를 확인할 수 있다. 임의 LLM 문장 대신 검증된 코드 템플릿을 사용하며 LLM 요약은 현재 호출하지 않는다. 자리표시자 누락·중복·다른 금액을 직접 쓴 템플릿은 허용하지 않는다. 재발행 뒤에는 ‘자료 변경으로 재확인 필요’가 된다. 존재하지 않는 계약은 404, 오래된 revision 또는 생성 중 변경은 409, 잘못된 style은 422, 미로그인은 401이다. DB·검수 결과·revision을 변경하지 않는다.

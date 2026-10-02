@@ -173,6 +173,7 @@ def correct_fields(document_id: int, req: Correction, db: Session = Depends(get_
             if value is not None and money(value) is None:
                 raise HTTPException(400, "금액은 0 이상의 유효한 숫자로 입력하세요.")
         before = json.loads(doc.extract.raw_fields or "{}")
+        previous_type=doc.document_type
         doc.document_type = req.document_type.value
         after = req.fields.model_dump()
         if before.get("ai_review"):
@@ -189,7 +190,9 @@ def correct_fields(document_id: int, req: Correction, db: Session = Depends(get_
         contract_id = doc.contract_id
         db.commit()
         audit(db, actor, "EXTRACT_CORRECTED", contract_id, document_id,
-              {"note": req.note.strip()[:1000], "before": before, "after": req.fields.model_dump()})
+              {"note": req.note.strip()[:1000], "before": AnalysisFields(**before).model_dump(), "after": req.fields.model_dump(),
+               "previous_document_type":previous_type,"new_document_type":req.document_type.value,
+               "ai_review_before":before.get('ai_review'),"llm_execution":before.get('llm_execution')})
     pipeline_service.revalidate_contract(db, contract_id)
     return get_document_response(doc)
 
