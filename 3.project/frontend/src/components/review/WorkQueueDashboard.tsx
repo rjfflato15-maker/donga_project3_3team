@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { ContractListItem } from '../../types';
 import { maskVendorName } from '../../utils/masking';
-import { Plus, Upload } from 'lucide-react';
+import { Plus, Search, Upload } from 'lucide-react';
 
 type Bucket = 'check' | 'waiting' | 'approval' | 'returned' | 'done';
 
@@ -48,9 +48,13 @@ interface Props {
   onOpen: (contractId: number) => void;
   onNewFromDocuments?: () => void;
   onUpload?: () => void;
+  /** 'list'이면 모든 계약을 등록 순서로 보여 주는 계약 목록 화면 */
+  mode?: 'queue' | 'list';
+  onNewManual?: () => void;
 }
 
-export const WorkQueueDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, canEdit, onOpen, onNewFromDocuments, onUpload }) => {
+export const WorkQueueDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, canEdit, onOpen, onNewFromDocuments, onUpload, mode = 'queue', onNewManual }) => {
+  const [query, setQuery] = useState('');
   const grouped = useMemo(() => {
     const map: Record<Bucket, DashboardItem[]> = { check: [], waiting: [], approval: [], returned: [], done: [] };
     contracts.forEach((c) => map[bucketOf(c)].push(c));
@@ -60,21 +64,31 @@ export const WorkQueueDashboard: React.FC<Props> = ({ contracts, isMaskingEnable
   }, [contracts]);
   const [filter, setFilter] = useState<Bucket | 'all'>('all');
   const order: Bucket[] = ['returned', 'check', 'waiting', 'approval', 'done'];
-  const rows = filter === 'all' ? order.flatMap((b) => grouped[b]) : grouped[filter];
+  const listMode = mode === 'list';
+  const q = query.trim().toLowerCase();
+  const base = listMode
+    ? [...contracts].sort((a, b) => b.created_at.localeCompare(a.created_at)).filter((c) => filter === 'all' || bucketOf(c) === filter)
+    : filter === 'all' ? order.flatMap((b) => grouped[b]) : grouped[filter];
+  const rows = q ? base.filter((c) => `${c.title} ${c.vendor_name}`.toLowerCase().includes(q)) : base;
   const overdue = grouped.waiting.filter((c) => c.earliest_due_on && c.earliest_due_on < today()).length;
 
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-end gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">검수 할 일</h1>
-          <p className="text-sm text-slate-500">처리할 계약부터 보여 줍니다. 상태를 누르면 그 계약만 모아 볼 수 있어요.</p>
+          <h1 className="text-2xl font-bold text-slate-900">{listMode ? '계약 목록' : '검수 할 일'}</h1>
+          <p className="text-sm text-slate-500">{listMode ? `등록된 계약 ${contracts.length}건을 최근 등록 순서로 보여 줍니다.` : '처리할 계약부터 보여 줍니다. 상태를 누르면 그 계약만 모아 볼 수 있어요.'}</p>
         </div>
         {canEdit && (
           <div className="ml-auto flex flex-wrap gap-2">
             {onUpload && (
               <button onClick={onUpload} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-indigo-300">
                 <Upload className="h-4 w-4" /> 서류 올리기
+              </button>
+            )}
+            {listMode && onNewManual && (
+              <button onClick={onNewManual} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-indigo-300">
+                <Plus className="h-4 w-4" /> 직접 입력해 등록
               </button>
             )}
             {onNewFromDocuments && (
@@ -104,6 +118,14 @@ export const WorkQueueDashboard: React.FC<Props> = ({ contracts, isMaskingEnable
         })}
       </div>
 
+      {(listMode || contracts.length > 8) && (
+        <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm">
+          <Search className="h-4 w-4 text-slate-400" />
+          <span className="sr-only">계약 검색</span>
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="거래처나 계약명으로 찾기"
+            className="min-w-0 flex-1 bg-white text-slate-800 outline-none" />
+        </label>
+      )}
       <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
         <table className="w-full min-w-[720px] text-sm">
           <thead className="border-b border-slate-100 text-left text-slate-500">
@@ -118,7 +140,7 @@ export const WorkQueueDashboard: React.FC<Props> = ({ contracts, isMaskingEnable
           <tbody className="divide-y divide-slate-100">
             {rows.length === 0 && (
               <tr><td colSpan={5} className="px-4 py-10 text-center text-slate-500">
-                {contracts.length ? '이 상태의 계약이 없습니다.' : '아직 등록된 계약이 없습니다. 오른쪽 위에서 서류 6종으로 계약을 등록해 보세요.'}
+                {!contracts.length ? '아직 등록된 계약이 없습니다. 오른쪽 위에서 서류 6종으로 계약을 등록해 보세요.' : q ? '찾는 계약이 없습니다.' : '이 상태의 계약이 없습니다.'}
               </td></tr>
             )}
             {rows.map((c) => {

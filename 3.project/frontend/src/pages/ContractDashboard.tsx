@@ -49,6 +49,7 @@ export const ContractDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
   const [contractViewMode, setContractViewMode] = useState<'list' | 'detail'>('list');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) return false;
     try {
       const saved = localStorage.getItem('sidebar_visible');
       return saved !== null ? saved === 'true' : true;
@@ -57,7 +58,15 @@ export const ContractDashboard: React.FC = () => {
     }
   });
 
+  // 좁은 화면에서는 사이드바가 본문을 가리지 않도록 자동으로 접는다
   useEffect(() => {
+    const onResize = () => { if (window.innerWidth < 1024) setIsSidebarOpen(false); };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  useEffect(() => {
+    if (window.innerWidth < 1024) return;
     try {
       localStorage.setItem('sidebar_visible', String(isSidebarOpen));
     } catch {
@@ -477,6 +486,19 @@ export const ContractDashboard: React.FC = () => {
         );
 
       case 'contracts':
+        if (isPilot && (contractViewMode === 'list' || !currentContract)) {
+          return (
+            <WorkQueueDashboard
+              mode="list"
+              contracts={contracts as DashboardItem[]}
+              isMaskingEnabled={isMaskingEnabled}
+              canEdit={canEdit}
+              onOpen={(id) => handleSelectContract(id, undefined, 'detail')}
+              onNewFromDocuments={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+              onNewManual={canEdit ? () => setIsNewContractOpen(true) : undefined}
+            />
+          );
+        }
         if (contractViewMode === 'list' || !currentContract) {
           return (
             <ContractsListView
@@ -662,7 +684,7 @@ export const ContractDashboard: React.FC = () => {
           </div>
         </header>
 
-        <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+        <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 sm:py-8">
           {renderActiveContent()}
         </main>
 

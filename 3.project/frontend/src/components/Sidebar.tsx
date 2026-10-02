@@ -75,17 +75,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
   loading = false,
 }) => {
   const { user, logout } = useAuth();
+  const pilot = user?.deployment_mode === 'pilot';
+  const L = {
+    dashboard: pilot ? '검수 할 일' : '대시보드',
+    contracts: pilot ? '계약 목록' : '외주/용역 계약',
+    contractsTip: pilot ? '등록된 모든 계약' : '외주/용역 계약 목록',
+  };
 
   // Full Menu Items for Expanded Mode (Original Icons)
   const menuItems: { id: NavigationTab; label: string; icon: React.ReactNode; badge?: string }[] = [
     {
       id: 'dashboard',
-      label: '대시보드',
+      label: L.dashboard,
       icon: <LayoutDashboard className="w-4 h-4" />,
     },
     {
       id: 'contracts',
-      label: '외주/용역 계약',
+      label: L.contracts,
       icon: <FileText className="w-4 h-4" />,
     },
     {
@@ -94,7 +100,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       icon: <FileCheck className="w-4 h-4" />,
       badge: 'AI Powered',
     },
-  ];
+  ].filter((item) => !(pilot && item.id === 'reports')) as { id: NavigationTab; label: string; icon: React.ReactNode; badge?: string }[];
 
   return (
     <aside
@@ -132,12 +138,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     ? 'bg-indigo-50 text-indigo-600 ring-1 ring-indigo-200 shadow-2xs'
                     : 'text-slate-700 hover:text-indigo-600 hover:bg-slate-100'
                 }`}
-                title="대시보드"
-                aria-label="대시보드"
+                title={L.dashboard}
+                aria-label={L.dashboard}
               >
                 <LayoutDashboard className="w-5 h-5" />
               </button>
-              <SidebarTooltip text="대시보드" />
+              <SidebarTooltip text={L.dashboard} />
             </div>
 
             {/* 3. Main Menu: Contracts (외주/용역 계약) */}
@@ -149,16 +155,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     ? 'bg-indigo-50 text-indigo-600 ring-1 ring-indigo-200 shadow-2xs'
                     : 'text-slate-700 hover:text-indigo-600 hover:bg-slate-100'
                 }`}
-                title="외주/용역 계약"
-                aria-label="외주/용역 계약"
+                title={L.contracts}
+                aria-label={L.contracts}
               >
                 <FileText className="w-5 h-5" />
               </button>
-              <SidebarTooltip text="외주/용역 계약 목록" />
+              <SidebarTooltip text={L.contractsTip} />
             </div>
 
-            {/* 4. Main Menu: AI Reports (AI 교차검수 리포트) */}
-            <div className="relative group flex items-center justify-center">
+            {/* 4. Main Menu: AI Reports (AI 교차검수 리포트) — 시범 모드는 계약 화면에 통합 */}
+            {!pilot && <div className="relative group flex items-center justify-center">
               <button
                 onClick={() => onTabChange('reports')}
                 className={`p-2.5 rounded-xl transition-all active:scale-95 ${
@@ -172,7 +178,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <FileCheck className="w-5 h-5" />
               </button>
               <SidebarTooltip text="AI 교차검수 리포트" badge="AI" />
-            </div>
+            </div>}
 
             {/* Thin Divider between Main Menu and Quick Tools */}
             <div className="w-8 h-px bg-slate-200/80 my-0.5"></div>
@@ -324,7 +330,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {/* Main Navigation Menu (MAIN MENU 위로 이동) */}
             <div className="px-3 pt-4 pb-2">
               <p className="px-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">
-                MAIN MENU
+                {pilot ? '메뉴' : 'MAIN MENU'}
               </p>
               <nav className="space-y-1">
                 {menuItems.map((item) => {
@@ -365,9 +371,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
               {/* QUICK TOOLS (5단계 시뮬레이터 삭제 & 6종 서류 자동 생성은 증빙서류 업로드 위로 배치) */}
               <div className="mt-4 pt-3 border-t border-slate-100 space-y-2">
-                <p className="px-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">
-                  QUICK TOOLS
-                </p>
+                {(onOpenAutoBatchContract || onOpenUpload || onSeedDemo) && <p className="px-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">
+                  {pilot ? '바로 하기' : 'QUICK TOOLS'}
+                </p>}
 
                 {/* 6종 서류로 계약 자동 생성 (증빙서류 업로드 위로 변경) */}
                 {onOpenAutoBatchContract && (
