@@ -25,6 +25,7 @@ interface Props {
   onUploadType: (type: DocumentType) => void;
   pilot?: boolean;
   onChanged?: () => Promise<void>;
+  llmConnected?: boolean;
 }
 
 const STATUS_STYLE: Record<ValidationStatus, string> = {
@@ -52,6 +53,7 @@ export const ContractReviewOverview: React.FC<Props> = ({
   onUploadType,
   pilot = false,
   onChanged,
+  llmConnected,
 }) => {
   const [requests, setRequests] = useState<ResubmissionRequest[]>([]);
   const [resolving, setResolving] = useState<{ id: number; status: 'RECEIVED' | 'CANCELLED' } | null>(null);
@@ -155,6 +157,20 @@ export const ContractReviewOverview: React.FC<Props> = ({
         </div>
       )}
       {followError && <p className="text-xs text-rose-600">{followError}</p>}
+      {pilot && llmConnected !== undefined && (
+        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+          <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-semibold ${llmConnected ? 'bg-violet-100 text-violet-700' : 'bg-slate-100 text-slate-600'}`}>
+            AI 보완 {llmConnected ? '연결됨' : '꺼짐'}
+          </span>
+          <span>
+            {llmConnected
+              ? '규칙이 못 읽은 값만 PC 안의 AI가 다시 읽고, 원문 근거가 확인된 값만 채택합니다.'
+              : overview.issues.filter((i) => i.kind === 'reading').length > 0
+                ? `규칙만 사용 중입니다. AI 보완을 켜면 '원문 확인' ${overview.issues.filter((i) => i.kind === 'reading').length}건 중 일부를 AI가 다시 읽어 봅니다.`
+                : '규칙만 사용 중입니다.'}
+          </span>
+        </div>
+      )}
       {overview.notices.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
           <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 font-semibold text-slate-600">

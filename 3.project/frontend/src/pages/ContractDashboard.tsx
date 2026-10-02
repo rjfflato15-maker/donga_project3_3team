@@ -13,6 +13,7 @@ import { ContractReviewOverview } from '../components/review/ContractReviewOverv
 import { DocumentReviewDialog } from '../components/review/DocumentReviewDialog';
 import { WorkQueueDashboard, DashboardItem } from '../components/review/WorkQueueDashboard';
 import { ApprovalPanel } from '../components/review/ApprovalPanel';
+import { WorkStatsStrip } from '../components/review/WorkStatsStrip';
 import { DocumentViewerModal } from '../components/DocumentViewerModal';
 import { UploadModal } from '../components/UploadModal';
 import { NewContractModal } from '../components/NewContractModal';
@@ -461,13 +462,16 @@ export const ContractDashboard: React.FC = () => {
       case 'dashboard':
         if (isPilot) {
           return (
-            <WorkQueueDashboard
-              contracts={contracts as DashboardItem[]}
-              isMaskingEnabled={isMaskingEnabled}
-              canEdit={canEdit}
-              onOpen={(id) => handleSelectContract(id, 'contracts', 'detail')}
-              onNewFromDocuments={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
-            />
+            <div className="space-y-5">
+              <WorkQueueDashboard
+                contracts={contracts as DashboardItem[]}
+                isMaskingEnabled={isMaskingEnabled}
+                canEdit={canEdit}
+                onOpen={(id) => handleSelectContract(id, 'contracts', 'detail')}
+                onNewFromDocuments={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+              />
+              <WorkStatsStrip refreshKey={contracts} />
+            </div>
           );
         }
         return (
@@ -593,6 +597,7 @@ export const ContractDashboard: React.FC = () => {
               onUploadType={(type) => handleOpenUploadModal(type)}
               pilot={isPilot}
               onChanged={() => refreshCurrentContract()}
+              llmConnected={pilotInfo?.llm_connected}
             />
             {isPilot && <ApprovalPanel contract={currentContract} onChanged={() => refreshCurrentContract()} />}
             {isPilot && <PilotReviewPanel contract={currentContract} onChanged={refreshCurrentContract} historyOnly />}

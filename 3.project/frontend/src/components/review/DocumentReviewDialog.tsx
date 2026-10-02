@@ -5,7 +5,8 @@ import { DOCUMENT_TYPE_KO, STATUS_KO, plainMessage, ruleLabel, isUnverifiedBusin
 import { maskBusinessNumber, maskAccountNumber, maskVendorName } from '../../utils/masking';
 import { X, Pencil, Download, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 
-interface Anchor { page: number | null; line: number | null; quote: string; location_kind?: string; page_layout_verified?: boolean }
+interface BBox { page: number; x: number; y: number; width: number; height: number }
+interface Anchor { page: number | null; line: number | null; quote: string; location_kind?: string; page_layout_verified?: boolean; bbox?: BBox | null }
 interface FieldProvenance {
   value: string | number | null;
   source: 'RULE' | 'AI_SUPPLEMENT' | 'HUMAN_CONFIRMATION' | 'UNAVAILABLE';
@@ -120,6 +121,9 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
 
   const rows = FIELD_ORDER.filter((f) => (!f.types || f.types.includes(doc.document_type)) && !(NO_AMOUNT.has(doc.document_type) && /amount|scope/.test(f.key)));
   const anchor: Anchor | undefined = selected ? prov?.fields[selected]?.evidence?.[0] : undefined;
+  // 좌표는 백엔드가 확인한 경우에만 그린다. 없으면 쪽·줄 안내만 한다.
+  const rawBox = anchor?.bbox;
+  const box = rawBox && (rawBox.page ?? 1) === page + 1 && [rawBox.x, rawBox.y, rawBox.width, rawBox.height].every((v) => typeof v === 'number' && v >= 0 && v <= 1) ? rawBox : null;
 
   const pick = (key: string) => {
     setSelected(key);
@@ -173,7 +177,16 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
               <div className="rounded-lg bg-white p-6 text-sm text-slate-600">원본 파일이 없습니다. 원본을 다시 등록하면 여기에 표시됩니다.</div>
             ) : visual ? (
               imageUrl ? (
-                <img src={imageUrl} alt={`${DOCUMENT_TYPE_KO[doc.document_type]} 원문`} className="block w-full rounded bg-white shadow-lg" />
+                <div className="relative">
+                  <img src={imageUrl} alt={`${DOCUMENT_TYPE_KO[doc.document_type]} 원문`} className="block w-full rounded bg-white shadow-lg" />
+                  {box && (
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute rounded-sm bg-amber-300/30 outline outline-2 outline-amber-500 transition-all"
+                      style={{ left: `${box.x * 100}%`, top: `${box.y * 100}%`, width: `${box.width * 100}%`, height: `${box.height * 100}%` }}
+                    />
+                  )}
+                </div>
               ) : imageError ? (
                 <div className="rounded-lg bg-white p-6 text-sm text-rose-600">{imageError}</div>
               ) : (
