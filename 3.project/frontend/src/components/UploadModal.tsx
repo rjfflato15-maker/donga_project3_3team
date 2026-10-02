@@ -89,7 +89,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
         {/* Header */}
         <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
           <div>
-            <h3 className="text-base font-bold text-slate-900">증빙문서 업로드 및 검수</h3>
+            <h3 className="text-base font-bold text-slate-900">서류 올리기</h3>
             <p className="text-xs text-slate-500 mt-0.5">계약 ID #{contractId} 건에 증빙서류를 첨부합니다</p>
           </div>
           <button
@@ -114,7 +114,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
               onChange={(e) => setTargetType(e.target.value)}
               className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              <option value="">✨ AI 자동 분류 (추천)</option>
+              <option value="">종류 자동으로 나누기 (추천)</option>
               <option value="contract">📄 계약서 (contract)</option>
               <option value="estimate">📊 견적서 (estimate)</option>
               <option value="business_registration">🏢 사업자등록증 (business_registration)</option>

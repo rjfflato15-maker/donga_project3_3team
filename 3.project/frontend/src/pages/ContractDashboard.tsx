@@ -124,7 +124,7 @@ export const ContractDashboard: React.FC = () => {
       setContracts(list);
     } catch (err: any) {
       console.error(err);
-      setError(err.message || '서버 연결 중 오류가 발생했습니다. 백엔드 서버 상태를 확인하세요.');
+      setError(err.message || '앱 서버에 연결하지 못했습니다.');
     } finally {
       setLoading(false);
     }
@@ -437,7 +437,7 @@ export const ContractDashboard: React.FC = () => {
       return (
         <div className="py-24 flex flex-col items-center justify-center text-slate-400 space-y-3">
           <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
-          <p className="text-sm font-semibold">데이터를 불러오는 중입니다...</p>
+          <p className="text-sm font-semibold">불러오는 중…</p>
         </div>
       );
     }
@@ -447,8 +447,9 @@ export const ContractDashboard: React.FC = () => {
         <div className="bg-rose-50 border border-rose-200 rounded-2xl p-6 text-rose-800 flex items-start space-x-3">
           <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
           <div>
-            <h3 className="text-sm font-bold">오류 안내</h3>
+            <h3 className="text-sm font-bold">자료를 불러오지 못했습니다</h3>
             <p className="text-xs mt-1">{error}</p>
+            {isPilot && <p className="text-xs mt-1">서버 PC에서 C-Pilot이 켜져 있는지, 같은 네트워크에 연결되어 있는지 확인하세요.</p>}
             <button
               onClick={fetchContracts}
               className="mt-3 px-3 py-1.5 bg-rose-600 text-white rounded-lg text-xs font-semibold hover:bg-rose-700 transition-colors"
@@ -697,75 +698,81 @@ export const ContractDashboard: React.FC = () => {
           {renderActiveContent()}
         </main>
 
+        {isPilot ? (
+          <footer className="border-t border-slate-200/80 bg-white px-4 py-3 text-center text-xs text-slate-500">
+            Smart Contract Evidence Hub · 3조 계약 증빙 자동 검수 · 자료는 이 회사의 서버 PC 안에만 저장됩니다
+          </footer>
+        ) : (
         <footer className="bg-white/95 backdrop-blur-xs border-t border-slate-200/80 py-3.5 px-4 text-xs text-slate-700 select-none">
-          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 font-medium">
-            <span className="font-extrabold text-slate-900 tracking-tight">Smart Contract Evidence Hub</span>
-            <span className="text-slate-300 hidden sm:inline">|</span>
-
-            {/* 3조 스마트 계약 증빙 누락·불일치 자동 검증 시스템 */}
-            <div className="inline-flex items-center space-x-1.5">
-              <svg viewBox="0 0 24 24" className="w-4 h-4 text-slate-700 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                <path d="m9 12 2 2 4-4" />
-              </svg>
-              <span className="font-bold text-slate-800">3조 스마트 계약 증빙 누락·불일치 자동 검증 시스템</span>
-            </div>
-
-            <span className="text-slate-300 hidden sm:inline">|</span>
-
-            {/* 시스템 기술 스택 */}
-            <div className="inline-flex items-center space-x-1.5 text-slate-600">
-              <svg className="w-4 h-4 text-slate-700 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="6" cy="12" r="3" />
-                <path d="M9 12h5" />
-                <circle cx="18" cy="6" r="2.5" />
-                <circle cx="18" cy="18" r="2.5" />
-                <path d="M14 12l2-4" />
-                <path d="M14 12l2 4" />
-              </svg>
-              <span className="font-bold text-slate-800">시스템 기술 스택</span>
-            </div>
-
-            <span className="text-slate-300 hidden sm:inline">|</span>
-
-            {/* FastAPI */}
-            <div className="inline-flex items-center space-x-1.5">
-              <span className="w-4 h-4 rounded-full bg-slate-800 text-white flex items-center justify-center shrink-0">
-                <svg className="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 font-medium">
+              <span className="font-extrabold text-slate-900 tracking-tight">Smart Contract Evidence Hub</span>
+              <span className="text-slate-300 hidden sm:inline">|</span>
+  
+              {/* 3조 스마트 계약 증빙 누락·불일치 자동 검증 시스템 */}
+              <div className="inline-flex items-center space-x-1.5">
+                <svg viewBox="0 0 24 24" className="w-4 h-4 text-slate-700 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path d="m9 12 2 2 4-4" />
                 </svg>
-              </span>
-              <span className="font-semibold text-slate-700">FastAPI</span>
+                <span className="font-bold text-slate-800">3조 스마트 계약 증빙 누락·불일치 자동 검증 시스템</span>
+              </div>
+  
+              <span className="text-slate-300 hidden sm:inline">|</span>
+  
+              {/* 시스템 기술 스택 */}
+              <div className="inline-flex items-center space-x-1.5 text-slate-600">
+                <svg className="w-4 h-4 text-slate-700 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="6" cy="12" r="3" />
+                  <path d="M9 12h5" />
+                  <circle cx="18" cy="6" r="2.5" />
+                  <circle cx="18" cy="18" r="2.5" />
+                  <path d="M14 12l2-4" />
+                  <path d="M14 12l2 4" />
+                </svg>
+                <span className="font-bold text-slate-800">시스템 기술 스택</span>
+              </div>
+  
+              <span className="text-slate-300 hidden sm:inline">|</span>
+  
+              {/* FastAPI */}
+              <div className="inline-flex items-center space-x-1.5">
+                <span className="w-4 h-4 rounded-full bg-slate-800 text-white flex items-center justify-center shrink-0">
+                  <svg className="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>
+                </span>
+                <span className="font-semibold text-slate-700">FastAPI</span>
+              </div>
+  
+              <span className="text-slate-400 font-bold">•</span>
+  
+              {/* React */}
+              <div className="inline-flex items-center space-x-1.5">
+                <svg viewBox="-11.5 -10.23 23 20.46" className="w-4 h-4 text-slate-800 shrink-0" fill="none" stroke="currentColor">
+                  <circle cx="0" cy="0" r="2.05" fill="currentColor" />
+                  <g strokeWidth="1.2">
+                    <ellipse rx="11" ry="4.2" />
+                    <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+                    <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+                  </g>
+                </svg>
+                <span className="font-semibold text-slate-700">React</span>
+              </div>
+  
+              <span className="text-slate-400 font-bold">•</span>
+  
+              {/* Document AI */}
+              <div className="inline-flex items-center space-x-1.5">
+                <svg viewBox="0 0 24 24" className="w-4 h-4 text-slate-800 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <text x="6.5" y="17.5" fill="currentColor" stroke="none" fontSize="7" fontWeight="900" fontFamily="sans-serif">AI</text>
+                </svg>
+                <span className="font-semibold text-slate-700">Document AI</span>
+              </div>
             </div>
-
-            <span className="text-slate-400 font-bold">•</span>
-
-            {/* React */}
-            <div className="inline-flex items-center space-x-1.5">
-              <svg viewBox="-11.5 -10.23 23 20.46" className="w-4 h-4 text-slate-800 shrink-0" fill="none" stroke="currentColor">
-                <circle cx="0" cy="0" r="2.05" fill="currentColor" />
-                <g strokeWidth="1.2">
-                  <ellipse rx="11" ry="4.2" />
-                  <ellipse rx="11" ry="4.2" transform="rotate(60)" />
-                  <ellipse rx="11" ry="4.2" transform="rotate(120)" />
-                </g>
-              </svg>
-              <span className="font-semibold text-slate-700">React</span>
-            </div>
-
-            <span className="text-slate-400 font-bold">•</span>
-
-            {/* Document AI */}
-            <div className="inline-flex items-center space-x-1.5">
-              <svg viewBox="0 0 24 24" className="w-4 h-4 text-slate-800 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-                <text x="6.5" y="17.5" fill="currentColor" stroke="none" fontSize="7" fontWeight="900" fontFamily="sans-serif">AI</text>
-              </svg>
-              <span className="font-semibold text-slate-700">Document AI</span>
-            </div>
-          </div>
-        </footer>
+          </footer>
+        )}
       </div>
 
       {/* Modals */}

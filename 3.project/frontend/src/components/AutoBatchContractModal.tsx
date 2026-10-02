@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   X,
-  Sparkles,
   Upload,
   Loader2,
   CheckCircle2,
@@ -174,7 +173,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
       onClose();
     } catch (err: any) {
       console.error(err);
-      setErrorMsg('계약 및 6종 서류 자동 생성 중 오류가 발생했습니다.');
+      setErrorMsg(err instanceof Error && err.message ? `등록하지 못했습니다: ${err.message}` : '등록하지 못했습니다. 잠시 뒤 다시 시도해 주세요.');
     } finally {
       setSubmitting(false);
     }
@@ -194,30 +193,15 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-white rounded-3xl shadow-2xl border border-indigo-100 w-full max-w-3xl overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50" role="dialog" aria-modal="true">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl overflow-hidden flex flex-col max-h-[92vh]">
         {/* Header */}
-        <div className="p-6 bg-gradient-to-r from-indigo-900 via-indigo-800 to-slate-900 text-white flex items-center justify-between shrink-0">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-500/30 border border-indigo-400/40 flex items-center justify-center text-amber-300 shadow-inner">
-              <Sparkles className="w-5 h-5 animate-pulse" />
-            </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <h3 className="text-lg font-black tracking-tight">6종 증빙 서류 기반 계약 자동 생성</h3>
-                <span className="text-[10px] font-bold bg-amber-400 text-indigo-950 px-2 py-0.5 rounded-full uppercase">
-                  문서에서 계약 초안 만들기
-                </span>
-              </div>
-              <p className="text-xs text-indigo-200 mt-0.5">
-                6종 서류(계약서, 견적서, 사업자증, 통장, 계산서, 검수서)를 등록하면 계약 내용, 금액, 사업자번호, 날짜를 자동 추출하여 계약을 완성합니다.
-              </p>
-            </div>
+        <div className="flex items-start gap-3 border-b border-slate-100 px-6 py-4 shrink-0">
+          <div className="min-w-0">
+            <h3 className="text-lg font-bold text-slate-900">서류 6종으로 계약 등록</h3>
+            <p className="mt-0.5 text-sm text-slate-500">서류를 올리면 종류를 나누고 계약명·거래처·금액을 읽어 미리 채웁니다. 내용을 확인하고 계약 기준을 고르면 등록됩니다.</p>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 text-indigo-200 hover:text-white hover:bg-white/10 rounded-2xl transition-all"
-          >
+          <button onClick={onClose} aria-label="닫기" className="ml-auto rounded-lg p-1.5 text-slate-400 hover:bg-slate-100">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -230,15 +214,15 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
               <div>
                 <h4 className="text-xs font-black text-slate-800 flex items-center space-x-2">
                   <Upload className="w-4 h-4 text-indigo-600" />
-                  <span>6종 증빙 서류 업로드 ({selectedFiles.length}/6개 등록됨)</span>
+                  <span>올린 서류 {selectedFiles.length}개</span>
                 </h4>
                 <p className="text-[11px] text-slate-400 mt-0.5 font-medium">
-                  PDF, 이미지, 워드(DOCX), 한글(HWP/HWPX), 엑셀(XLSX) 자동 인식
+                  PDF·이미지·워드·한글·엑셀 파일을 올릴 수 있어요. 한 번에 여러 개 골라도 됩니다.
                 </p>
               </div>
               <label className="cursor-pointer inline-flex items-center space-x-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold rounded-xl shadow-sm transition-all hover:scale-[1.02]">
                 <Upload className="w-3.5 h-3.5" />
-                <span>서류 추가 / 일괄 선택</span>
+                <span>파일 고르기</span>
                 <input
                   type="file"
                   multiple
@@ -277,7 +261,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
                       {isAttached ? (
                         <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                       ) : (
-                        <span className="text-[10px] text-slate-400 font-medium">대기중</span>
+                        <span className="text-[10px] text-slate-400 font-medium">아직 없음</span>
                       )}
                     </div>
                     {isAttached ? (
@@ -285,7 +269,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
                         {uploadedMatches.map((m) => m.name).join(', ')}
                       </p>
                     ) : (
-                      <p className="text-[10px] text-slate-400">파일을 첨부하세요</p>
+                      <p className="text-[10px] text-slate-400">이 종류의 파일이 아직 없어요</p>
                     )}
                   </div>
                 );
@@ -328,9 +312,9 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
             <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-2xl flex items-center space-x-3 text-indigo-900 animate-pulse">
               <Loader2 className="w-5 h-5 text-indigo-600 animate-spin shrink-0" />
               <div>
-                <p className="text-xs font-extrabold">문서를 읽고 계약 초안을 추출하고 있습니다…</p>
+                <p className="text-xs font-extrabold">서류를 읽고 있습니다…</p>
                 <p className="text-[11px] text-indigo-700 mt-0.5">
-                  계약서, 사업자증, 통장, 세금계산서 등에서 계약명, 금액, 사업자번호, 날짜를 통합 추출합니다.
+                  계약명·거래처·사업자번호·금액·날짜를 찾아 아래 칸에 미리 채웁니다.
                 </p>
               </div>
             </div>
@@ -338,14 +322,14 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
 
           {/* Synthesis AI Results Card */}
           {synthesis && !parsing && (
-            <div className="p-4 bg-gradient-to-r from-emerald-50/90 via-teal-50/60 to-indigo-50/80 border border-emerald-200 rounded-2xl shadow-2xs space-y-3">
+            <div className="p-4 bg-emerald-50/60 border border-emerald-200 rounded-2xl space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-black text-emerald-950 flex items-center space-x-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>문서 추출 완료 · 계약 기준을 확인하세요</span>
+                  <span>서류를 다 읽었어요 · 아래 내용이 맞는지 확인하세요</span>
                 </span>
                 <span className="text-[11px] font-bold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-lg">
-                  {synthesis.documents.length}개 서류 합성 완료
+                  서류 {synthesis.documents.length}개
                 </span>
               </div>
 
@@ -381,17 +365,17 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
           {/* Final Form Inputs */}
           <form id="auto-contract-form" onSubmit={handleSubmit} className="space-y-4 pt-2">
             <h4 className="text-xs font-black text-slate-800 border-b border-slate-200 pb-2">
-              계약 초안 확인 · 저장 후 자동 검수
+              읽어 온 내용 확인 (틀린 곳은 고쳐 주세요)
             </h4>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                계약 내용 (계약명) <span className="text-rose-500">*</span>
+                계약명 <span className="text-rose-500">*</span>
               </label>
               <input
                 type="text"
                 required
-                placeholder="예: AI 서비스 개발 및 라이선스 외주 계약"
+                placeholder="예: 업무지원 시스템 구축 용역"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full px-3.5 py-2.5 text-xs font-bold border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 bg-white"
@@ -401,7 +385,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  수주 거래처명 <span className="text-rose-500">*</span>
+                  거래처 <span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -431,7 +415,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  총 계약금액 (원) <span className="text-rose-500">*</span>
+                  계약 금액 (원) <span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -445,7 +429,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  계약 / 발행 날짜
+                  계약일
                 </label>
                 <input
                   type="date"
@@ -487,7 +471,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
         {/* Footer */}
         <div className="p-5 border-t border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
           <div className="text-[11px] text-slate-500 font-medium hidden sm:block">
-            완료 클릭 시 6종 서류 마스킹, 분류, 검증 및 계약 등록이 원스톱으로 처리됩니다.
+            등록하면 개인정보를 가리고, 서류를 나누고, 자동 검사까지 한 번에 진행합니다.
           </div>
           <div className="flex items-center space-x-2 ml-auto">
             <button
@@ -501,7 +485,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
               type="submit"
               form="auto-contract-form"
               disabled={submitting || parsing}
-              className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white text-xs font-black rounded-xl shadow-lg shadow-indigo-600/30 transition-all flex items-center space-x-2 disabled:opacity-50"
+              className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-colors flex items-center space-x-2 disabled:opacity-50"
             >
               {submitting ? (
                 <>
@@ -510,7 +494,7 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
                 </>
               ) : (
                 <>
-                  <span>⚡ 6종 서류로 계약 자동 생성 완료</span>
+                  <span>계약 등록하기</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}

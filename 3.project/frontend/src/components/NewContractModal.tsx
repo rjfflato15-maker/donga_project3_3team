@@ -101,7 +101,7 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
               <FileText className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-base font-extrabold text-slate-900">새 계약 등록</h3>
+              <h3 className="text-base font-bold text-slate-900">직접 입력해 계약 등록</h3>
               <p className="text-[11px] text-slate-500 font-semibold">PDF, 워드, 한글, 이미지, 엑셀 계약서를 선택하면 정보가 자동으로 입력됩니다.</p>
             </div>
           </div>
@@ -116,7 +116,7 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {/* File Auto-parsing Section */}
-          <div className="bg-gradient-to-r from-indigo-50/80 via-blue-50/60 to-slate-50 rounded-2xl p-4 border border-indigo-100 shadow-2xs space-y-2">
+          <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black text-indigo-900 flex items-center space-x-1.5">
                 <Sparkles className="w-4 h-4 text-indigo-600" />
@@ -125,7 +125,7 @@ export const NewContractModal: React.FC<NewContractModalProps> = ({
               {parsingLoading && (
                 <span className="inline-flex items-center space-x-1 text-xs font-bold text-indigo-600 animate-pulse">
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  <span>AI 파일 파싱 중...</span>
+                  <span>계약서를 읽는 중…</span>
                 </span>
               )}
             </div>

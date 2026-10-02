@@ -84,7 +84,7 @@ export const EditContractModal: React.FC<EditContractModalProps> = ({
               <Edit3 className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900">용역 계약 정보 수정</h3>
+              <h3 className="text-base font-bold text-slate-900">계약 정보 수정</h3>
               <p className="text-[11px] text-slate-400 font-semibold">
                 계약 ID #{contract.contract_id}의 기본 정보 및 대조 기준을 변경합니다.
               </p>
