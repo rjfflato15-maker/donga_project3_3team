@@ -10,7 +10,7 @@
 | AI 추출·근거 | [extractor.py](../../backend/app/ai/extractor.py), [local_llm.py](../../backend/app/ai/local_llm.py), [grounding.py](../../backend/app/ai/grounding.py) | 규칙값·로컬 LLM·근거 검증 |
 | 최종 검수 | [validation/engine.py](../../backend/app/validation/engine.py), [financial.py](../../backend/app/validation/financial.py) | 누락·불일치·금액 정책과 PASS/FAIL |
 | 처리·업무 흐름 | [pipeline_service.py](../../backend/app/services/pipeline_service.py), [workflow_service.py](../../backend/app/services/workflow_service.py) | 분석·저장 연결·보완 요청·재확인 |
-| 화면용 근거·회신 기록 | [api/workflow.py](../../backend/app/api/workflow.py), [review_context_service.py](../../backend/app/services/review_context_service.py) | 근거·출처·한 줄 요약·재제출 요청 이력 |
+| 화면용 근거·회신 기록 | [api/workflow.py](../../backend/app/api/workflow.py), [review_context_service.py](../../backend/app/services/review_context_service.py), [review_summary_service.py](../../backend/app/services/review_summary_service.py) | 근거·출처·목록과 상세의 공통 요약·재제출 요청 이력 |
 | 회사 설정·결재 순서 | [company_policy_service.py](../../backend/app/services/company_policy_service.py) | 회사 유형·역할 표시 이름·최대 2단계 결재 |
 | DB·자료·복원 | [db/models.py](../../backend/app/db/models.py), [storage_service.py](../../backend/app/services/storage_service.py), [manage_pilot.py](../../backend/manage_pilot.py) | DB 구조·파일 저장·이주·백업·복원 |
 | 화면 | [frontend/src/](../../frontend/src/) | 화면·사용 흐름·API 연결. 디자인 변경은 시안 승인 후 |

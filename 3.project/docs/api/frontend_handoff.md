@@ -6,6 +6,7 @@
 
 | 메서드·경로 | 화면에서 사용할 값 |
 | --- | --- |
+| GET `/api/contracts` | 기존 목록 필드 + `action_summary`, `waiting_request_count`, `earliest_due_on`, `approval_next_step` |
 | GET `/api/contracts/{id}/review-context` | `checks`, `documents`, `action_summary`, `follow_up`, `approval`, `revision`, `fingerprint` |
 | GET `/api/documents/{id}/provenance` | `fields.{필드명}`의 값·출처·근거·AI 제안 사유, 원본 버전 확인 상태 |
 | GET `/api/pilot/contracts/{id}/resubmission-requests` | 재제출 요청 기록 목록, 최근 기록부터 |
@@ -14,6 +15,30 @@
 | GET `/api/pilot/company-policy/presets` | 개인사업자·중소·중견의 선택 가능한 기본 설정 |
 
 검사마다 `rule_id`, `status`, `expected`, `actual`, `reason`, `evidence`가 있다. `reason`은 기존 규칙 검사의 설명이다. `action_summary`는 코드가 만든 한 줄 요약이며 LLM 요약이 아니다. 기존 `/report`, 계약 상세, `/reviews`, 문서 `/fields` API도 유지한다.
+
+### 대시보드 계약 목록
+
+기존 `/api/contracts`의 배열 구조·필드·정렬 순서를 유지하고 계약마다 네 값을 추가했다. 한 줄 요약은 `review-context`와 같은 함수로 만들며, 목록 조회에는 상세 원문 읽기·OCR·LLM 호출이 추가되지 않는다.
+
+| 추가 필드 | 반환 기준 |
+| --- | --- |
+| `action_summary` | 결재 상태·회신 대기·검사 상태·AI 확인 필요를 반영한 한 줄 문장 |
+| `waiting_request_count` | `WAITING_RESPONSE` 요청 수. 없으면 `0` |
+| `earliest_due_on` | 대기 요청 중 기한이 있는 요청의 최솟값(`YYYY-MM-DD`). 없으면 `null` |
+| `approval_next_step` | 현재 자료에서 다음 결재 단계 `1` 또는 `2`. 최종 확인 완료면 `null` |
+
+회신 완료·취소된 요청은 건수와 기한에서 제외한다. 기한을 넘긴 미회신 요청도 대기 건수에 남는다. 자료 변경·반려로 이전 결재가 무효가 되면 다시 필요한 단계가 표시된다. 회신 대기 건수·기한은 목록 전체를 한 번에 집계하며 결재 이력과 원문 근거를 목록 응답에 싣지 않는다.
+
+```json
+{
+  "action_summary": "2단계 결재 대기 · 회신 대기 2건 · 미확인 1건",
+  "waiting_request_count": 2,
+  "earliest_due_on": "2026-10-05",
+  "approval_next_step": 2
+}
+```
+
+### 서류 출처와 근거
 
 필드의 `source`는 `RULE`, `AI_SUPPLEMENT`, `HUMAN_CONFIRMATION`, `UNAVAILABLE`이다. `ai_decision`에는 제안값과 `accepted`, `applied`, `reasons`, `warnings`, 원래 근거가 남는다. 거부된 AI 제안은 현재 채택값과 구분해 표시한다. `original_source`는 사람 확인 이전의 규칙/AI 출처다. 사람 확인은 기존 수동 필드 확인 API의 기록이며 대표의 계약 최종 결재와 구분한다.
 

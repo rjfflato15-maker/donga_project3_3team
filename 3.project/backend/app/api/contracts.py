@@ -7,11 +7,11 @@ from ..db.database import get_db
 from ..schemas.contract import (
     ContractCreate,
     ContractUpdate,
-    ContractListItem,
     ContractDetailResponse,
     ParsedContractResponse,
 )
 from ..services.contract_service import ContractService
+from ..services.review_summary_service import ContractDashboardListItem
 from ..ai.preprocessor import extract_text_from_file
 from ..ai.extractor import extract_fields
 from ..ai.classifier import classify_document
@@ -71,7 +71,7 @@ def parse_contract_file(file: UploadFile = File(...)):
 
 
 
-@router.get("", response_model=List[ContractListItem])
+@router.get("", response_model=List[ContractDashboardListItem])
 def list_contracts(db: Session = Depends(get_db)):
     """List all registered contracts with evidence summary"""
     return contract_service.list_contracts(db)

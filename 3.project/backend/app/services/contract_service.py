@@ -22,7 +22,6 @@ from ..schemas.common import (
 from ..schemas.contract import (
     ContractCreate,
     ContractUpdate,
-    ContractListItem,
     ContractDetailResponse,
 )
 from ..schemas.document import (
@@ -36,6 +35,13 @@ from ..schemas.validation import (
     ValidationSummary,
 )
 from .pipeline_service import PipelineService
+from .company_policy_service import approval_state
+from .review_summary_service import (
+    ContractDashboardListItem,
+    build_action_summary,
+    pending_ai_count,
+    waiting_request_stats,
+)
 
 
 def get_document_response(doc: Document) -> DocumentResponse:
@@ -77,22 +83,29 @@ class ContractService:
     def __init__(self):
         self.pipeline_service = PipelineService()
 
-    def list_contracts(self, db: Session) -> List[ContractListItem]:
+    def list_contracts(self, db: Session) -> List[ContractDashboardListItem]:
         from .workflow_service import required_types, review_state, fingerprint_for, policy_for
         from .storage_service import resolve_path
         required = required_types(db)
+        waiting_by_contract = waiting_request_stats(db)
         result = []
         for contract in db.query(Contract).order_by(Contract.contract_id.desc()).all():
             submitted = {d.document_type for d in contract.documents}
             count = sum(t.value in submitted for t in required)
             inputs = self.pipeline_service.validation_inputs(db, contract)
             workflow = review_state(db, contract.contract_id, fingerprint_for(db, contract, inputs))
-            _, current_checks = self.pipeline_service.rule_engine.validate_contract_evidence(
+            summary, current_checks = self.pipeline_service.rule_engine.validate_contract_evidence(
                 contract.contract_id, contract.title, contract.vendor_name, contract.business_number,
                 contract.contract_amount, inputs, required_document_types=required,
                 amount_policy=policy_for(db, contract.contract_id))
             current_status = "PASS" if all(c.status == ValidationStatus.PASS for c in current_checks) else "REVIEW"
-            result.append(ContractListItem(
+            approval = approval_state(
+                db, contract.contract_id, workflow["revision"], workflow["fingerprint"],
+                include_history=False,
+            )
+            waiting_count, earliest_due_on = waiting_by_contract.get(contract.contract_id, (0, None))
+            ai_pending = pending_ai_count(d["fields"].get("ai_review") for d in inputs)
+            result.append(ContractDashboardListItem(
                 contract_id=contract.contract_id, title=contract.title, vendor_name=contract.vendor_name,
                 business_number=contract.business_number, contract_amount=contract.contract_amount,
                 review_status=current_status, completeness_rate=round(count / len(required) * 100, 1) if required else 100,
@@ -100,6 +113,9 @@ class ContractService:
                 submitted_document_types=[t.value for t in required if t.value in submitted], created_at=contract.created_at,
                 approval_status=workflow["approval_status"], revision=workflow["revision"],
                 missing_original_count=sum(resolve_path(d.storage_path) is None for d in contract.documents),
+                action_summary=build_action_summary(summary, workflow, approval, waiting_count, ai_pending),
+                waiting_request_count=waiting_count, earliest_due_on=earliest_due_on,
+                approval_next_step=approval["next_step"],
             ))
         return result
 

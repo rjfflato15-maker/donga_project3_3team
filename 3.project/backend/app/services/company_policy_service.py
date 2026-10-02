@@ -65,11 +65,13 @@ def require_prior_approval(db, contract_id, revision, fingerprint, actor):
     if signoff.actor_id == actor.user_id:
         raise HTTPException(403, '2단계 결재는 1단계와 다른 사람이 진행해야 합니다.')
 
-def approval_state(db, contract_id, revision, fingerprint):
+def approval_state(db, contract_id, revision, fingerprint, *, include_history=True):
     steps = company_policy(db).approval_steps
     latest = db.query(ContractReview).filter_by(contract_id=contract_id).order_by(ContractReview.review_id.desc()).first()
     confirmed = bool(latest and latest.decision == 'CONFIRMED' and (latest.revision == revision) and (json.loads(latest.snapshot_json).get('fingerprint') == fingerprint))
     signoff = first_signoff(db, contract_id, revision, fingerprint)
     completed = len(steps) if confirmed else 1 if len(steps) == 2 and signoff else 0
-    history = [{'signoff_id': r.signoff_id, 'revision': r.revision, 'actor_name': r.actor_name, 'note': r.note, 'created_at': r.created_at.isoformat(), 'current': bool(signoff and r.signoff_id == signoff.signoff_id)} for r in db.query(ApprovalSignoff).filter_by(contract_id=contract_id).order_by(ApprovalSignoff.signoff_id.desc()).limit(30)]
+    history = []
+    if include_history:
+        history = [{'signoff_id': r.signoff_id, 'revision': r.revision, 'actor_name': r.actor_name, 'note': r.note, 'created_at': r.created_at.isoformat(), 'current': bool(signoff and r.signoff_id == signoff.signoff_id)} for r in db.query(ApprovalSignoff).filter_by(contract_id=contract_id).order_by(ApprovalSignoff.signoff_id.desc()).limit(30)]
     return {'steps': [s.model_dump() for s in steps], 'completed_steps': completed, 'next_step': None if confirmed else completed + 1, 'status': 'CONFIRMED' if confirmed else 'IN_PROGRESS' if completed else 'PENDING', 'history': history}
