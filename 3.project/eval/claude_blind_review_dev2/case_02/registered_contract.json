@@ -1,0 +1,48 @@
+{
+  "dataset_version": "synthetic-hard-v2",
+  "split": "dev",
+  "contract_id": 302,
+  "input": {
+    "title": "가상 dev2 시스템 구축 2",
+    "vendor_name": "가상 한결기획 2",
+    "business_number": "000-00-03026",
+    "contract_amount": 4219600,
+    "amount_policy": {
+      "amount_basis": "TOTAL",
+      "tax_amount": null,
+      "payment_mode": "FULL"
+    }
+  },
+  "documents": [
+    {
+      "document_id": 30201,
+      "path": "document_01.pdf",
+      "sha256": "33986124c24fc7298f8dc103daea53de5eb34d0d05f76baa39ddf4775bcb4066"
+    },
+    {
+      "document_id": 30202,
+      "path": "document_02.pdf",
+      "sha256": "a8b4f4ca13ab3698adf73dd8e4bfa1408a79adb144023c1259acb8d4ea8c6e65"
+    },
+    {
+      "document_id": 30203,
+      "path": "document_03.pdf",
+      "sha256": "a10bbcfa2e526e970934b13846681724d79d66a05c05e8c6f3b57e4eb94eeb9a"
+    },
+    {
+      "document_id": 30204,
+      "path": "document_04.pdf",
+      "sha256": "ec1de959c7fc948e4b274dbe88a75fccadb14755162eaa90c6f638c0e0484185"
+    },
+    {
+      "document_id": 30205,
+      "path": "document_05.pdf",
+      "sha256": "ac37d3b5a3e4be891ad4c551ede7b82fca1730a5ec720545f8fe8f5512eaf6e5"
+    },
+    {
+      "document_id": 30206,
+      "path": "document_06.pdf",
+      "sha256": "db79f82f13dc4c1ce0d690148bc17f75ce8b0e748c3c7ddfa43693a219fd31ba"
+    }
+  ]
+}

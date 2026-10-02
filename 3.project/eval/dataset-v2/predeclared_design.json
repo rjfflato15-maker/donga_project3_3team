@@ -1,0 +1,3462 @@
+{
+  "declared_at": "2026-10-02T15:45:38.641769+00:00",
+  "documents": {
+    "30101": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03012"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 3699000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 369900
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4068900
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "외주용역 계약서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약명: 가상 업무지원 시스템 구축",
+        "발주자: 가상 북쪽연구소 1",
+        "수급인(을): 가상 한결기획 1",
+        "사업자등록번호: 000-00-03012",
+        "공급가액: 3,699,000원",
+        "세액: 369,900원",
+        "합계금액: 4,068,900원",
+        "발행일: 2026-09-16"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30102": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03012"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 3699000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 369900
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4068900
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "견적서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 한결기획 1",
+        "사업자등록번호: 000-00-03012",
+        "공급받는자",
+        "상호: 가상 북쪽연구소 1",
+        "사업자등록번호: 000-00-15013",
+        "세전 대금: 3,699,000원",
+        "부가세액: 369,900원",
+        "총 청구액: 4,068,900원",
+        "발행일: 2026-09-16"
+      ],
+      "condition": "synonyms",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30103": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03012"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "사업자등록증",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "상호: 가상 한결기획 1",
+        "사업자등록번호: 000-00-03012",
+        "대표자: 가상 담당자",
+        "업태: 서비스업",
+        "종목: 소프트웨어 개발",
+        "발행일: 2026-09-16"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30104": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03012"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "통장사본",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "예금주: 가상 한결기획 1",
+        "은행명: 가상은행",
+        "계좌번호: TEST-ACCOUNT-001",
+        "사업자등록번호: 000-00-03012",
+        "발행일: 2026-09-16"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30105": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03012"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 3699000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 369900
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4068900
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "전자세금계산서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 한결기획 1",
+        "사업자등록번호: 000-00-03012",
+        "공급받는자",
+        "상호: 가상 북쪽연구소 1",
+        "사업자등록번호: 000-00-15013",
+        "공급가액: 3,699,000원",
+        "세액: 369,900원",
+        "합계금액: 4,068,900원",
+        "전액 청구: 전체 계약 대금",
+        "발행일: 2026-09-16"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30106": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03012"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 3699000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 369900
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4068900
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "납품 검수확인서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약상대자: 가상 한결기획 1",
+        "사업자등록번호: 000-00-03012",
+        "납품 내역: 업무지원 시스템",
+        "검수 결과: 납품 항목 확인",
+        "공급가액: 3,699,000원",
+        "세액: 369,900원",
+        "합계금액: 4,068,900원",
+        "발행일: 2026-09-16"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30201": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03026"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 3836000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 383600
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4219600
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "외주용역 계약서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약명: 가상 업무지원 시스템 구축",
+        "발주자: 가상 북쪽연구소 2",
+        "수급인(을): 가상 한결기획 2",
+        "사업자등록번호: 000-00-03026",
+        "공급가액: 3,836,000원",
+        "세액: 383,600원",
+        "합계금액: 4,219,600원",
+        "발행일: 2026-09-17"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30202": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03026"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 3836000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 383600
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4219600
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "견적서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 한결기획 2",
+        "사업자등록번호: 000-00-03026",
+        "공급받는자",
+        "상호: 가상 북쪽연구소 2",
+        "사업자등록번호: 000-00-15027",
+        "공급가액: 3,836,000원",
+        "세액: 383,600원",
+        "합계금액: 4,219,600원",
+        "발행일: 2026-09-17"
+      ],
+      "condition": "table",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30203": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03026"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "사업자등록증",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "상호: 가상 한결기획 2",
+        "사업자등록번호: 000-00-03026",
+        "대표자: 가상 담당자",
+        "업태: 서비스업",
+        "종목: 소프트웨어 개발",
+        "발행일: 2026-09-17"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30204": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03026"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "통장사본",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "예금주: 가상 한결기획 2",
+        "은행명: 가상은행",
+        "계좌번호: TEST-ACCOUNT-001",
+        "사업자등록번호: 000-00-03026",
+        "발행일: 2026-09-17"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30205": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03026"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 3836000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 383600
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4219600
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "전자세금계산서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 한결기획 2",
+        "사업자등록번호: 000-00-03026",
+        "공급받는자",
+        "상호: 가상 북쪽연구소 2",
+        "사업자등록번호: 000-00-15027",
+        "공급가액: 3,836,000원",
+        "세액: 383,600원",
+        "합계금액: 4,219,600원",
+        "전액 청구: 전체 계약 대금",
+        "발행일: 2026-09-17"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30206": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03026"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 3836000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 383600
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4219600
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "납품 검수확인서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약상대자: 가상 한결기획 2",
+        "사업자등록번호: 000-00-03026",
+        "납품 내역: 업무지원 시스템",
+        "검수 결과: 납품 항목 확인",
+        "공급가액: 3,836,000원",
+        "세액: 383,600원",
+        "합계금액: 4,219,600원",
+        "발행일: 2026-09-17"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30301": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03031"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 3973000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 397300
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4370300
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "외주용역 계약서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약명: 가상 업무지원 시스템 구축",
+        "발주자: 가상 북쪽연구소 3",
+        "수급인(을): 가상 한결기획 3",
+        "사업자등록번호: 000-00-03031",
+        "공급가액: 3,973,000원",
+        "세액: 397,300원",
+        "합계금액: 4,370,300원",
+        "발행일: 2026-09-18"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30302": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03031"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 3973000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 397300
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4370300
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "견적서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 한결기획 3",
+        "사업자등록번호: 000-00-03031",
+        "공급받는자",
+        "상호: 가상 북쪽연구소 3",
+        "사업자등록번호: 000-00-15032",
+        "공급가액: 3,973,000원",
+        "세액: 397,300원",
+        "합계금액: 4,370,300원",
+        "발행일: 2026-09-18"
+      ],
+      "condition": "skew",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30303": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03031"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "사업자등록증",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "상호: 가상 한결기획 3",
+        "사업자등록번호: 000-00-03031",
+        "대표자: 가상 담당자",
+        "업태: 서비스업",
+        "종목: 소프트웨어 개발",
+        "발행일: 2026-09-18"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30304": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03031"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "통장사본",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "예금주: 가상 한결기획 3",
+        "은행명: 가상은행",
+        "계좌번호: TEST-ACCOUNT-001",
+        "사업자등록번호: 000-00-03031",
+        "발행일: 2026-09-18"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30305": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03031"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 3973000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 397300
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4370300
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "전자세금계산서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 한결기획 3",
+        "사업자등록번호: 000-00-03031",
+        "공급받는자",
+        "상호: 가상 북쪽연구소 3",
+        "사업자등록번호: 000-00-15032",
+        "공급가액: 3,973,000원",
+        "세액: 397,300원",
+        "합계금액: 4,370,300원",
+        "전액 청구: 전체 계약 대금",
+        "발행일: 2026-09-18"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30306": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03031"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 3973000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 397300
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4370300
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "납품 검수확인서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약상대자: 가상 한결기획 3",
+        "사업자등록번호: 000-00-03031",
+        "납품 내역: 업무지원 시스템",
+        "검수 결과: 납품 항목 확인",
+        "공급가액: 3,973,000원",
+        "세액: 397,300원",
+        "합계금액: 4,370,300원",
+        "발행일: 2026-09-18"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30401": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03045"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4110000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 411000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4521000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "외주용역 계약서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약명: 가상 업무지원 시스템 구축",
+        "발주자: 가상 북쪽연구소 4",
+        "수급인(을): 가상 한결기획 4",
+        "사업자등록번호: 000-00-03045",
+        "공급가액: 4,110,000원",
+        "세액: 411,000원",
+        "합계금액: 4,521,000원",
+        "발행일: 2026-09-19"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30402": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03045"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4110000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 411000
+        },
+        "total_amount": {
+          "state": "REVIEW",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "견적서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 한결기획 4",
+        "사업자등록번호: 000-00-03045",
+        "공급받는자",
+        "상호: 가상 북쪽연구소 4",
+        "사업자등록번호: 000-00-15046",
+        "공급가액: 4,110,000원",
+        "세액: 411,000원",
+        "합계금액: 4,521,000원",
+        "발행일: 2026-09-19"
+      ],
+      "condition": "stamp",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30403": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03045"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "사업자등록증",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "상호: 가상 한결기획 4",
+        "사업자등록번호: 000-00-03045",
+        "대표자: 가상 담당자",
+        "업태: 서비스업",
+        "종목: 소프트웨어 개발",
+        "발행일: 2026-09-19"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30404": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03045"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "통장사본",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "예금주: 가상 한결기획 4",
+        "은행명: 가상은행",
+        "계좌번호: TEST-ACCOUNT-001",
+        "사업자등록번호: 000-00-03045",
+        "발행일: 2026-09-19"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30405": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03045"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4110000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 411000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4521000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "전자세금계산서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 한결기획 4",
+        "사업자등록번호: 000-00-03045",
+        "공급받는자",
+        "상호: 가상 북쪽연구소 4",
+        "사업자등록번호: 000-00-15046",
+        "공급가액: 4,110,000원",
+        "세액: 411,000원",
+        "합계금액: 4,521,000원",
+        "전액 청구: 전체 계약 대금",
+        "발행일: 2026-09-19"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30406": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03045"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4110000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 411000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4521000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "납품 검수확인서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약상대자: 가상 한결기획 4",
+        "사업자등록번호: 000-00-03045",
+        "납품 내역: 업무지원 시스템",
+        "검수 결과: 납품 항목 확인",
+        "공급가액: 4,110,000원",
+        "세액: 411,000원",
+        "합계금액: 4,521,000원",
+        "발행일: 2026-09-19"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30501": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03050"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4247000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 424700
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4671700
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "외주용역 계약서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약명: 가상 업무지원 시스템 구축",
+        "발주자: 가상 북쪽연구소 5",
+        "수급인(을): 가상 한결기획 5",
+        "사업자등록번호: 000-00-03050",
+        "공급가액: 4,247,000원",
+        "세액: 424,700원",
+        "합계금액: 4,671,700원",
+        "발행일: 2026-09-20"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30502": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03050"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4247000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 424700
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4671700
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "견적서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 한결기획 5",
+        "사업자등록번호: 000-00-03050",
+        "공급받는자",
+        "상호: 가상 북쪽연구소 5",
+        "사업자등록번호: 000-00-15051",
+        "공급가액: 4,247,000원",
+        "세액: 424,700원",
+        "합계금액: 4,671,700원",
+        "발행일: 2026-09-20"
+      ],
+      "condition": "multi_page",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30503": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03050"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "사업자등록증",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "상호: 가상 한결기획 5",
+        "사업자등록번호: 000-00-03050",
+        "대표자: 가상 담당자",
+        "업태: 서비스업",
+        "종목: 소프트웨어 개발",
+        "발행일: 2026-09-20"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30504": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03050"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "통장사본",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "예금주: 가상 한결기획 5",
+        "은행명: 가상은행",
+        "계좌번호: TEST-ACCOUNT-001",
+        "사업자등록번호: 000-00-03050",
+        "발행일: 2026-09-20"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30505": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03050"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4247000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 424700
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4671700
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "전자세금계산서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 한결기획 5",
+        "사업자등록번호: 000-00-03050",
+        "공급받는자",
+        "상호: 가상 북쪽연구소 5",
+        "사업자등록번호: 000-00-15051",
+        "공급가액: 4,247,000원",
+        "세액: 424,700원",
+        "합계금액: 4,671,700원",
+        "전액 청구: 전체 계약 대금",
+        "발행일: 2026-09-20"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30506": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03050"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4247000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 424700
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4671700
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "납품 검수확인서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약상대자: 가상 한결기획 5",
+        "사업자등록번호: 000-00-03050",
+        "납품 내역: 업무지원 시스템",
+        "검수 결과: 납품 항목 확인",
+        "공급가액: 4,247,000원",
+        "세액: 424,700원",
+        "합계금액: 4,671,700원",
+        "발행일: 2026-09-20"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30601": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03064"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "외주용역 계약서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약명: 가상 업무지원 시스템 구축",
+        "발주자: 가상 북쪽연구소 6",
+        "수급인(을): 가상 한결기획 6",
+        "사업자등록번호: 000-00-03064",
+        "공급가액: 4,384,000원",
+        "세액: 438,400원",
+        "합계금액: 4,822,400원",
+        "발행일: 2026-09-21"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30602": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03064"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "견적서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 한결기획 6",
+        "사업자등록번호: 000-00-03064",
+        "공급받는자",
+        "상호: 가상 북쪽연구소 6",
+        "사업자등록번호: 000-00-15065",
+        "공급가액: 4,384,000원",
+        "세액: 438,400원",
+        "합계금액: 4,822,400원",
+        "발행일: 2026-09-21"
+      ],
+      "condition": "two_column",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30603": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03064"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "사업자등록증",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "상호: 가상 한결기획 6",
+        "사업자등록번호: 000-00-03064",
+        "대표자: 가상 담당자",
+        "업태: 서비스업",
+        "종목: 소프트웨어 개발",
+        "발행일: 2026-09-21"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30604": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03064"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "통장사본",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "예금주: 가상 한결기획 6",
+        "은행명: 가상은행",
+        "계좌번호: TEST-ACCOUNT-001",
+        "사업자등록번호: 000-00-03064",
+        "발행일: 2026-09-21"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30605": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03064"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "전자세금계산서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 한결기획 6",
+        "사업자등록번호: 000-00-03064",
+        "공급받는자",
+        "상호: 가상 북쪽연구소 6",
+        "사업자등록번호: 000-00-15065",
+        "공급가액: 4,384,000원",
+        "세액: 438,400원",
+        "합계금액: 4,822,400원",
+        "전액 청구: 전체 계약 대금",
+        "발행일: 2026-09-21"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "30606": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03064"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "납품 검수확인서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약상대자: 가상 한결기획 6",
+        "사업자등록번호: 000-00-03064",
+        "납품 내역: 업무지원 시스템",
+        "검수 결과: 납품 항목 확인",
+        "공급가액: 4,384,000원",
+        "세액: 438,400원",
+        "합계금액: 4,822,400원",
+        "발행일: 2026-09-21"
+      ],
+      "condition": "normal",
+      "split": "dev",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40101": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04011"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4110000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 411000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4521000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "외주용역 계약서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약명: 가상 업무지원 시스템 구축",
+        "발주자: 가상 남쪽연구소 1",
+        "수급인(을): 가상 새봄기획 1",
+        "사업자등록번호: 000-00-04011",
+        "공급가액: 4,110,000원",
+        "세액: 411,000원",
+        "합계금액: 4,521,000원",
+        "발행일: 2026-09-16"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40102": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04011"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4110000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 411000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4521000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "견적서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 새봄기획 1",
+        "사업자등록번호: 000-00-04011",
+        "공급받는자",
+        "상호: 가상 남쪽연구소 1",
+        "사업자등록번호: 000-00-16012",
+        "세전 대금: 4,110,000원",
+        "부가세액: 411,000원",
+        "청구 총액: 4,521,000원",
+        "발행일: 2026-09-16"
+      ],
+      "condition": "synonyms",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40103": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04011"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "사업자등록증",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "상호: 가상 새봄기획 1",
+        "사업자등록번호: 000-00-04011",
+        "대표자: 가상 담당자",
+        "업태: 서비스업",
+        "종목: 소프트웨어 개발",
+        "발행일: 2026-09-16"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40104": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04011"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "통장사본",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "예금주: 가상 새봄기획 1",
+        "은행명: 가상은행",
+        "계좌번호: TEST-ACCOUNT-001",
+        "사업자등록번호: 000-00-04011",
+        "발행일: 2026-09-16"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40105": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04011"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4110000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 411000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4521000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "전자세금계산서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 새봄기획 1",
+        "사업자등록번호: 000-00-04011",
+        "공급받는자",
+        "상호: 가상 남쪽연구소 1",
+        "사업자등록번호: 000-00-16012",
+        "공급가액: 4,110,000원",
+        "세액: 411,000원",
+        "합계금액: 4,521,000원",
+        "전액 청구: 전체 계약 대금",
+        "발행일: 2026-09-16"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40106": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04011"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4110000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 411000
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4521000
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "납품 검수확인서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약상대자: 가상 새봄기획 1",
+        "사업자등록번호: 000-00-04011",
+        "납품 내역: 업무지원 시스템",
+        "검수 결과: 납품 항목 확인",
+        "공급가액: 4,110,000원",
+        "세액: 411,000원",
+        "합계금액: 4,521,000원",
+        "발행일: 2026-09-16"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40201": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04025"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4247000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 424700
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4671700
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "외주용역 계약서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약명: 가상 업무지원 시스템 구축",
+        "발주자: 가상 남쪽연구소 2",
+        "수급인(을): 가상 새봄기획 2",
+        "사업자등록번호: 000-00-04025",
+        "공급가액: 4,247,000원",
+        "세액: 424,700원",
+        "합계금액: 4,671,700원",
+        "발행일: 2026-09-17"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40202": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04025"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4247000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 424700
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4671700
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "견적서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 새봄기획 2",
+        "사업자등록번호: 000-00-04025",
+        "공급받는자",
+        "상호: 가상 남쪽연구소 2",
+        "사업자등록번호: 000-00-16026",
+        "공급가액: 4,247,000원",
+        "세액: 424,700원",
+        "합계금액: 4,671,700원",
+        "발행일: 2026-09-17"
+      ],
+      "condition": "table",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40203": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04025"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "사업자등록증",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "상호: 가상 새봄기획 2",
+        "사업자등록번호: 000-00-04025",
+        "대표자: 가상 담당자",
+        "업태: 서비스업",
+        "종목: 소프트웨어 개발",
+        "발행일: 2026-09-17"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40204": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04025"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "통장사본",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "예금주: 가상 새봄기획 2",
+        "은행명: 가상은행",
+        "계좌번호: TEST-ACCOUNT-001",
+        "사업자등록번호: 000-00-04025",
+        "발행일: 2026-09-17"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40205": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04025"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4247000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 424700
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4671700
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "전자세금계산서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 새봄기획 2",
+        "사업자등록번호: 000-00-04025",
+        "공급받는자",
+        "상호: 가상 남쪽연구소 2",
+        "사업자등록번호: 000-00-16026",
+        "공급가액: 4,247,000원",
+        "세액: 424,700원",
+        "합계금액: 4,671,700원",
+        "전액 청구: 전체 계약 대금",
+        "발행일: 2026-09-17"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40206": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 2"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04025"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4247000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 424700
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4671700
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "납품 검수확인서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약상대자: 가상 새봄기획 2",
+        "사업자등록번호: 000-00-04025",
+        "납품 내역: 업무지원 시스템",
+        "검수 결과: 납품 항목 확인",
+        "공급가액: 4,247,000원",
+        "세액: 424,700원",
+        "합계금액: 4,671,700원",
+        "발행일: 2026-09-17"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40301": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "외주용역 계약서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약명: 가상 업무지원 시스템 구축",
+        "발주자: 가상 남쪽연구소 3",
+        "수급인(을): 가상 새봄기획 3",
+        "사업자등록번호: 000-00-04030",
+        "공급가액: 4,384,000원",
+        "세액: 438,400원",
+        "합계금액: 4,822,400원",
+        "발행일: 2026-09-18"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40302": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "견적서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 새봄기획 3",
+        "사업자등록번호: 000-00-04030",
+        "공급받는자",
+        "상호: 가상 남쪽연구소 3",
+        "사업자등록번호: 000-00-16031",
+        "공급가액: 4,384,000원",
+        "세액: 438,400원",
+        "합계금액: 4,822,400원",
+        "발행일: 2026-09-18"
+      ],
+      "condition": "skew",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40303": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "사업자등록증",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "상호: 가상 새봄기획 3",
+        "사업자등록번호: 000-00-04030",
+        "대표자: 가상 담당자",
+        "업태: 서비스업",
+        "종목: 소프트웨어 개발",
+        "발행일: 2026-09-18"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40304": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "통장사본",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "예금주: 가상 새봄기획 3",
+        "은행명: 가상은행",
+        "계좌번호: TEST-ACCOUNT-001",
+        "사업자등록번호: 000-00-04030",
+        "발행일: 2026-09-18"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40305": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "전자세금계산서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 새봄기획 3",
+        "사업자등록번호: 000-00-04030",
+        "공급받는자",
+        "상호: 가상 남쪽연구소 3",
+        "사업자등록번호: 000-00-16031",
+        "공급가액: 4,384,000원",
+        "세액: 438,400원",
+        "합계금액: 4,822,400원",
+        "전액 청구: 전체 계약 대금",
+        "발행일: 2026-09-18"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40306": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "납품 검수확인서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약상대자: 가상 새봄기획 3",
+        "사업자등록번호: 000-00-04030",
+        "납품 내역: 업무지원 시스템",
+        "검수 결과: 납품 항목 확인",
+        "공급가액: 4,384,000원",
+        "세액: 438,400원",
+        "합계금액: 4,822,400원",
+        "발행일: 2026-09-18"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40401": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04044"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4521000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 452100
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4973100
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "외주용역 계약서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약명: 가상 업무지원 시스템 구축",
+        "발주자: 가상 남쪽연구소 4",
+        "수급인(을): 가상 새봄기획 4",
+        "사업자등록번호: 000-00-04044",
+        "공급가액: 4,521,000원",
+        "세액: 452,100원",
+        "합계금액: 4,973,100원",
+        "발행일: 2026-09-19"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40402": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04044"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4521000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 452100
+        },
+        "total_amount": {
+          "state": "REVIEW",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "견적서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 새봄기획 4",
+        "사업자등록번호: 000-00-04044",
+        "공급받는자",
+        "상호: 가상 남쪽연구소 4",
+        "사업자등록번호: 000-00-16045",
+        "공급가액: 4,521,000원",
+        "세액: 452,100원",
+        "합계금액: 4,973,100원",
+        "발행일: 2026-09-19"
+      ],
+      "condition": "stamp",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40403": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04044"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "사업자등록증",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "상호: 가상 새봄기획 4",
+        "사업자등록번호: 000-00-04044",
+        "대표자: 가상 담당자",
+        "업태: 서비스업",
+        "종목: 소프트웨어 개발",
+        "발행일: 2026-09-19"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40404": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04044"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "통장사본",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "예금주: 가상 새봄기획 4",
+        "은행명: 가상은행",
+        "계좌번호: TEST-ACCOUNT-001",
+        "사업자등록번호: 000-00-04044",
+        "발행일: 2026-09-19"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40405": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04044"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4521000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 452100
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4973100
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "전자세금계산서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 새봄기획 4",
+        "사업자등록번호: 000-00-04044",
+        "공급받는자",
+        "상호: 가상 남쪽연구소 4",
+        "사업자등록번호: 000-00-16045",
+        "공급가액: 4,521,000원",
+        "세액: 452,100원",
+        "합계금액: 4,973,100원",
+        "전액 청구: 전체 계약 대금",
+        "발행일: 2026-09-19"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40406": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 4"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04044"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4521000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 452100
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4973100
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "납품 검수확인서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약상대자: 가상 새봄기획 4",
+        "사업자등록번호: 000-00-04044",
+        "납품 내역: 업무지원 시스템",
+        "검수 결과: 납품 항목 확인",
+        "공급가액: 4,521,000원",
+        "세액: 452,100원",
+        "합계금액: 4,973,100원",
+        "발행일: 2026-09-19"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40501": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04059"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4658000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 465800
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5123800
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "외주용역 계약서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약명: 가상 업무지원 시스템 구축",
+        "발주자: 가상 남쪽연구소 5",
+        "수급인(을): 가상 새봄기획 5",
+        "사업자등록번호: 000-00-04059",
+        "공급가액: 4,658,000원",
+        "세액: 465,800원",
+        "합계금액: 5,123,800원",
+        "발행일: 2026-09-20"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40502": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04059"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4658000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 465800
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5123800
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "견적서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 새봄기획 5",
+        "사업자등록번호: 000-00-04059",
+        "공급받는자",
+        "상호: 가상 남쪽연구소 5",
+        "사업자등록번호: 000-00-16050",
+        "공급가액: 4,658,000원",
+        "세액: 465,800원",
+        "합계금액: 5,123,800원",
+        "발행일: 2026-09-20"
+      ],
+      "condition": "multi_page",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40503": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04059"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "사업자등록증",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "상호: 가상 새봄기획 5",
+        "사업자등록번호: 000-00-04059",
+        "대표자: 가상 담당자",
+        "업태: 서비스업",
+        "종목: 소프트웨어 개발",
+        "발행일: 2026-09-20"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40504": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04059"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "통장사본",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "예금주: 가상 새봄기획 5",
+        "은행명: 가상은행",
+        "계좌번호: TEST-ACCOUNT-001",
+        "사업자등록번호: 000-00-04059",
+        "발행일: 2026-09-20"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40505": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04059"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4658000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 465800
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5123800
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "전자세금계산서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 새봄기획 5",
+        "사업자등록번호: 000-00-04059",
+        "공급받는자",
+        "상호: 가상 남쪽연구소 5",
+        "사업자등록번호: 000-00-16050",
+        "공급가액: 4,658,000원",
+        "세액: 465,800원",
+        "합계금액: 5,123,800원",
+        "전액 청구: 전체 계약 대금",
+        "발행일: 2026-09-20"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40506": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 5"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04059"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4658000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 465800
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5123800
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "납품 검수확인서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약상대자: 가상 새봄기획 5",
+        "사업자등록번호: 000-00-04059",
+        "납품 내역: 업무지원 시스템",
+        "검수 결과: 납품 항목 확인",
+        "공급가액: 4,658,000원",
+        "세액: 465,800원",
+        "합계금액: 5,123,800원",
+        "발행일: 2026-09-20"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40601": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04063"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4795000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 479500
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5274500
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "외주용역 계약서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약명: 가상 업무지원 시스템 구축",
+        "발주자: 가상 남쪽연구소 6",
+        "수급인(을): 가상 새봄기획 6",
+        "사업자등록번호: 000-00-04063",
+        "공급가액: 4,795,000원",
+        "세액: 479,500원",
+        "합계금액: 5,274,500원",
+        "발행일: 2026-09-21"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40602": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04063"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4795000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 479500
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5274500
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "견적서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 새봄기획 6",
+        "사업자등록번호: 000-00-04063",
+        "공급받는자",
+        "상호: 가상 남쪽연구소 6",
+        "사업자등록번호: 000-00-16064",
+        "공급가액: 4,795,000원",
+        "세액: 479,500원",
+        "합계금액: 5,274,500원",
+        "발행일: 2026-09-21"
+      ],
+      "condition": "two_column",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40603": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04063"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "사업자등록증",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "상호: 가상 새봄기획 6",
+        "사업자등록번호: 000-00-04063",
+        "대표자: 가상 담당자",
+        "업태: 서비스업",
+        "종목: 소프트웨어 개발",
+        "발행일: 2026-09-21"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40604": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04063"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null
+        }
+      },
+      "lines": [
+        "통장사본",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "예금주: 가상 새봄기획 6",
+        "은행명: 가상은행",
+        "계좌번호: TEST-ACCOUNT-001",
+        "사업자등록번호: 000-00-04063",
+        "발행일: 2026-09-21"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40605": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04063"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4795000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 479500
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5274500
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "전자세금계산서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "공급자",
+        "상호: 가상 새봄기획 6",
+        "사업자등록번호: 000-00-04063",
+        "공급받는자",
+        "상호: 가상 남쪽연구소 6",
+        "사업자등록번호: 000-00-16064",
+        "공급가액: 4,795,000원",
+        "세액: 479,500원",
+        "합계금액: 5,274,500원",
+        "전액 청구: 전체 계약 대금",
+        "발행일: 2026-09-21"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    },
+    "40606": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 6"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04063"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4795000
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 479500
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5274500
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL"
+        }
+      },
+      "lines": [
+        "납품 검수확인서",
+        "평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.",
+        "계약상대자: 가상 새봄기획 6",
+        "사업자등록번호: 000-00-04063",
+        "납품 내역: 업무지원 시스템",
+        "검수 결과: 납품 항목 확인",
+        "공급가액: 4,795,000원",
+        "세액: 479,500원",
+        "합계금액: 5,274,500원",
+        "발행일: 2026-09-21"
+      ],
+      "condition": "normal",
+      "split": "test",
+      "gold_policy": "Unreadable total is REVIEW; never reconstruct it from contract or arithmetic."
+    }
+  },
+  "used_app_predictions": false
+}

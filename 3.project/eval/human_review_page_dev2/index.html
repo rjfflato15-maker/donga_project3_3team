@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>원문 확인 검수</title>
+<style>
+:root{
+  --bg:#f6f6f4; --panel:#ffffff; --ink:#1d1d1b; --muted:#6b6b66; --line:#deddd8;
+  --accent:#2f5bd3; --ok:#1f8a4c; --ok-bg:#e6f4ec; --no:#c0392b; --no-bg:#fbeaea;
+  --hold:#9a6b00; --hold-bg:#fbf3df; --interp:#fff6d6; --interp-line:#e3c45a; --page:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#18181a; --panel:#232326; --ink:#ececea; --muted:#a3a39e; --line:#3a3a3e;
+    --accent:#7d9cff; --ok:#5cc98a; --ok-bg:#1c3326; --no:#ff7b6b; --no-bg:#3a2020;
+    --hold:#e0b54a; --hold-bg:#3a3020; --interp:#3a3420; --interp-line:#8a7430; --page:#ffffff;
+  }
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 "Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;display:flex;flex-direction:column}
+header{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:8px 14px;background:var(--panel);border-bottom:1px solid var(--line)}
+header h1{font-size:16px;margin:0}
+header label{font-size:13px;color:var(--muted)}
+header input{font:inherit;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:120px}
+.tabs button,.btn{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:4px 10px;cursor:pointer}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.prog{flex:1;min-width:160px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.bar{flex:1;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+main{flex:1;display:flex;min-height:0}
+#viewer{flex:1.45;display:flex;flex-direction:column;min-width:0;border-right:1px solid var(--line)}
+#doctabs{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px;border-bottom:1px solid var(--line);background:var(--panel)}
+#doctabs button{font:inherit;font-size:12px;padding:3px 8px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink);cursor:pointer}
+#doctabs button.on{border-color:var(--accent);outline:2px solid var(--accent)}
+#doctabs .cap{font-size:12px;color:var(--muted);align-self:center;margin-right:4px}
+#docarea{flex:1;overflow:auto;background:#8a8a86;padding:10px;display:flex;justify-content:center;align-items:flex-start}
+#docarea img{display:block;width:100%;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.3);cursor:zoom-in}
+#docarea img.zoom{width:auto;max-width:none;height:auto;transform-origin:top left;cursor:zoom-out;min-width:1500px}
+#docarea iframe{width:100%;height:100%;min-height:600px;border:0;background:#fff}
+.docx{background:var(--page);color:#111;width:100%;max-width:800px;min-height:90%;padding:48px 56px;box-shadow:0 1px 6px rgba(0,0,0,.3);font-size:16px;line-height:2}
+.docx .t{font-size:24px;margin-bottom:8px}
+.docx .warn{font-size:12px;color:#7a5a00;background:#fff3cd;border:1px solid #e9d38a;padding:4px 8px;border-radius:4px;margin-bottom:16px;line-height:1.5}
+.pdfnote{font-size:12px;color:#fff;margin-bottom:6px}.pdfnote a{color:#fff}
+.noview{color:#fff;padding:40px;text-align:center}
+#panel{flex:1;overflow:auto;padding:14px 16px;display:flex;flex-direction:column;gap:12px;min-width:320px;max-width:560px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.reg{font-size:13px;display:grid;grid-template-columns:auto 1fr;gap:2px 10px}
+.reg b{color:var(--muted);font-weight:normal}
+.meta{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.tag{font-size:12px;padding:1px 8px;border-radius:10px;background:var(--line);color:var(--ink)}
+.tag.imp{background:var(--interp);border:1px solid var(--interp-line)}
+.q{font-size:19px;line-height:1.55;margin:8px 0}
+.q b{background:linear-gradient(transparent 60%, rgba(47,91,211,.22) 60%)}
+.interp{font-size:14px;background:var(--interp);border-left:4px solid var(--interp-line);padding:8px 10px;margin-top:10px;border-radius:4px;line-height:1.55}
+.hint{font-size:14px;color:var(--muted)}
+.claimlbl{font-size:12px;color:var(--muted);margin-bottom:2px}
+.claim{font-size:20px;line-height:1.5}
+.howto{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);margin-top:10px;padding-top:8px}
+.hint:before{content:"👉 "}
+.excel{font-size:12px;color:var(--muted)}
+.answers{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.answers button{font:inherit;font-size:16px;padding:12px 6px;border-radius:8px;cursor:pointer;border:2px solid var(--line);background:var(--panel);color:var(--ink)}
+.answers .y.on,.answers .y:hover{border-color:var(--ok);background:var(--ok-bg)}
+.answers .n.on,.answers .n:hover{border-color:var(--no);background:var(--no-bg)}
+.answers .h.on,.answers .h:hover{border-color:var(--hold);background:var(--hold-bg)}
+.answers small{display:block;font-size:11px;color:var(--muted)}
+textarea{width:100%;font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);resize:vertical}
+.nav{display:flex;gap:8px;justify-content:space-between}
+.status{font-size:13px}
+.status.y{color:var(--ok)} .status.n{color:var(--no)} .status.h{color:var(--hold)}
+.done{text-align:center;padding:20px}
+.foot{font-size:12px;color:var(--muted)}
+.hidden{display:none}
+@media (max-width:900px){main{flex-direction:column}#viewer{flex:none;height:55vh;border-right:0;border-bottom:1px solid var(--line)}#panel{max-width:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>원문 확인 검수</h1>
+  <span><label for="alias">검수자 이름 </label><input id="alias" placeholder="예: 홍길동"></span>
+  <span class="tabs" id="tabs">
+    <button data-f="imp" class="on">꼭 볼 것</button><button data-f="sample">표본</button><button data-f="all">전체</button>
+  </span>
+  <div class="prog"><span id="progtxt"></span><div class="bar"><i id="progbar"></i></div></div>
+  <button class="btn primary" id="export">결과 파일 저장</button>
+</header>
+<main>
+  <section id="viewer">
+    <div id="doctabs"></div>
+    <div id="docarea"></div>
+  </section>
+  <section id="panel">
+    <div class="card reg" id="reg"></div>
+    <div class="card" id="itemcard">
+      <div class="meta"><span id="pos"></span><span id="label"></span><span id="tag" class="tag"></span></div>
+      <div class="q" id="q"></div>
+      <div class="hint" id="hint"></div>
+      <div class="howto">원문을 보고 <b>정답 초안이 맞으면 '맞아요'</b>, 틀리면 '아니에요'.</div>
+    </div>
+    <div class="answers">
+      <button class="y" id="ay">맞아요<small>키보드 1</small></button>
+      <button class="n" id="an">아니에요<small>키보드 2</small></button>
+      <button class="h" id="ah">잘 모르겠어요<small>키보드 3 · 보류</small></button>
+    </div>
+    <div class="card" id="reasonbox">
+      <div class="foot" id="reasonlabel">판단 근거 (자동으로 채워집니다. 고쳐도 됩니다)</div>
+      <textarea id="reason" rows="2"></textarea>
+      <div class="status" id="status"></div>
+    </div>
+    <div class="nav">
+      <button class="btn" id="prev">← 이전</button>
+      <button class="btn" id="nextopen">다음 미완료</button>
+      <button class="btn" id="next">다음 →</button>
+    </div>
+    <div class="excel" id="excel"></div>
+    <div class="foot">이미지는 클릭하면 확대됩니다. 답은 이 브라우저에 자동 저장되고, 다 끝나면 위의 <b>결과 파일 저장</b>을 누르세요.</div>
+  </section>
+</main>
+<script>
+const DATA = {"generated": "2026-10-03T00:50:17+09:00", "split": "dev", "ready": false, "cases": {"301": {"case": "case_01", "vendor": "가상 한결기획 1", "bno": "000-00-03012", "basis": "합계 기준 4,068,900원", "cmp": 4068900, "pay": "일시(전액) 지급", "docs": [{"id": "30101", "src": "../dataset-v2/dev2/case_01/document_01.pdf", "ext": "pdf", "name": "document_01.pdf", "type": "외주용역 계약서", "views": ["views/case_01_document_01_p1.png"]}, {"id": "30102", "src": "../dataset-v2/dev2/case_01/document_02.pdf", "ext": "pdf", "name": "document_02.pdf", "type": "견적서", "views": ["views/case_01_document_02_p1.png"]}, {"id": "30103", "src": "../dataset-v2/dev2/case_01/document_03.pdf", "ext": "pdf", "name": "document_03.pdf", "type": "사업자등록증", "views": ["views/case_01_document_03_p1.png"]}, {"id": "30104", "src": "../dataset-v2/dev2/case_01/document_04.pdf", "ext": "pdf", "name": "document_04.pdf", "type": "통장사본", "views": ["views/case_01_document_04_p1.png"]}, {"id": "30105", "src": "../dataset-v2/dev2/case_01/document_05.pdf", "ext": "pdf", "name": "document_05.pdf", "type": "전자세금계산서", "views": ["views/case_01_document_05_p1.png"]}, {"id": "30106", "src": "../dataset-v2/dev2/case_01/document_06.pdf", "ext": "pdf", "name": "document_06.pdf", "type": "납품 검수확인서", "views": ["views/case_01_document_06_p1.png"]}], "doctype": {"30101": "외주용역 계약서", "30102": "견적서", "30103": "사업자등록증", "30104": "통장사본", "30105": "전자세금계산서", "30106": "납품 검수확인서"}, "fields": {"30101": {"company_name": {"state": "VALUE", "value": "가상 한결기획 1"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03012"}, "supply_amount": {"state": "VALUE", "value": 3699000}, "tax_amount": {"state": "VALUE", "value": 369900}, "total_amount": {"state": "VALUE", "value": 4068900}, "issue_date": {"state": "VALUE", "value": "2026-09-16"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30102": {"company_name": {"state": "VALUE", "value": "가상 한결기획 1"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03012"}, "supply_amount": {"state": "VALUE", "value": 3699000}, "tax_amount": {"state": "VALUE", "value": 369900}, "total_amount": {"state": "VALUE", "value": 4068900}, "issue_date": {"state": "VALUE", "value": "2026-09-16"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30103": {"company_name": {"state": "VALUE", "value": "가상 한결기획 1"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03012"}, "supply_amount": {"state": "ABSENT", "value": null}, "tax_amount": {"state": "ABSENT", "value": null}, "total_amount": {"state": "ABSENT", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-16"}, "amount_scope": {"state": "ABSENT", "value": null}}, "30104": {"company_name": {"state": "VALUE", "value": "가상 한결기획 1"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03012"}, "supply_amount": {"state": "ABSENT", "value": null}, "tax_amount": {"state": "ABSENT", "value": null}, "total_amount": {"state": "ABSENT", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-16"}, "amount_scope": {"state": "ABSENT", "value": null}}, "30105": {"company_name": {"state": "VALUE", "value": "가상 한결기획 1"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03012"}, "supply_amount": {"state": "VALUE", "value": 3699000}, "tax_amount": {"state": "VALUE", "value": 369900}, "total_amount": {"state": "VALUE", "value": 4068900}, "issue_date": {"state": "VALUE", "value": "2026-09-16"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30106": {"company_name": {"state": "VALUE", "value": "가상 한결기획 1"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03012"}, "supply_amount": {"state": "VALUE", "value": 3699000}, "tax_amount": {"state": "VALUE", "value": 369900}, "total_amount": {"state": "VALUE", "value": 4068900}, "issue_date": {"state": "VALUE", "value": "2026-09-16"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}}}, "302": {"case": "case_02", "vendor": "가상 한결기획 2", "bno": "000-00-03026", "basis": "합계 기준 4,219,600원", "cmp": 4219600, "pay": "일시(전액) 지급", "docs": [{"id": "30201", "src": "../dataset-v2/dev2/case_02/document_01.pdf", "ext": "pdf", "name": "document_01.pdf", "type": "외주용역 계약서", "views": ["views/case_02_document_01_p1.png"]}, {"id": "30202", "src": "../dataset-v2/dev2/case_02/document_02.pdf", "ext": "pdf", "name": "document_02.pdf", "type": "견적서", "views": ["views/case_02_document_02_p1.png"]}, {"id": "30203", "src": "../dataset-v2/dev2/case_02/document_03.pdf", "ext": "pdf", "name": "document_03.pdf", "type": "사업자등록증", "views": ["views/case_02_document_03_p1.png"]}, {"id": "30204", "src": "../dataset-v2/dev2/case_02/document_04.pdf", "ext": "pdf", "name": "document_04.pdf", "type": "통장사본", "views": ["views/case_02_document_04_p1.png"]}, {"id": "30205", "src": "../dataset-v2/dev2/case_02/document_05.pdf", "ext": "pdf", "name": "document_05.pdf", "type": "전자세금계산서", "views": ["views/case_02_document_05_p1.png"]}, {"id": "30206", "src": "../dataset-v2/dev2/case_02/document_06.pdf", "ext": "pdf", "name": "document_06.pdf", "type": "납품 검수확인서", "views": ["views/case_02_document_06_p1.png"]}], "doctype": {"30201": "외주용역 계약서", "30202": "견적서", "30203": "사업자등록증", "30204": "통장사본", "30205": "전자세금계산서", "30206": "납품 검수확인서"}, "fields": {"30201": {"company_name": {"state": "VALUE", "value": "가상 한결기획 2"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03026"}, "supply_amount": {"state": "VALUE", "value": 3836000}, "tax_amount": {"state": "VALUE", "value": 383600}, "total_amount": {"state": "VALUE", "value": 4219600}, "issue_date": {"state": "VALUE", "value": "2026-09-17"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30202": {"company_name": {"state": "VALUE", "value": "가상 한결기획 2"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03026"}, "supply_amount": {"state": "VALUE", "value": 3836000}, "tax_amount": {"state": "VALUE", "value": 383600}, "total_amount": {"state": "VALUE", "value": 4219600}, "issue_date": {"state": "VALUE", "value": "2026-09-17"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30203": {"company_name": {"state": "VALUE", "value": "가상 한결기획 2"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03026"}, "supply_amount": {"state": "ABSENT", "value": null}, "tax_amount": {"state": "ABSENT", "value": null}, "total_amount": {"state": "ABSENT", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-17"}, "amount_scope": {"state": "ABSENT", "value": null}}, "30204": {"company_name": {"state": "VALUE", "value": "가상 한결기획 2"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03026"}, "supply_amount": {"state": "ABSENT", "value": null}, "tax_amount": {"state": "ABSENT", "value": null}, "total_amount": {"state": "ABSENT", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-17"}, "amount_scope": {"state": "ABSENT", "value": null}}, "30205": {"company_name": {"state": "VALUE", "value": "가상 한결기획 2"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03026"}, "supply_amount": {"state": "VALUE", "value": 3836000}, "tax_amount": {"state": "VALUE", "value": 383600}, "total_amount": {"state": "VALUE", "value": 4219600}, "issue_date": {"state": "VALUE", "value": "2026-09-17"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30206": {"company_name": {"state": "VALUE", "value": "가상 한결기획 2"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03026"}, "supply_amount": {"state": "VALUE", "value": 3836000}, "tax_amount": {"state": "VALUE", "value": 383600}, "total_amount": {"state": "VALUE", "value": 4219600}, "issue_date": {"state": "VALUE", "value": "2026-09-17"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}}}, "303": {"case": "case_03", "vendor": "가상 한결기획 3", "bno": "000-00-03031", "basis": "합계 기준 4,370,300원", "cmp": 4370300, "pay": "일시(전액) 지급", "docs": [{"id": "30301", "src": "../dataset-v2/dev2/case_03/document_01.pdf", "ext": "pdf", "name": "document_01.pdf", "type": "외주용역 계약서", "views": ["views/case_03_document_01_p1.png"]}, {"id": "30302", "src": "../dataset-v2/dev2/case_03/document_02.pdf", "ext": "pdf", "name": "document_02.pdf", "type": "견적서", "views": ["views/case_03_document_02_p1.png"]}, {"id": "30303", "src": "../dataset-v2/dev2/case_03/document_03.pdf", "ext": "pdf", "name": "document_03.pdf", "type": "사업자등록증", "views": ["views/case_03_document_03_p1.png"]}, {"id": "30304", "src": "../dataset-v2/dev2/case_03/document_04.pdf", "ext": "pdf", "name": "document_04.pdf", "type": "통장사본", "views": ["views/case_03_document_04_p1.png"]}, {"id": "30305", "src": "../dataset-v2/dev2/case_03/document_05.pdf", "ext": "pdf", "name": "document_05.pdf", "type": "전자세금계산서", "views": ["views/case_03_document_05_p1.png"]}, {"id": "30306", "src": "../dataset-v2/dev2/case_03/document_06.pdf", "ext": "pdf", "name": "document_06.pdf", "type": "납품 검수확인서", "views": ["views/case_03_document_06_p1.png"]}], "doctype": {"30301": "외주용역 계약서", "30302": "견적서", "30303": "사업자등록증", "30304": "통장사본", "30305": "전자세금계산서", "30306": "납품 검수확인서"}, "fields": {"30301": {"company_name": {"state": "VALUE", "value": "가상 한결기획 3"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03031"}, "supply_amount": {"state": "VALUE", "value": 3973000}, "tax_amount": {"state": "VALUE", "value": 397300}, "total_amount": {"state": "VALUE", "value": 4370300}, "issue_date": {"state": "VALUE", "value": "2026-09-18"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30302": {"company_name": {"state": "VALUE", "value": "가상 한결기획 3"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03031"}, "supply_amount": {"state": "VALUE", "value": 3973000}, "tax_amount": {"state": "VALUE", "value": 397300}, "total_amount": {"state": "VALUE", "value": 4370300}, "issue_date": {"state": "VALUE", "value": "2026-09-18"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30303": {"company_name": {"state": "VALUE", "value": "가상 한결기획 3"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03031"}, "supply_amount": {"state": "ABSENT", "value": null}, "tax_amount": {"state": "ABSENT", "value": null}, "total_amount": {"state": "ABSENT", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-18"}, "amount_scope": {"state": "ABSENT", "value": null}}, "30304": {"company_name": {"state": "VALUE", "value": "가상 한결기획 3"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03031"}, "supply_amount": {"state": "ABSENT", "value": null}, "tax_amount": {"state": "ABSENT", "value": null}, "total_amount": {"state": "ABSENT", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-18"}, "amount_scope": {"state": "ABSENT", "value": null}}, "30305": {"company_name": {"state": "VALUE", "value": "가상 한결기획 3"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03031"}, "supply_amount": {"state": "VALUE", "value": 3973000}, "tax_amount": {"state": "VALUE", "value": 397300}, "total_amount": {"state": "VALUE", "value": 4370300}, "issue_date": {"state": "VALUE", "value": "2026-09-18"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30306": {"company_name": {"state": "VALUE", "value": "가상 한결기획 3"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03031"}, "supply_amount": {"state": "VALUE", "value": 3973000}, "tax_amount": {"state": "VALUE", "value": 397300}, "total_amount": {"state": "VALUE", "value": 4370300}, "issue_date": {"state": "VALUE", "value": "2026-09-18"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}}}, "304": {"case": "case_04", "vendor": "가상 한결기획 4", "bno": "000-00-03045", "basis": "합계 기준 4,521,000원", "cmp": 4521000, "pay": "일시(전액) 지급", "docs": [{"id": "30401", "src": "../dataset-v2/dev2/case_04/document_01.pdf", "ext": "pdf", "name": "document_01.pdf", "type": "외주용역 계약서", "views": ["views/case_04_document_01_p1.png"]}, {"id": "30402", "src": "../dataset-v2/dev2/case_04/document_02.pdf", "ext": "pdf", "name": "document_02.pdf", "type": "견적서", "views": ["views/case_04_document_02_p1.png"]}, {"id": "30403", "src": "../dataset-v2/dev2/case_04/document_03.pdf", "ext": "pdf", "name": "document_03.pdf", "type": "사업자등록증", "views": ["views/case_04_document_03_p1.png"]}, {"id": "30404", "src": "../dataset-v2/dev2/case_04/document_04.pdf", "ext": "pdf", "name": "document_04.pdf", "type": "통장사본", "views": ["views/case_04_document_04_p1.png"]}, {"id": "30405", "src": "../dataset-v2/dev2/case_04/document_05.pdf", "ext": "pdf", "name": "document_05.pdf", "type": "전자세금계산서", "views": ["views/case_04_document_05_p1.png"]}, {"id": "30406", "src": "../dataset-v2/dev2/case_04/document_06.pdf", "ext": "pdf", "name": "document_06.pdf", "type": "납품 검수확인서", "views": ["views/case_04_document_06_p1.png"]}], "doctype": {"30401": "외주용역 계약서", "30402": "견적서", "30403": "사업자등록증", "30404": "통장사본", "30405": "전자세금계산서", "30406": "납품 검수확인서"}, "fields": {"30401": {"company_name": {"state": "VALUE", "value": "가상 한결기획 4"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03045"}, "supply_amount": {"state": "VALUE", "value": 4110000}, "tax_amount": {"state": "VALUE", "value": 411000}, "total_amount": {"state": "VALUE", "value": 4521000}, "issue_date": {"state": "VALUE", "value": "2026-09-19"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30402": {"company_name": {"state": "VALUE", "value": "가상 한결기획 4"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03045"}, "supply_amount": {"state": "VALUE", "value": 4110000}, "tax_amount": {"state": "VALUE", "value": 411000}, "total_amount": {"state": "REVIEW", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-19"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30403": {"company_name": {"state": "VALUE", "value": "가상 한결기획 4"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03045"}, "supply_amount": {"state": "ABSENT", "value": null}, "tax_amount": {"state": "ABSENT", "value": null}, "total_amount": {"state": "ABSENT", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-19"}, "amount_scope": {"state": "ABSENT", "value": null}}, "30404": {"company_name": {"state": "VALUE", "value": "가상 한결기획 4"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03045"}, "supply_amount": {"state": "ABSENT", "value": null}, "tax_amount": {"state": "ABSENT", "value": null}, "total_amount": {"state": "ABSENT", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-19"}, "amount_scope": {"state": "ABSENT", "value": null}}, "30405": {"company_name": {"state": "VALUE", "value": "가상 한결기획 4"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03045"}, "supply_amount": {"state": "VALUE", "value": 4110000}, "tax_amount": {"state": "VALUE", "value": 411000}, "total_amount": {"state": "VALUE", "value": 4521000}, "issue_date": {"state": "VALUE", "value": "2026-09-19"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30406": {"company_name": {"state": "VALUE", "value": "가상 한결기획 4"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03045"}, "supply_amount": {"state": "VALUE", "value": 4110000}, "tax_amount": {"state": "VALUE", "value": 411000}, "total_amount": {"state": "VALUE", "value": 4521000}, "issue_date": {"state": "VALUE", "value": "2026-09-19"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}}}, "305": {"case": "case_05", "vendor": "가상 한결기획 5", "bno": "000-00-03050", "basis": "합계 기준 4,671,700원", "cmp": 4671700, "pay": "일시(전액) 지급", "docs": [{"id": "30501", "src": "../dataset-v2/dev2/case_05/document_01.pdf", "ext": "pdf", "name": "document_01.pdf", "type": "외주용역 계약서", "views": ["views/case_05_document_01_p1.png"]}, {"id": "30502", "src": "../dataset-v2/dev2/case_05/document_02.pdf", "ext": "pdf", "name": "document_02.pdf", "type": "견적서", "views": ["views/case_05_document_02_p1.png", "views/case_05_document_02_p2.png"]}, {"id": "30503", "src": "../dataset-v2/dev2/case_05/document_03.pdf", "ext": "pdf", "name": "document_03.pdf", "type": "사업자등록증", "views": ["views/case_05_document_03_p1.png"]}, {"id": "30504", "src": "../dataset-v2/dev2/case_05/document_04.pdf", "ext": "pdf", "name": "document_04.pdf", "type": "통장사본", "views": ["views/case_05_document_04_p1.png"]}, {"id": "30505", "src": "../dataset-v2/dev2/case_05/document_05.pdf", "ext": "pdf", "name": "document_05.pdf", "type": "전자세금계산서", "views": ["views/case_05_document_05_p1.png"]}, {"id": "30506", "src": "../dataset-v2/dev2/case_05/document_06.pdf", "ext": "pdf", "name": "document_06.pdf", "type": "납품 검수확인서", "views": ["views/case_05_document_06_p1.png"]}], "doctype": {"30501": "외주용역 계약서", "30502": "견적서", "30503": "사업자등록증", "30504": "통장사본", "30505": "전자세금계산서", "30506": "납품 검수확인서"}, "fields": {"30501": {"company_name": {"state": "VALUE", "value": "가상 한결기획 5"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03050"}, "supply_amount": {"state": "VALUE", "value": 4247000}, "tax_amount": {"state": "VALUE", "value": 424700}, "total_amount": {"state": "VALUE", "value": 4671700}, "issue_date": {"state": "VALUE", "value": "2026-09-20"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30502": {"company_name": {"state": "VALUE", "value": "가상 한결기획 5"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03050"}, "supply_amount": {"state": "VALUE", "value": 4247000}, "tax_amount": {"state": "VALUE", "value": 424700}, "total_amount": {"state": "VALUE", "value": 4671700}, "issue_date": {"state": "VALUE", "value": "2026-09-20"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30503": {"company_name": {"state": "VALUE", "value": "가상 한결기획 5"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03050"}, "supply_amount": {"state": "ABSENT", "value": null}, "tax_amount": {"state": "ABSENT", "value": null}, "total_amount": {"state": "ABSENT", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-20"}, "amount_scope": {"state": "ABSENT", "value": null}}, "30504": {"company_name": {"state": "VALUE", "value": "가상 한결기획 5"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03050"}, "supply_amount": {"state": "ABSENT", "value": null}, "tax_amount": {"state": "ABSENT", "value": null}, "total_amount": {"state": "ABSENT", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-20"}, "amount_scope": {"state": "ABSENT", "value": null}}, "30505": {"company_name": {"state": "VALUE", "value": "가상 한결기획 5"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03050"}, "supply_amount": {"state": "VALUE", "value": 4247000}, "tax_amount": {"state": "VALUE", "value": 424700}, "total_amount": {"state": "VALUE", "value": 4671700}, "issue_date": {"state": "VALUE", "value": "2026-09-20"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30506": {"company_name": {"state": "VALUE", "value": "가상 한결기획 5"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03050"}, "supply_amount": {"state": "VALUE", "value": 4247000}, "tax_amount": {"state": "VALUE", "value": 424700}, "total_amount": {"state": "VALUE", "value": 4671700}, "issue_date": {"state": "VALUE", "value": "2026-09-20"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}}}, "306": {"case": "case_06", "vendor": "가상 한결기획 6", "bno": "000-00-03064", "basis": "합계 기준 4,822,400원", "cmp": 4822400, "pay": "일시(전액) 지급", "docs": [{"id": "30601", "src": "../dataset-v2/dev2/case_06/document_01.pdf", "ext": "pdf", "name": "document_01.pdf", "type": "외주용역 계약서", "views": ["views/case_06_document_01_p1.png"]}, {"id": "30602", "src": "../dataset-v2/dev2/case_06/document_02.pdf", "ext": "pdf", "name": "document_02.pdf", "type": "견적서", "views": ["views/case_06_document_02_p1.png"]}, {"id": "30603", "src": "../dataset-v2/dev2/case_06/document_03.pdf", "ext": "pdf", "name": "document_03.pdf", "type": "사업자등록증", "views": ["views/case_06_document_03_p1.png"]}, {"id": "30604", "src": "../dataset-v2/dev2/case_06/document_04.pdf", "ext": "pdf", "name": "document_04.pdf", "type": "통장사본", "views": ["views/case_06_document_04_p1.png"]}, {"id": "30605", "src": "../dataset-v2/dev2/case_06/document_05.pdf", "ext": "pdf", "name": "document_05.pdf", "type": "전자세금계산서", "views": ["views/case_06_document_05_p1.png"]}, {"id": "30606", "src": "../dataset-v2/dev2/case_06/document_06.pdf", "ext": "pdf", "name": "document_06.pdf", "type": "납품 검수확인서", "views": ["views/case_06_document_06_p1.png"]}], "doctype": {"30601": "외주용역 계약서", "30602": "견적서", "30603": "사업자등록증", "30604": "통장사본", "30605": "전자세금계산서", "30606": "납품 검수확인서"}, "fields": {"30601": {"company_name": {"state": "VALUE", "value": "가상 한결기획 6"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03064"}, "supply_amount": {"state": "VALUE", "value": 4384000}, "tax_amount": {"state": "VALUE", "value": 438400}, "total_amount": {"state": "VALUE", "value": 4822400}, "issue_date": {"state": "VALUE", "value": "2026-09-21"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30602": {"company_name": {"state": "VALUE", "value": "가상 한결기획 6"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03064"}, "supply_amount": {"state": "VALUE", "value": 4384000}, "tax_amount": {"state": "VALUE", "value": 438400}, "total_amount": {"state": "VALUE", "value": 4822400}, "issue_date": {"state": "VALUE", "value": "2026-09-21"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30603": {"company_name": {"state": "VALUE", "value": "가상 한결기획 6"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03064"}, "supply_amount": {"state": "ABSENT", "value": null}, "tax_amount": {"state": "ABSENT", "value": null}, "total_amount": {"state": "ABSENT", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-21"}, "amount_scope": {"state": "ABSENT", "value": null}}, "30604": {"company_name": {"state": "VALUE", "value": "가상 한결기획 6"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03064"}, "supply_amount": {"state": "ABSENT", "value": null}, "tax_amount": {"state": "ABSENT", "value": null}, "total_amount": {"state": "ABSENT", "value": null}, "issue_date": {"state": "VALUE", "value": "2026-09-21"}, "amount_scope": {"state": "ABSENT", "value": null}}, "30605": {"company_name": {"state": "VALUE", "value": "가상 한결기획 6"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03064"}, "supply_amount": {"state": "VALUE", "value": 4384000}, "tax_amount": {"state": "VALUE", "value": 438400}, "total_amount": {"state": "VALUE", "value": 4822400}, "issue_date": {"state": "VALUE", "value": "2026-09-21"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}, "30606": {"company_name": {"state": "VALUE", "value": "가상 한결기획 6"}, "business_registration_no": {"state": "VALUE", "value": "000-00-03064"}, "supply_amount": {"state": "VALUE", "value": 4384000}, "tax_amount": {"state": "VALUE", "value": 438400}, "total_amount": {"state": "VALUE", "value": 4822400}, "issue_date": {"state": "VALUE", "value": "2026-09-21"}, "amount_scope": {"state": "VALUE", "value": "FULL"}}}}}, "items": [], "source_xlsx": null, "source_xlsx_sha256": null};
+const STORE = `human-review-${DATA.split||"dev"}-${DATA.source_xlsx_sha256||DATA.generated}`;
+let state = {alias:"", answers:{}};
+try { const s = JSON.parse(localStorage.getItem(STORE)||"null"); if (s && s.answers) state = s; } catch(e) {}
+function save(){ try { localStorage.setItem(STORE, JSON.stringify(state)); } catch(e) {} }
+
+const $ = id => document.getElementById(id);
+let filter = "imp", idx = 0, curDoc = null;
+const items = DATA.items;
+function list(){ return items.filter(it => filter==="all" || (filter==="imp" ? it.important : !it.important)); }
+
+$("alias").value = state.alias || "";
+$("alias").addEventListener("input", e => { state.alias = e.target.value.trim(); save(); });
+
+function plain(html){ const d=document.createElement("div"); d.innerHTML=html; d.querySelectorAll(".interp,.claimlbl").forEach(x=>x.remove()); return d.textContent.replace(/\s+/g," ").trim(); }
+function defaultReason(it){
+  return `원문 직접 확인: ${it.label} — "${plain(it.q)}" 맞음`;
+}
+
+function renderDoc(c, docId){
+  curDoc = docId;
+  const tabs = $("doctabs"); tabs.innerHTML = "";
+  const cap = document.createElement("span"); cap.className="cap"; cap.textContent = c.case + " 제출 문서:"; tabs.appendChild(cap);
+  c.docs.forEach(d => {
+    const b = document.createElement("button");
+    b.textContent = d.type + " (" + d.ext + ")";
+    if (d.id === docId) b.className = "on";
+    b.onclick = () => renderDoc(c, d.id);
+    tabs.appendChild(b);
+  });
+  const area = $("docarea"); area.innerHTML = "";
+  const d = c.docs.find(x => x.id === docId);
+  if (!d){ area.innerHTML = '<div class="noview">이 문항은 계약 전체에 대한 질문입니다.<br>위 버튼을 눌러 문서를 하나씩 볼 수 있습니다.</div>'; return; }
+  if (d.ext === "png" || d.ext === "pdf"){
+    const wrap = document.createElement("div"); wrap.style.width = "100%"; wrap.style.maxWidth = "1000px";
+    const note = document.createElement("div"); note.className = "pdfnote";
+    note.innerHTML = (d.ext==="pdf" ? "PDF" : "이미지") + ' 원문에서 빈 여백만 잘라 크게 보여줍니다(글자는 원문 그대로). <a href="'+d.src+'" target="_blank">원본 파일 전체 보기</a>';
+    wrap.appendChild(note);
+    d.views.forEach(src => { const img = document.createElement("img"); img.src = src; img.alt = d.name;
+      img.onclick = () => img.classList.toggle("zoom");
+      img.onerror = () => { note.textContent = "그림을 불러오지 못했습니다: " + src; };
+      wrap.appendChild(img); });
+    area.appendChild(wrap);
+  } else {
+    const p = document.createElement("div"); p.className = "docx";
+    p.innerHTML = '<div class="warn">Word(.docx) 파일입니다. 브라우저가 Word를 직접 보여줄 수 없어 <b>파일 속 글자를 그대로 꺼내 보여줍니다</b>. 글자 내용은 원문과 같고, 줄 배치만 Word 화면과 다를 수 있습니다. <a href="'+d.src+'">Word로 열기</a></div>';
+    d.lines.forEach((ln,i) => { const e=document.createElement("div"); if(i===0) e.className="t"; e.textContent = ln; p.appendChild(e); });
+    area.appendChild(p);
+  }
+}
+
+function render(){
+  const L = list();
+  const total = items.length, done = items.filter(it => state.answers[it.key] && state.answers[it.key].k !== "보류").length;
+  const fdone = L.filter(it => state.answers[it.key] && state.answers[it.key].k !== "보류").length;
+  $("progtxt").textContent = `이 목록 ${fdone}/${L.length} · 전체 ${done}/${total}`;
+  $("progbar").style.width = (100*done/total)+"%";
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.f===filter));
+  if (!L.length) {
+    $("q").textContent = DATA.ready ? "이 목록에 확인할 항목이 없습니다." : "Claude 독립 판독 결과 대기 중입니다. 응답 대조 후 사람 확인 목록을 생성합니다.";
+    $("export").disabled = !DATA.ready;
+    return;
+  }
+  idx = Math.max(0, Math.min(idx, L.length-1));
+  const it = L[idx], c = DATA.cases[it.cid];
+  $("reg").innerHTML = `<b>등록 계약</b><span>${c.case} · ${c.vendor}</span><b>사업자번호</b><span>${c.bno}</span><b>금액 기준</b><span>${c.basis}</span><b>지급 방식</b><span>${c.pay}</span>`;
+  $("pos").textContent = `${idx+1} / ${L.length}`;
+  $("label").textContent = it.label;
+  $("tag").textContent = it.important ? "꼭 볼 것 · " + it.reason_tag : "무작위 표본";
+  $("tag").className = "tag" + (it.important ? " imp" : "");
+  $("q").innerHTML = it.q;
+  $("hint").textContent = it.hint;
+  $("hint").classList.toggle("hidden", !it.hint);
+  $("excel").textContent = `엑셀 위치: ${it.sheet} 시트 ${it.row}행 · 제안 답 ${it.excel} · ID ${it.id}`;
+  if (curDoc !== it.doc || $("doctabs").dataset.cid !== it.cid){ renderDoc(c, it.doc); $("doctabs").dataset.cid = it.cid; }
+  const a = state.answers[it.key];
+  ["ay","an","ah"].forEach(id => $(id).classList.remove("on"));
+  const st = $("status");
+  if (a){
+    $({"확인":"ay","수정 필요":"an","보류":"ah"}[a.k]).classList.add("on");
+    $("reason").value = a.reason || "";
+    st.className = "status " + {"확인":"y","수정 필요":"n","보류":"h"}[a.k];
+    st.textContent = {"확인":"✓ 맞다고 확인함","수정 필요":"✗ 원문과 다르다고 표시함","보류":"… 보류함"}[a.k] + ` (${a.at.replace("T"," ").slice(0,16)})`;
+  } else { $("reason").value = ""; st.className="status"; st.textContent = "아직 답하지 않음"; }
+  $("reasonlabel").textContent = a && a.k==="수정 필요" ? "원문에 실제로 뭐라고 되어 있나요? (꼭 적어주세요)" : "판단 근거 (자동으로 채워집니다. 고쳐도 됩니다)";
+}
+
+function answer(k){
+  if (!DATA.ready || !list().length) return;
+  if (!state.alias){ alert("먼저 위쪽에 검수자 이름을 적어주세요."); $("alias").focus(); return; }
+  const it = list()[idx];
+  let reason = $("reason").value.trim();
+  const prev = state.answers[it.key];
+  if (k === "확인" && (!reason || (prev && prev.k !== "확인"))) reason = defaultReason(it);
+  if (k === "수정 필요" && (!reason || (prev && prev.k === "확인") || reason === defaultReason(it))) reason = "";
+  if (k === "보류" && !reason) reason = "";
+  state.answers[it.key] = {k, reason, at:new Date().toISOString(), by:state.alias};
+  save(); render();
+  if (k === "수정 필요"){ $("reason").focus(); return; }
+  if (k === "확인") setTimeout(() => nextOpen(), 250);
+}
+$("reason").addEventListener("input", () => {
+  const it = list()[idx]; if (!it) return; const a = state.answers[it.key];
+  if (a){ a.reason = $("reason").value; save(); }
+});
+function nextOpen(){
+  const L = list();
+  for (let s=1; s<=L.length; s++){ const j=(idx+s)%L.length; if (!state.answers[L[j].key]){ idx=j; render(); return; } }
+  render(); if (!L.some(it => !state.answers[it.key])) $("status").textContent = "이 목록은 모두 답했습니다. 다른 탭을 보거나 결과 파일을 저장하세요.";
+}
+$("ay").onclick = () => answer("확인");
+$("an").onclick = () => answer("수정 필요");
+$("ah").onclick = () => answer("보류");
+$("prev").onclick = () => { idx--; render(); };
+$("next").onclick = () => { idx++; render(); };
+$("nextopen").onclick = nextOpen;
+document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => { filter=b.dataset.f; idx=0; render(); });
+document.addEventListener("keydown", e => {
+  if (["INPUT","TEXTAREA"].includes(document.activeElement.tagName)) return;
+  if (e.key==="1") answer("확인"); else if (e.key==="2") answer("수정 필요"); else if (e.key==="3") answer("보류");
+  else if (e.key==="ArrowRight") { idx++; render(); } else if (e.key==="ArrowLeft") { idx--; render(); }
+});
+$("export").onclick = () => {
+  if (!DATA.ready) return;
+  const missingReason = items.filter(it => state.answers[it.key] && state.answers[it.key].k==="수정 필요" && !state.answers[it.key].reason);
+  if (missingReason.length && !confirm(`'아니에요'로 표시했지만 이유를 안 적은 문항이 ${missingReason.length}개 있습니다. 그래도 저장할까요?`)) return;
+  const out = {
+    reviewer: state.alias, exported_at: new Date().toISOString(),
+    source_xlsx: DATA.source_xlsx, source_xlsx_sha256: DATA.source_xlsx_sha256, split:DATA.split, page_generated: DATA.generated,
+    note: "검수자가 이 페이지에서 원문 이미지/PDF/DOCX 글자를 직접 보고 클릭한 기록. K열=decision, L열=reason.",
+    counts: {total: items.length, answered: Object.keys(state.answers).length},
+    items: items.map(it => { const a = state.answers[it.key]||null;
+      return {sheet:it.sheet, row:it.row, id:it.id, label:it.label, important:it.important,
+              decision: a ? a.k : null, reason: a ? a.reason : null, reviewed_at: a ? a.at : null, reviewer: a ? a.by : null}; })
+  };
+  const blob = new Blob([JSON.stringify(out, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob); const link = document.createElement("a");
+  link.href = url; link.download = `human_review_result_${DATA.split||"dev"}_${(state.alias||"reviewer").replace(/[^\w가-힣-]/g,"_")}.json`;
+  document.body.appendChild(link); link.click(); link.remove(); setTimeout(()=>URL.revokeObjectURL(url), 1000);
+};
+render();
+</script>
+</body>
+</html>

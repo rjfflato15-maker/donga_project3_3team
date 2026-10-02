@@ -1,0 +1,9 @@
+{
+  "dataset_version": "synthetic-hard-v2",
+  "split": "test",
+  "review": {
+    "confirmed": false
+  },
+  "documents": {},
+  "contracts": {}
+}

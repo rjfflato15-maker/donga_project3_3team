@@ -1,0 +1,48 @@
+{
+  "dataset_version": "synthetic-hard-v2",
+  "split": "test",
+  "contract_id": 401,
+  "input": {
+    "title": "가상 test2 시스템 구축 1",
+    "vendor_name": "가상 새봄기획 1",
+    "business_number": "000-00-04011",
+    "contract_amount": 4521000,
+    "amount_policy": {
+      "amount_basis": "TOTAL",
+      "tax_amount": null,
+      "payment_mode": "FULL"
+    }
+  },
+  "documents": [
+    {
+      "document_id": 40101,
+      "path": "document_01.pdf",
+      "sha256": "3aebea6df1738f0d234bb167adaee202c05062effe8854864ddde04bb6a28d36"
+    },
+    {
+      "document_id": 40102,
+      "path": "document_02.pdf",
+      "sha256": "3da07a2125d99f2e6a2551ae25b869ef7cb5290d6288463dee9637e26ff173bb"
+    },
+    {
+      "document_id": 40103,
+      "path": "document_03.pdf",
+      "sha256": "ae96741fbcbda82ce9f84f8375ad6a6dd64c88dae1db6d2511d69665910b56cb"
+    },
+    {
+      "document_id": 40104,
+      "path": "document_04.pdf",
+      "sha256": "96f9e960d847760bbc67ad991c455073153db16561dea13a71dc76f9df6e1bec"
+    },
+    {
+      "document_id": 40105,
+      "path": "document_05.pdf",
+      "sha256": "2c88c88a5cee40d84d0243de76126e300a332262aaac59fc14166ebc871e1804"
+    },
+    {
+      "document_id": 40106,
+      "path": "document_06.pdf",
+      "sha256": "e5d8c773c67edc97e1102be08205bd6440cd8630bffa1fe877105f68d15d0af4"
+    }
+  ]
+}

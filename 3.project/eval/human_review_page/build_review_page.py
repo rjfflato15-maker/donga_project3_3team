@@ -277,12 +277,15 @@ def sort_key(x):
         pri = 2 if "BUSINESS_STATUS" in x["id"] else (1 if x["label"].startswith("검수확인서") else 0)
         return (0, pri, x["cid"], first_doc, x["row"])
     return (1, 0, x["cid"], first_doc, x["row"])
-def build_page(*, split="dev", dataset=None, blind=None, output=None, workbook=None):
+def build_page(*, split="dev", dataset=None, blind=None, output=None, workbook=None, source_directory=None):
     global PAGE_DIR, BLIND, DEV, RAW
     dataset = Path(dataset or Path(PROJ)/"eval/dataset").resolve()
     BLIND = str(Path(blind or Path(PROJ)/("eval/claude_blind_review" + ("_test" if split == "test" else ""))).resolve())
     PAGE_DIR = str(Path(output or Path(PROJ)/("eval/human_review_page" + ("_test" if split == "test" else ""))).resolve())
-    DEV = str(dataset/split)
+    source = Path(source_directory or dataset/split).resolve()
+    if not source.is_relative_to(dataset):
+        raise ValueError("검수 원문 폴더는 평가 자료 폴더 안에 있어야 합니다.")
+    DEV = str(source)
     Path(PAGE_DIR).mkdir(parents=True, exist_ok=True)
     reference = json.loads((dataset/f"reference_labels_{split}.json").read_text(encoding="utf-8"))
     cases = load_cases(reference)
@@ -316,8 +319,9 @@ def main():
     parser.add_argument("--blind",type=Path)
     parser.add_argument("--output",type=Path)
     parser.add_argument("--workbook",type=Path)
+    parser.add_argument("--source-directory",type=Path)
     args=parser.parse_args()
-    data=build_page(split=args.split,dataset=args.dataset,blind=args.blind,output=args.output,workbook=args.workbook)
+    data=build_page(split=args.split,dataset=args.dataset,blind=args.blind,output=args.output,workbook=args.workbook,source_directory=args.source_directory)
     print("검수 페이지:",args.split,"확인 목록",len(data["items"]),"칸 /", "사람 확인 대기" if data["ready"] else "Claude 독립 판독 대기; 확정 불가")
 
 
