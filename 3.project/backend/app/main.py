@@ -50,11 +50,16 @@ app.add_middleware(
 # Health check
 @app.get("/health", tags=["Health"])
 def health_check():
-    return {
+    result = {
         "status": "ok",
         "service": "AI Contract Evidence Manager",
         "version": "1.0.0",
     }
+    # Opaque launcher identity prevents reusing/stopping an unrelated server
+    # occupying the same port. Never expose database paths or credentials.
+    if os.getenv("APP_LAUNCHER_INSTANCE"):
+        result.update(launcher_instance=os.environ["APP_LAUNCHER_INSTANCE"], launcher_pid=os.getpid())
+    return result
 
 
 # Include API Routers

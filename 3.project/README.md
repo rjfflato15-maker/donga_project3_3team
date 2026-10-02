@@ -26,62 +26,29 @@
 - **Document AI & Preprocessing**: `pypdf`, 정규식 기반 개인정보 탐지/마스킹, 시그니처 가중치 분류기
 - **External Integration**: 국세청(NTS) 사업자등록 상태조회 API (`RealNtsClient` + `MockNtsClient`)
 - **Frontend**: React 18, TypeScript, Tailwind CSS, Vite, Lucide Icons
-- **Testing**: `pytest` 8개 단위/통합 테스트 완비
+- **Testing**: `pytest` 백엔드 회귀 검증과 TypeScript·Vite 프런트 빌드
 
 ---
 
-## 3. 실행 방법 (Quick Start - VS Code 없이 실행 가능)
+## 3. C업체 시범 앱 실행
 
-### 3-1. [추천 1] 윈도우 탐색기 원클릭 실행 (배치 파일)
-VS Code나 터미널 입력 없이, 파일 탐색기에서 더블클릭만으로 즉시 구동할 수 있습니다:
-- **`start_dev.bat`**: 더블클릭 시 백엔드(FastAPI 8000)와 프론트엔드(Vite 5173)를 동시 실행하고 브라우저를 자동 엽니다. (개발/수정용)
-- **`start_server.bat`**: 더블클릭 시 프론트엔드를 빌드하여 포트 8000 하나로 통합 구동하고 브라우저를 엽니다. (배포/데모용)
-- **`setup.bat`**: 파이썬 가상환경 생성 및 백엔드/프론트엔드 라이브러리 전체 자동 설치.
+**평소에는 이 폴더의 `C-Pilot.exe`만 더블클릭합니다.** 서버가 준비되면 브라우저가 열리고, 다시 실행해도 같은 서버에 접속합니다. 실행 창을 닫아도 서버는 계속 실행됩니다. 서버 종료·환경 준비·실행 설정·백업·복원은 실행 창에서 **M**을 입력해 관리 메뉴로 들어갑니다.
 
-### 3-2. [추천 2] 루트 패키지 명령어 (`npm` 기반 통합 패키지)
-터미널(PowerShell, CMD, Git Bash 등) 어디서든 프로젝트 루트 경로에서 실행할 수 있습니다:
-```bash
-# 최초 1회: 가상환경 및 모든 의존성 자동 설치
-npm run setup
+Git에서 처음 받은 소스에는 EXE가 없습니다. **최초 한 번 `start_pilot.bat`을 더블클릭**하면 Windows .NET Framework 컴파일러로 `C-Pilot.exe`를 만듭니다. 이후에는 EXE만 사용하면 됩니다. EXE 소스는 `tools/launcher/Program.cs`이며 생성된 파일은 Git에서 제외합니다.
 
-# 개발 서버 실행 (백엔드 + 프론트엔드 동시 실행 & 핫 리로드)
-npm run dev
+새 PC에는 Python 3.12와 Node.js가 필요합니다. 관리 메뉴 **3번 환경 준비 → 4번 업무함 준비 → 1번 실행** 순서로 진행합니다. Node.js는 초기 화면 빌드에 필요하며, 평소 실행에는 준비된 Python 환경과 화면 빌드를 사용합니다. 최초 패키지 준비에는 다운로드가 필요합니다. 인터넷이 없는 사내망의 설치는 별도 반입 절차를 따릅니다.
 
-# 프로덕션 통합 단일 서버 실행 (포트 8000 하나로 API + 웹 화면 서빙)
-npm start
+회사·직원 계정·필수서류는 로그인 후 기존 앱의 **업무 설정 · 계정**에서 관리합니다. 실행 설정은 포트·자료 폴더·백업 폴더·사내망 접속 허용 여부입니다. 기본 접속 주소는 `http://127.0.0.1:8000/`이며 기본적으로 현재 PC만 접속합니다. 로컬 LLM과 국세청 외부 조회는 통합 실행기에서 꺼 둡니다.
 
-# 프론트엔드 단독 빌드
-npm run build
+EXE는 프로젝트의 실행 입구입니다. Python·앱 소스·Ollama 모델을 한 파일에 담은 설치형 패키지는 아니므로 **EXE만 다른 PC로 복사해서 실행할 수는 없습니다.** [실행·보안·백업·유지보수 안내](docs/operations/run_guide.md)를 참고하세요.
 
-# 백엔드 단위/통합 테스트 (pytest 29개 테스트)
-npm test
-```
-- 프론트엔드 UI: `http://localhost:5173` (개발 모드) 또는 `http://localhost:8000` (프로덕션 모드)
-- 백엔드 Swagger API 문서: `http://localhost:8000/docs`
-
-### 3-3. [추천 3] Docker 컨테이너 패키징
-로컬에 Python이나 Node.js가 설치되어 있지 않아도 Docker만 있으면 한 줄로 구동 가능합니다:
-```bash
-docker compose up --build
-```
-- 접속 주소: `http://localhost:8000`
-
-### 3-4. 수동 실행 방식 (전통적 방식)
-```powershell
-# 백엔드 실행
-.\backend\.venv\Scripts\Activate.ps1
-python -m uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
-
-# 프론트엔드 실행 (별도 터미널)
-cd frontend
-npm run dev
-```
+개발자가 화면을 수정할 때는 기존 `start_dev.bat` 또는 `npm run dev`를 사용합니다. 기존 `start_server.bat`, `setup.bat`, PowerShell 운영 스크립트와 Docker 구성은 별도 개발·운영 도구입니다. C업체 시범 사용자의 기본 실행 경로는 위 통합 실행기입니다.
 
 ---
 
 ## 4. 기획서 데모 시나리오 안내 ("ABC 홈페이지 구축 외주 계약")
 
-시스템 최초 실행 시 기획서 슬라이드 1 및 4페이지의 검수 시나리오가 자동 적재됩니다:
+기존 개발 모드에서는 비어 있는 DB에 기획서의 검수 시나리오를 적재합니다. C업체 시범 모드는 실제 업무함과 분리되며 이 데모 계약을 자동 적재하지 않습니다:
 - **총 계약금액**: 11,000,000 원
 - **제출된 증빙 (5종)**:
   - 계약서: 정상 제출 (`contract`)

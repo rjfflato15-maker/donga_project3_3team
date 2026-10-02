@@ -33,6 +33,8 @@ storage/masked/*
 storage/*.png
 storage/pilot/
 storage/backups/
+storage/launcher/
+/C-Pilot.exe
 backups/
 initial-accounts.txt
 

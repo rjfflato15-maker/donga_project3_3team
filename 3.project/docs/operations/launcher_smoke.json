@@ -1,0 +1,22 @@
+{
+  "initial_database_absent": true,
+  "init_result": {
+    "result": "prepared",
+    "contracts": 0,
+    "documents": 0,
+    "originals_copied": 0,
+    "missing_originals": 0
+  },
+  "first_start": "started",
+  "ready": true,
+  "repeat_start": "reused",
+  "same_server": true,
+  "backup_has_database": true,
+  "backup_excludes_initial_passwords": true,
+  "stop": "stopped",
+  "server_stopped": true,
+  "restored_to_new_folder": true,
+  "restored_start": "started",
+  "restored_ready": true,
+  "final_server_stopped": true
+}
