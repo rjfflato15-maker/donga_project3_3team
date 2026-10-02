@@ -1,12 +1,21 @@
 """Observed workflow timing; elapsed time is not active work or measured savings."""
 from statistics import median
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..db.database import get_db
 from ..db.models import ContractReview, Document, AuditEvent
 from ..services.contract_service import ContractService
 
 router = APIRouter(tags=["C Pilot Measurements"])
+
+
+@router.get('/api/pilot/performance')
+def measured_performance(contract_id: int = None, db: Session = Depends(get_db)):
+    from ..services.performance_service import performance
+    report=performance(db,contract_id)
+    if contract_id is not None and not report['contracts']:
+        raise HTTPException(404,'계약을 찾을 수 없습니다.')
+    return report
 
 
 @router.get("/api/pilot/metrics")

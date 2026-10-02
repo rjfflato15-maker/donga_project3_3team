@@ -27,10 +27,18 @@ router = APIRouter(tags=["C Pilot"])
 @router.get("/api/pilot/info")
 def pilot_info(db: Session = Depends(get_db)):
     name = db.get(CompanySetting, "company_name")
+    from ..services.llm_status_service import llm_status
+    state=llm_status()
     return {"company_name": json.loads(name.value) if name else "C업체 시범환경",
             "deployment_mode": DEPLOYMENT_MODE, "local_database": DATABASE_URL.startswith("sqlite"),
-            "nts_mode": NTS_MODE, "llm_connected": False,
+            "nts_mode": NTS_MODE, "llm_connected": state['connected'], "llm":state,
             "required_document_types": [t.value for t in required_types(db)]}
+
+
+@router.get('/api/pilot/llm-status')
+def current_llm_status():
+    from ..services.llm_status_service import llm_status
+    return llm_status(probe=True)
 
 
 class SettingsUpdate(BaseModel):

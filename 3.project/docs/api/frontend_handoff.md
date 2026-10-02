@@ -133,3 +133,30 @@ evidence.page는 1부터 시작하고 preview-image의 page query는 0부터 시
 ```
 
 예시의 fields는 일부만 표기했다. 실제로 모든 AnalysisFields를 반환한다. 읽기 API는 revision을 바꾸지 않는다. 등록 조건 누락/다른 종류는 400, 대상 없음/다른 계약 문서/비교 불가 대상은 404, 오래된 revision·이미 교체된 문서는 `409 {"detail":"분석 중 계약 자료가 변경되었습니다. 새로고침 후 다시 등록하세요."}` 등 충돌 사유를 반환한다. 재발행 OCR 실패는 `422 {"detail":"재발행본을 읽지 못했습니다. 이전 버전은 유지됩니다. 파일을 확인하세요."}`다. 실패 시 이전 활성 문서·값·revision·결재가 그대로 유지된다. 분석은 DB 게시 잠금 밖에서 실행하고 게시 직전에 revision을 다시 검사한다. 기존 자료에 버전 행이 없어도 버전 1로 읽으며 재발행 시 이력을 생성한다. 새 DB 테이블만 추가해 기존 DB를 재생성하지 않는다.
+## 성과 수치와 LLM 상태 (2026-10-03)
+
+`GET /api/pilot/performance` 또는 `?contract_id=3`은 다음과 같이 실제 기록만 반환한다. active_review_seconds와 measured_time_saving_seconds는 아직 측정하지 않아 null이다. 사람 수정은 before/after 값 차이를 센다. 같은 값 저장은 저장 횟수 1회, 바뀐 칸 0개다. field_edit_count는 수정마다 바뀐 칸의 합계, unique_field_count는 문서·필드별 중복을 뺀 칸 수다. 이전 버전의 사람 수정도 계약 이력에 포함한다.
+
+```json
+{"timing_basis":"계약 등록 → 현재 자료의 최종 대표 확인, 대기 포함","active_work_time_measured":false,"time_savings_measured":false,"contracts":[{"contract_id":3,"revision":8,"approval_status":"CONFIRMED","registration_to_current_final_confirmation_elapsed_seconds":1200,"resubmission_request_count":2,"human_correction_save_count":3,"human_field_edit_count":2,"human_changed_unique_field_count":1,"unknown_correction_event_count":0,"ai_applied_value_field_count":4,"ai_current_matching_value_field_count":3,"active_review_seconds":null,"measured_time_saving_seconds":null}],"totals":{"contract_count":1,"currently_confirmed_contract_count":1,"mean_registration_to_current_final_confirmation_elapsed_seconds":1200}}
+```
+
+재발행/기준 변경 등으로 결재가 STALE이면 현재 최종 확인 시간과 경과시간은 null이다. 재결재 전 수치를 평균에서 제외한다. 기존 `/api/pilot/metrics`는 첫 서류 → 첫 대표 확인과 수정 저장 횟수의 기존 의미를 유지한다. 서로 다른 지표의 이름을 섞지 않는다. 재제출 요청 수는 발송 기록이 아닌 앱에 등록한 요청 기록 수다. 특정 계약이 없으면 404. 모든 읽기 API는 revision을 증가시키지 않는다.
+
+`GET /api/pilot/llm-status`는 현재 설정과 로컬 `/api/tags` 연결을 따로 반환한다. 추론을 실행하지 않는다. 상태 조회는 최대 2초 응답 제한, 30초 캐시를 사용한다. 목록/상세는 새 연결 검사를 하지 않고 최근 캐시 또는 UNCHECKED를 사용하므로 화면에서 상태 API를 먼저 호출하고 데이터를 새로 조회한다.
+
+```json
+{"configured_enabled":false,"model":"qwen3:latest","prompt_version":"grounded-fields-v3","guard_policy":"v4","cloud_disabled":true,"configuration_valid":true,"connection_state":"CONNECTED","connected":true,"model_installed":true,"ready_for_inference":false,"checked_at":"2026-10-03T01:00:00Z","error":null}
+```
+
+설정 꺼짐과 서버 연결은 함께 성립할 수 있다. connected=null은 아직 검사하지 않았다는 뜻이다. 모델 미설치 LOCAL_MODEL_NOT_INSTALLED, 서버 실패 LOCAL_SERVER_UNAVAILABLE, 잘못된 로컬 설정 INVALID_LOCAL_CONFIGURATION은 상태 JSON의 error로 반환한다. 이 조회 자체는 200이며 로그인 실패는 401이다. `/api/pilot/info`의 llm_connected는 이 실제 캐시 값(bool 또는 null)이고 llm 전체 상태도 제공한다.
+
+계약 목록/상세의 `llm.current_state`에 위 현재 상태를 제공한다. `llm.invoked_document_count`, `known_invocation_count`, `failed_document_count`, `unknown_execution_document_count`, `applied_value_field_count`, `current_matching_ai_value_field_count`는 현재 활성 문서의 저장 결과다. 과거 AI 결과는 지금 설정을 꺼도 사라지지 않는다. known_invocation_count는 실제 추론 HTTP 시도 수(재시도 포함), 모르는 레거시는 0이라고 단정하지 않는다.
+
+각 DocumentResponse.llm:
+
+```json
+{"configured_enabled_at_analysis":true,"status":"COMPLETED","inference_invoked":true,"invocation_count":1,"error":null,"recorded_at":"2026-10-03T01:00:00Z","applied_value_field_count":2,"current_matching_ai_value_field_count":1,"human_confirmed":true,"manual_review_required":false,"model":"qwen3:latest","prompt_version":"grounded-fields-v3","guard_version":"버전 문자열"}
+```
+
+DISABLED/NOT_NEEDED는 호출 0회, FAILED는 실패 이유와 실제 시도 수를 표시한다. 실행 기록이 없는 레거시는 UNKNOWN_LEGACY 또는 저장된 상태, 호출 여부 null일 수 있다. AI 보완 칸은 applied=true인 VALUE 제안만 세며 ABSENT/REVIEW·자동 파생 amount를 중복 집계하지 않는다. current_matching 값은 저장값이 AI 제안과 현재 같은 칸 수이며 사람이 검증했다는 뜻은 아니다. JSON 예시는 일부 필드만 표기했다.

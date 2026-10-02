@@ -58,5 +58,6 @@ class DocumentResponse(BaseModel):
     file_available: bool = False
     file_size: Optional[int] = None
     version: Dict[str, Any] = {}
+    llm: Dict[str, Any] = {}
 
     model_config = ConfigDict(from_attributes=True)

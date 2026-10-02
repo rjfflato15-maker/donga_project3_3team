@@ -80,6 +80,7 @@ class PipelineService:
         db.rollback()
 
         raw_key, raw_path, digest = store_original(contract_id, file_name, file_bytes)
+        llm_enabled = os.getenv('APP_LLM_ENABLED','false').lower() == 'true'
         failed = False
         try:
             analysis, raw_text, masked_text = analyze_document(str(raw_path), file_name=file_name,
@@ -153,6 +154,15 @@ class PipelineService:
             stored_fields = analysis.fields.model_dump()
             if analysis.ai_review is not None:
                 stored_fields["ai_review"] = analysis.ai_review
+            review = analysis.ai_review or {}
+            attempts = review.get('attempts')
+            stored_fields['llm_execution'] = {
+                'configured_enabled_at_analysis':llm_enabled,
+                'status':'DISABLED' if not llm_enabled else review.get('status','FAILED' if failed else 'UNKNOWN'),
+                'inference_invoked':False if not llm_enabled or review.get('status')=='NOT_NEEDED' else attempts>0 if isinstance(attempts,int) else None,
+                'invocation_count':0 if not llm_enabled or review.get('status')=='NOT_NEEDED' else attempts,
+                'error':review.get('error') or ('ANALYSIS_FAILED' if failed else None),
+                'recorded_at':datetime.utcnow().isoformat()+'Z'}
             extract.raw_fields = json.dumps(stored_fields, ensure_ascii=False)
             verification = db.query(BusinessVerification).filter_by(document_id=doc.document_id).first()
             if verification is None:

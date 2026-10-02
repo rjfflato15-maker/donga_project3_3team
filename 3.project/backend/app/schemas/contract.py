@@ -97,5 +97,6 @@ class ContractDetailResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
     workflow: dict = {}
+    llm: dict = {}
 
     model_config = ConfigDict(from_attributes=True)

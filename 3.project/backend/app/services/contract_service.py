@@ -37,6 +37,7 @@ from ..schemas.validation import (
 from .pipeline_service import PipelineService
 from .company_policy_service import approval_state
 from .document_version_service import active_documents, metadata as version_metadata
+from .llm_status_service import document_execution, contract_execution, llm_status
 from .review_summary_service import (
     ContractDashboardListItem,
     build_action_summary,
@@ -53,12 +54,14 @@ def get_document_response(doc: Document) -> DocumentResponse:
     source = resolve_path(doc.storage_path)
     fields = AnalysisFields()
     ai_review = None
+    stored_fields = {}
     if doc.extract:
         try:
             stored_fields = json.loads(doc.extract.raw_fields or "{}")
             fields = AnalysisFields(**stored_fields)
             ai_review = stored_fields.get("ai_review")
         except (ValueError, TypeError):
+            stored_fields = {}
             fields = AnalysisFields(company_name=doc.extract.extracted_vendor_name,
                                     business_registration_no=doc.extract.extracted_vendor_reg_no,
                                     amount=doc.extract.extracted_amount, issue_date=doc.extract.extracted_date)
@@ -78,6 +81,7 @@ def get_document_response(doc: Document) -> DocumentResponse:
             "데모 데이터 · 실제 조회 아님" if NTS_MODE == "demo" else (
                 doc.verification.business_status if doc.verification else "미확인")),
         file_available=source is not None, file_size=source.stat().st_size if source else None, version=version_metadata(doc),
+        llm=document_execution(stored_fields),
     )
 
 
@@ -90,6 +94,7 @@ class ContractService:
         from .storage_service import resolve_path
         required = required_types(db)
         waiting_by_contract = waiting_request_stats(db)
+        state=llm_status()
         result = []
         for contract in db.query(Contract).order_by(Contract.contract_id.desc()).all():
             submitted = {d.document_type for d in active_documents(contract)}
@@ -120,6 +125,7 @@ class ContractService:
                 open_issue_count=sum(issue_counts.values()),
                 waiting_request_count=waiting_count, earliest_due_on=earliest_due_on,
                 approval_next_step=approval["next_step"],
+                llm=contract_execution(inputs,state),
             ))
         return result
 
@@ -140,6 +146,7 @@ class ContractService:
             required_document_types=required, documents=[get_document_response(d) for d in active_documents(contract)],
             summary=summary, checks=checks, created_at=contract.created_at, updated_at=contract.updated_at,
             workflow=review_state(db, contract_id, fingerprint_for(db, contract, docs)),
+            llm=contract_execution(docs),
         )
 
     def create_contract(self, db: Session, req: ContractCreate, user_id=None) -> Contract:

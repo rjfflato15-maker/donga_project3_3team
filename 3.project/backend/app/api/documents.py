@@ -177,6 +177,8 @@ def correct_fields(document_id: int, req: Correction, db: Session = Depends(get_
         after = req.fields.model_dump()
         if before.get("ai_review"):
             after["ai_review"] = {**before["ai_review"], "human_confirmed": True, "manual_review_required": False}
+        if before.get('llm_execution'):
+            after['llm_execution']=before['llm_execution']
         doc.extract.raw_fields = json.dumps(after, ensure_ascii=False)
         doc.extract.extracted_vendor_name = req.fields.company_name
         doc.extract.extracted_vendor_reg_no = req.fields.business_registration_no

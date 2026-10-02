@@ -17,6 +17,7 @@ class ContractDashboardListItem(ContractListItem):
     waiting_request_count: int = Field(default=0, ge=0)
     earliest_due_on: date | None = None
     approval_next_step: int | None = Field(default=None, ge=1, le=2)
+    llm: dict = {}
 
 
 def waiting_request_stats(db):
