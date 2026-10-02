@@ -12,6 +12,7 @@ import { ValidationReportView } from '../components/ValidationReportView';
 import { ContractReviewOverview } from '../components/review/ContractReviewOverview';
 import { DocumentReviewDialog } from '../components/review/DocumentReviewDialog';
 import { WorkQueueDashboard, DashboardItem } from '../components/review/WorkQueueDashboard';
+import { ApprovalPanel } from '../components/review/ApprovalPanel';
 import { DocumentViewerModal } from '../components/DocumentViewerModal';
 import { UploadModal } from '../components/UploadModal';
 import { NewContractModal } from '../components/NewContractModal';
@@ -571,7 +572,8 @@ export const ContractDashboard: React.FC = () => {
               pilot={isPilot}
               onChanged={() => refreshCurrentContract()}
             />
-            {isPilot && <PilotReviewPanel contract={currentContract} onChanged={refreshCurrentContract} />}
+            {isPilot && <ApprovalPanel contract={currentContract} onChanged={() => refreshCurrentContract()} />}
+            {isPilot && <PilotReviewPanel contract={currentContract} onChanged={refreshCurrentContract} historyOnly />}
           </div>
         );
 
