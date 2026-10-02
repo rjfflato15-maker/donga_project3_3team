@@ -211,3 +211,24 @@ action은 START/COMPLETE/CANCEL/REASSIGN/UPDATE. START는 현재 맡은 사람, 
 items는 PASS 이외의 확인 항목을 반환한다. 계약서·검수확인서는 사내 준비용 assignment_draft를 반환하고 거래처 요청 초안을 만들지 않는다. 사업자 영업 상태는 MANUAL_CONFIRMATION으로 담당자가 따로 확인한다. 견적서·세금계산서·사업자등록증·통장사본은 원문과 추출값을 사람이 확인한 뒤 사용할 거래처 요청 초안을 준비한다.
 
 응답의 summary는 이번 메모리 재검사 결과다. recheck_differences는 저장된 규칙 결과와 이번 결과의 차이를 보여 주며 저장하지 않는다. `issue_ids`에 이전 응답의 특정 항목 ID 배열을 주면 그 항목만 준비한다. 없는 ID는 422다. 오래된 revision/fingerprint 또는 처리 중 자료 변경은 409, 없는 계약은 404, 미로그인은 401이다. 생성된 초안은 별도 저장 버튼을 통해 기존 요청 기록/맡기기 API를 호출할 때만 저장하며, 이 API에는 저장·발송 옵션이 없다. 예시는 일부 필드만 표기했다.
+## 긴 업로드의 상태 조회와 중복 없는 재시도 (2026-10-03)
+
+기존 동기 업로드는 유지한다. 새 화면은 `POST /api/pilot/contracts/3/document-jobs` multipart로 파일 1개를 보내면 202를 받고 상태를 조회할 수 있다. 필수 필드: file, revision, idempotency_key(8~100자, 클라이언트가 파일 선택 시 생성한 UUID 권장). 선택: upload_mode=ADD/REISSUE, target_document_type, replaces_document_id, change_note. 재발행 조건은 기존 버전 API와 같다.
+
+```json
+{"job_id":"uuid","contract_id":3,"file_name":"견적서.pdf","status":"QUEUED","stage":"QUEUED","job_revision":1,"attempt_count":0,"document_id":null,"document_available":false,"document_is_current":false,"error_code":null,"error_message":null,"replayed":false}
+```
+
+`GET /api/pilot/document-jobs/{job_id}`를 약 1초 간격으로 조회한다. stage는 QUEUED → ANALYZING(OCR·추출·LLM 포함) → VALIDATING → COMPLETED 또는 FAILED다. 완료하면 document_id로 문서를 읽고 계약 상세를 갱신한다. 처리 중 같은 파일/조건/사용자의 같은 키를 다시 보내면 replayed=true로 동일 작업만 반환한다. 키에 다른 파일·조건·사용자를 넣으면 409다. 계약 revision이 바뀌어도 원래 요청 그대로의 재전송은 기존 작업을 반환한다.
+
+실패 사유는 SOURCE_UNREADABLE(원문 인식/보관 문제), DATA_CHANGED(자료·실행권 변경), ACTOR_INACTIVE(등록 권한 변경), NOT_FOUND, PROCESSING_FAILED로 나누며 error_message에 확인 방법을 반환한다. 새 상태 조회/등록 응답에는 원문 텍스트·서버 경로·LLM 응답을 넣지 않는다. 이 새 비동기 경로는 인식에 실패한 문서를 게시하지 않는다.
+
+`POST /api/pilot/document-jobs/{job_id}/retry`:
+
+```json
+{"job_revision":4,"contract_revision":8}
+```
+
+처음 요청한 담당자만 최신 두 revision으로 명시적으로 재시도한다. 아직 실행 중이거나 이미 완료했으면 409다. 재시도는 같은 job_id를 유지한다. 문서 게시 완료 영수증을 문서와 같은 DB 트랜잭션에 저장하므로, 게시 뒤 검수 실패/중단은 기존 document_id의 규칙 검수만 재개하고 OCR/LLM을 다시 호출하거나 새 문서를 만들지 않는다. 게시 전 실패는 같은 보관 원본으로 다시 분석한다. 서버 재시작으로 실행이 끊겼으면 10분 실행권 만료 뒤 재시도할 수 있다. 이전 작업이 늦게 돌아와도 실행권이 달라져 중복 게시하지 못한다. 자동 재시도는 하지 않는다.
+
+상태 변경마다 job_revision이 증가한다. 계약 revision은 실제 문서 게시 때만 증가한다. 오류 스키마는 다른 API와 같이 detail이다: 미로그인 401, 담당자 권한/다른 요청자 재시도 403, 없는 작업/계약 404, 키 재사용·오래된 revision·진행/완료 중 재시도 409, 형식 검증 400/413/422. job 상태의 FAILED는 조회 200으로 원인을 보여 준다. 완료한 문서가 나중에 재발행되면 document_is_current=false이며 작업 이력은 유지한다. 동기 업로드가 반환한 결과에도 동일한 버전/LLM 메타데이터가 있다.

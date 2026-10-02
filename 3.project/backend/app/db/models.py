@@ -271,3 +271,28 @@ class WorkAssignment(Base):
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     completed_at = Column(DateTime, nullable=True)
+
+
+class DocumentUploadJob(Base):
+    __tablename__ = "pilot_document_upload_jobs"
+    job_id = Column(String(36), primary_key=True)
+    contract_id = Column(Integer, ForeignKey("contracts.contract_id", ondelete="CASCADE"), nullable=False, index=True)
+    idempotency_key = Column(String(100), nullable=False)
+    request_sha256 = Column(String(64), nullable=False)
+    source_path = Column(String(500), nullable=False)
+    source_sha256 = Column(String(64), nullable=False)
+    file_name = Column(String(255), nullable=False)
+    actor_id = Column(Integer, nullable=False)
+    payload_json = Column(Text, nullable=False)
+    status = Column(String(30), nullable=False, default="QUEUED")
+    stage = Column(String(30), nullable=False, default="QUEUED")
+    job_revision = Column(Integer, nullable=False, default=1)
+    attempt_count = Column(Integer, nullable=False, default=0)
+    lease_token = Column(String(36), nullable=True)
+    lease_expires_at = Column(DateTime, nullable=True)
+    document_id = Column(Integer, nullable=True)
+    error_code = Column(String(60), nullable=True)
+    error_message = Column(String(500), nullable=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    __table_args__ = (UniqueConstraint("contract_id","idempotency_key",name="uq_upload_job_request"),)
