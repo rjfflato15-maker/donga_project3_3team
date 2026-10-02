@@ -15,6 +15,7 @@ import { maskVendorName } from '../../utils/masking';
 import { AlertTriangle, CheckCircle2, ChevronDown, ChevronRight, Copy, Eye, Info, Upload } from 'lucide-react';
 import { RequestDraftDialog } from './RequestDraftDialog';
 import { followUpApi, ResubmissionRequest, CONTACT_VIA } from '../../api/followUp';
+import { requestJson } from '../../api/client';
 
 interface Props {
   contract: ContractDetail;
@@ -75,7 +76,24 @@ export const ContractReviewOverview: React.FC<Props> = ({
       await onChanged?.();
     } catch (e) { setFollowError(e instanceof Error ? e.message : '처리하지 못했습니다.'); }
   };
+  // 보고용 한 줄 요약: 숫자는 코드가 채운 문장(LLM 미사용). 가림 모드면 거래처 이름을 가린다.
+  const [brief, setBrief] = useState<{ text: string; vendor?: string } | null>(null);
+  const [briefCopied, setBriefCopied] = useState(false);
+  useEffect(() => {
+    if (!pilot) return;
+    const controller = new AbortController();
+    setBrief(null); setBriefCopied(false);
+    requestJson<{ text: string; facts?: { vendor_name?: string } }>(`/api/contracts/${contract.contract_id}/summary?style=brief`, { signal: controller.signal })
+      .then((r) => setBrief({ text: r.text, vendor: r.facts?.vendor_name }))
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, [contract.contract_id, contract.updated_at, contract.workflow?.revision, pilot]);
   const overview = useMemo(() => buildReviewOverview(contract), [contract]);
+  // 서버 요약은 검사 항목 단위로 센다. 화면은 서류별 카드로 묶으므로 카드 수로 맞춘다.
+  const briefText = brief
+    ? (isMaskingEnabled && brief.vendor ? brief.text.split(brief.vendor).join(maskVendorName(brief.vendor, true)) : brief.text)
+        .replace(/확인할 항목은 \d+건/, `확인할 항목은 ${overview.issues.length}건`)
+    : '';
   const verdict = verdictText(overview);
   const [showPassed, setShowPassed] = useState(false);
   const [draftFor, setDraftFor] = useState<IssueGroup | null>(null);
@@ -108,6 +126,18 @@ export const ContractReviewOverview: React.FC<Props> = ({
           <div className="text-xs text-slate-500">서류</div>
           <div className="font-bold text-slate-900">{contract.summary.submitted_document_count} / {contract.summary.required_document_count}종</div>
         </div>
+        {briefText && (
+          <div className="basis-full flex flex-wrap items-start gap-2 border-t border-slate-100 pt-2">
+            <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">보고용 한 줄</span>
+            <p className="min-w-0 flex-1 text-slate-700">{briefText}</p>
+            <button
+              onClick={() => { void navigator.clipboard?.writeText(briefText).then(() => setBriefCopied(true)).catch(() => undefined); }}
+              className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 text-xs text-slate-600 hover:bg-slate-50"
+            >
+              <Copy className="w-3.5 h-3.5" /> {briefCopied ? '복사됨' : '복사'}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* 결론 한 줄 */}
