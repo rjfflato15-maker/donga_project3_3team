@@ -90,7 +90,7 @@ export const ContractReviewOverview: React.FC<Props> = ({
       .then((r) => setBrief({ text: r.text, vendor: r.facts?.vendor_name }))
       .catch(() => undefined);
     return () => controller.abort();
-  }, [contract.contract_id, contract.updated_at, contract.workflow?.revision, pilot]);
+  }, [contract.contract_id, contract.updated_at, contract.workflow?.revision, contract.workflow?.approval_status, pilot]);
   const overview = useMemo(() => buildReviewOverview(contract), [contract]);
   // 서버 요약은 검사 항목 단위로 센다. 화면은 서류별 카드로 묶으므로 카드 수로 맞춘다.
   const briefText = brief

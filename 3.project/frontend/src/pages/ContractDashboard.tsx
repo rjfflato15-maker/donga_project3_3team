@@ -73,7 +73,7 @@ export const ContractDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
   const [contractViewMode, setContractViewMode] = useState<'list' | 'detail'>('list');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 1024) return false;
+    if (typeof window !== 'undefined' && window.innerWidth < 1280) return false;
     try {
       const saved = localStorage.getItem('sidebar_visible');
       return saved !== null ? saved === 'true' : true;
@@ -82,15 +82,15 @@ export const ContractDashboard: React.FC = () => {
     }
   });
 
-  // 좁은 화면에서는 사이드바가 본문을 가리지 않도록 자동으로 접는다
+  // 노트북 화면(1280px 미만)에서는 표가 잘리지 않도록 사이드바를 자동으로 접는다
   useEffect(() => {
-    const onResize = () => { if (window.innerWidth < 1024) setIsSidebarOpen(false); };
+    const onResize = () => { if (window.innerWidth < 1280) setIsSidebarOpen(false); };
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
   useEffect(() => {
-    if (window.innerWidth < 1024) return;
+    if (window.innerWidth < 1280) return;
     try {
       localStorage.setItem('sidebar_visible', String(isSidebarOpen));
     } catch {
