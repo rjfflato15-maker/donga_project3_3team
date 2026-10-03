@@ -151,6 +151,7 @@ class Correction(BaseModel):
     document_type: DocumentType
     revision: int
     note: str
+    confirmed_fields: Optional[List[str]] = None
 
 
 @router.put("/api/documents/{document_id}/fields", response_model=DocumentResponse)
@@ -173,11 +174,17 @@ def correct_fields(document_id: int, req: Correction, db: Session = Depends(get_
             if value is not None and money(value) is None:
                 raise HTTPException(400, "금액은 0 이상의 유효한 숫자로 입력하세요.")
         before = json.loads(doc.extract.raw_fields or "{}")
+        from ..services.field_confirmation_service import confirm_fields, reviewed_ai
+        after = req.fields.model_dump()
+        try:
+            human_review, changed_fields, confirmed_fields = confirm_fields(db, document_id, before, after, actor, req.confirmed_fields)
+        except ValueError as exc:
+            raise HTTPException(400, str(exc)) from exc
         previous_type=doc.document_type
         doc.document_type = req.document_type.value
-        after = req.fields.model_dump()
+        after['human_review'] = human_review
         if before.get("ai_review"):
-            after["ai_review"] = {**before["ai_review"], "human_confirmed": True, "manual_review_required": False}
+            after["ai_review"] = reviewed_ai(before['ai_review'], human_review['field_confirmations'])
         if before.get('llm_execution'):
             after['llm_execution']=before['llm_execution']
         doc.extract.raw_fields = json.dumps(after, ensure_ascii=False)
@@ -188,11 +195,11 @@ def correct_fields(document_id: int, req: Correction, db: Session = Depends(get_
         doc.extract.extracted_status = "MANUALLY_CONFIRMED"
         touch_contract(db, doc.contract_id)
         contract_id = doc.contract_id
-        db.commit()
         audit(db, actor, "EXTRACT_CORRECTED", contract_id, document_id,
               {"note": req.note.strip()[:1000], "before": AnalysisFields(**before).model_dump(), "after": req.fields.model_dump(),
                "previous_document_type":previous_type,"new_document_type":req.document_type.value,
-               "ai_review_before":before.get('ai_review'),"llm_execution":before.get('llm_execution')})
+               "ai_review_before":before.get('ai_review'),"llm_execution":before.get('llm_execution'),
+               "changed_fields":changed_fields,"confirmed_fields":confirmed_fields})
     pipeline_service.revalidate_contract(db, contract_id)
     return get_document_response(doc)
 

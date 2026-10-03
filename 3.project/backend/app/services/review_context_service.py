@@ -7,7 +7,7 @@ import hashlib
 from types import SimpleNamespace
 from pathlib import Path
 from ..ai.grounding import canonical, candidates, evidence_anchor, source_pages
-from ..db.models import AuditEvent, ResubmissionRequest, DocumentFileInfo
+from ..db.models import ResubmissionRequest, DocumentFileInfo
 from ..schemas.document import AnalysisFields
 from .contract_service import ContractService
 from .storage_service import read_texts, resolve_path
@@ -15,6 +15,7 @@ from .company_policy_service import approval_state
 from .review_summary_service import build_action_summary, display_issue_counts, pending_ai_count
 from .evidence_geometry_service import attach_coordinates
 from .document_version_service import active_documents
+from .field_confirmation_service import current_confirmations
 SOURCE_NAMES = {'RULE': '규칙', 'AI_SUPPLEMENT': 'AI 보완', 'HUMAN_CONFIRMATION': '사람 확인', 'UNAVAILABLE': '미추출'}
 
 
@@ -37,9 +38,8 @@ def document_provenance(db, doc):
     values = AnalysisFields(**fields).model_dump()
     ai = fields.get('ai_review') or {}
     decisions = {r['field']: r for r in ai.get('decisions', []) if isinstance(r, dict) and r.get('field')}
-    manual = bool(doc.extract and doc.extract.extracted_status == 'MANUALLY_CONFIRMED')
-    correction = db.query(AuditEvent).filter_by(document_id=doc.document_id, action='EXTRACT_CORRECTED').order_by(AuditEvent.event_id.desc()).first() if manual else None
-    confirmation = {'actor_name': correction.actor_name, 'at': correction.created_at.isoformat()} if correction else None
+    confirmations = current_confirmations(db, doc.document_id, fields)
+    legacy_scope_unknown = bool(doc.extract and doc.extract.extracted_status == 'MANUALLY_CONFIRMED' and not fields.get('human_review'))
     file_info = db.get(DocumentFileInfo, doc.document_id)
     expected_sha = file_info.sha256 if file_info else None
     doc = SimpleNamespace(document_id=doc.document_id, document_type=doc.document_type, file_name=doc.file_name, storage_path=doc.storage_path, masking=SimpleNamespace(masked_file_path=doc.masking.masked_file_path) if doc.masking else None)
@@ -69,7 +69,8 @@ def document_provenance(db, doc):
         derived = decisions.get('total_amount') if key in {'amount', 'amount_basis'} else None
         applied = bool((decision or derived or {}).get('applied'))
         origin = 'AI_SUPPLEMENT' if applied else 'RULE'
-        source = 'HUMAN_CONFIRMATION' if manual else origin if value not in (None, 'UNKNOWN', '') else 'UNAVAILABLE'
+        confirmation = confirmations.get(key)
+        source = 'HUMAN_CONFIRMATION' if confirmation else origin if value not in (None, 'UNKNOWN', '') else 'UNAVAILABLE'
         anchors = []
         lookup = 'total_amount' if key == 'amount' else key
         options = candidates(pages, lookup, doc.document_type) if lookup in {'company_name', 'business_registration_no', 'supply_amount', 'tax_amount', 'total_amount', 'issue_date', 'amount_scope'} else []
@@ -103,7 +104,9 @@ def document_provenance(db, doc):
         for anchor in anchors:
             anchor.update(bbox=None, bboxes=[], coordinate_space='preview_image_normalized_top_left',
                           source_sha256=expected_sha, coordinate_method=None)
-    return {'document_id': doc.document_id, 'file_name': doc.file_name, 'source_version_verified': version_verified, 'source_sha256': expected_sha, 'fields': results, 'ai_review': ai or None}
+    return {'document_id': doc.document_id, 'file_name': doc.file_name, 'source_version_verified': version_verified,
+        'source_sha256': expected_sha, 'fields': results, 'ai_review': ai or None,
+        'human_confirmed_fields': sorted(confirmations), 'legacy_confirmation_scope_unknown': legacy_scope_unknown}
 
 def review_context(db, contract_id):
     detail = ContractService().get_contract_detail(db, contract_id)

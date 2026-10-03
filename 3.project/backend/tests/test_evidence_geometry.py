@@ -134,6 +134,6 @@ def test_v4_adjacent_label_value_coordinates_survive_unchanged_human_confirmatio
     assert result['evidence'][0]['bbox'] and result['evidence'][0]['label_anchor']['bbox']
     detail=operator_client.get(f'/api/contracts/{cid}').json()
     fields=detail['documents'][0]['analysis']['fields']
-    assert operator_client.put(f'/api/documents/{did}/fields',json={'fields':fields,'document_type':'estimate','revision':detail['workflow']['revision'],'note':'같은 원문 값을 사람이 확인'}).status_code==200
+    assert operator_client.put(f'/api/documents/{did}/fields',json={'fields':fields,'document_type':'estimate','revision':detail['workflow']['revision'],'note':'같은 원문 값을 사람이 확인','confirmed_fields':['total_amount']}).status_code==200
     confirmed=operator_client.get(f'/api/documents/{did}/provenance').json()['fields']['total_amount']
     assert confirmed['source']=='HUMAN_CONFIRMATION' and confirmed['evidence'][0]['label_anchor']['bbox']

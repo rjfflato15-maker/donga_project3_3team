@@ -316,8 +316,10 @@ def test_ai_provenance_survives_storage_and_human_correction(operator_client, mo
     assert doc["analysis"]["ai_review"] == review
     revision = operator_client.get(f"/api/contracts/{cid}").json()["workflow"]["revision"]
     corrected = operator_client.put(f"/api/documents/{did}/fields", json={"fields": doc["analysis"]["fields"],
-        "document_type": doc["document_type"], "revision": revision, "note": "원문 직접 확인"})
+        "document_type": doc["document_type"], "revision": revision, "note": "원문 직접 확인",
+        "confirmed_fields": ["company_name"]})
     assert corrected.status_code == 200, corrected.text
     saved = corrected.json()["analysis"]["ai_review"]
     assert saved["human_confirmed"] and not saved["manual_review_required"]
-    assert saved["decisions"] == review["decisions"]
+    assert saved["decisions"] == [{**decision, "human_confirmed": True} for decision in review["decisions"]]
+    assert saved["status"] == "FAILED" and saved["error"] == "TIMEOUT"

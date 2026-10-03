@@ -2,11 +2,11 @@
 
 ## 연휴 작업 기준 (2026-10-03)
 
-0번은 API가 아니라 [예측 보존·재채점 CLI](../eval/prediction_preservation.md)다. 현재 화면의 LLM 연결 표시를 숨기고 성과를 수정 저장 횟수·첫 등록부터 첫 대표 확인까지의 대기 포함 경과시간으로 표시하는 수정은 `8e7b2c2`에서 확인했다. 사람 확인 페이지는 `eval/human_review_page_test/index.html`의 134칸이다.
+0번은 API가 아니라 [예측 보존·재채점 CLI](../eval/prediction_preservation.md)다. 현재 화면에서 LLM 연결 표시를 숨기고 성과를 수정 저장 횟수·첫 등록부터 첫 대표 확인까지의 대기 포함 경과시간으로 바꾼 수정은 `8e7b2c2`에서 확인했다. 기존 test 134칸과 test2 81칸의 사람 확인은 완료했다. test2의 질문 문구 오류 1칸은 실제 지적을 보존하고 REVIEW로 기록했다. [출처와 절차](../eval/test2/preparation/README.md)를 참고한다.
 
 고도화 순서는 예측 보존 → dev2/test2 정답 준비 → 근거 좌표 → 명시적 재발행 버전 → 성과·LLM 상태 → 사내 맡기기 → 계약 요약 → DB를 변경하지 않는 도우미 미리보기다. 각 API를 추가할 때 JSON 예시·오류 응답·revision 규칙을 이 문서에 기록한다. 기능 동결 기준은 10/5(월) 밤, 팀원 테스트는 10/6(화)다. UI 브랜치 병합이 다른 세션의 기존 지시로 이미 진행된 경우 고도화 종료 시점에 추가 UI 커밋과 전체 흐름을 다시 확인한다.
 
-이번 변경은 백엔드와 평가 도구에만 적용했다. `frontend/`는 수정하지 않았다. 기존 로그인 쿠키와 API 권한·Cache-Control: no-store를 그대로 사용한다. 다른 설치 환경에서 API 적용에는 백엔드 재시작이 필요하며, 시작할 때 새 운영 기록 테이블 두 개를 생성한다. 기존 DB를 덮어쓰거나 기존 필드를 바꾸는 이주는 없다. 현재 로컬 환경은 백업 후 통합 실행기로 적용하고 서버 응답과 인증 차단을 확인했다.
+이번 변경은 백엔드와 평가 도구에 적용했다. 기존 로그인 쿠키와 API 권한·Cache-Control: no-store를 사용한다. API 적용에는 백엔드 재시작이 필요하며, 시작할 때 서류 버전·사내 맡기기·업로드 작업을 포함한 새 운영 기록 테이블을 생성한다. 기존 DB를 덮어쓰거나 기존 필드를 바꾸는 이주는 없다. 새 화면 연결은 Claude 담당이며, 아래 API 테스트 통과와 전체 새 화면 시연 완료를 구분한다.
 
 ## 읽기 API
 
@@ -234,4 +234,24 @@ items는 PASS 이외의 확인 항목을 반환한다. 계약서·검수확인�
 상태 변경마다 job_revision이 증가한다. 계약 revision은 실제 문서 게시 때만 증가한다. 오류 스키마는 다른 API와 같이 detail이다: 미로그인 401, 담당자 권한/다른 요청자 재시도 403, 없는 작업/계약 404, 키 재사용·오래된 revision·진행/완료 중 재시도 409, 형식 검증 400/413/422. job 상태의 FAILED는 조회 200으로 원인을 보여 준다. 완료한 문서가 나중에 재발행되면 document_is_current=false이며 작업 이력은 유지한다. 동기 업로드가 반환한 결과에도 동일한 버전/LLM 메타데이터가 있다.
 ### v4 라벨·값이 다른 줄인 근거
 
-v4 AI 근거가 값 줄과 라벨 줄을 연결한 경우 evidence의 값 bbox에 더해 `label_anchor.bbox`도 제공한다. 같은 원문 값을 사람이 확인한 뒤에도 두 위치를 유지하고 source는 HUMAN_CONFIRMATION으로 표시한다. 사람이 값을 바꿨으면 현재 값과 일치하지 않는 과거 AI 근거는 붙이지 않는다. label_anchor도 실제 쪽·줄·인용을 다시 확인한 뒤에만 좌표를 제공한다.
+v4 AI 근거가 값 줄과 라벨 줄을 연결한 경우 evidence의 값 bbox에 더해 `label_anchor.bbox`도 제공한다. 같은 원문 값을 사람이 명시적으로 확인한 뒤에도 두 위치를 유지하고 source는 HUMAN_CONFIRMATION으로 표시한다. 사람이 값을 바꿨으면 현재 값과 일치하지 않는 과거 AI 근거는 붙이지 않는다. label_anchor도 실제 쪽·줄·인용을 다시 확인한 뒤에만 좌표를 제공한다.
+
+## 사람이 확인한 칸의 범위 (2026-10-03)
+
+`PUT /api/documents/12/fields`는 기존처럼 전체 fields를 받되, 실제 값이 바뀐 칸만 사람 수정으로 기록한다. 전체 폼을 저장했다는 이유로 나머지 칸까지 확인 완료로 바꾸지 않는다. 원문과 비교해 같은 값이 맞음을 확인한 칸은 선택 배열 `confirmed_fields`에 넣는다.
+
+```json
+{"fields":{"title":"견적서","company_name":"가상 업체","business_registration_no":"000-00-00000","amount":1100,"issue_date":"2026-10-03","contract_period_start":null,"contract_period_end":null,"account_number":null,"bank_name":null,"supply_amount":1000,"tax_amount":100,"total_amount":1100,"amount_basis":"TOTAL","amount_scope":"TOTAL"},"document_type":"estimate","revision":8,"note":"합계 수정, 업체명 원문 확인","confirmed_fields":["company_name"]}
+```
+
+실제 요청에서는 현재 상세의 fields 전체를 사용한다. 이번에 변경된 total_amount와 명시한 company_name을 확인한 것으로 기록하고, 이전에 확인한 칸의 확인자·시각은 유지한다. 값을 바꾸지 않고 확인 버튼만 누르면 해당 이름을 confirmed_fields에 넣는다. 이 배열을 생략하는 기존 화면도 값 수정은 정상 처리한다.
+
+`GET /api/documents/12/provenance`의 예:
+
+```json
+{"human_confirmed_fields":["company_name","total_amount"],"legacy_confirmation_scope_unknown":false,"fields":{"company_name":{"source":"HUMAN_CONFIRMATION","human_confirmation":{"actor_name":"담당자","at":"2026-10-03T00:00:00+00:00","value":"가상 업체","method":"EXPLICIT_CONFIRMATION"}},"total_amount":{"source":"HUMAN_CONFIRMATION","human_confirmation":{"actor_name":"담당자","at":"2026-10-03T00:00:00+00:00","value":1100,"method":"CHANGED_VALUE"}}}}
+```
+
+미확인 칸은 RULE/AI_SUPPLEMENT 등의 원래 출처와 `human_confirmation:null`을 유지한다. analysis.ai_review는 원래 호출 실패·거절 사유를 보존하면서 human_confirmed_fields / human_unconfirmed_fields를 추가한다. 아직 확인하지 않은 AI 대상이 있으면 human_confirmed=false, manual_review_required=true다. 각 decisions에도 해당 칸의 human_confirmed를 제공한다. 과거 저장의 범위를 모르면 legacy_confirmation_scope_unknown=true이며 감사 기록에서 실제 바뀐 칸만 복원한다. 문서 전체의 과거 MANUALLY_CONFIRMED 상태만으로 모든 칸을 확인했다고 표시하지 않는다.
+
+확인 필드 이름이 없거나 중복이면 400, 잘못된 타입은 422, 오래된 계약 revision은 409, 미로그인은 401, 수정 권한이 없으면 403이다. 성공한 저장은 기존처럼 계약 revision이 1 증가하고 자료 변경에 따른 재확인·재결재 규칙을 적용한다. 값·revision·확인 범위·감사 기록은 같은 트랜잭션으로 저장한다. confirmed_fields는 앱 검수 화면에서 사용하며 평가용 사람 결과 JSON의 답을 변경하지 않는다.
