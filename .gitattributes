@@ -11,5 +11,5 @@
 3.project/docs/eval/test2/v4_scores/** -text
 3.project/docs/eval/test2/neutral_recheck/** -text
 # Tuesday DEV fixture receipts must survive Windows checkout without CRLF conversion.
-3.project/sample-data/team-test-dev-v1/** -text
+3.project/sample-data/team-test-dev-v1/** -text whitespace=cr-at-eol
 3.project/sample-data/team-test-dev-v1/**/*.pdf -diff
