@@ -1,0 +1,323 @@
+{
+  "dataset_version": "team-test-dev-v1",
+  "manifest_sha256": "a2a36bfba9ae9ea3da3d600b1cd76503f4c12d102043514ad8de96beb4a09345",
+  "mode": "RULE_ONLY",
+  "nts_mode": "disabled",
+  "cache_used": false,
+  "runtime_boundary": {
+    "model_guard_calls": 0,
+    "network_attempts": 0,
+    "protected_file_attempts": 0
+  },
+  "purpose": "material_verification",
+  "cases": [
+    {
+      "case_id": "practice",
+      "app_contract_id": 1,
+      "uploaded_documents": 6,
+      "initial_issues": [],
+      "nts_advisories": [
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        }
+      ]
+    },
+    {
+      "case_id": "task_1_A",
+      "app_contract_id": 2,
+      "uploaded_documents": 5,
+      "initial_issues": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "status": "MISSING",
+          "field": "bank_account",
+          "expected": "제출",
+          "actual": "누락"
+        }
+      ],
+      "nts_advisories": [
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        }
+      ]
+    },
+    {
+      "case_id": "task_1_B",
+      "app_contract_id": 3,
+      "uploaded_documents": 5,
+      "initial_issues": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "status": "MISSING",
+          "field": "bank_account",
+          "expected": "제출",
+          "actual": "누락"
+        }
+      ],
+      "nts_advisories": [
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        }
+      ]
+    },
+    {
+      "case_id": "task_2_A",
+      "app_contract_id": 4,
+      "uploaded_documents": 6,
+      "initial_issues": [
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "status": "FAIL",
+          "field": "18",
+          "expected": "3,410,000원",
+          "actual": "3,520,000원"
+        }
+      ],
+      "nts_advisories": [
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        }
+      ],
+      "after_reply_issues": [],
+      "old_preserved_and_new_current": true
+    },
+    {
+      "case_id": "task_2_B",
+      "app_contract_id": 5,
+      "uploaded_documents": 6,
+      "initial_issues": [
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "status": "FAIL",
+          "field": "25",
+          "expected": "3,630,000원",
+          "actual": "3,740,000원"
+        }
+      ],
+      "nts_advisories": [
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "status": "REVIEW",
+          "field": "business_status",
+          "expected": "실제 조회",
+          "actual": "미연동",
+          "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+        }
+      ],
+      "after_reply_issues": [],
+      "old_preserved_and_new_current": true
+    }
+  ],
+  "passed": true,
+  "local_verification_receipt": "storage/demo/team-test/verification-v1-final/verification.json",
+  "app_base_commit": "6e3742dddb657abab2d0aca66faf010f9bbdb891",
+  "verification_scope": "real upload pipeline, rule service, document version persistence; not browser or timed user trial",
+  "pdf_check": {
+    "renderer": "Poppler pdftoppm",
+    "reviewer": "Codex (AI)",
+    "human_review": false,
+    "files": [
+      {
+        "path": "participants/practice/registered_contract.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/practice/originals/document_01.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/practice/originals/document_02.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/practice/originals/document_03.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/practice/originals/document_04.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/practice/originals/document_05.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/practice/originals/document_06.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_1_A/registered_contract.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_1_A/originals/document_01.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_1_A/originals/document_02.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_1_A/originals/document_03.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_1_A/originals/document_04.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_1_A/originals/document_05.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_1_B/registered_contract.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_1_B/originals/document_01.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_1_B/originals/document_02.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_1_B/originals/document_03.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_1_B/originals/document_04.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_1_B/originals/document_05.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_A/registered_contract.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_A/originals/document_01.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_A/originals/document_02.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_A/originals/document_03.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_A/originals/document_04.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_A/originals/document_05.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_A/originals/document_06.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "facilitator/replies/task_2_A/received_document.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_B/registered_contract.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_B/originals/document_01.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_B/originals/document_02.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_B/originals/document_03.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_B/originals/document_04.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_B/originals/document_05.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "participants/task_2_B/originals/document_06.pdf",
+        "pages": 1,
+        "rendered": true
+      },
+      {
+        "path": "facilitator/replies/task_2_B/received_document.pdf",
+        "pages": 1,
+        "rendered": true
+      }
+    ],
+    "visual_result": "35 pages checked; no clipped or broken text"
+  },
+  "app_source_sha256": {
+    "backend/app/services/pipeline_service.py": "d3bef39984adee12480bb5db78e7173c6727970df1080d012b4c58722bcb97a2",
+    "backend/app/services/contract_service.py": "c885bc2d2fea3494e14a75af8b870d64fdf3b007535c8b116c30c456c15a64c7",
+    "backend/app/validation/engine.py": "98a943450c6e956eae204d85e9de01cd9915e03c841dbb6035df379ff4a84075"
+  }
+}

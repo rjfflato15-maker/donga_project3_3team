@@ -10,4 +10,6 @@
 
 폴더별 배포 대상은 [배포 경계](../development/distribution_boundary.md)를 참고한다.
 
+실행 패키지에는 [실행·설정의 코드 교체 후 재시작](startup_settings.md#코드-교체병합-뒤에는-서버도-재시작) 안내를 포함한다. 소스 교체나 화면 새로고침만으로 실행 중인 백엔드가 갱신되지는 않는다. 이번 팀원 테스트의 검증 순서·측정 빌드는 [병합 체크리스트](team_test_merge_checklist.md)로 관리한다.
+
 [운영 문서 목록](run_guide.md)
