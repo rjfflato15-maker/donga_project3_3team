@@ -16,7 +16,7 @@ from backend.evaluation_review import compare_labels, merge_independent_parts, v
 from backend.prediction_artifacts import write_json
 from backend.scripts.compare_reference_labels import main as compare_main
 from backend.scripts.prepare_test_review import page_builder, review_questions, workbook_from_comparison
-from backend.scripts.import_reconciled_labels import import_review
+from backend.scripts.import_reconciled_labels import import_review, read_wording_resolutions
 
 
 def paths(project):
@@ -203,7 +203,7 @@ def reconcile(project, replies):
         'final_inference_started':False}
 
 
-def confirm(project, result_path):
+def confirm(project, result_path, resolution_path=None):
     import openpyxl
     freeze_policy(project)
     p = paths(project)
@@ -215,6 +215,8 @@ def confirm(project, result_path):
         raise EvaluationNotReady('검수자·test2 원본 양식 해시가 다릅니다. 기존 test 결과를 재사용하지 않습니다.')
     if p['human'].exists():
         raise EvaluationNotReady('기존 사람 확인 출처를 덮어쓰지 않습니다.')
+    manifest = json.loads((p['dataset']/'manifest.json').read_text(encoding='utf-8'))
+    wording_resolutions = read_wording_resolutions(resolution_path, result_path, manifest)
     book = openpyxl.load_workbook(p['workbook'])
     try:
         expected = {(name,row):sheet.cell(row,1).value for name in ('필드확인','검수확인')
@@ -224,7 +226,7 @@ def confirm(project, result_path):
             key = (item['sheet'],item['row'])
             if key in seen or expected.get(key)!=item['id'] or item.get('reviewer')!=reviewer:
                 raise EvaluationNotReady('사람 확인의 시트·행·ID·검수자가 다릅니다.')
-            if item.get('decision')!='확인' or not str(item.get('reason','')).strip():
+            if (item.get('decision')!='확인' and item['id'] not in wording_resolutions) or not str(item.get('reason','')).strip():
                 raise EvaluationNotReady('수정·보류 항목은 별도로 원문을 재확인한 뒤 반영해야 합니다.')
             moment = datetime.fromisoformat(item['reviewed_at'].replace('Z','+00:00'))
             if moment.tzinfo is None:
@@ -242,9 +244,17 @@ def confirm(project, result_path):
         book.close()
     original=p['human']/result_path.name
     shutil.copyfile(result_path,original)
-    labels=import_review(reviewed,p['dataset'],p['comparison']/'comparison.json',p['blind']/'replies',reviewer,original,split='test')
+    resolution_copy=None
+    if resolution_path is not None:
+        resolution_copy=p['human']/'question_wording_resolution.json'
+        shutil.copyfile(resolution_path,resolution_copy)
+    labels=import_review(reviewed,p['dataset'],p['comparison']/'comparison.json',p['blind']/'replies',reviewer,original,
+        split='test',resolution_path=resolution_copy)
     return {'human_confirmed':True,'human_direct_count':labels['review']['human_direct_count'],
-            'ai_agreement_count':labels['review']['ai_agreement_count'],'final_inference_started':False}
+            'ai_agreement_count':labels['review']['ai_agreement_count'],
+            'prompt_wording_error_count':labels['review'].get('prompt_wording_error_count',0),
+            'original_human_decision_counts':labels['review'].get('original_human_decision_counts'),
+            'final_inference_started':False}
 
 
 def main(argv=None):
@@ -252,11 +262,14 @@ def main(argv=None):
     group=parser.add_mutually_exclusive_group()
     group.add_argument('--replies',type=Path)
     group.add_argument('--human-result',type=Path)
+    parser.add_argument('--wording-resolution',type=Path,help='원본 답을 바꾸지 않는 질문 문구 오류의 근거 기록')
     args=parser.parse_args(argv)
     try:
         if not args.replies and not args.human_result:
             update_blind_prompt(PROJECT)
-        report=reconcile(PROJECT,args.replies) if args.replies else confirm(PROJECT,args.human_result) if args.human_result else readiness(PROJECT)
+        if args.wording_resolution and not args.human_result:
+            raise EvaluationNotReady('질문 정정에는 --human-result가 필요합니다.')
+        report=reconcile(PROJECT,args.replies) if args.replies else confirm(PROJECT,args.human_result,args.wording_resolution) if args.human_result else readiness(PROJECT)
         write_json(paths(PROJECT)['output']/'readiness.json',report)
         print(json.dumps(report,ensure_ascii=False,indent=2))
         return 0

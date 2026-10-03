@@ -24,13 +24,25 @@ def apply_human_decisions(manifest, reference, comparison, decisions, reviewer):
         rid = row["review_id"]
         if rid in required:
             decision = decisions[rid]
-            if decision.get("confirmation") != "확인" or not str(decision.get("evidence", "")).strip():
+            wording = decision.get("wording_resolution")
+            resolved_wording = (decision.get("confirmation") == "수정 필요" and isinstance(wording, dict)
+                and wording.get("kind") == "QUESTION_WORDING_ERROR_LABEL_UNCHANGED"
+                and wording.get("review_id") == rid and wording.get("adjudicator")
+                and wording.get("human_observation") == decision.get("evidence")
+                and row.get("document_id") is not None and row["key"] in {"supply_amount", "tax_amount", "total_amount"}
+                and row["reference"] == {"state": "REVIEW", "value": None}
+                and decision.get("state") == "REVIEW" and decision.get("value") is None
+                and wording.get("resolved_answer") == {"state": "REVIEW", "value": None}
+                and wording.get("source_sha256") and wording.get("resolution_reason"))
+            if (decision.get("confirmation") != "확인" and not resolved_wording) or not str(decision.get("evidence", "")).strip():
                 raise EvaluationNotReady("사람 직접 확인과 판단 근거가 비어 있습니다.")
             state, value = decision.get("state"), decision.get("value")
             if isinstance(value, str) and value.startswith("="):
                 raise EvaluationNotReady("정답 값은 수식 대신 원문에서 확인한 값을 입력하세요.")
             proof = {"method": "human_direct", "confirmed": True, "reviewer": reviewer,
                      "evidence": str(decision["evidence"]).strip(), "selection_reason": row["selection_reason"]}
+            if resolved_wording:
+                proof.update(original_human_decision=decision["confirmation"], wording_resolution=copy.deepcopy(wording))
             counts["human"] += 1
         else:
             if row["comparison"] != "AGREE":

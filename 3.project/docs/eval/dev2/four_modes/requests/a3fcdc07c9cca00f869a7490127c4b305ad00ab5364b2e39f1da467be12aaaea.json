@@ -1,0 +1,40 @@
+{
+  "sha256": "6ec4bd4c857638ee23ae88f7b697dcd898b78e5a06c54bc68fa694e28b7bd35f",
+  "payload": {
+    "attempt_id": "5867ef04-9165-4321-82a3-c692e241fb37",
+    "request_sha256": "a3fcdc07c9cca00f869a7490127c4b305ad00ab5364b2e39f1da467be12aaaea",
+    "started_at": "2026-10-02T17:02:17.893092+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주: 가상 한결기획 3\n은행명: 가상은행\n계좌번호: TEST-ACCOUNT-001\n사업자등록번호: 000-00-03031\n발행일: 2026-09-18\n"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "issue_date",
+        "amount_scope"
+      ],
+      "document_type": "bank_account",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

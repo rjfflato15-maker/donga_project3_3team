@@ -1,0 +1,98 @@
+{
+  "sha256": "b43d198c482441abaac034607260291a60c4cef873b4a1caf4b9725ffac4d301",
+  "payload": {
+    "attempt_id": "5867ef04-9165-4321-82a3-c692e241fb37",
+    "request_sha256": "00eb5c375f28940ff536a735022f13e8a29b2b12dc5b8f0612c59ba3dcf75671",
+    "run": {
+      "ok": true,
+      "error": null,
+      "attempts": 1,
+      "proposals": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 한결기획 1",
+          "page": 1,
+          "line": 3,
+          "quote": "예금주: 가상 한결기획 1"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-03012",
+          "page": 1,
+          "line": 6,
+          "quote": "사업자등록번호: 000-00-03012"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "page": null,
+          "line": null,
+          "quote": ""
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "page": null,
+          "line": null,
+          "quote": ""
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "page": null,
+          "line": null,
+          "quote": ""
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16",
+          "page": 1,
+          "line": 7,
+          "quote": "발행일: 2026-09-16"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "page": null,
+          "line": null,
+          "quote": ""
+        }
+      },
+      "model": "qwen3:latest",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "prompt_version": "grounded-fields-v3",
+      "manual_review_required": true,
+      "model_metadata": {
+        "name": "qwen3:latest",
+        "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+        "size": 5225388164,
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3",
+          "families": [
+            "qwen3"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 40960,
+          "embedding_length": 4096
+        }
+      },
+      "server_seconds": 11.0593412,
+      "load_seconds": 0.0064436,
+      "eval_count": 367,
+      "elapsed_seconds": 11.062294699997437
+    }
+  }
+}

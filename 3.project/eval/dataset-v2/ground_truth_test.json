@@ -1,9 +1,6137 @@
 {
   "dataset_version": "synthetic-hard-v2",
   "split": "test",
+  "reference_version": "hard-design-v2",
   "review": {
-    "confirmed": false
+    "confirmed": true,
+    "reviewer_type": "human",
+    "reviewer": "이창헌",
+    "confirmed_at": "2026-10-03T02:39:30.708934+09:00",
+    "review_method": "independent_reconciliation_with_human_sampling",
+    "human_full_review": false,
+    "human_direct_count": 81,
+    "ai_agreement_count": 459,
+    "required_human_count": 81,
+    "source_reference_sha256": "2a1e2f4e4407f33f827d9c3ba9992526c15447a4c124accfd8f9bf3112390b6e",
+    "comparison_sha256": "9f2c2a39fd28835fbd0b0a4572e9675a231850264b6bb0dde2e866e7777838b9",
+    "independent_reply_sha256": {
+      "case_01.json": "d2137105204b5388bd710b2dcb10f8200e96a648567d6e56f53d3cdf383b1d35",
+      "case_02.json": "062dbbfc819936d70602e32882d50abff5e9ccf151482d200017f6f35fda6fae",
+      "case_03.json": "daff60d311467a36a7702fe0ba16daaecae3e2eee8b57bc8b577a7ba3abe8abf",
+      "case_04.json": "8e0f4f60569af395b2b0a3c502d77d1537023c25017f4c1175a9d0116925c039",
+      "case_05.json": "51c931626e64009c03058591f245b3788e36513cbae06121d8bfc36d341c8220",
+      "case_06.json": "19addecf86a06862d26ed1cf5225bd630dc506c6db5bc09a7a3a6f43f1a04a61"
+    },
+    "sampling": {
+      "seed": 42,
+      "rate": 0.1,
+      "method": "stratified_random_by_case_document_type",
+      "eligible_agreements": 511,
+      "sampled_count": 52,
+      "coverage": [
+        {
+          "contract_id": 401,
+          "scenario": null,
+          "selected_document_ids": [
+            40101,
+            40102,
+            40103,
+            40105,
+            40106
+          ]
+        },
+        {
+          "contract_id": 402,
+          "scenario": null,
+          "selected_document_ids": [
+            40201,
+            40202,
+            40204,
+            40205,
+            40206
+          ]
+        },
+        {
+          "contract_id": 403,
+          "scenario": null,
+          "selected_document_ids": [
+            40301,
+            40302,
+            40303,
+            40304,
+            40305,
+            40306
+          ]
+        },
+        {
+          "contract_id": 404,
+          "scenario": null,
+          "selected_document_ids": [
+            40401,
+            40402,
+            40404,
+            40405,
+            40406
+          ]
+        },
+        {
+          "contract_id": 405,
+          "scenario": null,
+          "selected_document_ids": [
+            40501,
+            40502,
+            40503,
+            40504,
+            40506
+          ]
+        },
+        {
+          "contract_id": 406,
+          "scenario": null,
+          "selected_document_ids": [
+            40601,
+            40602,
+            40604,
+            40605,
+            40606
+          ]
+        }
+      ],
+      "strata": [
+        {
+          "contract_id": "401",
+          "document_type": "bank_account",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "401",
+          "document_type": "business_registration",
+          "eligible_count": 12,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "401",
+          "document_type": "contract",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "401",
+          "document_type": "contract_checks",
+          "eligible_count": 12,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "401",
+          "document_type": "estimate",
+          "eligible_count": 13,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "401",
+          "document_type": "inspection_confirmation",
+          "eligible_count": 10,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "401",
+          "document_type": "tax_invoice",
+          "eligible_count": 15,
+          "sampled_count": 2
+        },
+        {
+          "contract_id": "402",
+          "document_type": "bank_account",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "402",
+          "document_type": "business_registration",
+          "eligible_count": 12,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "402",
+          "document_type": "contract",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "402",
+          "document_type": "contract_checks",
+          "eligible_count": 12,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "402",
+          "document_type": "estimate",
+          "eligible_count": 14,
+          "sampled_count": 2
+        },
+        {
+          "contract_id": "402",
+          "document_type": "inspection_confirmation",
+          "eligible_count": 10,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "402",
+          "document_type": "tax_invoice",
+          "eligible_count": 16,
+          "sampled_count": 2
+        },
+        {
+          "contract_id": "403",
+          "document_type": "bank_account",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "403",
+          "document_type": "business_registration",
+          "eligible_count": 12,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "403",
+          "document_type": "contract",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "403",
+          "document_type": "contract_checks",
+          "eligible_count": 12,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "403",
+          "document_type": "estimate",
+          "eligible_count": 14,
+          "sampled_count": 2
+        },
+        {
+          "contract_id": "403",
+          "document_type": "inspection_confirmation",
+          "eligible_count": 10,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "403",
+          "document_type": "tax_invoice",
+          "eligible_count": 16,
+          "sampled_count": 2
+        },
+        {
+          "contract_id": "404",
+          "document_type": "bank_account",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "404",
+          "document_type": "business_registration",
+          "eligible_count": 12,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "404",
+          "document_type": "contract",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "404",
+          "document_type": "contract_checks",
+          "eligible_count": 12,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "404",
+          "document_type": "estimate",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "404",
+          "document_type": "inspection_confirmation",
+          "eligible_count": 10,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "404",
+          "document_type": "tax_invoice",
+          "eligible_count": 16,
+          "sampled_count": 2
+        },
+        {
+          "contract_id": "405",
+          "document_type": "bank_account",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "405",
+          "document_type": "business_registration",
+          "eligible_count": 12,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "405",
+          "document_type": "contract",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "405",
+          "document_type": "contract_checks",
+          "eligible_count": 12,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "405",
+          "document_type": "estimate",
+          "eligible_count": 14,
+          "sampled_count": 2
+        },
+        {
+          "contract_id": "405",
+          "document_type": "inspection_confirmation",
+          "eligible_count": 10,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "405",
+          "document_type": "tax_invoice",
+          "eligible_count": 16,
+          "sampled_count": 2
+        },
+        {
+          "contract_id": "406",
+          "document_type": "bank_account",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "406",
+          "document_type": "business_registration",
+          "eligible_count": 12,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "406",
+          "document_type": "contract",
+          "eligible_count": 11,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "406",
+          "document_type": "contract_checks",
+          "eligible_count": 12,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "406",
+          "document_type": "estimate",
+          "eligible_count": 14,
+          "sampled_count": 2
+        },
+        {
+          "contract_id": "406",
+          "document_type": "inspection_confirmation",
+          "eligible_count": 10,
+          "sampled_count": 1
+        },
+        {
+          "contract_id": "406",
+          "document_type": "tax_invoice",
+          "eligible_count": 16,
+          "sampled_count": 2
+        }
+      ]
+    },
+    "prompt_wording_error_count": 1,
+    "prompt_wording_resolution_sha256": "a4dc53e287d564eef0ef08ed19fd5ace288ee489f83f236c23cdb04ec71b316b",
+    "original_human_decision_counts": {
+      "확인": 80,
+      "수정 필요": 1,
+      "보류": 0
+    },
+    "human_result_sha256": "9ab8b7ef20fa98ba04377ee739cfd4bb5c6e3dcc1dac5b805c22191e614605f5",
+    "human_result_file": "human_review_result_test2_이창헌.json",
+    "reviewed_from": "2026-10-02T17:24:01.956000+00:00",
+    "reviewed_until": "2026-10-02T17:31:16.502000+00:00"
   },
-  "documents": {},
-  "contracts": {}
+  "documents": {
+    "40101": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 1",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04011",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: business_registration_no — \"사업자등록번호는 000-00-04011다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:28:00.285Z",
+            "source_sheet": "필드확인",
+            "source_row": 5
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4110000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 411000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4521000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:31:11.308Z",
+            "source_sheet": "필드확인",
+            "source_row": 6
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "3aebea6df1738f0d234bb167adaee202c05062effe8854864ddde04bb6a28d36",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40102": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 1",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004011",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4110000,
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: supply_amount — \"공급가액은 4,110,000원이다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:28:18.173Z",
+            "source_sheet": "필드확인",
+            "source_row": 7
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 411000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4521000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:24:04.012Z",
+            "source_sheet": "필드확인",
+            "source_row": 8
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "3da07a2125d99f2e6a2551ae25b869ef7cb5290d6288463dee9637e26ff173bb",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40103": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 1",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04011",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: business_registration_no — \"사업자등록번호는 000-00-04011다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:28:20.382Z",
+            "source_sheet": "필드확인",
+            "source_row": 9
+          }
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "ae96741fbcbda82ce9f84f8375ad6a6dd64c88dae1db6d2511d69665910b56cb",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40104": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 1",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004011",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "96f9e960d847760bbc67ad991c455073153db16561dea13a71dc76f9df6e1bec",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40105": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 1",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: company_name — \"공급자 상호는 가상 새봄기획 1다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:28:26.621Z",
+            "source_sheet": "필드확인",
+            "source_row": 11
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004011",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4110000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 411000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4521000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "2c88c88a5cee40d84d0243de76126e300a332262aaac59fc14166ebc871e1804",
+      "accepted": true,
+      "document_type_review": {
+        "method": "human_direct",
+        "confirmed": true,
+        "reviewer": "이창헌",
+        "evidence": "원문 직접 확인: document_type — \"이 문서는 전자세금계산서다.\" 맞음",
+        "selection_reason": "RANDOM_SAMPLE",
+        "reviewed_at": "2026-10-02T17:28:22.924Z",
+        "source_sheet": "필드확인",
+        "source_row": 10
+      }
+    },
+    "40106": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 1",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004011",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4110000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 411000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4521000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-16",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: issue_date — \"발행일은 2026-09-16다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:28:28.172Z",
+            "source_sheet": "필드확인",
+            "source_row": 12
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:24:11.103Z",
+            "source_sheet": "필드확인",
+            "source_row": 13
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "e5d8c773c67edc97e1102be08205bd6440cd8630bffa1fe877105f68d15d0af4",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40201": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 2",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004025",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4247000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 424700,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4671700,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:24:16.612Z",
+            "source_sheet": "필드확인",
+            "source_row": 14
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "13f3b80d3898147543c11108f738e016fd81d155302b68bf097b69d507ea7a50",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40202": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 2",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004025",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4247000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 424700,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4671700,
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: total_amount — \"합계금액은 4,671,700원이다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:28:40.868Z",
+            "source_sheet": "필드확인",
+            "source_row": 15
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:24:23.013Z",
+            "source_sheet": "필드확인",
+            "source_row": 16
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "d47b5183bad0eefb1369a17865b6def3fb0b05aa52bf679530f3c2511fa9f402",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40203": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 2",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004025",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "d1af36341b6e254037c85daf76e06281790e2893ee5d9ff23c9b737df3305f4f",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40204": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 2",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04025",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: business_registration_no — \"사업자등록번호는 000-00-04025다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:28:45.388Z",
+            "source_sheet": "필드확인",
+            "source_row": 17
+          }
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "eac84a9c48e6a68998bba37f27a74dd8e633ef5246f499b669c9c7f72e0b70cd",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40205": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 2",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04025",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: business_registration_no — \"사업자등록번호는 000-00-04025다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:29:06.005Z",
+            "source_sheet": "필드확인",
+            "source_row": 18
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4247000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 424700,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4671700,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:29:07.071Z",
+            "source_sheet": "필드확인",
+            "source_row": 19
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "c47bd82716170ff0eb0c5ed9a337066f6d3b74d4c7696d6fe7366f9c6f73b3b5",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40206": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 2",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04025",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: business_registration_no — \"사업자등록번호는 000-00-04025다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:29:07.526Z",
+            "source_sheet": "필드확인",
+            "source_row": 20
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4247000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 424700,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4671700,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-17",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:24:27.788Z",
+            "source_sheet": "필드확인",
+            "source_row": 21
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "1adb0d442ffdbe8e17503de9f622dddd3d026e319fd30d90131342b063fe74b4",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40301": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004030",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:24:30.236Z",
+            "source_sheet": "필드확인",
+            "source_row": 22
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "46d07262cfa82c19cdb963bb494cd97e84ab0765cfad25fbe4b1ad14a8c3823d",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40302": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: business_registration_no — \"사업자등록번호는 000-00-04030다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:29:15.325Z",
+            "source_sheet": "필드확인",
+            "source_row": 23
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:24:33.876Z",
+            "source_sheet": "필드확인",
+            "source_row": 24
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "80356bfe3dc646484edb21f31520fb454567cf7e08b22b034bf739106ebd64fd",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40303": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004030",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "d9ec97d97e0952053050dc23427c219d34bbdaa506b873ff8c36303ddec88de7",
+      "accepted": true,
+      "document_type_review": {
+        "method": "human_direct",
+        "confirmed": true,
+        "reviewer": "이창헌",
+        "evidence": "원문 직접 확인: document_type — \"이 문서는 사업자등록증다.\" 맞음",
+        "selection_reason": "RANDOM_SAMPLE",
+        "reviewed_at": "2026-10-02T17:29:16.893Z",
+        "source_sheet": "필드확인",
+        "source_row": 25
+      }
+    },
+    "40304": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004030",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "8c580718001760f43465cc6652de6c19213580e415de2db46b085ac2f04b6da4",
+      "accepted": true,
+      "document_type_review": {
+        "method": "human_direct",
+        "confirmed": true,
+        "reviewer": "이창헌",
+        "evidence": "원문 직접 확인: document_type — \"이 문서는 통장사본다.\" 맞음",
+        "selection_reason": "RANDOM_SAMPLE",
+        "reviewed_at": "2026-10-02T17:29:17.892Z",
+        "source_sheet": "필드확인",
+        "source_row": 26
+      }
+    },
+    "40305": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004030",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "f2805ce85e2f596db7803b4bc9b15675d4d80669e9487f83f5d89dcd21af8445",
+      "accepted": true,
+      "document_type_review": {
+        "method": "human_direct",
+        "confirmed": true,
+        "reviewer": "이창헌",
+        "evidence": "원문 직접 확인: document_type — \"이 문서는 전자세금계산서다.\" 맞음",
+        "selection_reason": "RANDOM_SAMPLE",
+        "reviewed_at": "2026-10-02T17:29:20.677Z",
+        "source_sheet": "필드확인",
+        "source_row": 27
+      }
+    },
+    "40306": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004030",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: issue_date — \"발행일은 2026-09-18다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:29:21.941Z",
+            "source_sheet": "필드확인",
+            "source_row": 28
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:24:35.990Z",
+            "source_sheet": "필드확인",
+            "source_row": 29
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "f39f2c1b3546247a1b8c30105bbcc8ac7916e830e41dcc4579c3444ea9861b3e",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40401": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 4",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004044",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4521000,
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: supply_amount — \"공급가액은 4,521,000원이다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:05.285Z",
+            "source_sheet": "필드확인",
+            "source_row": 30
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 452100,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4973100,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:24:38.606Z",
+            "source_sheet": "필드확인",
+            "source_row": 31
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "a34fa1f04a2e5726192e0be7fc6bd414eee3fe40b2fb51ad960473a24f3b2b90",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40402": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 4",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004044",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4521000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 452100,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "REVIEW",
+          "value": null,
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "합계금액이라는 단어는 있음 근데 금액은 없음 확인인이라고 써있음 그래서 아닌것 같아서 함 맞는지 모르겠네 ㅡㅡ",
+            "selection_reason": "INTERPRETATION",
+            "original_human_decision": "수정 필요",
+            "wording_resolution": {
+              "review_id": "404/40402/total_amount",
+              "kind": "QUESTION_WORDING_ERROR_LABEL_UNCHANGED",
+              "adjudicator": "Codex",
+              "human_observation": "합계금액이라는 단어는 있음 근데 금액은 없음 확인인이라고 써있음 그래서 아닌것 같아서 함 맞는지 모르겠네 ㅡㅡ",
+              "source_sha256": "11b3d9df38da393e542944bf31da6b59b6e8f6e06ea3230e5a34d046cb27288d",
+              "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">'합계금액'이라는 이름의 금액이 없다 → <b>판단 보류</b>.</div><div class=\"interp\">📌 기준: 원문에서 가려지거나 뜻을 확정할 수 없는 값은 REVIEW입니다. 등록 금액이나 다른 숫자의 합으로 복원하지 않습니다. 이 기준대로면 <b>맞아요</b>.</div>",
+              "corrected_question": "원문에는 '합계금액' 항목이 있지만 숫자 자리가 '확인인' 도장에 가려 읽을 수 없다. 확인 필요(REVIEW)가 맞는가?",
+              "resolved_answer": {
+                "state": "REVIEW",
+                "value": null
+              },
+              "resolution_reason": "사용자가 '합계금액이라는 단어는 있음 근데 금액은 없음 확인인이라고 써있음'이라고 직접 관찰했다. 같은 원본 이미지를 대조해 항목은 있고 숫자가 가려져 있음을 확인했다. 질문의 '이름의 금액이 없다'는 문구가 잘못됐으므로 사용자 지적을 보존한다. 숫자를 추측하거나 인간의 클릭을 '확인'으로 바꾸지 않고 기존 REVIEW 상태를 유지한다."
+            },
+            "reviewed_at": "2026-10-02T17:27:04.973Z",
+            "source_sheet": "필드확인",
+            "source_row": 33
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:25:18.757Z",
+            "source_sheet": "필드확인",
+            "source_row": 34
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "11b3d9df38da393e542944bf31da6b59b6e8f6e06ea3230e5a34d046cb27288d",
+      "accepted": true,
+      "document_type_review": {
+        "method": "human_direct",
+        "confirmed": true,
+        "reviewer": "이창헌",
+        "evidence": "원문 직접 확인: document_type — \"이 문서는 견적서다.\" 맞음",
+        "selection_reason": "RANDOM_SAMPLE",
+        "reviewed_at": "2026-10-02T17:30:07.606Z",
+        "source_sheet": "필드확인",
+        "source_row": 32
+      }
+    },
+    "40403": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 4",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004044",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "08e1d06054ed664111fd67c89daf8a2590c0cbf459ecf51ba7be7fa801e42303",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40404": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 4",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004044",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: total_amount — \"이 문서에는 '합계금액' 항목이 없다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:11.061Z",
+            "source_sheet": "필드확인",
+            "source_row": 35
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "0b70492436b511c01cddb89df76c1a163b0b1abcb8843fe6a3f24fef77dc6017",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40405": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 4",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004044",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4521000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 452100,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4973100,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: issue_date — \"발행일은 2026-09-19다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:14.993Z",
+            "source_sheet": "필드확인",
+            "source_row": 36
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "260400c8bcb4b9ced42c2c6635f1813f91764b606fa2a7ea2106140bad00ec9e",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40406": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 4",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004044",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4521000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 452100,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4973100,
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: total_amount — \"합계금액은 4,973,100원이다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:16.348Z",
+            "source_sheet": "필드확인",
+            "source_row": 37
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-19",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:25:20.797Z",
+            "source_sheet": "필드확인",
+            "source_row": 38
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "8ff56fbfb753844df71fa3ae4bcb6099efc702e383463c4963de366bd71b2a5e",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40501": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 5",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004059",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4658000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 465800,
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: tax_amount — \"세액은 465,800원이다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:21.765Z",
+            "source_sheet": "필드확인",
+            "source_row": 39
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5123800,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:25:22.413Z",
+            "source_sheet": "필드확인",
+            "source_row": 40
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "e2b9b6e41597a3af68b8908640f09d791401c84a28559e559fffd06ec1429f72",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40502": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 5",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: company_name — \"공급자 상호는 가상 새봄기획 5다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:24.751Z",
+            "source_sheet": "필드확인",
+            "source_row": 41
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004059",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4658000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 465800,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5123800,
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: total_amount — \"합계금액은 5,123,800원이다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:32.925Z",
+            "source_sheet": "필드확인",
+            "source_row": 42
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:25:25.213Z",
+            "source_sheet": "필드확인",
+            "source_row": 43
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "824edc9f31130cb6ae568653b74bcba1b1bad34a67d765ae383dd5e2c123d9d2",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40503": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 5",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004059",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "f3f45c50ba2f8da98d9bf7d354d4d478f5052ab64fbd7b6b1dfc9e4211230bda",
+      "accepted": true,
+      "document_type_review": {
+        "method": "human_direct",
+        "confirmed": true,
+        "reviewer": "이창헌",
+        "evidence": "원문 직접 확인: document_type — \"이 문서는 사업자등록증다.\" 맞음",
+        "selection_reason": "RANDOM_SAMPLE",
+        "reviewed_at": "2026-10-02T17:30:35.822Z",
+        "source_sheet": "필드확인",
+        "source_row": 44
+      }
+    },
+    "40504": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 5",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: company_name — \"예금주는 가상 새봄기획 5다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:40.437Z",
+            "source_sheet": "필드확인",
+            "source_row": 45
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004059",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "c4c1829092854633a0828c60a479e22b51415e30e9ad01f0d3591e8b0fabeaca",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40505": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 5",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004059",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4658000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 465800,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5123800,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "b5b578294ce7839a862bad9939b9c03a815f9cf008baa8b1e29ddd58ace2b2cb",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40506": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 5",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: company_name — \"계약상대자는 가상 새봄기획 5다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:48.414Z",
+            "source_sheet": "필드확인",
+            "source_row": 46
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004059",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4658000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 465800,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5123800,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-20",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:26:54.406Z",
+            "source_sheet": "필드확인",
+            "source_row": 47
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "a8bf1978f124750abb7a61176fda6c9877fab01f2dc87f4cdf7487627bbab577",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40601": {
+      "document_type": "contract",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 6",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004063",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4795000,
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: supply_amount — \"공급가액은 4,795,000원이다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:55.004Z",
+            "source_sheet": "필드확인",
+            "source_row": 48
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 479500,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5274500,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:27:39.494Z",
+            "source_sheet": "필드확인",
+            "source_row": 49
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "4b17faf846f3e92f94128754b1a1f432dc22c60805650692eb2ea5cc6650a4dd",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40602": {
+      "document_type": "estimate",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 6",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004063",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4795000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 479500,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5274500,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다. ('선금·잔금' 같은 일부가 아님)\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:27:45.349Z",
+            "source_sheet": "필드확인",
+            "source_row": 50
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "23d7df04f2b279fc298d1d6d7f7323293e0c9cf4c23372890f1810173c8592fb",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40603": {
+      "document_type": "business_registration",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 6",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004063",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "fc872a2e528b8bef86485cbdda59ca05e6f17f25435729e1082dca0588a023e4",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40604": {
+      "document_type": "bank_account",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 6",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004063",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: supply_amount — \"이 문서에는 '공급가액' 항목이 없다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:31:04.222Z",
+            "source_sheet": "필드확인",
+            "source_row": 51
+          }
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "6bf6597d7a5e13a0351e6c190f5f2cca38bd49ffc256615ba22df93b96abcc92",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "40605": {
+      "document_type": "tax_invoice",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 6",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004063",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4795000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 479500,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5274500,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "26e046c4d84cb2662627562b5898d3a865084b75842aecd4ff9f30eece46bc8c",
+      "accepted": true,
+      "document_type_review": {
+        "method": "human_direct",
+        "confirmed": true,
+        "reviewer": "이창헌",
+        "evidence": "원문 직접 확인: document_type — \"이 문서는 전자세금계산서다.\" 맞음",
+        "selection_reason": "RANDOM_SAMPLE",
+        "reviewed_at": "2026-10-02T17:31:05.157Z",
+        "source_sheet": "필드확인",
+        "source_row": 52
+      }
+    },
+    "40606": {
+      "document_type": "inspection_confirmation",
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 6",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "0000004063",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4795000,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 479500,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 5274500,
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-21",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: amount_scope — \"이 문서의 금액은 계약 전체 금액이다.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:27:47.405Z",
+            "source_sheet": "필드확인",
+            "source_row": 53
+          }
+        }
+      },
+      "source_checked": true,
+      "reviewed": false,
+      "source_check_method": "independent_pdf_text_or_raster_design; human_visual_pending",
+      "source_sha256": "ba237d530deb383553b217004f4dd8718119309f27dced1d83b8cc7c508cfeea",
+      "accepted": true,
+      "document_type_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    }
+  },
+  "contracts": {
+    "401": {
+      "source_checked": true,
+      "reviewed": false,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: BUSINESS_STATUS/business_status — \"실제로 영업 중인 사업자인지는 판단 보류.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:31:12.500Z",
+            "source_sheet": "검수확인",
+            "source_row": 6
+          }
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40101",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40101",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40101",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40101",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40102",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40102",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40102",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40102",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40102",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40102",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "40102",
+          "status": "PASS",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: AMOUNT_MATCH_ESTIMATE/40102 — \"견적서 합계금액이 계약 금액 4,521,000원과 같다.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:24:01.956Z",
+            "source_sheet": "검수확인",
+            "source_row": 7
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40103",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40103",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40103",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40103",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40104",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: ORIGINAL_FILE/40104 — \"이 파일은 정상적으로 열린다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:28:21.708Z",
+            "source_sheet": "검수확인",
+            "source_row": 8
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40104",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40104",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40105",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40105",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40105",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40105",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40105",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40105",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "40105",
+          "status": "PASS",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: AMOUNT_MATCH_TAX_INVOICE/40105 — \"세금계산서 합계금액이 계약 금액 4,521,000원과 같다.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:24:09.045Z",
+            "source_sheet": "검수확인",
+            "source_row": 9
+          }
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "40105",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40106",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40106",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40106",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      ],
+      "accepted": true,
+      "missing_types_review": {
+        "method": "human_direct",
+        "confirmed": true,
+        "reviewer": "이창헌",
+        "evidence": "원문 직접 확인: missing_types — \"6종 서류가 모두 제출됐다.\" 맞음",
+        "selection_reason": "RANDOM_SAMPLE",
+        "reviewed_at": "2026-10-02T17:27:56.924Z",
+        "source_sheet": "검수확인",
+        "source_row": 5
+      }
+    },
+    "402": {
+      "source_checked": true,
+      "reviewed": false,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: BUSINESS_NO_MATCH/business_registration_no — \"사업자번호를 대조할 서류(계약서·견적서·세금계산서·사업자등록증)가 있다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:28:35.621Z",
+            "source_sheet": "검수확인",
+            "source_row": 10
+          }
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: BUSINESS_STATUS/business_status — \"실제로 영업 중인 사업자인지는 판단 보류.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:31:13.637Z",
+            "source_sheet": "검수확인",
+            "source_row": 11
+          }
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40201",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40201",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40201",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: DOCUMENT_PROCESSING/40201 — \"글자가 깨끗해서 읽을 수 있다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:28:37.429Z",
+            "source_sheet": "검수확인",
+            "source_row": 12
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40201",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40202",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40202",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40202",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40202",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40202",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40202",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "40202",
+          "status": "PASS",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: AMOUNT_MATCH_ESTIMATE/40202 — \"견적서 합계금액이 계약 금액 4,671,700원과 같다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:28:39.668Z",
+            "source_sheet": "검수확인",
+            "source_row": 13
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40203",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40203",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: DOCUMENT_TYPE/40203 — \"제목을 보면 무슨 문서인지 알 수 있다. (사업자등록증)\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:28:43.151Z",
+            "source_sheet": "검수확인",
+            "source_row": 14
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40203",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40203",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40204",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40204",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40204",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40205",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40205",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40205",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40205",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40205",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40205",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "40205",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "40205",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40206",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40206",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40206",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      ],
+      "accepted": true,
+      "missing_types_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "403": {
+      "source_checked": true,
+      "reviewed": false,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: REQUIRED_DOCUMENTS/inspection_confirmation — \"납품 검수확인서이 제출되어 있다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:29:08.517Z",
+            "source_sheet": "검수확인",
+            "source_row": 15
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: BUSINESS_STATUS/business_status — \"실제로 영업 중인 사업자인지는 판단 보류.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:31:14.341Z",
+            "source_sheet": "검수확인",
+            "source_row": 16
+          }
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40301",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40301",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40301",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: DOCUMENT_PROCESSING/40301 — \"글자가 깨끗해서 읽을 수 있다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:29:09.333Z",
+            "source_sheet": "검수확인",
+            "source_row": 17
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40301",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40302",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40302",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40302",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40302",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40302",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: AMOUNT_EXTRACTION/40302 — \"'합계금액'이라는 이름과 함께 금액이 분명히 적혀 있다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:29:14.990Z",
+            "source_sheet": "검수확인",
+            "source_row": 18
+          }
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40302",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "40302",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40303",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40303",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40303",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40303",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40304",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40304",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40304",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40305",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40305",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: DOCUMENT_TYPE/40305 — \"제목을 보면 무슨 문서인지 알 수 있다. (전자세금계산서)\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:29:19.613Z",
+            "source_sheet": "검수확인",
+            "source_row": 19
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40305",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40305",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40305",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40305",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "40305",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "40305",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40306",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40306",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40306",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      ],
+      "accepted": true,
+      "missing_types_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "404": {
+      "source_checked": true,
+      "reviewed": false,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: BUSINESS_STATUS/business_status — \"실제로 영업 중인 사업자인지는 판단 보류.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:31:14.741Z",
+            "source_sheet": "검수확인",
+            "source_row": 20
+          }
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: AMOUNT_BASIS/amount_basis — \"등록 계약의 금액 기준이 분명하다. (합계 기준 4,973,100원)\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:00.965Z",
+            "source_sheet": "검수확인",
+            "source_row": 21
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40401",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40401",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40401",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40401",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40402",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40402",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40402",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40402",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40402",
+          "status": "REVIEW",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: AMOUNT_EXTRACTION/40402 — \"금액 이름이 '참고값'뿐이라 공급가액·세액·합계를 확정할 수 없다 → 판단 보류.\" 맞음",
+            "selection_reason": "DISAGREEMENT",
+            "reviewed_at": "2026-10-02T17:24:53.070Z",
+            "source_sheet": "검수확인",
+            "source_row": 22
+          }
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40402",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "40402",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: AMOUNT_MATCH_ESTIMATE/40402 — \"금액을 확정할 수 없어 일치·불일치 대조는 하지 않는다.\" 맞음",
+            "selection_reason": "DISAGREEMENT",
+            "reviewed_at": "2026-10-02T17:25:02.356Z",
+            "source_sheet": "검수확인",
+            "source_row": 23
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40403",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40403",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40403",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: DOCUMENT_PROCESSING/40403 — \"글자가 깨끗해서 읽을 수 있다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:08.852Z",
+            "source_sheet": "검수확인",
+            "source_row": 24
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40403",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40404",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40404",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40404",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40405",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40405",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40405",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40405",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40405",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40405",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "40405",
+          "status": "PASS",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: AMOUNT_MATCH_TAX_INVOICE/40405 — \"세금계산서 합계금액이 계약 금액 4,973,100원과 같다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:13.630Z",
+            "source_sheet": "검수확인",
+            "source_row": 25
+          }
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "40405",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40406",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40406",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40406",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      ],
+      "accepted": true,
+      "missing_types_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "405": {
+      "source_checked": true,
+      "reviewed": false,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: BUSINESS_NO_MATCH/business_registration_no — \"사업자번호를 대조할 서류(계약서·견적서·세금계산서·사업자등록증)가 있다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:18.270Z",
+            "source_sheet": "검수확인",
+            "source_row": 26
+          }
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: BUSINESS_STATUS/business_status — \"실제로 영업 중인 사업자인지는 판단 보류.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:31:15.054Z",
+            "source_sheet": "검수확인",
+            "source_row": 27
+          }
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40501",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40501",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40501",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40501",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40502",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40502",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40502",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40502",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40502",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40502",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "40502",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40503",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40503",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40503",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40503",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40504",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40504",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40504",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40505",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40505",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: DOCUMENT_TYPE/40505 — \"제목을 보면 무슨 문서인지 알 수 있다. (전자세금계산서)\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:43.078Z",
+            "source_sheet": "검수확인",
+            "source_row": 28
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40505",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40505",
+          "status": "PASS",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: BUSINESS_NO_MATCH/40505 — \"문서의 공급자 사업자번호가 등록 번호 000-00-04059와 같다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:46.653Z",
+            "source_sheet": "검수확인",
+            "source_row": 29
+          }
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40505",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40505",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "40505",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "40505",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40506",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40506",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40506",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      ],
+      "accepted": true,
+      "missing_types_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    },
+    "406": {
+      "source_checked": true,
+      "reviewed": false,
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: BUSINESS_STATUS/business_status — \"실제로 영업 중인 사업자인지는 판단 보류.\" 맞음",
+            "selection_reason": "INTERPRETATION",
+            "reviewed_at": "2026-10-02T17:31:16.502Z",
+            "source_sheet": "검수확인",
+            "source_row": 30
+          }
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: AMOUNT_BASIS/amount_basis — \"등록 계약의 금액 기준이 분명하다. (합계 기준 5,274,500원)\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:51.885Z",
+            "source_sheet": "검수확인",
+            "source_row": 31
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40601",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40601",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40601",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40601",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40602",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40602",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40602",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: DOCUMENT_PROCESSING/40602 — \"글자가 깨끗해서 읽을 수 있다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:30:56.205Z",
+            "source_sheet": "검수확인",
+            "source_row": 32
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40602",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40602",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40602",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: AMOUNT_COMPONENTS/40602 — \"공급가액 + 세액 = 합계금액, 계산이 맞다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:31:02.350Z",
+            "source_sheet": "검수확인",
+            "source_row": 33
+          }
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "40602",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40603",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40603",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40603",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: DOCUMENT_PROCESSING/40603 — \"글자가 깨끗해서 읽을 수 있다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:31:03.678Z",
+            "source_sheet": "검수확인",
+            "source_row": 34
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40603",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40604",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40604",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40604",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40605",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: ORIGINAL_FILE/40605 — \"이 파일은 정상적으로 열린다.\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:31:04.605Z",
+            "source_sheet": "검수확인",
+            "source_row": 35
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40605",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40605",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40605",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40605",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40605",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "40605",
+          "status": "PASS",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "40605",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40606",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40606",
+          "status": "N/A",
+          "review": {
+            "method": "human_direct",
+            "confirmed": true,
+            "reviewer": "이창헌",
+            "evidence": "원문 직접 확인: DOCUMENT_TYPE/40606 — \"제목을 보면 무슨 문서인지 알 수 있다. (납품 검수확인서)\" 맞음",
+            "selection_reason": "RANDOM_SAMPLE",
+            "reviewed_at": "2026-10-02T17:31:07.908Z",
+            "source_sheet": "검수확인",
+            "source_row": 36
+          }
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40606",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A",
+          "review": {
+            "method": "ai_agreement",
+            "human_reviewed": false,
+            "independent_match": true
+          }
+        }
+      ],
+      "accepted": true,
+      "missing_types_review": {
+        "method": "ai_agreement",
+        "human_reviewed": false,
+        "independent_match": true
+      }
+    }
+  }
 }

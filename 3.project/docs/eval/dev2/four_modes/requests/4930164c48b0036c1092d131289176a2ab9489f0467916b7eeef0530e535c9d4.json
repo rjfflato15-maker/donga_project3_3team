@@ -1,0 +1,40 @@
+{
+  "sha256": "0a557626df4ab5780e3cf818d7deb4a5e41cd64073b099466889c1078c9b1a1f",
+  "payload": {
+    "attempt_id": "5867ef04-9165-4321-82a3-c692e241fb37",
+    "request_sha256": "4930164c48b0036c1092d131289176a2ab9489f0467916b7eeef0530e535c9d4",
+    "started_at": "2026-10-02T17:06:33.644210+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "납품 검수확인서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약상대자: 가상 한결기획 6\n사업자등록번호: 000-00-03064\n납품 내역: 업무지원 시스템\n검수 결과: 납품 항목 확인\n공급가액: 4,384,000원\n세액: 438,400원\n합계금액: 4,822,400원\n발행일: 2026-09-21\n"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "issue_date",
+        "amount_scope"
+      ],
+      "document_type": "inspection_confirmation",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

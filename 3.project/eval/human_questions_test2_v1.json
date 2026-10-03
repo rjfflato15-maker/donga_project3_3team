@@ -1,0 +1,110 @@
+[
+  {
+    "review_id": "401/40101/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "401/40102/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "401/40106/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "401/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "401/contract/AMOUNT_MATCH_ESTIMATE/40102",
+    "reason": "금액 대조는 견적서·세금계산서에 적용합니다. 계약서·검수확인서의 FULL은 금액 범위 뜻이며 같은 대조 검사를 적용한다는 뜻이 아닙니다. 원문 금액과 등록 합계를 비교하세요."
+  },
+  {
+    "review_id": "401/contract/AMOUNT_MATCH_TAX_INVOICE/40105",
+    "reason": "금액 대조는 견적서·세금계산서에 적용합니다. 계약서·검수확인서의 FULL은 금액 범위 뜻이며 같은 대조 검사를 적용한다는 뜻이 아닙니다. 원문 금액과 등록 합계를 비교하세요."
+  },
+  {
+    "review_id": "402/40201/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "402/40202/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "402/40206/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "402/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "403/40301/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "403/40302/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "403/40306/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "403/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "404/40401/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "404/40402/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "404/40406/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "404/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "405/40501/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "405/40502/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "405/40506/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "405/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "406/40601/amount_scope",
+    "reason": "계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다."
+  },
+  {
+    "review_id": "406/40602/amount_scope",
+    "reason": "견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다."
+  },
+  {
+    "review_id": "406/40606/amount_scope",
+    "reason": "검수확인서는 청구서가 아니어도 계약 전체 금액이면 FULL입니다. dev에서 확정한 같은 기준을 원문으로 확인합니다."
+  },
+  {
+    "review_id": "406/contract/BUSINESS_STATUS/business_status",
+    "reason": "국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다."
+  },
+  {
+    "review_id": "404/40402/total_amount",
+    "reason": "원문에서 가려지거나 뜻을 확정할 수 없는 값은 REVIEW입니다. 등록 금액이나 다른 숫자의 합으로 복원하지 않습니다."
+  }
+]

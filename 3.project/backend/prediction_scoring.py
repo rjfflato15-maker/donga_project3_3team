@@ -100,7 +100,9 @@ def score(core, manifest, labels, predictions, traces, *, preliminary=False):
         checks = check_accuracy(labels, prediction)
         result.update(check_state_accuracy=checks["accuracy"], check_state_counts=checks,
                       mean_document_seconds=sum(row["effective_seconds"] for row in traces[mode].values()) / len(traces[mode]),
-                      llm_failure_count=sum(row.get("review", {}).get("status") == "FAILED" for row in traces[mode].values()))
+                      llm_failure_count=sum(row.get("review", {}).get("status") == "FAILED" for row in traces[mode].values()),
+                      unexpected_pass_on_not_applicable=sum(row["kind"] == "check" and row["expected"] == "N/A"
+                          and row["actual"] == "PASS" for row in result["failures"]))
         if mode == "hybrid_guarded":
             result["guard_outcomes"] = guard_outcomes(core, traces[mode], labels)
         metrics[mode] = result

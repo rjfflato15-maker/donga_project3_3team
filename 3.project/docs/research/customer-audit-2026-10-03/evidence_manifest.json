@@ -1,0 +1,174 @@
+{
+  "audit_date": "2026-10-03",
+  "mode": "rule_only",
+  "nts_mode": "disabled",
+  "test_data_used": false,
+  "customer_data_used": false,
+  "start_head": "c79883e",
+  "frontend_latest_commit": "ddecb75",
+  "build_index_sha256": "6b431e3f2943c3f8b51713e7d640258e2f2d0e492e2fa45e59044871364caa6d",
+  "final_fixture_counts": {
+    "contracts": 6,
+    "documents": 34,
+    "pilot_resubmission_requests": 1,
+    "pilot_approval_signoffs": 0,
+    "pilot_contract_reviews": 1
+  },
+  "request_states": [
+    [
+      2,
+      "KAKAO",
+      null,
+      "RECEIVED"
+    ]
+  ],
+  "screenshots": [
+    {
+      "file": "screenshots/01-login.png",
+      "pixels": [
+        1280,
+        720
+      ],
+      "sha256": "416781d7044d055261cdb251432f2fd262700d97b0d6f616f9f4815961f74a28"
+    },
+    {
+      "file": "screenshots/02-operator-tasks.png",
+      "pixels": [
+        1274,
+        717
+      ],
+      "sha256": "e87d1a9905ee1251b36ae2ef612349139d4929dd80cb6ef8695e4d664f0ab293"
+    },
+    {
+      "file": "screenshots/03-missing-contract.png",
+      "pixels": [
+        1274,
+        717
+      ],
+      "sha256": "8425aad795ed9fae8f57b0688ce9ad4153700822f73283539f434d521d9b1c49"
+    },
+    {
+      "file": "screenshots/04-request-draft.png",
+      "pixels": [
+        1274,
+        717
+      ],
+      "sha256": "c89864076fad8a3dbfe82e272f46aad15b514334bad2772f351ed2ab619ceb14"
+    },
+    {
+      "file": "screenshots/05-waiting-dashboard.png",
+      "pixels": [
+        1274,
+        717
+      ],
+      "sha256": "0caa0799fe60e39d88c120993eabc3112e10cb222689915d328b0d8e3318e28d"
+    },
+    {
+      "file": "screenshots/06-source-review.png",
+      "pixels": [
+        1274,
+        717
+      ],
+      "sha256": "f8870dfaa7062bab6f95a0d789ffa98e2ffdad0228f6c06315a25dbd82192a0f"
+    },
+    {
+      "file": "screenshots/07-edit-under-masking.png",
+      "pixels": [
+        1274,
+        717
+      ],
+      "sha256": "a688b307b49d7665f4bf30822ba37cf0e1c6db5080522eaf927859c6d2bd374e"
+    },
+    {
+      "file": "screenshots/08-correction-saved.png",
+      "pixels": [
+        1274,
+        717
+      ],
+      "sha256": "a7ee51e7a14a0e8e8587f61f7a64f45d7deabb28346d85846b0eb7ec56bc99c3"
+    },
+    {
+      "file": "screenshots/09-upload-options.png",
+      "pixels": [
+        1274,
+        717
+      ],
+      "sha256": "611dc57b4975ae73a7aabee2d6d34acf0734052299520d1fbaeb270a2d7fbe3b"
+    },
+    {
+      "file": "screenshots/10-representative-queue.png",
+      "pixels": [
+        1274,
+        717
+      ],
+      "sha256": "3482a6e30c4854df37b1bc4d03547b8bc9d63754e80d6be17dc0a96c1f0ea712"
+    },
+    {
+      "file": "screenshots/11-approval-conditions.png",
+      "pixels": [
+        1274,
+        717
+      ],
+      "sha256": "4457ecc2a4639caa3f42f33f9e30a1c0b63d942bf41c6c2b8ead50c9ebe46b90"
+    },
+    {
+      "file": "screenshots/12-completed-history.png",
+      "pixels": [
+        1274,
+        717
+      ],
+      "sha256": "c7fd708fb5cae41e4a866490a1afe10667ab0d9cdd8fb1697dd99e12828aa137"
+    },
+    {
+      "file": "screenshots/13-completed-dashboard.png",
+      "pixels": [
+        1274,
+        717
+      ],
+      "sha256": "52e93347ece8d5c38231324718e5ec469220760eff91aea0489167c91ce12ef0"
+    },
+    {
+      "file": "screenshots/14-reply-without-evidence.png",
+      "pixels": [
+        616,
+        757
+      ],
+      "sha256": "f8ba5c0acc1d3e6c3133bbea40c79ee949a42dbbc609d11ddb14615b443e3571"
+    },
+    {
+      "file": "screenshots/15-new-contract-form.png",
+      "pixels": [
+        616,
+        379
+      ],
+      "sha256": "4c693e8fe5b52b3a18e7a6f734abdac9d278c19ca6b724db7864b7067aeb2c62"
+    },
+    {
+      "file": "screenshots/16-registration-extracted.png",
+      "pixels": [
+        616,
+        757
+      ],
+      "sha256": "43fb86e9d7e9ed05c917a25e79bd9e427782c30a752db208d4a1a394a8e4ec1e"
+    },
+    {
+      "file": "screenshots/17-created-contract.png",
+      "pixels": [
+        1236,
+        761
+      ],
+      "sha256": "3344b24bb043dad79be239dcd5275b764983dde8a358f1eb13106a3e70c4478b"
+    }
+  ],
+  "limits": [
+    "AI role simulation; not independent human usability research",
+    "No LLM comparison or accuracy measurement",
+    "No complete accessibility audit"
+  ],
+  "approval_decisions": [
+    [
+      1,
+      "CONFIRMED"
+    ]
+  ]
+}
