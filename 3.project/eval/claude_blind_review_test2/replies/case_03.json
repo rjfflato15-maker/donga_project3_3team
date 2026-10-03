@@ -1,0 +1,620 @@
+{
+  "dataset_version": "synthetic-hard-v2",
+  "split": "test",
+  "review": {
+    "author": "Claude",
+    "reviewer_type": "ai_independent_review",
+    "confirmed": false,
+    "used_reference_answers": false,
+    "used_app_predictions": false
+  },
+  "documents": {
+    "40301": {
+      "document_type": "contract",
+      "original_read": {
+        "readable": true,
+        "method": "visual_and_text",
+        "notes": "PDF 1쪽을 이미지로 렌더링해 직접 확인하고 텍스트 레이어와 대조함. 판독 장애 없음."
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3",
+          "evidence": "p1 '수급인(을) 가상 새봄기획 3' (발주자는 가상 남쪽연구소 3)"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030",
+          "evidence": "p1 '사업자등록번호 000-00-04030' (수급인 다음 행)"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000,
+          "evidence": "p1 '공급가액 4,384,000원'"
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400,
+          "evidence": "p1 '세액 438,400원'"
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400,
+          "evidence": "p1 '합계금액 4,822,400원'"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18",
+          "evidence": "p1 '발행일 2026-09-18'"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "evidence": "p1 명시적 청구 범위 문구 없음. 계약서는 계약 전체 금액을 정하는 문서이므로 문서 종류로 FULL 판단"
+        }
+      }
+    },
+    "40302": {
+      "document_type": "estimate",
+      "original_read": {
+        "readable": true,
+        "method": "visual",
+        "notes": "PDF 1쪽은 텍스트 레이어 없는 이미지(스캔형)로, 고해상도 렌더링 이미지를 직접 확인함. 페이지가 기울어져 오른쪽 값 열이 왼쪽 라벨보다 약 한 행 아래로 밀려 보임. 라벨 순서(상호/사업자등록번호/상호/사업자등록번호/공급가액/세액/합계금액/발행일)와 값 순서 및 값 형식(상호·번호·금액·날짜)이 1:1로 대응하고 공급가액+세액=합계금액도 일치하므로 순서대로 대응시켜 VALUE로 기록. 행 높이만 보면 한 칸씩 오대응될 위험이 있어 사람 확인 권장."
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3",
+          "evidence": "p1 공급자 '상호 가상 새봄기획 3' (공급받는자 상호는 가상 남쪽연구소 3)"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030",
+          "evidence": "p1 공급자 '사업자등록번호 000-00-04030' (공급받는자 번호 000-00-16031와 구분)"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000,
+          "evidence": "p1 라벨 '공급가액' ↔ 값 '4,384,000원' (기울어짐으로 '세액' 라벨 높이에 표시)"
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400,
+          "evidence": "p1 라벨 '세액' ↔ 값 '438,400원' (기울어짐으로 '합계금액' 라벨 높이에 표시)"
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400,
+          "evidence": "p1 라벨 '합계금액' ↔ 값 '4,822,400원' (기울어짐으로 '발행일' 라벨 높이에 표시)"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18",
+          "evidence": "p1 라벨 '발행일' ↔ 값 '2026-09-18' (기울어짐으로 발행일 라벨 아래에 표시)"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "evidence": "명시적 청구 범위 문구 없음. 계약 전체 업무에 대한 견적서로 문서 종류상 FULL 판단 (부분 청구 표시 없음)"
+        }
+      }
+    },
+    "40303": {
+      "document_type": "business_registration",
+      "original_read": {
+        "readable": true,
+        "method": "visual_and_text",
+        "notes": "PDF 1쪽을 이미지로 렌더링해 직접 확인하고 텍스트 레이어와 대조함. 판독 장애 없음."
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3",
+          "evidence": "p1 '상호 가상 새봄기획 3'"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030",
+          "evidence": "p1 '사업자등록번호 000-00-04030'"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "p1 금액 항목 없음 (상호·번호·대표자·업태·종목·발행일만 기재)"
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "p1 금액 항목 없음 (상호·번호·대표자·업태·종목·발행일만 기재)"
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "p1 금액 항목 없음 (상호·번호·대표자·업태·종목·발행일만 기재)"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18",
+          "evidence": "p1 '발행일 2026-09-18'"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "금액·청구와 무관한 문서"
+        }
+      }
+    },
+    "40304": {
+      "document_type": "bank_account",
+      "original_read": {
+        "readable": true,
+        "method": "visual_and_text",
+        "notes": "PDF 1쪽을 이미지로 렌더링해 직접 확인하고 텍스트 레이어와 대조함. 판독 장애 없음."
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3",
+          "evidence": "p1 '예금주 가상 새봄기획 3'"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030",
+          "evidence": "p1 '사업자등록번호 000-00-04030'"
+        },
+        "supply_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "p1 금액 항목 없음 (예금주·은행명·계좌번호·사업자등록번호·발행일만 기재)"
+        },
+        "tax_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "p1 금액 항목 없음 (예금주·은행명·계좌번호·사업자등록번호·발행일만 기재)"
+        },
+        "total_amount": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "p1 금액 항목 없음 (예금주·은행명·계좌번호·사업자등록번호·발행일만 기재)"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18",
+          "evidence": "p1 '발행일 2026-09-18'"
+        },
+        "amount_scope": {
+          "state": "ABSENT",
+          "value": null,
+          "evidence": "금액·청구와 무관한 문서"
+        }
+      }
+    },
+    "40305": {
+      "document_type": "tax_invoice",
+      "original_read": {
+        "readable": true,
+        "method": "visual_and_text",
+        "notes": "PDF 1쪽을 이미지로 렌더링해 직접 확인하고 텍스트 레이어와 대조함. 판독 장애 없음."
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3",
+          "evidence": "p1 공급자 '상호 가상 새봄기획 3' (공급받는자 상호는 가상 남쪽연구소 3)"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030",
+          "evidence": "p1 공급자 '사업자등록번호 000-00-04030' (공급받는자 번호 000-00-16031와 구분)"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000,
+          "evidence": "p1 '공급가액 4,384,000원'"
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400,
+          "evidence": "p1 '세액 438,400원'"
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400,
+          "evidence": "p1 '합계금액 4,822,400원'"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18",
+          "evidence": "p1 '발행일 2026-09-18'"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "evidence": "p1 '전액 청구 / 전체 계약 대금'"
+        }
+      }
+    },
+    "40306": {
+      "document_type": "inspection_confirmation",
+      "original_read": {
+        "readable": true,
+        "method": "visual_and_text",
+        "notes": "PDF 1쪽을 이미지로 렌더링해 직접 확인하고 텍스트 레이어와 대조함. 판독 장애 없음."
+      },
+      "fields": {
+        "company_name": {
+          "state": "VALUE",
+          "value": "가상 새봄기획 3",
+          "evidence": "p1 '계약상대자 가상 새봄기획 3'"
+        },
+        "business_registration_no": {
+          "state": "VALUE",
+          "value": "000-00-04030",
+          "evidence": "p1 '사업자등록번호 000-00-04030'"
+        },
+        "supply_amount": {
+          "state": "VALUE",
+          "value": 4384000,
+          "evidence": "p1 '공급가액 4,384,000원'"
+        },
+        "tax_amount": {
+          "state": "VALUE",
+          "value": 438400,
+          "evidence": "p1 '세액 438,400원'"
+        },
+        "total_amount": {
+          "state": "VALUE",
+          "value": 4822400,
+          "evidence": "p1 '합계금액 4,822,400원'"
+        },
+        "issue_date": {
+          "state": "VALUE",
+          "value": "2026-09-18",
+          "evidence": "p1 '발행일 2026-09-18'"
+        },
+        "amount_scope": {
+          "state": "VALUE",
+          "value": "FULL",
+          "evidence": "명시적 청구 범위 문구 없음. '납품 내역 업무지원 시스템 / 검수 결과 납품 항목 확인'의 전체 납품 검수 문서로 보아 FULL 판단 (부분 표시 없음)"
+        }
+      }
+    }
+  },
+  "contracts": {
+    "403": {
+      "missing_types": [],
+      "checks": [
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "contract",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "estimate",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "business_registration",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "bank_account",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "REQUIRED_DOCUMENTS",
+          "field": "inspection_confirmation",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "business_registration_no",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_STATUS",
+          "field": "business_status",
+          "status": "REVIEW"
+        },
+        {
+          "rule_id": "AMOUNT_BASIS",
+          "field": "amount_basis",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "INSTALLMENT_TOTAL",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DUPLICATE_INVOICE",
+          "field": "tax_invoice",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40301",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40301",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40301",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40301",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40301",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40301",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "40301",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "40301",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "40301",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40302",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40302",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40302",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40302",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40302",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40302",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "40302",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "40302",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "40302",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40303",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40303",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40303",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40303",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40303",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40303",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "40303",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "40303",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "40303",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40304",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40304",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40304",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40304",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40304",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40304",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "40304",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "40304",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "40304",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40305",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "40305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "40305",
+          "status": "PASS"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "40305",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "ORIGINAL_FILE",
+          "field": "40306",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_TYPE",
+          "field": "40306",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "DOCUMENT_PROCESSING",
+          "field": "40306",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "BUSINESS_NO_MATCH",
+          "field": "40306",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_EXTRACTION",
+          "field": "40306",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_COMPONENTS",
+          "field": "40306",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_ESTIMATE",
+          "field": "40306",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+          "field": "40306",
+          "status": "N/A"
+        },
+        {
+          "rule_id": "PAYMENT_SCOPE",
+          "field": "40306",
+          "status": "N/A"
+        }
+      ]
+    }
+  }
+}

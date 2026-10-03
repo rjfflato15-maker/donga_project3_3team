@@ -12,13 +12,46 @@ from backend.evaluation_review import compare_labels, merge_independent_parts, v
 from backend.evaluation_confirmation import apply_human_decisions
 
 
-def import_review(workbook_path, root, comparison_path, replies_directory, reviewer, review_result=None, *, split="dev"):
+def read_wording_resolutions(path, review_result, manifest):
+    if path is None:
+        return {}
+    if review_result is None:
+        raise EvaluationNotReady("질문 문구 정정에는 원본 사람 결과가 필요합니다.")
+    record = json.loads(Path(path).read_text(encoding="utf-8"))
+    raw = json.loads(Path(review_result).read_text(encoding="utf-8-sig"))
+    if (record.get("format") != "human-question-wording-resolution-v1"
+            or record.get("human_result_sha256") != file_hash(review_result)
+            or record.get("source_xlsx_sha256") != raw.get("source_xlsx_sha256")):
+        raise EvaluationNotReady("질문 정정 기록의 사람 결과·양식 해시가 다릅니다.")
+    original = {item["id"]: item for item in raw["items"]}
+    sources = {str(doc["document_id"]): doc["sha256"] for contract in manifest["contracts"] for doc in contract["documents"]}
+    resolutions = {}
+    for item in record.get("items", []):
+        rid = item.get("review_id")
+        human = original.get(rid, {})
+        parts = str(rid).split("/")
+        if (rid in resolutions or len(parts) != 3 or human.get("decision") != "수정 필요"
+                or item.get("human_observation") != human.get("reason")
+                or item.get("source_sha256") != sources.get(parts[1])
+                or item.get("kind") != "QUESTION_WORDING_ERROR_LABEL_UNCHANGED"
+                or item.get("resolved_answer") != {"state": "REVIEW", "value": None}
+                or not item.get("original_question") or not item.get("corrected_question")
+                or not item.get("adjudicator") or not item.get("resolution_reason")):
+            raise EvaluationNotReady("질문 정정은 실제 지적과 같은 원문의 REVIEW 상태 유지에만 적용합니다.")
+        resolutions[rid] = item
+    if not resolutions:
+        raise EvaluationNotReady("질문 정정 항목이 비어 있습니다.")
+    return resolutions
+
+
+def import_review(workbook_path, root, comparison_path, replies_directory, reviewer, review_result=None, *, split="dev", resolution_path=None):
     import openpyxl
     output = root / f"ground_truth_{split}.json"
     if output.with_suffix(".freeze.json").exists() or json.loads(output.read_text(encoding="utf-8")).get("review", {}).get("confirmed"):
         raise EvaluationNotReady("이미 확정한 정답을 덮어쓰지 않습니다. 새 버전으로 검수하세요.")
     manifest_path = root / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    wording_resolutions = read_wording_resolutions(resolution_path, review_result, manifest)
     verify_dataset(root, manifest, split=split)
     reference_path = root / f"reference_labels_{split}.json"
     reference = json.loads(reference_path.read_text(encoding="utf-8"))
@@ -62,6 +95,8 @@ def import_review(workbook_path, root, comparison_path, replies_directory, revie
                 if rid in decisions or not isinstance(rid, str) or len(row) < 12:
                     raise EvaluationNotReady("사람 확인 양식의 중복 ID 또는 행 형식을 확인하세요.")
                 decisions[rid] = {"state": row[8], "value": row[9], "confirmation": row[10], "evidence": row[11]}
+                if rid in wording_resolutions:
+                    decisions[rid]["wording_resolution"] = wording_resolutions[rid]
     finally:
         book.close()
     # Before first freeze, a corrected random sample means the agreement is not
@@ -88,6 +123,11 @@ def import_review(workbook_path, root, comparison_path, replies_directory, revie
         if not matches and comparison["required_human_count"] < len(comparison["rows"]):
             raise EvaluationNotReady("무작위 표본에서 수정이 발견됐습니다. --sample-rate 1.0으로 나머지 항목까지 확인한 새 대조 결과와 양식으로 검수하세요.")
     labels = apply_human_decisions(manifest, reference, comparison, decisions, reviewer)
+    if wording_resolutions:
+        labels["review"].update(prompt_wording_error_count=len(wording_resolutions),
+            prompt_wording_resolution_sha256=file_hash(resolution_path),
+            original_human_decision_counts={key: sum(d["confirmation"] == key for d in decisions.values())
+                for key in ("확인", "수정 필요", "보류")})
     if review_result is not None:
         source = json.loads(review_result.read_text(encoding="utf-8-sig"))
         items = source.get("items", [])

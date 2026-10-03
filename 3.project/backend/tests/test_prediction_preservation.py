@@ -154,6 +154,18 @@ def test_unconfirmed_labels_cannot_be_called_final(tmp_path):
         rescore(package, path)
 
 
+def test_not_applicable_to_pass_is_reported_separately_from_unsafe_statuses(tmp_path):
+    from backend import evaluation_core, prediction_scoring
+    package, _, labels = make_scoring_package(tmp_path)
+    predictions = load_checkpoint(package / "predictions.json")
+    predictions["rule"]["contracts"]["1"]["checks"] = [
+        {"rule_id": "AMOUNT_COMPONENTS", "field": "2", "status": "PASS"}]
+    result = prediction_scoring.score(evaluation_core, load_checkpoint(package / "manifest.json"), labels,
+        predictions, load_checkpoint(package / "traces.json"), preliminary=True)["rule"]
+    assert result["wrong_pass_counts"]["wrong_pass"] == 0
+    assert result["unexpected_pass_on_not_applicable"] == 1
+
+
 def test_frozen_prediction_and_label_receipt_tampering_are_detected(tmp_path):
     package, path, labels = make_scoring_package(tmp_path)
     path.write_text(json.dumps({**labels, "split": "dev"}))

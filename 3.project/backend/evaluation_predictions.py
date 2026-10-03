@@ -170,12 +170,14 @@ def predict_one(client, item, output, attempt_id):
     return {"fields": fields, "traces": traces}
 
 
-def preserve_implementation(project, output, release):
+def preserve_implementation(project, output, release, additional_paths=(), *, snapshot_all_app=True):
     project, output = Path(project), Path(output)
     paths = set(release["implementation_sha256"])
-    paths.update(path.relative_to(project).as_posix() for path in (project / "backend/app").rglob("*.py"))
+    if snapshot_all_app:
+        paths.update(path.relative_to(project).as_posix() for path in (project / "backend/app").rglob("*.py"))
     paths.update({"backend/evaluation_core.py", "backend/evaluation_predictions.py",
                   "backend/prediction_scoring.py", "backend/prediction_artifacts.py"})
+    paths.update(additional_paths)
     for relative in sorted(paths):
         source = project / relative
         target = output / "implementation" / relative
@@ -188,7 +190,8 @@ def preserve_implementation(project, output, release):
                 stream.write(source.read_bytes())
 
 
-def run_predictions(project, dataset, output, release_path, *, resume=False, client=None, collector=None, progress=print):
+def run_predictions(project, dataset, output, release_path, *, resume=False, client=None, collector=None,
+                    progress=print, preflight_fn=None, predictor=None, snapshot_paths=(), postflight_fn=None, snapshot_all_app=True):
     project, dataset, output = Path(project), Path(dataset), Path(output)
     if not resume and (dataset / "final_evaluation_attempt.json").exists():
         raise EvaluationNotReady("HELDOUT_ATTEMPT_EXISTS")
@@ -211,9 +214,9 @@ def run_predictions(project, dataset, output, release_path, *, resume=False, cli
             attempt.update(status="predictions_frozen", finished_at=receipt["frozen_at"], receipt_sha256=file_hash(output / "receipt.json"))
             write_json(marker, attempt)
             return receipt
-        manifest, release, client, report = preflight(project, dataset, release_path, client=client)
+        manifest, release, client, report = (preflight_fn or preflight)(project, dataset, release_path, client=client)
         attempt = reserve(dataset, output, release_path, manifest, report, resume=resume)
-        preserve_implementation(project, output, release)
+        preserve_implementation(project, output, release, snapshot_paths, snapshot_all_app=snapshot_all_app)
         contracts = [row for row in manifest["contracts"] if row["split"] == "test"]
         collector = collector or collect_one
         inputs, by_mode = {}, {mode: {} for mode in MODES}
@@ -234,7 +237,7 @@ def run_predictions(project, dataset, output, release_path, *, resume=False, cli
                         inputs[did] = load_checkpoint(input_path)
                         prediction_path = output / "documents" / (did + ".json")
                         if not prediction_path.exists():
-                            save_checkpoint(prediction_path, predict_one(client, inputs[did], output, attempt["attempt_id"]))
+                            save_checkpoint(prediction_path, (predictor or predict_one)(client, inputs[did], output, attempt["attempt_id"]))
                         prediction = load_checkpoint(prediction_path)
                         for mode in MODES:
                             by_mode[mode][did] = prediction["fields"][mode]
@@ -248,6 +251,8 @@ def run_predictions(project, dataset, output, release_path, *, resume=False, cli
                     else:
                         os.environ[key] = value
         predictions = {mode: validate_mode_contracts(contracts, inputs, by_mode[mode]) for mode in MODES}
+        if postflight_fn:
+            postflight_fn(project, dataset, release_path, client)
         for name, value in (("predictions.json", predictions), ("traces.json", traces)):
             path = output / name
             if path.exists():
@@ -261,6 +266,8 @@ def run_predictions(project, dataset, output, release_path, *, resume=False, cli
                    "frozen_at": now(), "release_sha256": attempt["release_sha256"],
                    "manifest_sha256": attempt["manifest_sha256"], "document_count": len(inputs),
                    "modes": list(MODES), "labels_read": False, "files_sha256": files}
+        if release.get("release_version"):
+            receipt.update(release_version=release["release_version"], guard_policy=release.get("guard_policy"))
         write_json(output / "receipt.json", receipt, exclusive=True)
         attempt.update(status="predictions_frozen", finished_at=now(), receipt_sha256=file_hash(output / "receipt.json"))
         write_json(dataset / "final_evaluation_attempt.json", attempt)
