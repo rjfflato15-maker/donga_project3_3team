@@ -14,6 +14,7 @@ import {
 import { maskVendorName } from '../../utils/masking';
 import { AlertTriangle, CheckCircle2, ChevronDown, ChevronRight, Copy, Eye, Info, Upload } from 'lucide-react';
 import { RequestDraftDialog } from './RequestDraftDialog';
+import { AssistantPreview, AssignDraft } from './AssistantPreview';
 import { followUpApi, ResubmissionRequest, CONTACT_VIA } from '../../api/followUp';
 import { requestJson } from '../../api/client';
 
@@ -27,6 +28,7 @@ interface Props {
   pilot?: boolean;
   onChanged?: () => Promise<void>;
   recentUploadNames?: string[];
+  onAssign?: (draft: AssignDraft) => void;
 }
 
 const STATUS_STYLE: Record<ValidationStatus, string> = {
@@ -55,6 +57,7 @@ export const ContractReviewOverview: React.FC<Props> = ({
   pilot = false,
   onChanged,
   recentUploadNames,
+  onAssign,
 }) => {
   const [requests, setRequests] = useState<ResubmissionRequest[]>([]);
   const [resolving, setResolving] = useState<{ id: number; status: 'RECEIVED' | 'CANCELLED' } | null>(null);
@@ -234,6 +237,18 @@ export const ContractReviewOverview: React.FC<Props> = ({
             <h2 className="font-bold text-slate-900">
               확인할 것 <span className="text-sm font-normal text-slate-400">위험한 순서</span>
             </h2>
+          )}
+          {!clean && pilot && (
+            <AssistantPreview
+              contract={contract}
+              canEdit={canEdit}
+              onAssign={onAssign}
+              onOpenDocument={(id) => { const d = contract.documents.find((x) => x.document_id === id); if (d) onOpenDocument(d); }}
+              onRequest={({ document_id, field }) => {
+                const g = overview.issues.find((i) => (document_id != null && i.document?.document_id === document_id) || i.missingType === field);
+                if (g) setDraftFor(g);
+              }}
+            />
           )}
           {overview.issues.map((issue) => (
             <article key={issue.key} className="bg-white rounded-2xl border border-slate-200 overflow-hidden">

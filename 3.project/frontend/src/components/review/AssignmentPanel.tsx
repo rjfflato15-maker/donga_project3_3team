@@ -22,7 +22,7 @@ export const assignmentApi = {
 };
 
 /** 계약 화면 '사내 담당자에게 맡기기': 맡겨도 결재·수정 권한은 바뀌지 않는다 */
-export const AssignmentPanel: React.FC<{ contract: ContractDetail; initialTitle?: string }> = ({ contract, initialTitle }) => {
+export const AssignmentPanel: React.FC<{ contract: ContractDetail; prefill?: { title: string; memo: string; document_id: number | null; key: number } | null }> = ({ contract, prefill }) => {
   const { user } = useAuth();
   const me = user?.user_id;
   const rep = user?.role === 'representative';
@@ -43,7 +43,13 @@ export const AssignmentPanel: React.FC<{ contract: ContractDetail; initialTitle?
   };
   useEffect(() => { void load(); setActing(null); }, [contract.contract_id, contract.updated_at]);
   useEffect(() => { requestJson<Assignee[]>('/api/pilot/assignees').then(setPeople).catch(() => setPeople([])); }, []);
-  useEffect(() => { if (initialTitle) { setOpen(true); setForm((f) => ({ ...f, title: initialTitle })); } }, [initialTitle]);
+  const panelRef = React.useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!prefill) return;
+    setOpen(true);
+    setForm((f) => ({ ...f, title: prefill.title.slice(0, 200), memo: prefill.memo.slice(0, 2000), document_id: prefill.document_id ? String(prefill.document_id) : '' }));
+    panelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [prefill?.key]);
 
   const run = async (fn: () => Promise<unknown>) => {
     setBusy(true); setError('');
@@ -71,7 +77,7 @@ export const AssignmentPanel: React.FC<{ contract: ContractDetail; initialTitle?
   };
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3" aria-labelledby="assign-title">
+    <section ref={panelRef} className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3" aria-labelledby="assign-title">
       <div className="flex flex-wrap items-center gap-2">
         <h2 id="assign-title" className="font-bold text-slate-900">사내 담당자에게 맡기기</h2>
         <span className="text-xs text-slate-500">맡겨도 결재·수정 권한은 그대로입니다.</span>

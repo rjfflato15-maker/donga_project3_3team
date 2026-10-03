@@ -49,6 +49,7 @@ export const ContractDashboard: React.FC = () => {
   const [pilotInfo, setPilotInfo] = useState<PilotInfo | null>(null);
   const [advancedDocOpen, setAdvancedDocOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [assignPrefill, setAssignPrefill] = useState<{ title: string; memo: string; document_id: number | null; key: number } | null>(null);
   const [recentUpload, setRecentUpload] = useState<{ contractId: number; names: string[] } | null>(null);
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
   const [contractViewMode, setContractViewMode] = useState<'list' | 'detail'>('list');
@@ -606,9 +607,10 @@ export const ContractDashboard: React.FC = () => {
               pilot={isPilot}
               onChanged={() => refreshCurrentContract()}
               recentUploadNames={recentUpload?.contractId === currentContract.contract_id ? recentUpload.names : undefined}
+              onAssign={(d) => setAssignPrefill({ ...d, key: Date.now() })}
             />
             {isPilot && <ApprovalPanel contract={currentContract} onChanged={() => refreshCurrentContract()} />}
-            {isPilot && <AssignmentPanel contract={currentContract} />}
+            {isPilot && <AssignmentPanel contract={currentContract} prefill={assignPrefill} />}
             {isPilot && <PilotReviewPanel contract={currentContract} onChanged={refreshCurrentContract} historyOnly />}
           </div>
         );

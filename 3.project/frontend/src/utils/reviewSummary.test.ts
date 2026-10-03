@@ -76,3 +76,20 @@ describe('회사 내부 서류', () => {
     expect(isInternalDocument('bank_account')).toBe(false);
   });
 });
+
+import { adaptItems } from '../components/review/AssistantPreview';
+
+describe('검수 도우미 항목 정리', () => {
+  const base = { issue_id: 'x', field: '5', reason: '', document_id: 5, request_draft: { subject: 's', body: 'b' }, assignment_draft: null } as const;
+  it('국세청 미연동 항목은 빼고, 못 읽은 값은 요청 초안 대신 원문 확인으로 바꾼다', () => {
+    const out = adaptItems([
+      { ...base, issue_id: 'a', rule_id: 'BUSINESS_STATUS', status: 'REVIEW', next_action: 'MANUAL_CONFIRMATION' },
+      { ...base, issue_id: 'b', rule_id: 'AMOUNT_EXTRACTION', status: 'REVIEW', next_action: 'DRAFT_REQUEST_AFTER_REVIEW' },
+      { ...base, issue_id: 'c', rule_id: 'AMOUNT_MATCH_TAX_INVOICE', status: 'FAIL', next_action: 'DRAFT_REQUEST_AFTER_REVIEW' },
+    ]);
+    expect(out.map((i) => i.issue_id)).toEqual(['b', 'c']);
+    expect(out[0].next_action).toBe('VERIFY_EXTRACTION_FIRST');
+    expect(out[0].request_draft).toBeNull();
+    expect(out[1].request_draft).not.toBeNull();
+  });
+});
