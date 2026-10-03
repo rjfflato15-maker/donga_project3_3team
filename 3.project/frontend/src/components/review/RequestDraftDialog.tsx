@@ -137,7 +137,7 @@ export const RequestDraftDialog: React.FC<Props> = ({ contract, issue, isMasking
                 {busy ? '기록 중…' : '요청했어요 · 기록하기'}
               </button>
               {recordError && <p className="text-xs text-rose-600">{recordError}</p>}
-              <p className="text-[11px] text-slate-500">기록하면 이 계약이 '회신 대기'로 표시됩니다. 언제·어떻게 요청했는지만 남기고, 메시지 내용은 저장하지 않습니다.</p>
+              <p className="text-[11px] text-slate-500">기록하면 이 계약이 ‘③ 보완(답 기다리는 중)’ 단계로 넘어갑니다. 언제·어떻게 요청했는지만 남기고, 메시지 내용은 저장하지 않습니다.</p>
             </div>
           )}
         </div>
