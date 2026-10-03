@@ -9,6 +9,8 @@ import {
   Sparkles,
   UploadCloud,
   RefreshCw,
+  Settings,
+  Plus,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -77,9 +79,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const { user, logout } = useAuth();
   const pilot = user?.deployment_mode === 'pilot';
   const L = {
-    dashboard: pilot ? '검수 할 일' : '대시보드',
-    contracts: pilot ? '계약 목록' : '외주/용역 계약',
-    contractsTip: pilot ? '등록된 모든 계약' : '외주/용역 계약 목록',
+    dashboard: pilot ? '할 일' : '대시보드',
+    contracts: pilot ? '지난 계약 찾기' : '외주/용역 계약',
+    contractsTip: pilot ? '끝난 계약까지 모두 찾기' : '외주/용역 계약 목록',
   };
 
   // Full Menu Items for Expanded Mode (Original Icons)
@@ -100,6 +102,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       icon: <FileCheck className="w-4 h-4" />,
       badge: 'AI Powered',
     },
+    ...(pilot ? [{ id: 'account-settings' as NavigationTab, label: '설정', icon: <Settings className="w-4 h-4" /> }] : []),
   ].filter((item) => !(pilot && item.id === 'reports')) as { id: NavigationTab; label: string; icon: React.ReactNode; badge?: string }[];
 
   return (
@@ -199,8 +202,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <SidebarTooltip text="6종 서류로 계약 자동 생성" badge="AUTO" />
             </div>}
 
-            {/* 6. 증빙서류 업로드 */}
-            {onOpenUpload && (
+            {/* 6. 증빙서류 업로드 (시범 모드는 계약 화면 안에서 올린다) */}
+            {!pilot && onOpenUpload && (
               <div className="relative group flex items-center justify-center">
                 <button
                   onClick={onOpenUpload}
@@ -371,12 +374,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
               {/* QUICK TOOLS (5단계 시뮬레이터 삭제 & 6종 서류 자동 생성은 증빙서류 업로드 위로 배치) */}
               <div className="mt-4 pt-3 border-t border-slate-100 space-y-2">
-                {(onOpenAutoBatchContract || onOpenUpload || onSeedDemo) && <p className="px-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">
+                {pilot && onOpenAutoBatchContract && (
+                  <button onClick={onOpenAutoBatchContract}
+                    className="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 text-white hover:bg-indigo-700">
+                    <Plus className="w-4 h-4" /> 새 계약 등록
+                  </button>
+                )}
+                {!pilot && (onOpenAutoBatchContract || onOpenUpload || onSeedDemo) && <p className="px-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">
                   {pilot ? '바로 하기' : 'QUICK TOOLS'}
                 </p>}
 
                 {/* 6종 서류로 계약 자동 생성 (증빙서류 업로드 위로 변경) */}
-                {onOpenAutoBatchContract && (
+                {!pilot && onOpenAutoBatchContract && (
                   <button
                     onClick={onOpenAutoBatchContract}
                     className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold bg-indigo-50/80 hover:bg-indigo-100/90 text-indigo-700 border border-indigo-200/80 transition-all hover:scale-[1.01] active:scale-95 group text-left"
@@ -393,7 +402,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 )}
 
                 {/* 증빙서류 업로드 */}
-                {onOpenUpload && (
+                {!pilot && onOpenUpload && (
                   <button
                     onClick={onOpenUpload}
                     className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold bg-indigo-50/80 hover:bg-indigo-100/90 text-indigo-700 border border-indigo-200/80 transition-all hover:scale-[1.01] active:scale-95 group text-left"

@@ -22,7 +22,7 @@ export const assignmentApi = {
 };
 
 /** 계약 화면 '사내 담당자에게 맡기기': 맡겨도 결재·수정 권한은 바뀌지 않는다 */
-export const AssignmentPanel: React.FC<{ contract: ContractDetail; prefill?: { title: string; memo: string; document_id: number | null; key: number } | null }> = ({ contract, prefill }) => {
+export const AssignmentPanel: React.FC<{ contract: ContractDetail; prefill?: { title: string; memo: string; document_id: number | null; key: number } | null; hideWhenEmpty?: boolean }> = ({ contract, prefill, hideWhenEmpty = false }) => {
   const { user } = useAuth();
   const me = user?.user_id;
   const rep = user?.role === 'representative';
@@ -76,6 +76,8 @@ export const AssignmentPanel: React.FC<{ contract: ContractDetail; prefill?: { t
     return d ? DOCUMENT_TYPE_KO[d.document_type] ?? d.document_type : null;
   };
 
+  // 담당자가 1명인 회사는 맡길 일이 없으니, 맡긴 일이 있을 때만 보인다
+  if (hideWhenEmpty && active.length === 0 && !open) return null;
   return (
     <section ref={panelRef} className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3" aria-labelledby="assign-title">
       <div className="flex flex-wrap items-center gap-2">

@@ -7,6 +7,7 @@ import { PilotPasswordChange } from './PilotPasswordChange';
 
 const LLM_ERROR_KO: Record<string, string> = { LOCAL_MODEL_NOT_INSTALLED: '모델이 설치되지 않음', LOCAL_SERVER_UNAVAILABLE: 'AI 서버가 응답하지 않음', INVALID_LOCAL_CONFIGURATION: '설정 값 오류' };
 import { CompanyPolicySection } from './review/CompanyPolicySection';
+import { WorkStatsStrip } from './review/WorkStatsStrip';
 
 type TeamUser = Awaited<ReturnType<typeof api.users>>[number];
 const field = 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm';
@@ -63,6 +64,7 @@ export const PilotOperations: React.FC<{ info: PilotInfo; onChanged: () => Promi
       <p className="mt-4 text-sm leading-6 text-slate-600">새로 등록한 원본은 공용 PC에 저장됩니다. 다른 직원은 파일을 따로 받지 않아도 이 앱에서 열거나 내려받을 수 있습니다. PC를 끄면 접속할 수 없습니다.</p>
       <button className="mt-4 flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm" onClick={() => setPasswordOpen(true)}><KeyRound size={16} />내 비밀번호 변경</button>
     </section>
+    <WorkStatsStrip refreshKey={info} />
     <section className="rounded-2xl border border-slate-200 bg-white p-6">
       <h2 className="font-bold">시범 업무 측정</h2>
       <p className="mt-2 text-sm text-slate-600">현재 업무 목록의 기록을 집계합니다. 첫 원본 등록 완료부터 첫 대표 확인까지의 경과시간이며, 대기시간이 포함됩니다.</p>

@@ -18,9 +18,11 @@ const ROLE_KO = { operator: '담당자', representative: '대표' } as const;
 interface Props {
   contract: ContractDetail;
   onChanged: () => Promise<void>;
+  /** 계약 화면의 '지금 할 일' 상자 안에 넣을 때: 테두리·제목·남은 항목 안내를 뺀다 */
+  embedded?: boolean;
 }
 
-export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged }) => {
+export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged, embedded = false }) => {
   const { user } = useAuth();
   const [state, setState] = useState<ApprovalState | null>(null);
   const [note, setNote] = useState('');
@@ -70,9 +72,9 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged }) => {
   };
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-5 space-y-4" aria-labelledby="approval-title">
-      <div className="flex flex-wrap items-center gap-3">
-        <h2 id="approval-title" className="flex items-center gap-2 font-bold text-slate-900"><CheckCircle2 className="h-5 w-5 text-indigo-600" /> 결재</h2>
+    <section className={embedded ? 'space-y-3' : 'rounded-2xl border border-slate-200 bg-white p-5 space-y-4'} aria-labelledby="approval-title">
+      <div className={embedded ? (steps.length > 1 || approval === 'RETURNED' || approval === 'STALE' ? 'flex flex-wrap items-center gap-2' : 'hidden') : 'flex flex-wrap items-center gap-3'}>
+        <h2 id="approval-title" className={embedded ? 'sr-only' : 'flex items-center gap-2 font-bold text-slate-900'}><CheckCircle2 className="h-5 w-5 text-indigo-600" /> 결재</h2>
         <ol className="flex flex-wrap gap-1 text-xs" aria-label="결재 단계">
           {steps.map((s, i) => {
             const done = approval === 'CONFIRMED' || (state ? i < state.completed_steps : false);
@@ -92,7 +94,7 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged }) => {
         <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">결재가 끝났습니다. 서류나 계약 기준이 바뀌면 다시 결재가 필요합니다.</p>
       ) : (
         <>
-          <div className={`rounded-xl px-4 py-3 text-sm ${overview.issues.length ? 'bg-amber-50 text-amber-900' : 'bg-emerald-50 text-emerald-900'}`}>
+          <div className={embedded && !overview.issues.length && !blocked ? 'hidden' : `rounded-xl px-4 py-3 text-sm ${overview.issues.length ? 'bg-amber-50 text-amber-900' : 'bg-emerald-50 text-emerald-900'}`}>
             {overview.issues.length ? `남은 확인 항목 ${overview.issues.length}건이 있습니다. 위의 카드를 확인한 뒤 결재하세요.` : '남은 확인 항목이 없습니다.'}
             {blocked && <div className="mt-1 text-xs">필수 서류나 원본이 없으면 결재할 수 없습니다. 먼저 보완해 주세요.</div>}
           </div>
@@ -126,8 +128,8 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged }) => {
             </div>
           ) : (
             nextStep && (
-              <p className="rounded-xl bg-indigo-50 px-4 py-3 text-sm text-indigo-900">
-                다음 단계: <b>{nextStep.label}</b> ({ROLE_KO[nextStep.role]} 계정에서 진행합니다)
+              <p className="rounded-xl bg-white px-4 py-3 text-sm text-indigo-900">
+                {embedded ? <>대표님이 대표 계정으로 들어와 <b>{nextStep.label}</b>을 하면 다음 단계(지급)로 넘어가요.</> : <>다음 단계: <b>{nextStep.label}</b> ({ROLE_KO[nextStep.role]} 계정에서 진행합니다)</>}
               </p>
             )
           )}

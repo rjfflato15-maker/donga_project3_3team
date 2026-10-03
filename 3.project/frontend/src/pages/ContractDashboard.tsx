@@ -11,11 +11,11 @@ import { OverallDashboardView } from '../components/OverallDashboardView';
 import { ValidationReportView } from '../components/ValidationReportView';
 import { ContractReviewOverview } from '../components/review/ContractReviewOverview';
 import { DocumentReviewDialog } from '../components/review/DocumentReviewDialog';
-import { WorkQueueDashboard, DashboardItem } from '../components/review/WorkQueueDashboard';
+import { StageDashboard, DashboardItem } from '../components/review/StageDashboard';
+import { ContractStageView } from '../components/review/ContractStageView';
 import { ApprovalPanel } from '../components/review/ApprovalPanel';
 import { AssignmentPanel } from '../components/review/AssignmentPanel';
 import { MyAssignmentsStrip } from '../components/review/MyAssignmentsStrip';
-import { WorkStatsStrip } from '../components/review/WorkStatsStrip';
 import { DocumentViewerModal } from '../components/DocumentViewerModal';
 import { UploadModal } from '../components/UploadModal';
 import { NewContractModal } from '../components/NewContractModal';
@@ -490,15 +490,14 @@ export const ContractDashboard: React.FC = () => {
           return (
             <div className="space-y-5">
               <MyAssignmentsStrip refreshKey={contracts} contracts={contracts} onOpen={(id) => handleSelectContract(id, 'contracts', 'detail')} />
-              <WorkQueueDashboard
+              <StageDashboard
                 contracts={contracts as DashboardItem[]}
                 isMaskingEnabled={isMaskingEnabled}
                 canEdit={canEdit}
                 representative={user?.role === 'representative'}
                 onOpen={(id) => handleSelectContract(id, 'contracts', 'detail')}
-                onNewFromDocuments={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+                onNew={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
               />
-              <WorkStatsStrip refreshKey={contracts} />
             </div>
           );
         }
@@ -520,14 +519,14 @@ export const ContractDashboard: React.FC = () => {
       case 'contracts':
         if (isPilot && (contractViewMode === 'list' || !currentContract)) {
           return (
-            <WorkQueueDashboard
-              mode="list"
+            <StageDashboard
+              history
               contracts={contracts as DashboardItem[]}
               isMaskingEnabled={isMaskingEnabled}
               canEdit={canEdit}
+              representative={user?.role === 'representative'}
               onOpen={(id) => handleSelectContract(id, undefined, 'detail')}
-              onNewFromDocuments={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
-              onNewManual={canEdit ? () => setIsNewContractOpen(true) : undefined}
+              onNew={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
             />
           );
         }
@@ -552,6 +551,29 @@ export const ContractDashboard: React.FC = () => {
           );
         }
 
+        if (isPilot) {
+          return (
+            <ContractStageView
+              contract={currentContract}
+              isMaskingEnabled={isMaskingEnabled}
+              canEdit={canEdit}
+              representative={user?.role === 'representative'}
+              ntsMode={pilotInfo?.nts_mode}
+              onBack={() => { setActiveTab('dashboard'); setContractViewMode('list'); }}
+              onOpenDocument={handleOpenDocumentModal}
+              onUploadType={(type) => handleOpenUploadModal(type)}
+              onChanged={() => refreshCurrentContract()}
+              recentUploadNames={recentUpload?.contractId === currentContract.contract_id ? recentUpload.names : undefined}
+              menu={[
+                { label: '서류 추가로 올리기', onClick: () => handleOpenUploadModal(), hidden: !canEdit },
+                { label: actionLoading ? '검사 중…' : '다시 검사', onClick: () => handleRunPipelineSimulation() },
+                { label: `자료 묶음 받기 (ZIP${isMaskingEnabled ? '' : ', 원본'})`, onClick: () => void exportBundle() },
+                { label: '계약 정보 수정', onClick: () => void handleOpenEditModal(currentContract), hidden: !canEdit },
+                { label: '계약 제외', onClick: () => handleDeleteContract(currentContract.contract_id, currentContract.title), danger: true, hidden: !canEdit },
+              ].filter((m) => !m.hidden)}
+            />
+          );
+        }
         return (
           <div className="space-y-5">
             {/* 상단 이동·작업 바 */}
@@ -703,11 +725,11 @@ export const ContractDashboard: React.FC = () => {
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2 text-xs font-bold text-slate-700">
               <span className="text-indigo-600 font-extrabold">
-                {activeTab === 'dashboard' && (isPilot ? '검수 할 일' : '대시보드')}
-                {activeTab === 'contracts' && (contractViewMode === 'list' ? '계약 목록' : '계약 검수')}
+                {activeTab === 'dashboard' && (isPilot ? '할 일' : '대시보드')}
+                {activeTab === 'contracts' && (contractViewMode === 'list' ? (isPilot ? '지난 계약 찾기' : '계약 목록') : (isPilot ? '계약' : '계약 검수'))}
                 {/* {activeTab === 'documents' && '증빙서류 관리'} */}
                 {activeTab === 'reports' && 'AI 교차검수 리포트'}
-                {activeTab === 'account-settings' && '계정 정보 및 비밀번호 변경'}
+                {activeTab === 'account-settings' && (isPilot ? '설정' : '계정 정보 및 비밀번호 변경')}
               </span>
             </div>
           </div>
