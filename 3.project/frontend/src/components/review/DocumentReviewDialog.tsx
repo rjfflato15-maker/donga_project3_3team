@@ -98,10 +98,15 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
     }
   };
   const changedKeys = Object.keys(draft).filter((k) => (draft as Record<string, unknown>)[k] !== (doc.analysis.fields as Record<string, unknown>)[k]);
+  // 값을 바꾸지 않고 원문과 맞다고 확인한 칸. 바뀐 칸은 서버가 알아서 확인으로 기록한다
+  const [confirmed, setConfirmed] = useState<Set<string>>(new Set());
+  const confirmedKeys = [...confirmed].filter((k) => !changedKeys.includes(k));
+  const toggleConfirmed = (key: string) => setConfirmed((prev) => { const next = new Set(prev); if (next.has(key)) next.delete(key); else next.add(key); return next; });
+  useEffect(() => { setConfirmed(new Set()); }, [doc.document_id, editing]);
   const save = async () => {
     setSaving(true); setSaveError('');
     try {
-      await api.correctFields(doc.document_id, draft, doc.document_type, revision, note.trim());
+      await api.correctFields(doc.document_id, draft, doc.document_type, revision, note.trim(), confirmedKeys);
       await onChanged();
       setEditing(false);
     } catch (e) {
@@ -294,14 +299,26 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
             {!prov && !provError && <div className="flex items-center gap-2 text-sm text-slate-500"><Loader2 className="h-4 w-4 animate-spin" /> 값을 불러오는 중…</div>}
             {editing && (
               <div className="space-y-2 rounded-xl border-2 border-indigo-200 bg-indigo-50/40 p-3 text-sm">
-                <div className="font-semibold text-indigo-900">원문을 보면서 틀린 값만 고치세요</div>
+                <div className="font-semibold text-indigo-900">원문을 보면서 틀린 값은 고치고, 맞는 값은 ‘원문과 맞음’에 체크하세요</div>
+                <div className="text-[11px] text-slate-500">체크하거나 고친 칸만 ‘사람 확인’으로 표시됩니다. 손대지 않은 칸은 원래 출처(규칙·AI)로 남습니다.</div>
                 {isMaskingEnabled && <div className="rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs text-amber-800">개인정보 가림이 켜져 있어도 수정 칸에는 실제 값이 보입니다. 화면 공유 중이면 주의하세요.</div>}
                 {rows.map(({ key, label }) => {
                   const v = (draft as Record<string, unknown>)[key];
                   const changed = changedKeys.includes(key);
+                  const already = prov?.fields[key]?.source === 'HUMAN_CONFIRMATION';
                   return (
-                    <label key={key} className="grid gap-1 text-xs text-slate-600">
-                      <span>{label}{changed && <b className="ml-1 text-indigo-700">· 바뀜</b>}</span>
+                    <div key={key} className="grid gap-1 text-xs text-slate-600">
+                      <div className="flex items-center gap-2">
+                        <span>{label}</span>
+                        {changed ? <b className="text-indigo-700">· 바뀜 (사람 확인으로 기록)</b>
+                          : already ? <span className="text-emerald-700">· 이미 사람 확인</span>
+                          : (
+                            <label className="ml-auto inline-flex cursor-pointer items-center gap-1 text-[11px] text-slate-600">
+                              <input type="checkbox" checked={confirmed.has(key)} onChange={() => toggleConfirmed(key)} className="h-3.5 w-3.5 accent-emerald-600" />
+                              원문과 맞음
+                            </label>
+                          )}
+                      </div>
                       {key === 'amount_scope' ? (
                         <select value={(v as string) || 'UNKNOWN'} onChange={(e) => setDraft({ ...draft, amount_scope: e.target.value as AnalysisFields['amount_scope'] })}
                           className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800">
@@ -313,25 +330,26 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                           min={AMOUNT_KEYS.has(key) ? 0 : undefined}
                           value={v == null ? '' : String(v)}
                           onChange={(e) => setDraft({ ...draft, [key]: AMOUNT_KEYS.has(key) ? (e.target.value === '' ? null : Number(e.target.value)) : (e.target.value || null) })}
+                          aria-label={label}
                           className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800" />
                       )}
-                    </label>
+                    </div>
                   );
                 })}
-                <label className="grid gap-1 text-xs text-slate-600">고친 이유 (기록에 남습니다)
+                <label className="grid gap-1 text-xs text-slate-600">고친 이유·확인한 내용 (기록에 남습니다)
                   <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2} maxLength={1000}
                     placeholder="예: 원문 1쪽 합계금액 줄을 보고 2,200,000원으로 입력"
                     className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800" />
                 </label>
                 <div className="flex flex-wrap gap-2">
-                  <button onClick={() => void save()} disabled={saving || !note.trim() || changedKeys.length === 0}
+                  <button onClick={() => void save()} disabled={saving || !note.trim() || changedKeys.length + confirmedKeys.length === 0}
                     className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 font-semibold text-white disabled:opacity-40">
-                    <Save className="h-4 w-4" /> {saving ? '저장 중…' : `저장하고 다시 검사 (${changedKeys.length}칸)`}
+                    <Save className="h-4 w-4" /> {saving ? '저장 중…' : `저장하고 다시 검사 (고친 칸 ${changedKeys.length} · 맞음 확인 ${confirmedKeys.length})`}
                   </button>
                   <button onClick={() => { setEditing(false); setDraft(doc.analysis.fields); }} className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-600">취소</button>
                 </div>
                 {saveError && <p role="alert" className="text-xs text-rose-600">{saveError}</p>}
-                <p className="text-[11px] text-slate-500">저장하면 고친 사람·이유가 기록되고, 이 값은 '사람 확인'으로 표시됩니다. 이전 결재는 다시 확인이 필요해집니다.</p>
+                <p className="text-[11px] text-slate-500">저장하면 고친 칸과 ‘원문과 맞음’에 체크한 칸만 확인한 사람·이유와 함께 ‘사람 확인’으로 표시됩니다. 이전 결재는 다시 확인이 필요해집니다.</p>
               </div>
             )}
             {prov && !editing && (

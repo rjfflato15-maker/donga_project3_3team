@@ -55,8 +55,8 @@ export const api = {
     const body = new FormData(); body.append('file', file);
     return requestJson<DocumentResponse>('/api/documents/' + id + '/original', { method: 'PUT', body });
   },
-  correctFields: (id: number, fields: AnalysisFields, document_type: DocumentType, revision: number, note: string) =>
-    requestJson<DocumentResponse>('/api/documents/' + id + '/fields', json('PUT', { fields, document_type, revision, note })),
+  correctFields: (id: number, fields: AnalysisFields, document_type: DocumentType, revision: number, note: string, confirmed_fields: string[] = []) =>
+    requestJson<DocumentResponse>('/api/documents/' + id + '/fields', json('PUT', { fields, document_type, revision, note, confirmed_fields })),
   triggerValidation: (id: number) => requestJson<ValidationReportResponse>('/api/contracts/' + id + '/validate', { method: 'POST' }),
   simulatePipeline: (id: number) => requestJson<PipelineSimulationResponse>('/api/pipeline/' + id + '/simulate', { method: 'POST' }),
   autoParseBatchDocuments: (files: File[]) => requestJson<AutoContractSynthesisResponse>('/api/contracts/auto-parse-batch', { method: 'POST', body: uploadBody(files) }),
