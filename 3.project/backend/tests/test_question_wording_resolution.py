@@ -56,6 +56,26 @@ def test_review_question_distinguishes_missing_item_from_unreadable_value():
     assert "숫자를 읽을 수 없거나" in question and "가려져" in question and "도장" in hint
 
 
+@pytest.mark.parametrize("rule", ["ORIGINAL_FILE", "DOCUMENT_PROCESSING", "DOCUMENT_TYPE", "AMOUNT_COMPONENTS", "BUSINESS_NO_MATCH"])
+def test_not_applicable_question_does_not_substitute_a_positive_source_fact(rule):
+    context = {"doctype": {}, "fields": {"7": {field: {"state": "VALUE", "value": value}
+        for field, value in (("supply_amount", 100), ("tax_amount", 10), ("total_amount", 110))}}}
+    question, hint = page_builder().check_q({"I": "N/A", "J": None}, context, rule, "7")
+    assert "해당 없음(N/A)" in question and "PASS와 구분" in question
+    assert "원문에서 직접 확인한 사실" in hint
+    assert "잘 모르겠어요" in question
+
+
+def test_review_question_does_not_tell_human_to_accept_the_draft():
+    builder = page_builder()
+    item = {"A": "1/7/total_amount", "C": "total_amount", "H": "해석 확인", "I": "REVIEW", "J": None,
+        "M": "unit fixture: unreadable value", "sheet": "필드확인", "row": 5}
+    cases = {"1": {"doctype": {"7": "견적서"}}}
+    question = builder.make_items([item], cases)[0]['q']
+    assert "기준대로면" not in question and "설명대로면" not in question
+    assert "애매하면 잘 모르겠어요" in question
+
+
 def test_import_keeps_raw_human_json_and_excel_dissent_with_bound_resolution(tmp_path):
     import openpyxl
     manifest, reference = source_example()
