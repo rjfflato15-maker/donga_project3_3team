@@ -1,0 +1,38 @@
+{
+  "sha256": "41c2d25612e36b18225420cc52586fc1d0c4be3b58d34d2cbc26035583c75d9e",
+  "payload": {
+    "document": {
+      "document_id": 40301,
+      "path": "test2/case_03/document_01.pdf",
+      "sha256": "46d07262cfa82c19cdb963bb494cd97e84ab0765cfad25fbe4b1ad14a8c3823d"
+    },
+    "contract_id": 403,
+    "fields": {
+      "title": "가상 업무지원 시스템 구축",
+      "company_name": "가상 새봄기획 3",
+      "business_registration_no": "000-00-04030",
+      "amount": 4822400.0,
+      "issue_date": "2026-09-18",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": 4384000.0,
+      "tax_amount": 438400.0,
+      "total_amount": 4822400.0,
+      "amount_basis": "TOTAL",
+      "amount_scope": "FULL"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "외주용역 계약서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약명\n가상 업무지원 시스템 구축\n발주자\n가상 남쪽연구소 3\n수급인(을)\n가상 새봄기획 3\n사업자등록번호\n000-00-04030\n공급가액\n4,384,000원\n세액\n438,400원\n합계금액\n4,822,400원\n발행일\n2026-09-18\n"
+      }
+    ],
+    "document_type": "contract",
+    "processing_failed": false,
+    "rule_seconds": 0.012491299996327143,
+    "targets": []
+  }
+}

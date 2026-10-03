@@ -208,7 +208,7 @@ action은 START/COMPLETE/CANCEL/REASSIGN/UPDATE. START는 현재 맡은 사람, 
 {"contract_id":3,"revision":8,"fingerprint":"...","preview_only":true,"persisted":false,"automatic_send":false,"llm_used":false,"external_api_calls":0,"item_count":1,"items":[{"issue_id":"현재 항목의 안정 ID","rule_id":"REQUIRED_DOCUMENTS","field":"tax_invoice","status":"MISSING","reason":"세금계산서가 제출되지 않았습니다.","next_action":"DRAFT_REQUEST_AFTER_REVIEW","recheck":{"tool":"LOCAL_RULE_RECHECK","completed":true,"revision":8,"fingerprint":"..."},"request_draft":{"recipient_name":"가상 업체","document_type":"tax_invoice","subject":"외주 계약 · 세금계산서 확인 요청 초안","body":"가상 업체 담당자님, ... 원문을 보내 주세요.","review_before_use":true,"sent":false},"assignment_draft":null,"persisted":false}],"recheck_differences":[],"steps":[{"tool":"READ_CURRENT_STORED_EVIDENCE","status":"COMPLETED"},{"tool":"LOCAL_RULE_RECHECK","status":"COMPLETED","writes":0,"nts_mode":"disabled"},{"tool":"PREPARE_DRAFTS","status":"COMPLETED","saved":0,"sent":0}]}
 ```
 
-items는 PASS 이외의 확인 항목을 반환한다. 계약서·검수확인서는 사내 준비용 assignment_draft를 반환하고 거래처 요청 초안을 만들지 않는다. 사업자 영업 상태는 MANUAL_CONFIRMATION으로 담당자가 따로 확인한다. 견적서·세금계산서·사업자등록증·통장사본은 원문과 추출값을 사람이 확인한 뒤 사용할 거래처 요청 초안을 준비한다.
+items는 PASS 이외의 항목과 안내를 반환한다. 미연동 BUSINESS_STATUS는 `next_action=INFORMATIONAL_NOTICE`, `actionable=false`이며 request_draft/assignment_draft 모두 null이다. 이 미리보기는 항상 DisabledNtsClient를 사용한다. item_count는 안내를 포함하며 추가된 actionable_item_count는 실제 처리할 항목 수다. AMOUNT_EXTRACTION·DOCUMENT_TYPE·DOCUMENT_PROCESSING·ORIGINAL_FILE과 BUSINESS_NO_MATCH의 REVIEW는 `VERIFY_EXTRACTION_FIRST`로 원문 확인용 assignment_draft만 반환한다. 앱이 못 읽었다는 이유로 거래처 요청 초안을 만들지 않는다. 계약서·검수확인서는 사내 준비용이고, 확인 가능한 누락·차이의 견적서·세금계산서·사업자등록증·통장사본은 원문 검토 뒤 사용할 요청 초안을 준비한다.
 
 응답의 summary는 이번 메모리 재검사 결과다. recheck_differences는 저장된 규칙 결과와 이번 결과의 차이를 보여 주며 저장하지 않는다. `issue_ids`에 이전 응답의 특정 항목 ID 배열을 주면 그 항목만 준비한다. 없는 ID는 422다. 오래된 revision/fingerprint 또는 처리 중 자료 변경은 409, 없는 계약은 404, 미로그인은 401이다. 생성된 초안은 별도 저장 버튼을 통해 기존 요청 기록/맡기기 API를 호출할 때만 저장하며, 이 API에는 저장·발송 옵션이 없다. 예시는 일부 필드만 표기했다.
 ## 긴 업로드의 상태 조회와 중복 없는 재시도 (2026-10-03)
@@ -238,13 +238,13 @@ v4 AI 근거가 값 줄과 라벨 줄을 연결한 경우 evidence의 값 bbox�
 
 ## 사람이 확인한 칸의 범위 (2026-10-03)
 
-`PUT /api/documents/12/fields`는 기존처럼 전체 fields를 받되, 실제 값이 바뀐 칸만 사람 수정으로 기록한다. 전체 폼을 저장했다는 이유로 나머지 칸까지 확인 완료로 바꾸지 않는다. 원문과 비교해 같은 값이 맞음을 확인한 칸은 선택 배열 `confirmed_fields`에 넣는다.
+`PUT /api/documents/12/fields`는 전체 fields 또는 바뀐 칸만 받는다. 생략한 칸은 저장된 값을 유지하고, 명시한 null은 해당 값만 지운다. 실제 값이 바뀐 칸만 사람 수정으로 기록한다. 전체 폼 저장만으로 나머지 칸까지 확인 완료로 바꾸지 않는다. 원문과 비교해 같은 값이 맞음을 확인한 칸은 선택 배열 `confirmed_fields`에 넣는다.
 
 ```json
-{"fields":{"title":"견적서","company_name":"가상 업체","business_registration_no":"000-00-00000","amount":1100,"issue_date":"2026-10-03","contract_period_start":null,"contract_period_end":null,"account_number":null,"bank_name":null,"supply_amount":1000,"tax_amount":100,"total_amount":1100,"amount_basis":"TOTAL","amount_scope":"TOTAL"},"document_type":"estimate","revision":8,"note":"합계 수정, 업체명 원문 확인","confirmed_fields":["company_name"]}
+{"fields":{"total_amount":1100},"document_type":"estimate","revision":8,"note":"합계 수정, 업체명 원문 확인","confirmed_fields":["company_name"]}
 ```
 
-실제 요청에서는 현재 상세의 fields 전체를 사용한다. 이번에 변경된 total_amount와 명시한 company_name을 확인한 것으로 기록하고, 이전에 확인한 칸의 확인자·시각은 유지한다. 값을 바꾸지 않고 확인 버튼만 누르면 해당 이름을 confirmed_fields에 넣는다. 이 배열을 생략하는 기존 화면도 값 수정은 정상 처리한다.
+이번에 변경된 total_amount와 명시한 company_name을 확인한 것으로 기록하고, 이전에 확인한 칸의 확인자·시각은 유지한다. 확인 버튼만 누를 때는 `fields:{}`, `confirmed_fields:["company_name"]`도 가능하다. 이 배열을 생략하는 기존 화면도 값 수정은 정상 처리한다. amount_scope는 FULL/PARTIAL/UNKNOWN이며 amount_basis의 TOTAL/SUPPLY/UNKNOWN과 구분한다.
 
 `GET /api/documents/12/provenance`의 예:
 
@@ -255,3 +255,32 @@ v4 AI 근거가 값 줄과 라벨 줄을 연결한 경우 evidence의 값 bbox�
 미확인 칸은 RULE/AI_SUPPLEMENT 등의 원래 출처와 `human_confirmation:null`을 유지한다. analysis.ai_review는 원래 호출 실패·거절 사유를 보존하면서 human_confirmed_fields / human_unconfirmed_fields를 추가한다. 아직 확인하지 않은 AI 대상이 있으면 human_confirmed=false, manual_review_required=true다. 각 decisions에도 해당 칸의 human_confirmed를 제공한다. 과거 저장의 범위를 모르면 legacy_confirmation_scope_unknown=true이며 감사 기록에서 실제 바뀐 칸만 복원한다. 문서 전체의 과거 MANUALLY_CONFIRMED 상태만으로 모든 칸을 확인했다고 표시하지 않는다.
 
 확인 필드 이름이 없거나 중복이면 400, 잘못된 타입은 422, 오래된 계약 revision은 409, 미로그인은 401, 수정 권한이 없으면 403이다. 성공한 저장은 기존처럼 계약 revision이 1 증가하고 자료 변경에 따른 재확인·재결재 규칙을 적용한다. 값·revision·확인 범위·감사 기록은 같은 트랜잭션으로 저장한다. confirmed_fields는 앱 검수 화면에서 사용하며 평가용 사람 결과 JSON의 답을 변경하지 않는다.
+
+## 계약 한 건 자료 묶음
+
+`GET /api/contracts/3/export?masked=true&revision=8` → ZIP 다운로드. masked 기본 true, revision 선택(현재 상세의 값을 권장). 담당자·대표·관리자의 로그인과 회사 접근 권한을 검사한다. 화면 버튼은 Claude가 연결한다.
+
+| ZIP 항목 | 내용 |
+| --- | --- |
+| documents/current, documents/previous | 현재·이전 원본 모두. 문서 ID·버전으로 중복 파일명을 구별 |
+| contract.json | 등록 계약·금액 정책·문서별 필드·AI/사람 확인 기록·버전 |
+| validation_results.json | 현재 저장된 검사 상태·기대값·실제값·이유. 다운로드 중 재검사 없음 |
+| history.json | 요청(종료 포함), 수정 등 감사 이벤트, 대표 확인, 결재, 맡기기 및 변경 이력 |
+| manifest.json | 문서 ID·버전·현재 여부·ZIP 경로·원본/내보낸 본 SHA-256·변환 방식 |
+| README.txt | 묶음 구성·가림 범위·본문 TXT의 배치 미보존 안내 |
+
+가림 ON은 PDF/이미지에 가림을 적용하고, DOCX 등은 저장된 본문을 가린 TXT로 제공한다. 원본 DOCX/PDF의 숨은 텍스트를 동봉하지 않는다. 등록 값·알려진 민감값·인식한 원문 근거로 가리며 OCR 누락까지 완전 제거한다고 주장하지 않는다. metadata와 이력의 알려진 과거 업체명·번호·확인자명도 가리되 SHA-256/fingerprint는 식별용 원래 값을 유지한다. 가린 파일명은 문서 ID와 버전만 쓴다. masked=false는 개인정보가 있는 원본이다.
+
+인증 실패 401, 접근 권한 부족 403, 없는 계약 404, 오래된 revision·생성 중 자료 변경·원본 누락/해시 불일치 409, 원본 100개/총 250MB 또는 변환·이력을 포함한 묶음 250MB 초과 413, 가림/변환 실패 503이다. 실패 시 일부 ZIP 또는 원본을 자동 반환하지 않는다. 전송 후 임시 파일을 정리하며 no-store/nosniff 헤더를 사용한다. 계약 revision·검수·결재는 바뀌지 않고, 준비 성공 시 `CONTRACT_BUNDLE_EXPORT_REQUEST` 감사 이벤트만 남긴다(사용자의 완전 수신을 증명하는 이벤트는 아님).
+
+## 표시용 PNG 가림·요약 집계 보완
+
+PNG 미리보기·가린 이미지 다운로드·ZIP은 미리보기 전용 가림 정책을 공유한다. OCR의 여러 단어에 나뉜 상호를 라벨·알려진 문자열로 함께 가린다. 발행일을 사업자번호로 오인하던 짧은 `3자리-2자리` 패턴을 없앴다. AI 판독·프롬프트·가드·평가 코드는 변경하지 않는다. 수정창/요청 문구의 업무상 원래 값 안내는 frontend 담당 범위다.
+
+`GET /api/contracts/3/summary`의 facts.open_issue_count는 화면과 같은 **문제 카드 수**다. 같은 문서 ID의 여러 검사 → doc-ID 한 장, 누락 → missing-문서종류, 계약 수준 문제 → contract-rule_id로 묶는다. 국세청 미연동 REVIEW 안내는 제외한다. 추가 필드:
+
+```json
+{"open_issue_count_unit":"ISSUE_CARD","counts":{"issue_card_count":2,"check_item_count":3},"issue_groups":[{"key":"doc-12","checks":[{"rule_id":"BUSINESS_NO_MATCH","field":"12","status":"FAIL"},{"rule_id":"AMOUNT_MATCH_ESTIMATE","field":"12","status":"FAIL"}]},{"key":"missing-tax_invoice","checks":[{"rule_id":"REQUIRED_DOCUMENTS","field":"tax_invoice","status":"MISSING"}]}]}
+```
+
+목록 API의 open_issue_count와 기존 action_summary는 이전 계약대로 **검사 항목 수**다. 이번 변경은 요약 문장의 카드 수와 검사 수를 명시적으로 구분하며 원래 규칙 결과·평가 수치는 변경하지 않는다.

@@ -166,16 +166,19 @@ def correct_fields(document_id: int, req: Correction, db: Session = Depends(get_
             raise HTTPException(409, "자료가 변경되었습니다. 새로고침 후 다시 수정하세요.")
         if not req.note.strip():
             raise HTTPException(400, "추출값 수정 사유를 입력하세요.")
-        if req.fields.amount_basis not in {"TOTAL", "SUPPLY", "UNKNOWN"} or req.fields.amount_scope not in {"FULL", "PARTIAL", "UNKNOWN"}:
+        before = json.loads(doc.extract.raw_fields or "{}")
+        # A sparse body changes only supplied keys. Explicit null still clears a value.
+        fields = AnalysisFields(**{**AnalysisFields(**before).model_dump(),
+                                  **req.fields.model_dump(exclude_unset=True)})
+        if fields.amount_basis not in {"TOTAL", "SUPPLY", "UNKNOWN"} or fields.amount_scope not in {"FULL", "PARTIAL", "UNKNOWN"}:
             raise HTTPException(400, "금액 기준과 청구 범위를 확인하세요.")
         from ..validation.financial import money
         for key in ("amount", "supply_amount", "tax_amount", "total_amount"):
-            value = getattr(req.fields, key)
+            value = getattr(fields, key)
             if value is not None and money(value) is None:
                 raise HTTPException(400, "금액은 0 이상의 유효한 숫자로 입력하세요.")
-        before = json.loads(doc.extract.raw_fields or "{}")
         from ..services.field_confirmation_service import confirm_fields, reviewed_ai
-        after = req.fields.model_dump()
+        after = fields.model_dump()
         try:
             human_review, changed_fields, confirmed_fields = confirm_fields(db, document_id, before, after, actor, req.confirmed_fields)
         except ValueError as exc:
@@ -188,15 +191,15 @@ def correct_fields(document_id: int, req: Correction, db: Session = Depends(get_
         if before.get('llm_execution'):
             after['llm_execution']=before['llm_execution']
         doc.extract.raw_fields = json.dumps(after, ensure_ascii=False)
-        doc.extract.extracted_vendor_name = req.fields.company_name
-        doc.extract.extracted_vendor_reg_no = req.fields.business_registration_no
-        doc.extract.extracted_amount = req.fields.total_amount if req.fields.total_amount is not None else req.fields.amount
-        doc.extract.extracted_date = req.fields.issue_date
+        doc.extract.extracted_vendor_name = fields.company_name
+        doc.extract.extracted_vendor_reg_no = fields.business_registration_no
+        doc.extract.extracted_amount = fields.total_amount if fields.total_amount is not None else fields.amount
+        doc.extract.extracted_date = fields.issue_date
         doc.extract.extracted_status = "MANUALLY_CONFIRMED"
         touch_contract(db, doc.contract_id)
         contract_id = doc.contract_id
         audit(db, actor, "EXTRACT_CORRECTED", contract_id, document_id,
-              {"note": req.note.strip()[:1000], "before": AnalysisFields(**before).model_dump(), "after": req.fields.model_dump(),
+              {"note": req.note.strip()[:1000], "before": AnalysisFields(**before).model_dump(), "after": fields.model_dump(),
                "previous_document_type":previous_type,"new_document_type":req.document_type.value,
                "ai_review_before":before.get('ai_review'),"llm_execution":before.get('llm_execution'),
                "changed_fields":changed_fields,"confirmed_fields":confirmed_fields})
@@ -237,7 +240,7 @@ def serve_document(document_id, masked, disposition, db, actor):
             media, name = "application/pdf", "masked_" + name
         elif suffix in {".png", ".jpg", ".jpeg", ".bmp", ".webp", ".gif", ".tif", ".tiff"}:
             from PIL import Image, ImageOps
-            from ..ai.visual_masking import mask_image_with_ocr
+            from ..services.preview_masking_service import mask_image_with_ocr
             with Image.open(path) as original:
                 image = ImageOps.exif_transpose(original).convert("RGB")
             result = None
@@ -325,7 +328,8 @@ def get_document_preview_image(document_id: int, page: int = Query(0, ge=0), mas
                 if hashlib.file_digest(stream, 'sha256').hexdigest() != source_sha256:
                     raise HTTPException(409, "원본 내용이 변경되었습니다. 근거를 다시 확인하세요.")
         from PIL import Image, ImageOps
-        from ..ai.visual_masking import mask_pdf_page_image, mask_image_with_ocr
+        from ..ai.visual_masking import mask_pdf_page_image
+        from ..services.preview_masking_service import mask_image_with_ocr
         if path.suffix.lower() == ".pdf":
             from ..ai.pdf_runtime import open_pdf, open_page, page_count, page_size, render_page_image
             with open_pdf(path) as pdf:

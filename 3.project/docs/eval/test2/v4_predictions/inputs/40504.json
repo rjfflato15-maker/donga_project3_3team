@@ -1,0 +1,38 @@
+{
+  "sha256": "1b0cd5d51f266b3f81571cf909cde3fd38640999db354b4d3ea711e65049e54a",
+  "payload": {
+    "document": {
+      "document_id": 40504,
+      "path": "test2/case_05/document_04.pdf",
+      "sha256": "c4c1829092854633a0828c60a479e22b51415e30e9ad01f0d3591e8b0fabeaca"
+    },
+    "contract_id": 405,
+    "fields": {
+      "title": "가상 새봄기획 5 통장사본",
+      "company_name": "가상 새봄기획 5",
+      "business_registration_no": "000-00-04059",
+      "amount": null,
+      "issue_date": "2026-09-20",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": null,
+      "tax_amount": null,
+      "total_amount": null,
+      "amount_basis": "UNKNOWN",
+      "amount_scope": "UNKNOWN"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주\n가상 새봄기획 5\n은행명\n가상은행\n계좌번호\nTEST-ACCOUNT-001\n사업자등록번호\n000-00-04059\n발행일\n2026-09-20\n"
+      }
+    ],
+    "document_type": "bank_account",
+    "processing_failed": false,
+    "rule_seconds": 0.009933300003467593,
+    "targets": []
+  }
+}

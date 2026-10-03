@@ -78,3 +78,35 @@ def test_legacy_save_recovers_changed_fields_without_claiming_full_review(operat
     assert result['human_confirmed_fields'] == ['total_amount']
     assert result['fields']['company_name']['source'] == 'RULE'
     assert result['fields']['total_amount']['human_confirmation']['method'] == 'LEGACY_CHANGED_VALUE'
+
+
+def test_sparse_correction_preserves_other_fields_and_explicit_null_clears_only_target(operator_client):
+    cid = create_contract(operator_client)['contract_id']
+    did = upload(operator_client, cid, 'estimate')['document_id']
+    initial = operator_client.get(f'/api/documents/{did}').json()['analysis']['fields']
+    revision = operator_client.get(f'/api/contracts/{cid}').json()['workflow']['revision']
+    url = f'/api/documents/{did}/fields'
+    response = operator_client.put(url, json={'fields': {'total_amount':121},
+        'document_type':'estimate','revision':revision,'note':'합계만 확인'})
+    assert response.status_code == 200, response.text
+    assert response.json()['analysis']['fields'] == {**initial,'total_amount':121}
+    provenance = operator_client.get(f'/api/documents/{did}/provenance').json()
+    assert provenance['human_confirmed_fields'] == ['total_amount']
+    revision = operator_client.get(f'/api/contracts/{cid}').json()['workflow']['revision']
+    response = operator_client.put(url, json={'fields': {'total_amount':None},
+        'document_type':'estimate','revision':revision,'note':'읽을 수 없어 해당 값 제거'})
+    assert response.status_code == 200
+    assert response.json()['analysis']['fields'] == {**initial,'total_amount':None}
+
+
+def test_sparse_explicit_confirmation_does_not_clear_values(operator_client):
+    cid = create_contract(operator_client)['contract_id']
+    did = upload(operator_client,cid,'estimate')['document_id']
+    initial = operator_client.get(f'/api/documents/{did}').json()['analysis']['fields']
+    revision = operator_client.get(f'/api/contracts/{cid}').json()['workflow']['revision']
+    response = operator_client.put(f'/api/documents/{did}/fields',json={
+        'fields':{},'confirmed_fields':['company_name'],'document_type':'estimate',
+        'revision':revision,'note':'같은 값 원문 확인'})
+    assert response.status_code == 200, response.text
+    assert response.json()['analysis']['fields'] == initial
+    assert operator_client.get(f'/api/documents/{did}/provenance').json()['human_confirmed_fields'] == ['company_name']

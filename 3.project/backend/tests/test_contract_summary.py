@@ -22,3 +22,25 @@ def test_summary_disallows_invented_numbers_or_placeholders():
     with pytest.raises(ValueError):render_template('금액은 9999원입니다.',{'contract_amount':'1100'})
     with pytest.raises(ValueError):render_template('{contract_amount} {contract_amount}',{'contract_amount':'1100'})
     with pytest.raises(ValueError):render_template('{contract_amount.__class__}',{'contract_amount':'1100'})
+
+
+def test_summary_groups_multiple_checks_into_same_document_card():
+    from backend.app.services.review_summary_service import issue_card_groups
+    from backend.app.schemas.validation import ValidationCheck
+    checks=[ValidationCheck(rule_id=rule,field=field,status=status,message='unit') for rule,field,status in [
+        ('BUSINESS_NO_MATCH','7','FAIL'),('AMOUNT_MATCH_ESTIMATE','7','FAIL'),
+        ('AMOUNT_EXTRACTION','8','REVIEW'),('BUSINESS_STATUS','business_number','REVIEW'),
+        ('REQUIRED_DOCUMENTS','contract','MISSING')]]
+    groups=issue_card_groups(checks,[{'document_id':7},{'document_id':8}])
+    assert [group['key'] for group in groups]==['doc-7','doc-8','missing-contract']
+    assert len(groups[0]['checks'])==2
+
+
+def test_summary_exposes_card_and_check_counts_without_changing_rule_output(operator_client):
+    cid=create_contract(operator_client)['contract_id']
+    upload(operator_client,cid,'estimate')
+    data=operator_client.get(f'/api/contracts/{cid}/summary').json()
+    assert data['open_issue_count_unit']=='ISSUE_CARD'
+    assert int(data['facts']['open_issue_count'])==len(data['issue_groups'])==data['counts']['issue_card_count']
+    assert data['counts']['check_item_count']==sum(len(group['checks']) for group in data['issue_groups'])
+    assert all(check['rule_id']!='BUSINESS_STATUS' for group in data['issue_groups'] for check in group['checks'])

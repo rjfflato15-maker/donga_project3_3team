@@ -1,0 +1,40 @@
+{
+  "sha256": "07f11c092b22416261178f28a4224babaa452f2b92d3068e6a7d6ab6f241f9e7",
+  "payload": {
+    "document": {
+      "document_id": 40405,
+      "path": "test2/case_04/document_05.pdf",
+      "sha256": "260400c8bcb4b9ced42c2c6635f1813f91764b606fa2a7ea2106140bad00ec9e"
+    },
+    "contract_id": 404,
+    "fields": {
+      "title": "가상 남쪽연구소 4 전자세금계산서",
+      "company_name": "가상 남쪽연구소 4",
+      "business_registration_no": "000-00-04044",
+      "amount": 4973100.0,
+      "issue_date": "2026-09-19",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": 4521000.0,
+      "tax_amount": 452100.0,
+      "total_amount": 4973100.0,
+      "amount_basis": "TOTAL",
+      "amount_scope": "FULL"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "전자세금계산서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호\n가상 새봄기획 4\n사업자등록번호\n000-00-04044\n공급받는자\n상호\n가상 남쪽연구소 4\n사업자등록번호\n000-00-16045\n공급가액\n4,521,000원\n세액\n452,100원\n합계금액\n4,973,100원\n전액 청구\n전체 계약 대금\n발행일\n2026-09-19\n"
+      }
+    ],
+    "document_type": "tax_invoice",
+    "processing_failed": false,
+    "rule_seconds": 0.01190100000530947,
+    "targets": [
+      "company_name"
+    ]
+  }
+}

@@ -59,6 +59,23 @@ def display_issue_counts(checks, *, nts_mode=None):
     return counts
 
 
+def issue_card_groups(checks, documents, *, nts_mode='disabled'):
+    """Same grouping keys as frontend reviewSummary.ts; checks stay unchanged."""
+    known = {str(d['document_id']) for d in documents}
+    groups = {}
+    for check in checks:
+        status = getattr(check.status, 'value', check.status)
+        if status not in {'FAIL', 'MISSING', 'REVIEW'}:
+            continue
+        if nts_mode == 'disabled' and check.rule_id == 'BUSINESS_STATUS' and status == 'REVIEW':
+            continue
+        field = str(check.field)
+        key = (f'doc-{field}' if field in known else f'missing-{field}'
+               if check.rule_id == 'REQUIRED_DOCUMENTS' else f'contract-{check.rule_id}')
+        groups.setdefault(key, []).append({'rule_id': check.rule_id, 'field': check.field, 'status': status})
+    return [{'key': key, 'checks': values} for key, values in groups.items()]
+
+
 def build_action_summary(issue_counts, workflow, approval, waiting_count, ai_pending_count):
     """Keep list and review-context wording consistent for the same snapshot."""
     parts = []

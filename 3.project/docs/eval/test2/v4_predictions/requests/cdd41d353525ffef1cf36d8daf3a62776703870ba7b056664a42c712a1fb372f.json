@@ -1,0 +1,40 @@
+{
+  "sha256": "e6b6724bf259819ea832299df97dd2b8cfb3fc188cce2113f888a19e7fb71e23",
+  "payload": {
+    "attempt_id": "61292cd2-9b3c-4396-aae3-84365054aaa7",
+    "request_sha256": "cdd41d353525ffef1cf36d8daf3a62776703870ba7b056664a42c712a1fb372f",
+    "started_at": "2026-10-03T00:33:00.608797+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "전자세금계산서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호\n가상 새봄기획 2\n사업자등록번호\n000-00-04025\n공급받는자\n상호\n가상 남쪽연구소 2\n사업자등록번호\n000-00-16026\n공급가액\n4,247,000원\n세액\n424,700원\n합계금액\n4,671,700원\n전액 청구\n전체 계약 대금\n발행일\n2026-09-17\n"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "issue_date",
+        "amount_scope"
+      ],
+      "document_type": "tax_invoice",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

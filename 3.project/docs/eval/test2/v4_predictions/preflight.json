@@ -1,0 +1,69 @@
+{
+  "sha256": "9f3e687a9ad0199aa1551febb512fa926480d80ace6931d5314f95f8e36c69ef",
+  "payload": {
+    "checked_at": "2026-10-03T00:30:58.922422+00:00",
+    "environment": {
+      "python": "3.12.14",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "packages": {
+        "winocr": "0.0.15",
+        "Pillow": "12.3.0",
+        "pypdfium2": "5.13.0",
+        "python-docx": "1.2.0",
+        "pytesseract": null,
+        "pydantic": "2.13.5",
+        "requests": "2.34.2"
+      }
+    },
+    "settings": {
+      "url": "http://127.0.0.1:11434",
+      "model": "qwen3:latest",
+      "timeout_seconds": 45,
+      "retries": 1,
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 1600,
+      "max_input_chars": 10000
+    },
+    "model_metadata": {
+      "name": "qwen3:latest",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "size": 5225388164,
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3",
+        "families": [
+          "qwen3"
+        ],
+        "parameter_size": "8.2B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 40960,
+        "embedding_length": 4096
+      }
+    },
+    "release_version": "guard-v4-test2-fixed",
+    "guard_policy": "v4",
+    "nts_mode": "disabled",
+    "labels_read": false,
+    "answer_values_read": false,
+    "human_confirmation": {
+      "labels_sha256": "0bb2b985279d7afcf767e8baf79d148dbea72eecd0a27bc20dc5f825d307817b",
+      "human_result_sha256": "9ab8b7ef20fa98ba04377ee739cfd4bb5c6e3dcc1dac5b805c22191e614605f5",
+      "reviewer": "이창헌",
+      "confirmed_at": "2026-10-03T02:39:30.708934+09:00",
+      "human_direct_count": 81,
+      "ai_agreement_count": 459
+    },
+    "human_review_ready": true,
+    "cloud_disable_config": true,
+    "heldout_originals_opened": true,
+    "new_extraction_calls": 1,
+    "dev_smoke": {
+      "ok": true,
+      "run_sha256": "8fb467ef2a0d95f4bd168e3c5187e9ee0d37a02184359ffdbf46e169477daa3e",
+      "elapsed_seconds": 5.924402299999201
+    }
+  }
+}

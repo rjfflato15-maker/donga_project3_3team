@@ -1,0 +1,160 @@
+{
+  "format": "human-question-scope-audit-v1",
+  "source_page_sha256": "186b8519dbe7acd1dd8f183bcfbcae3189bb50721f2748cb9a58cc14289783fe",
+  "human_result_sha256": "9ab8b7ef20fa98ba04377ee739cfd4bb5c6e3dcc1dac5b805c22191e614605f5",
+  "labels_sha256_unchanged": "0bb2b985279d7afcf767e8baf79d148dbea72eecd0a27bc20dc5f825d307817b",
+  "comparison_sha256": "9f2c2a39fd28835fbd0b0a4572e9675a231850264b6bb0dde2e866e7777838b9",
+  "human_answer_count": 81,
+  "leading_suffix_count": 79,
+  "source_observation_instead_of_direct_na_status_question_count": 18,
+  "remaining_direct_label_question_count": 63,
+  "status_labels_unchanged": true,
+  "raw_human_answers_unchanged": true,
+  "conclusion": "These responses establish source observations, not direct human confirmation of N/A status. N/A labels retain the published specification and matching independent review as their status basis. The 81 source observations must not be described as 81 directly confirmed status/value labels. No source observation is contradicted here, so no repeat of the submitted review is requested. Future questions explicitly state N/A and remove acceptance-leading suffixes.",
+  "items": [
+    {
+      "review_id": "401/contract/ORIGINAL_FILE/40104",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">이 파일은 <b>정상적으로 열린다</b>.</div><div class=\"interp\">📌 기준: 왼쪽에 문서가 보이면 맞아요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "402/contract/BUSINESS_NO_MATCH/business_registration_no",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">사업자번호를 대조할 서류(계약서·견적서·세금계산서·사업자등록증)가 <b>있다</b>.</div><div class=\"interp\">📌 기준: 왼쪽 위 문서 버튼 목록을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "402/contract/DOCUMENT_PROCESSING/40201",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">글자가 <b>깨끗해서 읽을 수 있다</b>.</div><div class=\"interp\">📌 기준: 흐리거나 깨진 곳이 있는지 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "402/contract/DOCUMENT_TYPE/40203",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">제목을 보면 <b>무슨 문서인지 알 수 있다</b>. (사업자등록증)</div><div class=\"interp\">📌 기준: 제목을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "403/contract/REQUIRED_DOCUMENTS/inspection_confirmation",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\"><b>납품 검수확인서</b>이 제출되어 있다.</div><div class=\"interp\">📌 기준: 왼쪽 위 문서 버튼 목록을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "403/contract/DOCUMENT_PROCESSING/40301",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">글자가 <b>깨끗해서 읽을 수 있다</b>.</div><div class=\"interp\">📌 기준: 흐리거나 깨진 곳이 있는지 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "403/contract/AMOUNT_EXTRACTION/40302",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">'합계금액'이라는 이름과 함께 금액이 <b>분명히 적혀 있다</b>.</div><div class=\"interp\">📌 기준: 합계금액 줄을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "403/contract/DOCUMENT_TYPE/40305",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">제목을 보면 <b>무슨 문서인지 알 수 있다</b>. (전자세금계산서)</div><div class=\"interp\">📌 기준: 제목을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "404/contract/AMOUNT_BASIS/amount_basis",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">등록 계약의 금액 기준이 <b>분명하다</b>. (합계 기준 4,973,100원)</div><div class=\"interp\">📌 기준: 오른쪽 위 &#x27;등록 계약&#x27; 상자를 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "404/contract/DOCUMENT_PROCESSING/40403",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">글자가 <b>깨끗해서 읽을 수 있다</b>.</div><div class=\"interp\">📌 기준: 흐리거나 깨진 곳이 있는지 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "405/contract/BUSINESS_NO_MATCH/business_registration_no",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">사업자번호를 대조할 서류(계약서·견적서·세금계산서·사업자등록증)가 <b>있다</b>.</div><div class=\"interp\">📌 기준: 왼쪽 위 문서 버튼 목록을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "405/contract/DOCUMENT_TYPE/40505",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">제목을 보면 <b>무슨 문서인지 알 수 있다</b>. (전자세금계산서)</div><div class=\"interp\">📌 기준: 제목을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "406/contract/AMOUNT_BASIS/amount_basis",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">등록 계약의 금액 기준이 <b>분명하다</b>. (합계 기준 5,274,500원)</div><div class=\"interp\">📌 기준: 오른쪽 위 &#x27;등록 계약&#x27; 상자를 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "406/contract/DOCUMENT_PROCESSING/40602",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">글자가 <b>깨끗해서 읽을 수 있다</b>.</div><div class=\"interp\">📌 기준: 흐리거나 깨진 곳이 있는지 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "406/contract/AMOUNT_COMPONENTS/40602",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">공급가액 + 세액 = 합계금액, <b>계산이 맞다</b>.</div><div class=\"interp\">📌 기준: 세 줄의 숫자를 더해 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "406/contract/DOCUMENT_PROCESSING/40603",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">글자가 <b>깨끗해서 읽을 수 있다</b>.</div><div class=\"interp\">📌 기준: 흐리거나 깨진 곳이 있는지 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "406/contract/ORIGINAL_FILE/40605",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">이 파일은 <b>정상적으로 열린다</b>.</div><div class=\"interp\">📌 기준: 왼쪽에 문서가 보이면 맞아요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    },
+    {
+      "review_id": "406/contract/DOCUMENT_TYPE/40606",
+      "kind": "SOURCE_FACT_INSTEAD_OF_DIRECT_STATUS_QUESTION",
+      "stored_label": "N/A",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">제목을 보면 <b>무슨 문서인지 알 수 있다</b>. (납품 검수확인서)</div><div class=\"interp\">📌 기준: 제목을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "human_confirmation_scope": "SOURCE_OBSERVATION_ONLY",
+      "status_basis": "PUBLISHED_SPECIFICATION_AND_INDEPENDENT_AGREEMENT"
+    }
+  ]
+}

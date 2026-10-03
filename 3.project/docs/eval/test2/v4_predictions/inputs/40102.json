@@ -1,0 +1,41 @@
+{
+  "sha256": "a1d95156047a0bc7b77f4cbd14d9e82fc419dc62349ba7ab38b5da7a2fa7a99a",
+  "payload": {
+    "document": {
+      "document_id": 40102,
+      "path": "test2/case_01/document_02.pdf",
+      "sha256": "3da07a2125d99f2e6a2551ae25b869ef7cb5290d6288463dee9637e26ff173bb"
+    },
+    "contract_id": 401,
+    "fields": {
+      "title": "가상 새봄기획 1 견적서",
+      "company_name": "가상 새봄기획 1",
+      "business_registration_no": "000-00-04011",
+      "amount": 4521000.0,
+      "issue_date": "2026-09-16",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": null,
+      "tax_amount": null,
+      "total_amount": 4521000.0,
+      "amount_basis": "TOTAL",
+      "amount_scope": "FULL"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "견적서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호\n가상 새봄기획 1\n사업자등록번호\n000-00-04011\n공급받는자\n상호\n가상 남쪽연구소 1\n사업자등록번호\n000-00-16012\n세전 대금\n4,110,000원\n부가세액\n411,000원\n청구 총액\n4,521,000원\n발행일\n2026-09-16\n"
+      }
+    ],
+    "document_type": "estimate",
+    "processing_failed": false,
+    "rule_seconds": 0.018571200002043042,
+    "targets": [
+      "supply_amount",
+      "tax_amount"
+    ]
+  }
+}

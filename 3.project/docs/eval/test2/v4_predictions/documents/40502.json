@@ -1,0 +1,477 @@
+{
+  "sha256": "8dbdcc79133f41d7afed7ccdaeec7249dd07ed66135af25ebaeaf0cb065f0c53",
+  "payload": {
+    "fields": {
+      "rule": {
+        "title": "가상 새봄기획 5 견적서",
+        "company_name": "가상 새봄기획 5",
+        "business_registration_no": "000-00-04059",
+        "amount": 5123800.0,
+        "issue_date": "2026-09-20",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4658000.0,
+        "tax_amount": 465800.0,
+        "total_amount": 5123800.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "llm": {
+        "title": "가상 새봄기획 5 견적서",
+        "company_name": "가상 새봄기획 5",
+        "business_registration_no": "0000004059",
+        "amount": 5123800.0,
+        "issue_date": "2026-09-20",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4658000.0,
+        "tax_amount": 465800.0,
+        "total_amount": 5123800.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "hybrid_unguarded": {
+        "title": "가상 새봄기획 5 견적서",
+        "company_name": "가상 새봄기획 5",
+        "business_registration_no": "000-00-04059",
+        "amount": 5123800.0,
+        "issue_date": "2026-09-20",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4658000.0,
+        "tax_amount": 465800.0,
+        "total_amount": 5123800.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      },
+      "hybrid_guarded": {
+        "title": "가상 새봄기획 5 견적서",
+        "company_name": "가상 새봄기획 5",
+        "business_registration_no": "000-00-04059",
+        "amount": 5123800.0,
+        "issue_date": "2026-09-20",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4658000.0,
+        "tax_amount": 465800.0,
+        "total_amount": 5123800.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "FULL"
+      }
+    },
+    "traces": {
+      "rule": {
+        "effective_seconds": 0.02062389999628067,
+        "guard_seconds": 0
+      },
+      "llm": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 13.080480999997235,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date",
+            "amount_scope"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "VALUE",
+                "value": "가상 새봄기획 5",
+                "page": 1,
+                "line": 5,
+                "quote": "가상 새봄기획 5"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 5,
+                "start": 42,
+                "end": 51,
+                "quote": "가상 새봄기획 5",
+                "location_kind": "page",
+                "label_anchor": {
+                  "page": 1,
+                  "line": 4,
+                  "start": 39,
+                  "end": 41,
+                  "quote": "상호",
+                  "location_kind": "page"
+                },
+                "label": "상호",
+                "label_line": 4,
+                "party": "supplier",
+                "proposal_anchor": {
+                  "page": 1,
+                  "line": 5,
+                  "start": 42,
+                  "end": 51,
+                  "quote": "가상 새봄기획 5",
+                  "location_kind": "page"
+                }
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-04059",
+                "page": 1,
+                "line": 7,
+                "quote": "000-00-04059"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 1,
+                "line": 7,
+                "start": 60,
+                "end": 72,
+                "quote": "000-00-04059",
+                "location_kind": "page",
+                "label_anchor": {
+                  "page": 1,
+                  "line": 6,
+                  "start": 52,
+                  "end": 59,
+                  "quote": "사업자등록번호",
+                  "location_kind": "page"
+                },
+                "label": "사업자등록번호",
+                "label_line": 6,
+                "party": "supplier",
+                "proposal_anchor": {
+                  "page": 1,
+                  "line": 7,
+                  "start": 60,
+                  "end": 72,
+                  "quote": "000-00-04059",
+                  "location_kind": "page"
+                }
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "supply_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "4658000",
+                "page": 2,
+                "line": 2,
+                "quote": "공급가액: 4,658,000원"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 2,
+                "line": 2,
+                "start": 20,
+                "end": 36,
+                "quote": "공급가액: 4,658,000원",
+                "location_kind": "page",
+                "label_anchor": {
+                  "page": 2,
+                  "line": 2,
+                  "start": 20,
+                  "end": 36,
+                  "quote": "공급가액: 4,658,000원",
+                  "location_kind": "page"
+                },
+                "label": "공급가액",
+                "label_line": 2,
+                "party": "unknown",
+                "proposal_anchor": {
+                  "page": 2,
+                  "line": 2,
+                  "start": 20,
+                  "end": 36,
+                  "quote": "공급가액: 4,658,000원",
+                  "location_kind": "page"
+                }
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "tax_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "465800",
+                "page": 2,
+                "line": 3,
+                "quote": "세액: 465,800원"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 2,
+                "line": 3,
+                "start": 37,
+                "end": 49,
+                "quote": "세액: 465,800원",
+                "location_kind": "page",
+                "label_anchor": {
+                  "page": 2,
+                  "line": 3,
+                  "start": 37,
+                  "end": 49,
+                  "quote": "세액: 465,800원",
+                  "location_kind": "page"
+                },
+                "label": "세액",
+                "label_line": 3,
+                "party": "unknown",
+                "proposal_anchor": {
+                  "page": 2,
+                  "line": 3,
+                  "start": 37,
+                  "end": 49,
+                  "quote": "세액: 465,800원",
+                  "location_kind": "page"
+                }
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "total_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "5123800",
+                "page": 2,
+                "line": 4,
+                "quote": "합계금액: 5,123,800원"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 2,
+                "line": 4,
+                "start": 50,
+                "end": 66,
+                "quote": "합계금액: 5,123,800원",
+                "location_kind": "page",
+                "label_anchor": {
+                  "page": 2,
+                  "line": 4,
+                  "start": 50,
+                  "end": 66,
+                  "quote": "합계금액: 5,123,800원",
+                  "location_kind": "page"
+                },
+                "label": "합계금액",
+                "label_line": 4,
+                "party": "unknown",
+                "proposal_anchor": {
+                  "page": 2,
+                  "line": 4,
+                  "start": 50,
+                  "end": 66,
+                  "quote": "합계금액: 5,123,800원",
+                  "location_kind": "page"
+                }
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-20",
+                "page": 2,
+                "line": 5,
+                "quote": "발행일: 2026-09-20"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 2,
+                "line": 5,
+                "start": 67,
+                "end": 82,
+                "quote": "발행일: 2026-09-20",
+                "location_kind": "page",
+                "label_anchor": {
+                  "page": 2,
+                  "line": 5,
+                  "start": 67,
+                  "end": 82,
+                  "quote": "발행일: 2026-09-20",
+                  "location_kind": "page"
+                },
+                "label": "발행일",
+                "label_line": 5,
+                "party": "unknown",
+                "proposal_anchor": {
+                  "page": 2,
+                  "line": 5,
+                  "start": 67,
+                  "end": 82,
+                  "quote": "발행일: 2026-09-20",
+                  "location_kind": "page"
+                }
+              },
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "amount_scope",
+              "proposal": {
+                "state": "VALUE",
+                "value": "FULL",
+                "page": 2,
+                "line": 1,
+                "quote": "견적 금액 상세 - 전체 계약 대금"
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": {
+                "page": 2,
+                "line": 1,
+                "start": 0,
+                "end": 19,
+                "quote": "견적 금액 상세 - 전체 계약 대금",
+                "location_kind": "page",
+                "label_anchor": {
+                  "page": 2,
+                  "line": 1,
+                  "start": 0,
+                  "end": 19,
+                  "quote": "견적 금액 상세 - 전체 계약 대금",
+                  "location_kind": "page"
+                },
+                "label": "전체 계약",
+                "label_line": 1,
+                "party": "unknown",
+                "proposal_anchor": {
+                  "page": 2,
+                  "line": 1,
+                  "start": 0,
+                  "end": 19,
+                  "quote": "견적 금액 상세 - 전체 계약 대금",
+                  "location_kind": "page"
+                }
+              },
+              "human_confirmed": false,
+              "applied": true
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v4-dev2",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "29989d6314e4ac8be1c124371cad8ce24a01092ab9ade0847952ebbf905058cd",
+        "cache_hit": false,
+        "guard_seconds": 0,
+        "effective_seconds": 13.101104899993516
+      },
+      "hybrid_unguarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": null,
+          "model_metadata": null,
+          "elapsed_seconds": 0,
+          "attempts": 0,
+          "targets": [],
+          "decisions": [],
+          "manual_review_required": false,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": null,
+          "guard_version": "grounding-v4-dev2",
+          "settings": null
+        },
+        "response_id": null,
+        "cache_hit": false,
+        "guard_seconds": 0,
+        "shared_response_replay": false,
+        "effective_seconds": 0.02062389999628067
+      },
+      "hybrid_guarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": null,
+          "model_metadata": null,
+          "elapsed_seconds": 0,
+          "attempts": 0,
+          "targets": [],
+          "decisions": [],
+          "manual_review_required": false,
+          "guard_review_required": false,
+          "unresolved_fields": [],
+          "human_confirmed": false,
+          "prompt_version": null,
+          "guard_version": "grounding-v4-dev2",
+          "settings": null
+        },
+        "response_id": null,
+        "cache_hit": false,
+        "guard_seconds": 1.290000363951549e-05,
+        "shared_response_replay": true,
+        "effective_seconds": 0.020636799999920186
+      }
+    }
+  }
+}

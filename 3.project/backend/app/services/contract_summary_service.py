@@ -3,7 +3,7 @@ from decimal import Decimal
 from string import Formatter
 from collections import Counter
 from .readonly_review_service import snapshot, require_unchanged
-from .review_summary_service import display_issue_counts
+from .review_summary_service import display_issue_counts, issue_card_groups
 
 TEMPLATES={
     'brief':"{vendor_name}의 ‘{title}’ 계약입니다. 등록 기준금액은 {contract_amount}원({amount_basis})입니다. 필수 서류 {required_document_count}종 중 {submitted_document_count}종이 있고, 확인할 항목은 {open_issue_count}건입니다. 결재 상태: {approval_status}.",
@@ -31,15 +31,19 @@ def render_template(template,facts):
 def contract_summary(db,cid,style='brief',revision=None):
     data=snapshot(db,cid,revision)
     summary=data['summary'];reference=data['reference']
+    groups=issue_card_groups(data['checks'],data['documents'])
+    check_count=sum(display_issue_counts(data['checks'],nts_mode='disabled').values())
     facts={'vendor_name':reference['vendor_name'],'title':reference['title'],
            'contract_amount':amount_display(reference['contract_amount']),
            'amount_basis':{'TOTAL':'부가세 포함 합계','SUPPLY':'공급가액','UNKNOWN':'부가세 포함 여부 확인 필요'}[data['policy']['amount_basis']],
            'required_document_count':str(summary.required_document_count),'submitted_document_count':str(summary.submitted_document_count),
-           'open_issue_count':str(sum(display_issue_counts(data['checks']).values())),
+           'open_issue_count':str(len(groups)),
            'approval_status':{'CONFIRMED':'최종 확인 완료','RETURNED':'보완 요청','STALE':'자료 변경으로 재확인 필요','PENDING':'최종 확인 대기'}.get(data['workflow']['approval_status'],'확인 필요')}
     template=TEMPLATES[style]
     text=render_template(template,facts)
     require_unchanged(db,data)
     return {'contract_id':cid,'revision':data['revision'],'fingerprint':data['fingerprint'],'text':text,'style':style,
             'facts':facts,'template':template,'numeric_placeholders_verified':True,'llm_used':False,
-            'sources':{'contract_amount':'등록한 계약 기준금액','document_counts':'현재 활성 문서의 종류 수','open_issue_count':'현재 규칙 결과, 국세청 disabled 항목 제외','approval_status':'현재 revision/fingerprint의 대표 확인 기록'}}
+            'open_issue_count_unit':'ISSUE_CARD',
+            'counts':{'issue_card_count':len(groups),'check_item_count':check_count},'issue_groups':groups,
+            'sources':{'contract_amount':'등록한 계약 기준금액','document_counts':'현재 활성 문서의 종류 수','open_issue_count':'화면과 같은 서류별 문제 카드 수, 국세청 disabled 안내 제외','approval_status':'현재 revision/fingerprint의 대표 확인 기록'}}
