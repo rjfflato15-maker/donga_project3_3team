@@ -1,0 +1,52 @@
+﻿mode,contract_id,document_id,field,label_source,expected_state,expected_value,predicted_value,provided,correct,scored,critical_field,error_kind,document_manual_review_required,field_marked_unresolved,proposal_state,proposal_applied,guard_reasons
+rule,401,40102,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4110000,,False,False,True,True,BLANK_OR_REVIEW,,False,,,[]
+rule,401,40102,tax_amount,AI_AGREEMENT,VALUE,411000,,False,False,True,True,BLANK_OR_REVIEW,,False,,,[]
+rule,401,40105,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 1,가상 남쪽연구소 1,True,False,True,False,WRONG_VALUE_PRESENT,,False,,,[]
+rule,402,40205,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 남쪽연구소 2,True,False,True,False,WRONG_VALUE_PRESENT,,False,,,[]
+rule,403,40302,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,사업자,True,False,True,False,WRONG_VALUE_PRESENT,,False,,,[]
+rule,403,40302,supply_amount,AI_AGREEMENT,VALUE,4384000,,False,False,True,True,BLANK_OR_REVIEW,,False,,,[]
+rule,403,40302,tax_amount,AI_AGREEMENT,VALUE,438400,,False,False,True,True,BLANK_OR_REVIEW,,False,,,[]
+rule,403,40302,total_amount,AI_AGREEMENT,VALUE,4822400,,False,False,True,True,BLANK_OR_REVIEW,,False,,,[]
+rule,403,40302,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,,False,,,[]
+rule,403,40305,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 남쪽연구소 3,True,False,True,False,WRONG_VALUE_PRESENT,,False,,,[]
+rule,404,40402,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,사업자,True,False,True,False,WRONG_VALUE_PRESENT,,False,,,[]
+rule,404,40402,supply_amount,AI_AGREEMENT,VALUE,4521000,,False,False,True,True,BLANK_OR_REVIEW,,False,,,[]
+rule,404,40402,tax_amount,AI_AGREEMENT,VALUE,452100,,False,False,True,True,BLANK_OR_REVIEW,,False,,,[]
+rule,404,40402,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,,False,,,[]
+rule,404,40405,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 남쪽연구소 4,True,False,True,False,WRONG_VALUE_PRESENT,,False,,,[]
+rule,405,40505,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 남쪽연구소 5,True,False,True,False,WRONG_VALUE_PRESENT,,False,,,[]
+rule,406,40605,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 남쪽연구소 6,True,False,True,False,WRONG_VALUE_PRESENT,,False,,,[]
+llm,401,40101,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 남쪽연구소 1,True,False,True,False,WRONG_VALUE_PRESENT,True,False,VALUE,True,"[""EVIDENCE_NOT_FOUND"", ""FIELD_LABEL_OR_VALUE_MISMATCH"", ""VALUE_NOT_IN_QUOTE""]"
+llm,401,40101,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,"[""UNSUPPORTED_ABSTENTION"", ""UNVERIFIED_ABSENCE""]"
+llm,401,40106,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,"[""UNSUPPORTED_ABSTENTION"", ""UNVERIFIED_ABSENCE""]"
+llm,402,40201,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 남쪽연구소 2,True,False,True,False,WRONG_VALUE_PRESENT,True,False,VALUE,True,"[""EVIDENCE_NOT_FOUND"", ""FIELD_LABEL_OR_VALUE_MISMATCH"", ""VALUE_NOT_IN_QUOTE""]"
+llm,402,40202,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,"[""UNSUPPORTED_ABSTENTION"", ""UNVERIFIED_ABSENCE""]"
+llm,402,40206,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,"[""UNSUPPORTED_ABSTENTION"", ""UNVERIFIED_ABSENCE""]"
+llm,403,40301,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 남쪽연구소 3,True,False,True,False,WRONG_VALUE_PRESENT,True,False,VALUE,True,"[""EVIDENCE_NOT_FOUND"", ""FIELD_LABEL_OR_VALUE_MISMATCH"", ""VALUE_NOT_IN_QUOTE""]"
+llm,403,40302,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,[]
+llm,403,40302,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,True,REVIEW,True,[]
+llm,403,40306,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,"[""UNSUPPORTED_ABSTENTION"", ""UNVERIFIED_ABSENCE""]"
+llm,404,40401,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,"[""UNSUPPORTED_ABSTENTION"", ""UNVERIFIED_ABSENCE""]"
+llm,404,40402,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,[]
+llm,404,40402,total_amount,HUMAN_OBSERVATION_ADJUDICATED,REVIEW,,5000000.0,True,False,True,True,WRONG_VALUE_PRESENT,True,False,VALUE,True,"[""EVIDENCE_NOT_FOUND"", ""FIELD_LABEL_OR_VALUE_MISMATCH"", ""VALUE_NOT_IN_QUOTE""]"
+llm,404,40402,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,True,REVIEW,True,[]
+llm,404,40406,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,"[""UNSUPPORTED_ABSTENTION"", ""UNVERIFIED_ABSENCE""]"
+llm,405,40501,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,"[""UNSUPPORTED_ABSTENTION"", ""UNVERIFIED_ABSENCE""]"
+llm,405,40506,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,"[""UNSUPPORTED_ABSTENTION"", ""UNVERIFIED_ABSENCE""]"
+llm,406,40601,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 남쪽연구소 6,True,False,True,False,WRONG_VALUE_PRESENT,True,False,VALUE,True,"[""EVIDENCE_NOT_FOUND"", ""FIELD_LABEL_OR_VALUE_MISMATCH"", ""VALUE_NOT_IN_QUOTE""]"
+llm,406,40601,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,"[""UNSUPPORTED_ABSTENTION"", ""UNVERIFIED_ABSENCE""]"
+llm,406,40606,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,"[""UNSUPPORTED_ABSTENTION"", ""UNVERIFIED_ABSENCE""]"
+hybrid_unguarded,403,40302,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,[]
+hybrid_unguarded,403,40302,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,True,REVIEW,True,[]
+hybrid_unguarded,404,40402,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,[]
+hybrid_unguarded,404,40402,total_amount,HUMAN_OBSERVATION_ADJUDICATED,REVIEW,,5000000.0,True,False,True,True,WRONG_VALUE_PRESENT,True,False,VALUE,True,"[""EVIDENCE_NOT_FOUND"", ""FIELD_LABEL_OR_VALUE_MISMATCH"", ""VALUE_NOT_IN_QUOTE""]"
+hybrid_unguarded,404,40402,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,True,REVIEW,True,[]
+hybrid_guarded,403,40302,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,[]
+hybrid_guarded,403,40302,supply_amount,AI_AGREEMENT,VALUE,4384000,,False,False,True,True,BLANK_OR_REVIEW,True,True,VALUE,False,"[""EVIDENCE_NOT_FOUND"", ""FIELD_LABEL_OR_VALUE_MISMATCH""]"
+hybrid_guarded,403,40302,tax_amount,AI_AGREEMENT,VALUE,438400,,False,False,True,True,BLANK_OR_REVIEW,True,True,VALUE,False,"[""EVIDENCE_NOT_FOUND"", ""FIELD_LABEL_OR_VALUE_MISMATCH""]"
+hybrid_guarded,403,40302,total_amount,AI_AGREEMENT,VALUE,4822400,,False,False,True,True,BLANK_OR_REVIEW,True,True,VALUE,False,"[""EVIDENCE_NOT_FOUND"", ""FIELD_LABEL_OR_VALUE_MISMATCH""]"
+hybrid_guarded,403,40302,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,True,REVIEW,True,[]
+hybrid_guarded,404,40402,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,,False,False,True,False,BLANK_OR_REVIEW,True,False,ABSENT,True,[]
+hybrid_guarded,404,40402,supply_amount,AI_AGREEMENT,VALUE,4521000,,False,False,True,True,BLANK_OR_REVIEW,True,True,VALUE,False,"[""EVIDENCE_NOT_FOUND"", ""FIELD_LABEL_OR_VALUE_MISMATCH""]"
+hybrid_guarded,404,40402,tax_amount,AI_AGREEMENT,VALUE,452100,,False,False,True,True,BLANK_OR_REVIEW,True,True,VALUE,False,"[""EVIDENCE_NOT_FOUND"", ""FIELD_LABEL_OR_VALUE_MISMATCH""]"
+hybrid_guarded,404,40402,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False,BLANK_OR_REVIEW,True,True,REVIEW,True,[]

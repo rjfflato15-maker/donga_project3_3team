@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>test2 중립 문구 재확인 · 20문항</title><link rel="icon" href="data:,">
+<style>
+/* ORIGINAL_STYLE */
+#choices{display:grid;gap:8px;padding:0;border:0;margin:12px 0}#choices label{display:flex;align-items:center;gap:8px;border:1px solid var(--line);padding:10px;border-radius:6px;cursor:pointer}#choices input{accent-color:var(--accent)}
+#entry{width:100%;font:inherit;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink)}
+#docarea>div{width:100%}#docarea figure{margin:0 0 20px}#docarea figcaption{color:#fff;font-size:13px}
+.notice{font-size:13px;color:var(--muted);margin:0}#message{min-height:24px}#viewer{min-height:0}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}@media(max-width:760px){body{height:auto;min-height:100%}main{display:block}#viewer{height:54vh;border-right:0}#panel{min-width:0;max-width:none;overflow:visible}header{position:static}}
+</style></head><body>
+<header><h1>test2 중립 문구 재확인</h1><label>확인자 <input id="reviewer" autocomplete="name" placeholder="이름"></label><span id="progress" class="prog" aria-live="polite"></span><button id="download" class="btn primary">결과 파일 받기</button></header>
+<main><section id="viewer" aria-label="원문"><nav id="doctabs" aria-label="계약의 문서"></nav><div id="docarea"></div></section>
+<section id="panel" aria-label="중립 질문"><p class="notice">기존 답은 바뀌지 않습니다. 예전 답을 떠올리기보다 원문을 다시 보고 골라주세요. 모르겠으면 ‘판단하기 어려움’을 선택해도 됩니다.</p>
+<div id="registration" class="card" hidden></div><div class="card"><div id="meta" class="meta"></div><h2 id="question" class="q"></h2><p id="hint" class="notice"></p>
+<fieldset id="choices" aria-labelledby="question"></fieldset><div id="valuebox" hidden><label id="entrylabel" for="entry"></label><input id="entry" type="text" autocomplete="off"></div>
+<label for="note">메모 (선택)</label><textarea id="note" rows="2" placeholder="읽기 어려웠던 부분이나 판단 이유"></textarea>
+<p id="message" role="status"></p><div class="nav"><button id="prev" class="btn">이전 문항</button><button id="save" class="btn primary">답 저장 · 다음</button></div></div>
+<p class="notice">답은 이 브라우저에 저장됩니다. 20문항을 마치면 결과 파일을 받아 전달해주세요. 외부 전송은 없습니다.</p></section></main>
+<script>
+const DATA = __PUBLIC_DATA__;
+const STORE='test2-neutral-'+DATA.selection_id;
+const el=id=>document.getElementById(id);
+let saved={reviewer:'',responses:{}},index=0,storageAvailable=true;
+try{const old=localStorage.getItem(STORE);if(old){const parsed=JSON.parse(old);if(parsed.responses&&typeof parsed.responses==='object')saved=parsed;}}catch(e){storageAvailable=false;}
+el('reviewer').value=saved.reviewer||'';
+function persist(){try{localStorage.setItem(STORE,JSON.stringify(saved));storageAvailable=true;}catch(e){storageAvailable=false;}}
+function progress(){const n=DATA.items.filter(q=>saved.responses[q.id]).length;el('progress').textContent=`${n} / 20개 저장`;el('download').disabled=n!==20;}
+function showDoc(doc){document.querySelectorAll('#doctabs button').forEach(b=>{b.classList.toggle('on',b.dataset.id===doc.id);b.setAttribute('aria-pressed',String(b.dataset.id===doc.id));});const area=el('docarea');area.replaceChildren();const stack=document.createElement('div');
+const a=document.createElement('a');a.href=doc.src;a.target='_blank';a.rel='noopener';a.textContent='원본 PDF 열기';const p=document.createElement('p');p.className='pdfnote';p.append(a,document.createTextNode(' · 이미지를 누르면 확대됩니다.'));stack.append(p);
+doc.views.forEach((src,i)=>{const f=document.createElement('figure'),img=document.createElement('img'),caption=document.createElement('figcaption');img.src=src;img.alt=`${doc.name} ${i+1}쪽 원문`;img.tabIndex=0;img.onclick=()=>img.classList.toggle('zoom');img.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();img.click();}};caption.textContent=`${i+1}쪽`;f.append(caption,img);stack.append(f);});area.append(stack);area.scrollTop=0;}
+function toggleEntry(){const selected=document.querySelector('input[name="choice"]:checked');el('valuebox').hidden=!(selected?.value==='VALUE');}
+function render(){const q=DATA.items[index],c=DATA.cases[q.cid],answer=saved.responses[q.id];el('meta').textContent=`문항 ${index+1} / 20 · ${c.case}${q.doc?' · '+c.docs.find(d=>d.id===q.doc).name:' · 계약 전체'}`;el('question').textContent=q.prompt;el('hint').textContent=q.hint;
+el('registration').hidden=!q.uses_registration;el('registration').textContent=`등록 계약: ${c.vendor} / ${c.bno} / ${c.basis} / ${c.pay}`;
+el('choices').replaceChildren();q.options.forEach(([value,text])=>{const label=document.createElement('label'),radio=document.createElement('input');radio.type='radio';radio.name='choice';radio.value=value;radio.checked=answer?.choice===value;radio.onchange=toggleEntry;label.append(radio,document.createTextNode(text));el('choices').append(label);});
+el('entrylabel').textContent=q.input_label||'읽은 값';el('entry').value=answer?.value??'';el('entry').inputMode=q.input_type==='amount'?'numeric':'text';el('entry').placeholder=q.input_type==='amount'?'원 단위 숫자 입력':'원문에 적힌 이름 입력';el('note').value=answer?.note||'';toggleEntry();
+el('message').textContent=storageAvailable?(answer?'이 문항의 답이 저장되어 있습니다.':''):'브라우저 저장을 사용할 수 없습니다. 창을 닫지 말고 완료 후 파일을 받아주세요.';el('prev').disabled=index===0;el('save').textContent=index===19?'마지막 답 저장':'답 저장 · 다음';
+el('doctabs').replaceChildren();c.docs.forEach(doc=>{const b=document.createElement('button');b.textContent=doc.name;b.dataset.id=doc.id;b.onclick=()=>showDoc(doc);el('doctabs').append(b);});showDoc(c.docs.find(d=>d.id===q.doc)||c.docs[0]);progress();}
+el('reviewer').oninput=()=>{saved.reviewer=el('reviewer').value;persist();};
+el('prev').onclick=()=>{if(index>0){index--;render();}};
+el('save').onclick=()=>{const q=DATA.items[index],choice=document.querySelector('input[name="choice"]:checked')?.value;const value=el('entry').value.trim();if(!choice){el('message').textContent='답을 하나 선택해주세요.';return;}if(choice==='VALUE'&&(!value||(q.input_type==='amount'&&!/^\d+$/.test(value.replaceAll(',','').replaceAll('원','').replaceAll('₩','').trim())))){el('message').textContent=q.input_type==='amount'?'원 단위 숫자를 입력해주세요.':'읽은 값을 입력해주세요.';el('entry').focus();return;}
+saved.responses[q.id]={id:q.id,choice,value:choice==='VALUE'?value:null,note:el('note').value.trim(),reviewed_at:new Date().toISOString()};saved.reviewer=el('reviewer').value.trim();persist();if(index<19){index++;render();}else{progress();el('message').textContent=storageAvailable?'20문항 저장 완료. 확인자 이름을 입력하고 결과 파일을 받아주세요.':'20문항 완료. 브라우저 저장은 실패했으니 지금 결과 파일을 받아주세요.';}};
+el('download').onclick=()=>{if(DATA.items.some(q=>!saved.responses[q.id]))return;const reviewer=el('reviewer').value.trim();if(!reviewer){el('message').textContent='확인자 이름을 입력해주세요.';el('reviewer').focus();return;}saved.reviewer=reviewer;persist();const output={format:DATA.format,selection_id:DATA.selection_id,reviewer,exported_at:new Date().toISOString(),purpose:'agreement_only_no_label_changes',responses:DATA.items.map(q=>saved.responses[q.id])};const blob=new Blob([JSON.stringify(output,null,2)],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`neutral_review_result_test2_${reviewer.replace(/[\\/:*?"<>|]/g,'_')}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+render();
+</script></body></html>

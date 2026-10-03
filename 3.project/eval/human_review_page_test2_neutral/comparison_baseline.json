@@ -1,0 +1,166 @@
+{
+  "format": "test2-neutral-recheck-v1",
+  "selection_id": "885a67dbd6ddaea501d4e75fd94d139ffb6529121fbeb75b28a90553175714a2",
+  "items": [
+    {
+      "id": "401/40102/supply_amount",
+      "choice": "VALUE",
+      "value": "4110000",
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">공급가액은 <b>4,110,000원</b>이다.</div><div class=\"interp\">📌 기준: &#x27;공급가액&#x27; 줄의 숫자를 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "406/contract/DOCUMENT_PROCESSING/40603",
+      "choice": "READABLE",
+      "value": null,
+      "construct": "SOURCE_FACT_ONLY",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">글자가 <b>깨끗해서 읽을 수 있다</b>.</div><div class=\"interp\">📌 기준: 흐리거나 깨진 곳이 있는지 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "401/40101/amount_scope",
+      "choice": "FULL",
+      "value": null,
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">이 문서의 금액은 <b>계약 전체 금액</b>이다. ('선금·잔금' 같은 일부가 아님)</div><div class=\"interp\">📌 기준: 계약서 자체의 전체 계약 금액이면 FULL입니다. 일부 지급액과 구분해 원문으로 확인합니다. 이 기준대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "404/40402/document_type",
+      "choice": "estimate",
+      "value": null,
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">이 문서는 <b>견적서</b>다.</div><div class=\"interp\">📌 기준: 문서 맨 위 제목을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "402/40205/amount_scope",
+      "choice": "FULL",
+      "value": null,
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">이 문서의 금액은 <b>계약 전체 금액</b>이다. ('선금·잔금' 같은 일부가 아님)</div><div class=\"interp\">📌 기준: 합계금액 줄과 &#x27;전액 청구&#x27;·&#x27;분할 청구&#x27; 문구를 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "405/40506/company_name",
+      "choice": "VALUE",
+      "value": "가상 새봄기획 5",
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">계약상대자는 <b>가상 새봄기획 5</b>다.</div><div class=\"interp\">📌 기준: &#x27;계약상대자&#x27; 줄을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "403/contract/BUSINESS_STATUS/business_status",
+      "choice": "UNVERIFIABLE",
+      "value": null,
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">실제로 영업 중인 사업자인지는 <b>판단 보류</b>.</div><div class=\"interp\">📌 기준: 국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다. 이 기준대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "405/contract/DOCUMENT_TYPE/40505",
+      "choice": "IDENTIFIABLE",
+      "value": null,
+      "construct": "SOURCE_FACT_ONLY",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">제목을 보면 <b>무슨 문서인지 알 수 있다</b>. (전자세금계산서)</div><div class=\"interp\">📌 기준: 제목을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "401/contract/missing_types",
+      "choice": "ALL_PRESENT",
+      "value": null,
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">6종 서류가 <b>모두 제출됐다</b>.</div><div class=\"interp\">📌 기준: 왼쪽 위 문서 버튼이 6종(계약서·견적서·사업자등록증·통장사본·세금계산서·검수확인서)인지 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "404/contract/AMOUNT_BASIS/amount_basis",
+      "choice": "TOTAL",
+      "value": null,
+      "construct": "SOURCE_FACT_ONLY",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">등록 계약의 금액 기준이 <b>분명하다</b>. (합계 기준 4,973,100원)</div><div class=\"interp\">📌 기준: 오른쪽 위 &#x27;등록 계약&#x27; 상자를 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "405/contract/BUSINESS_STATUS/business_status",
+      "choice": "UNVERIFIABLE",
+      "value": null,
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">실제로 영업 중인 사업자인지는 <b>판단 보류</b>.</div><div class=\"interp\">📌 기준: 국세청 미연동 평가는 영업 상태를 추정하지 않고 항상 REVIEW입니다. dev에서 확정한 같은 기준입니다. 이 기준대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "403/contract/DOCUMENT_TYPE/40305",
+      "choice": "IDENTIFIABLE",
+      "value": null,
+      "construct": "SOURCE_FACT_ONLY",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">제목을 보면 <b>무슨 문서인지 알 수 있다</b>. (전자세금계산서)</div><div class=\"interp\">📌 기준: 제목을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "401/40105/document_type",
+      "choice": "tax_invoice",
+      "value": null,
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">이 문서는 <b>전자세금계산서</b>다.</div><div class=\"interp\">📌 기준: 문서 맨 위 제목을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "401/40102/amount_scope",
+      "choice": "FULL",
+      "value": null,
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">이 문서의 금액은 <b>계약 전체 금액</b>이다. ('선금·잔금' 같은 일부가 아님)</div><div class=\"interp\">📌 기준: 견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다. 이 기준대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "405/40503/document_type",
+      "choice": "business_registration",
+      "value": null,
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">이 문서는 <b>사업자등록증</b>다.</div><div class=\"interp\">📌 기준: 문서 맨 위 제목을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "404/40406/total_amount",
+      "choice": "VALUE",
+      "value": "4973100",
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">합계금액은 <b>4,973,100원</b>이다.</div><div class=\"interp\">📌 기준: &#x27;합계금액&#x27; 줄의 숫자를 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "402/40202/amount_scope",
+      "choice": "FULL",
+      "value": null,
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">이 문서의 금액은 <b>계약 전체 금액</b>이다. ('선금·잔금' 같은 일부가 아님)</div><div class=\"interp\">📌 기준: 견적서의 전체 견적 금액이면 FULL입니다. 적용 범위가 표시되지 않은 참고값은 REVIEW입니다. 이 기준대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "402/40202/total_amount",
+      "choice": "VALUE",
+      "value": "4671700",
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">합계금액은 <b>4,671,700원</b>이다.</div><div class=\"interp\">📌 기준: &#x27;합계금액&#x27; 줄의 숫자를 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "404/contract/AMOUNT_MATCH_TAX_INVOICE/40405",
+      "choice": "SAME",
+      "value": null,
+      "construct": "DIRECT_LABEL",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\">세금계산서 합계금액이 계약 금액 4,973,100원과 <b>같다</b>.</div><div class=\"interp\">📌 기준: 합계금액 줄을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    },
+    {
+      "id": "403/contract/REQUIRED_DOCUMENTS/inspection_confirmation",
+      "choice": "PRESENT",
+      "value": null,
+      "construct": "SOURCE_FACT_ONLY",
+      "original_question": "<div class=\"claimlbl\">정답 초안:</div><div class=\"claim\"><b>납품 검수확인서</b>이 제출되어 있다.</div><div class=\"interp\">📌 기준: 왼쪽 위 문서 버튼 목록을 보세요. 설명대로면 <b>맞아요</b>.</div>",
+      "original_decision": "확인"
+    }
+  ]
+}

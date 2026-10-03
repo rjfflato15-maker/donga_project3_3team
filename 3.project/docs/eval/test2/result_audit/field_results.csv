@@ -1,0 +1,1009 @@
+﻿mode,contract_id,document_id,field,label_source,expected_state,expected_value,predicted_value,provided,correct,scored,critical_field
+rule,401,40101,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+rule,401,40101,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04011,000-00-04011,True,True,True,True
+rule,401,40101,supply_amount,AI_AGREEMENT,VALUE,4110000,4110000.0,True,True,True,True
+rule,401,40101,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+rule,401,40101,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+rule,401,40101,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+rule,401,40101,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,401,40102,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+rule,401,40102,business_registration_no,AI_AGREEMENT,VALUE,0000004011,000-00-04011,True,True,True,True
+rule,401,40102,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4110000,,False,False,True,True
+rule,401,40102,tax_amount,AI_AGREEMENT,VALUE,411000,,False,False,True,True
+rule,401,40102,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+rule,401,40102,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+rule,401,40102,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,401,40103,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+rule,401,40103,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04011,000-00-04011,True,True,True,True
+rule,401,40103,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,401,40103,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,401,40103,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,401,40103,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+rule,401,40103,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+rule,401,40104,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+rule,401,40104,business_registration_no,AI_AGREEMENT,VALUE,0000004011,000-00-04011,True,True,True,True
+rule,401,40104,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,401,40104,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,401,40104,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,401,40104,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+rule,401,40104,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+rule,401,40105,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 1,가상 남쪽연구소 1,True,False,True,False
+rule,401,40105,business_registration_no,AI_AGREEMENT,VALUE,0000004011,000-00-04011,True,True,True,True
+rule,401,40105,supply_amount,AI_AGREEMENT,VALUE,4110000,4110000.0,True,True,True,True
+rule,401,40105,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+rule,401,40105,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+rule,401,40105,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+rule,401,40105,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+rule,401,40106,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+rule,401,40106,business_registration_no,AI_AGREEMENT,VALUE,0000004011,000-00-04011,True,True,True,True
+rule,401,40106,supply_amount,AI_AGREEMENT,VALUE,4110000,4110000.0,True,True,True,True
+rule,401,40106,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+rule,401,40106,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+rule,401,40106,issue_date,HUMAN_DIRECT_LABEL,VALUE,2026-09-16,2026-09-16,True,True,True,False
+rule,401,40106,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,402,40201,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+rule,402,40201,business_registration_no,AI_AGREEMENT,VALUE,0000004025,000-00-04025,True,True,True,True
+rule,402,40201,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+rule,402,40201,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+rule,402,40201,total_amount,AI_AGREEMENT,VALUE,4671700,4671700.0,True,True,True,True
+rule,402,40201,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+rule,402,40201,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,402,40202,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+rule,402,40202,business_registration_no,AI_AGREEMENT,VALUE,0000004025,000-00-04025,True,True,True,True
+rule,402,40202,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+rule,402,40202,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+rule,402,40202,total_amount,HUMAN_DIRECT_LABEL,VALUE,4671700,4671700.0,True,True,True,True
+rule,402,40202,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+rule,402,40202,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,402,40203,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+rule,402,40203,business_registration_no,AI_AGREEMENT,VALUE,0000004025,000-00-04025,True,True,True,True
+rule,402,40203,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,402,40203,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,402,40203,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,402,40203,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+rule,402,40203,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+rule,402,40204,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+rule,402,40204,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04025,000-00-04025,True,True,True,True
+rule,402,40204,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,402,40204,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,402,40204,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,402,40204,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+rule,402,40204,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+rule,402,40205,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 남쪽연구소 2,True,False,True,False
+rule,402,40205,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04025,000-00-04025,True,True,True,True
+rule,402,40205,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+rule,402,40205,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+rule,402,40205,total_amount,AI_AGREEMENT,VALUE,4671700,4671700.0,True,True,True,True
+rule,402,40205,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+rule,402,40205,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,402,40206,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+rule,402,40206,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04025,000-00-04025,True,True,True,True
+rule,402,40206,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+rule,402,40206,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+rule,402,40206,total_amount,AI_AGREEMENT,VALUE,4671700,4671700.0,True,True,True,True
+rule,402,40206,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+rule,402,40206,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,403,40301,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+rule,403,40301,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+rule,403,40301,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+rule,403,40301,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+rule,403,40301,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+rule,403,40301,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+rule,403,40301,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,403,40302,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,사업자,True,False,True,False
+rule,403,40302,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04030,000-00-04030,True,True,True,True
+rule,403,40302,supply_amount,AI_AGREEMENT,VALUE,4384000,,False,False,True,True
+rule,403,40302,tax_amount,AI_AGREEMENT,VALUE,438400,,False,False,True,True
+rule,403,40302,total_amount,AI_AGREEMENT,VALUE,4822400,,False,False,True,True
+rule,403,40302,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+rule,403,40302,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+rule,403,40303,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+rule,403,40303,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+rule,403,40303,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,403,40303,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,403,40303,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,403,40303,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+rule,403,40303,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+rule,403,40304,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+rule,403,40304,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+rule,403,40304,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,403,40304,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,403,40304,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,403,40304,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+rule,403,40304,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+rule,403,40305,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 남쪽연구소 3,True,False,True,False
+rule,403,40305,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+rule,403,40305,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+rule,403,40305,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+rule,403,40305,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+rule,403,40305,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+rule,403,40305,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+rule,403,40306,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+rule,403,40306,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+rule,403,40306,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+rule,403,40306,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+rule,403,40306,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+rule,403,40306,issue_date,HUMAN_DIRECT_LABEL,VALUE,2026-09-18,2026-09-18,True,True,True,False
+rule,403,40306,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,404,40401,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+rule,404,40401,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+rule,404,40401,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4521000,4521000.0,True,True,True,True
+rule,404,40401,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+rule,404,40401,total_amount,AI_AGREEMENT,VALUE,4973100,4973100.0,True,True,True,True
+rule,404,40401,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+rule,404,40401,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,404,40402,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,사업자,True,False,True,False
+rule,404,40402,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+rule,404,40402,supply_amount,AI_AGREEMENT,VALUE,4521000,,False,False,True,True
+rule,404,40402,tax_amount,AI_AGREEMENT,VALUE,452100,,False,False,True,True
+rule,404,40402,total_amount,HUMAN_OBSERVATION_ADJUDICATED,REVIEW,,,False,True,True,True
+rule,404,40402,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+rule,404,40402,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+rule,404,40403,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+rule,404,40403,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+rule,404,40403,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,404,40403,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,404,40403,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,404,40403,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+rule,404,40403,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+rule,404,40404,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+rule,404,40404,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+rule,404,40404,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,404,40404,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,404,40404,total_amount,HUMAN_DIRECT_LABEL,ABSENT,,,False,True,False,True
+rule,404,40404,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+rule,404,40404,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+rule,404,40405,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 남쪽연구소 4,True,False,True,False
+rule,404,40405,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+rule,404,40405,supply_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+rule,404,40405,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+rule,404,40405,total_amount,AI_AGREEMENT,VALUE,4973100,4973100.0,True,True,True,True
+rule,404,40405,issue_date,HUMAN_DIRECT_LABEL,VALUE,2026-09-19,2026-09-19,True,True,True,False
+rule,404,40405,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+rule,404,40406,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+rule,404,40406,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+rule,404,40406,supply_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+rule,404,40406,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+rule,404,40406,total_amount,HUMAN_DIRECT_LABEL,VALUE,4973100,4973100.0,True,True,True,True
+rule,404,40406,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+rule,404,40406,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,405,40501,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+rule,405,40501,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+rule,405,40501,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+rule,405,40501,tax_amount,HUMAN_DIRECT_LABEL,VALUE,465800,465800.0,True,True,True,True
+rule,405,40501,total_amount,AI_AGREEMENT,VALUE,5123800,5123800.0,True,True,True,True
+rule,405,40501,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+rule,405,40501,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,405,40502,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+rule,405,40502,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+rule,405,40502,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+rule,405,40502,tax_amount,AI_AGREEMENT,VALUE,465800,465800.0,True,True,True,True
+rule,405,40502,total_amount,HUMAN_DIRECT_LABEL,VALUE,5123800,5123800.0,True,True,True,True
+rule,405,40502,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+rule,405,40502,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,405,40503,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+rule,405,40503,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+rule,405,40503,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,405,40503,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,405,40503,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,405,40503,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+rule,405,40503,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+rule,405,40504,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+rule,405,40504,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+rule,405,40504,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,405,40504,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,405,40504,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,405,40504,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+rule,405,40504,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+rule,405,40505,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 남쪽연구소 5,True,False,True,False
+rule,405,40505,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+rule,405,40505,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+rule,405,40505,tax_amount,AI_AGREEMENT,VALUE,465800,465800.0,True,True,True,True
+rule,405,40505,total_amount,AI_AGREEMENT,VALUE,5123800,5123800.0,True,True,True,True
+rule,405,40505,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+rule,405,40505,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+rule,405,40506,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+rule,405,40506,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+rule,405,40506,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+rule,405,40506,tax_amount,AI_AGREEMENT,VALUE,465800,465800.0,True,True,True,True
+rule,405,40506,total_amount,AI_AGREEMENT,VALUE,5123800,5123800.0,True,True,True,True
+rule,405,40506,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+rule,405,40506,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,406,40601,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+rule,406,40601,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+rule,406,40601,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4795000,4795000.0,True,True,True,True
+rule,406,40601,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+rule,406,40601,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+rule,406,40601,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+rule,406,40601,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,406,40602,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+rule,406,40602,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+rule,406,40602,supply_amount,AI_AGREEMENT,VALUE,4795000,4795000.0,True,True,True,True
+rule,406,40602,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+rule,406,40602,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+rule,406,40602,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+rule,406,40602,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+rule,406,40603,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+rule,406,40603,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+rule,406,40603,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,406,40603,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,406,40603,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,406,40603,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+rule,406,40603,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+rule,406,40604,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+rule,406,40604,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+rule,406,40604,supply_amount,HUMAN_DIRECT_LABEL,ABSENT,,,False,True,False,True
+rule,406,40604,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,406,40604,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+rule,406,40604,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+rule,406,40604,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+rule,406,40605,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 남쪽연구소 6,True,False,True,False
+rule,406,40605,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+rule,406,40605,supply_amount,AI_AGREEMENT,VALUE,4795000,4795000.0,True,True,True,True
+rule,406,40605,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+rule,406,40605,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+rule,406,40605,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+rule,406,40605,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+rule,406,40606,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+rule,406,40606,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+rule,406,40606,supply_amount,AI_AGREEMENT,VALUE,4795000,4795000.0,True,True,True,True
+rule,406,40606,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+rule,406,40606,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+rule,406,40606,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+rule,406,40606,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+llm,401,40101,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 남쪽연구소 1,True,False,True,False
+llm,401,40101,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04011,0000004011,True,True,True,True
+llm,401,40101,supply_amount,AI_AGREEMENT,VALUE,4110000,4110000.0,True,True,True,True
+llm,401,40101,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+llm,401,40101,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+llm,401,40101,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+llm,401,40101,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+llm,401,40102,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+llm,401,40102,business_registration_no,AI_AGREEMENT,VALUE,0000004011,0000004011,True,True,True,True
+llm,401,40102,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4110000,4110000.0,True,True,True,True
+llm,401,40102,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+llm,401,40102,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+llm,401,40102,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+llm,401,40102,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+llm,401,40103,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+llm,401,40103,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04011,0000004011,True,True,True,True
+llm,401,40103,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,401,40103,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,401,40103,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,401,40103,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+llm,401,40103,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+llm,401,40104,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+llm,401,40104,business_registration_no,AI_AGREEMENT,VALUE,0000004011,0000004011,True,True,True,True
+llm,401,40104,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,401,40104,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,401,40104,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,401,40104,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+llm,401,40104,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+llm,401,40105,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+llm,401,40105,business_registration_no,AI_AGREEMENT,VALUE,0000004011,0000004011,True,True,True,True
+llm,401,40105,supply_amount,AI_AGREEMENT,VALUE,4110000,4110000.0,True,True,True,True
+llm,401,40105,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+llm,401,40105,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+llm,401,40105,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+llm,401,40105,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+llm,401,40106,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+llm,401,40106,business_registration_no,AI_AGREEMENT,VALUE,0000004011,0000004011,True,True,True,True
+llm,401,40106,supply_amount,AI_AGREEMENT,VALUE,4110000,4110000.0,True,True,True,True
+llm,401,40106,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+llm,401,40106,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+llm,401,40106,issue_date,HUMAN_DIRECT_LABEL,VALUE,2026-09-16,2026-09-16,True,True,True,False
+llm,401,40106,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+llm,402,40201,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 남쪽연구소 2,True,False,True,False
+llm,402,40201,business_registration_no,AI_AGREEMENT,VALUE,0000004025,0000004025,True,True,True,True
+llm,402,40201,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+llm,402,40201,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+llm,402,40201,total_amount,AI_AGREEMENT,VALUE,4671700,4671700.0,True,True,True,True
+llm,402,40201,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+llm,402,40201,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+llm,402,40202,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+llm,402,40202,business_registration_no,AI_AGREEMENT,VALUE,0000004025,0000004025,True,True,True,True
+llm,402,40202,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+llm,402,40202,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+llm,402,40202,total_amount,HUMAN_DIRECT_LABEL,VALUE,4671700,4671700.0,True,True,True,True
+llm,402,40202,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+llm,402,40202,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+llm,402,40203,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+llm,402,40203,business_registration_no,AI_AGREEMENT,VALUE,0000004025,0000004025,True,True,True,True
+llm,402,40203,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,402,40203,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,402,40203,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,402,40203,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+llm,402,40203,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+llm,402,40204,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+llm,402,40204,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04025,0000004025,True,True,True,True
+llm,402,40204,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,402,40204,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,402,40204,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,402,40204,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+llm,402,40204,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+llm,402,40205,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+llm,402,40205,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04025,0000004025,True,True,True,True
+llm,402,40205,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+llm,402,40205,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+llm,402,40205,total_amount,AI_AGREEMENT,VALUE,4671700,4671700.0,True,True,True,True
+llm,402,40205,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+llm,402,40205,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+llm,402,40206,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+llm,402,40206,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04025,0000004025,True,True,True,True
+llm,402,40206,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+llm,402,40206,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+llm,402,40206,total_amount,AI_AGREEMENT,VALUE,4671700,4671700.0,True,True,True,True
+llm,402,40206,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+llm,402,40206,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+llm,403,40301,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 남쪽연구소 3,True,False,True,False
+llm,403,40301,business_registration_no,AI_AGREEMENT,VALUE,0000004030,0000004030,True,True,True,True
+llm,403,40301,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+llm,403,40301,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+llm,403,40301,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+llm,403,40301,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+llm,403,40301,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+llm,403,40302,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,,False,False,True,False
+llm,403,40302,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04030,0000004030,True,True,True,True
+llm,403,40302,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+llm,403,40302,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+llm,403,40302,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+llm,403,40302,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+llm,403,40302,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+llm,403,40303,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+llm,403,40303,business_registration_no,AI_AGREEMENT,VALUE,0000004030,0000004030,True,True,True,True
+llm,403,40303,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,403,40303,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,403,40303,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,403,40303,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+llm,403,40303,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+llm,403,40304,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+llm,403,40304,business_registration_no,AI_AGREEMENT,VALUE,0000004030,0000004030,True,True,True,True
+llm,403,40304,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,403,40304,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,403,40304,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,403,40304,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+llm,403,40304,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+llm,403,40305,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+llm,403,40305,business_registration_no,AI_AGREEMENT,VALUE,0000004030,0000004030,True,True,True,True
+llm,403,40305,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+llm,403,40305,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+llm,403,40305,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+llm,403,40305,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+llm,403,40305,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+llm,403,40306,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+llm,403,40306,business_registration_no,AI_AGREEMENT,VALUE,0000004030,0000004030,True,True,True,True
+llm,403,40306,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+llm,403,40306,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+llm,403,40306,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+llm,403,40306,issue_date,HUMAN_DIRECT_LABEL,VALUE,2026-09-18,2026-09-18,True,True,True,False
+llm,403,40306,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+llm,404,40401,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+llm,404,40401,business_registration_no,AI_AGREEMENT,VALUE,0000004044,0000004044,True,True,True,True
+llm,404,40401,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4521000,4521000.0,True,True,True,True
+llm,404,40401,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+llm,404,40401,total_amount,AI_AGREEMENT,VALUE,4973100,4973100.0,True,True,True,True
+llm,404,40401,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+llm,404,40401,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+llm,404,40402,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,,False,False,True,False
+llm,404,40402,business_registration_no,AI_AGREEMENT,VALUE,0000004044,0000004044,True,True,True,True
+llm,404,40402,supply_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+llm,404,40402,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+llm,404,40402,total_amount,HUMAN_OBSERVATION_ADJUDICATED,REVIEW,,5000000.0,True,False,True,True
+llm,404,40402,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+llm,404,40402,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+llm,404,40403,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+llm,404,40403,business_registration_no,AI_AGREEMENT,VALUE,0000004044,0000004044,True,True,True,True
+llm,404,40403,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,404,40403,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,404,40403,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,404,40403,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+llm,404,40403,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+llm,404,40404,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+llm,404,40404,business_registration_no,AI_AGREEMENT,VALUE,0000004044,0000004044,True,True,True,True
+llm,404,40404,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,404,40404,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,404,40404,total_amount,HUMAN_DIRECT_LABEL,ABSENT,,,False,True,False,True
+llm,404,40404,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+llm,404,40404,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+llm,404,40405,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+llm,404,40405,business_registration_no,AI_AGREEMENT,VALUE,0000004044,0000004044,True,True,True,True
+llm,404,40405,supply_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+llm,404,40405,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+llm,404,40405,total_amount,AI_AGREEMENT,VALUE,4973100,4973100.0,True,True,True,True
+llm,404,40405,issue_date,HUMAN_DIRECT_LABEL,VALUE,2026-09-19,2026-09-19,True,True,True,False
+llm,404,40405,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+llm,404,40406,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+llm,404,40406,business_registration_no,AI_AGREEMENT,VALUE,0000004044,0000004044,True,True,True,True
+llm,404,40406,supply_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+llm,404,40406,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+llm,404,40406,total_amount,HUMAN_DIRECT_LABEL,VALUE,4973100,4973100.0,True,True,True,True
+llm,404,40406,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+llm,404,40406,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+llm,405,40501,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+llm,405,40501,business_registration_no,AI_AGREEMENT,VALUE,0000004059,0000004059,True,True,True,True
+llm,405,40501,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+llm,405,40501,tax_amount,HUMAN_DIRECT_LABEL,VALUE,465800,465800.0,True,True,True,True
+llm,405,40501,total_amount,AI_AGREEMENT,VALUE,5123800,5123800.0,True,True,True,True
+llm,405,40501,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+llm,405,40501,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+llm,405,40502,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+llm,405,40502,business_registration_no,AI_AGREEMENT,VALUE,0000004059,0000004059,True,True,True,True
+llm,405,40502,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+llm,405,40502,tax_amount,AI_AGREEMENT,VALUE,465800,465800.0,True,True,True,True
+llm,405,40502,total_amount,HUMAN_DIRECT_LABEL,VALUE,5123800,5123800.0,True,True,True,True
+llm,405,40502,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+llm,405,40502,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+llm,405,40503,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+llm,405,40503,business_registration_no,AI_AGREEMENT,VALUE,0000004059,0000004059,True,True,True,True
+llm,405,40503,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,405,40503,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,405,40503,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,405,40503,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+llm,405,40503,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+llm,405,40504,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+llm,405,40504,business_registration_no,AI_AGREEMENT,VALUE,0000004059,0000004059,True,True,True,True
+llm,405,40504,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,405,40504,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,405,40504,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,405,40504,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+llm,405,40504,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+llm,405,40505,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+llm,405,40505,business_registration_no,AI_AGREEMENT,VALUE,0000004059,0000004059,True,True,True,True
+llm,405,40505,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+llm,405,40505,tax_amount,AI_AGREEMENT,VALUE,465800,465800.0,True,True,True,True
+llm,405,40505,total_amount,AI_AGREEMENT,VALUE,5123800,5123800.0,True,True,True,True
+llm,405,40505,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+llm,405,40505,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+llm,405,40506,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+llm,405,40506,business_registration_no,AI_AGREEMENT,VALUE,0000004059,0000004059,True,True,True,True
+llm,405,40506,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+llm,405,40506,tax_amount,AI_AGREEMENT,VALUE,465800,465800.0,True,True,True,True
+llm,405,40506,total_amount,AI_AGREEMENT,VALUE,5123800,5123800.0,True,True,True,True
+llm,405,40506,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+llm,405,40506,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+llm,406,40601,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 남쪽연구소 6,True,False,True,False
+llm,406,40601,business_registration_no,AI_AGREEMENT,VALUE,0000004063,0000004063,True,True,True,True
+llm,406,40601,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4795000,4795000.0,True,True,True,True
+llm,406,40601,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+llm,406,40601,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+llm,406,40601,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+llm,406,40601,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+llm,406,40602,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+llm,406,40602,business_registration_no,AI_AGREEMENT,VALUE,0000004063,0000004063,True,True,True,True
+llm,406,40602,supply_amount,AI_AGREEMENT,VALUE,4795000,4795000.0,True,True,True,True
+llm,406,40602,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+llm,406,40602,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+llm,406,40602,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+llm,406,40602,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+llm,406,40603,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+llm,406,40603,business_registration_no,AI_AGREEMENT,VALUE,0000004063,0000004063,True,True,True,True
+llm,406,40603,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,406,40603,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,406,40603,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,406,40603,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+llm,406,40603,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+llm,406,40604,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+llm,406,40604,business_registration_no,AI_AGREEMENT,VALUE,0000004063,0000004063,True,True,True,True
+llm,406,40604,supply_amount,HUMAN_DIRECT_LABEL,ABSENT,,,False,True,False,True
+llm,406,40604,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,406,40604,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+llm,406,40604,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+llm,406,40604,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+llm,406,40605,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+llm,406,40605,business_registration_no,AI_AGREEMENT,VALUE,0000004063,0000004063,True,True,True,True
+llm,406,40605,supply_amount,AI_AGREEMENT,VALUE,4795000,4795000.0,True,True,True,True
+llm,406,40605,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+llm,406,40605,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+llm,406,40605,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+llm,406,40605,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+llm,406,40606,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+llm,406,40606,business_registration_no,AI_AGREEMENT,VALUE,0000004063,0000004063,True,True,True,True
+llm,406,40606,supply_amount,AI_AGREEMENT,VALUE,4795000,4795000.0,True,True,True,True
+llm,406,40606,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+llm,406,40606,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+llm,406,40606,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+llm,406,40606,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+hybrid_unguarded,401,40101,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+hybrid_unguarded,401,40101,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04011,000-00-04011,True,True,True,True
+hybrid_unguarded,401,40101,supply_amount,AI_AGREEMENT,VALUE,4110000,4110000.0,True,True,True,True
+hybrid_unguarded,401,40101,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+hybrid_unguarded,401,40101,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_unguarded,401,40101,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+hybrid_unguarded,401,40101,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,401,40102,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+hybrid_unguarded,401,40102,business_registration_no,AI_AGREEMENT,VALUE,0000004011,000-00-04011,True,True,True,True
+hybrid_unguarded,401,40102,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4110000,4110000.0,True,True,True,True
+hybrid_unguarded,401,40102,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+hybrid_unguarded,401,40102,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_unguarded,401,40102,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+hybrid_unguarded,401,40102,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,401,40103,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+hybrid_unguarded,401,40103,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04011,000-00-04011,True,True,True,True
+hybrid_unguarded,401,40103,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,401,40103,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,401,40103,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,401,40103,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+hybrid_unguarded,401,40103,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_unguarded,401,40104,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+hybrid_unguarded,401,40104,business_registration_no,AI_AGREEMENT,VALUE,0000004011,000-00-04011,True,True,True,True
+hybrid_unguarded,401,40104,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,401,40104,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,401,40104,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,401,40104,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+hybrid_unguarded,401,40104,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_unguarded,401,40105,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+hybrid_unguarded,401,40105,business_registration_no,AI_AGREEMENT,VALUE,0000004011,000-00-04011,True,True,True,True
+hybrid_unguarded,401,40105,supply_amount,AI_AGREEMENT,VALUE,4110000,4110000.0,True,True,True,True
+hybrid_unguarded,401,40105,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+hybrid_unguarded,401,40105,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_unguarded,401,40105,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+hybrid_unguarded,401,40105,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,401,40106,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+hybrid_unguarded,401,40106,business_registration_no,AI_AGREEMENT,VALUE,0000004011,000-00-04011,True,True,True,True
+hybrid_unguarded,401,40106,supply_amount,AI_AGREEMENT,VALUE,4110000,4110000.0,True,True,True,True
+hybrid_unguarded,401,40106,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+hybrid_unguarded,401,40106,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_unguarded,401,40106,issue_date,HUMAN_DIRECT_LABEL,VALUE,2026-09-16,2026-09-16,True,True,True,False
+hybrid_unguarded,401,40106,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,402,40201,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+hybrid_unguarded,402,40201,business_registration_no,AI_AGREEMENT,VALUE,0000004025,000-00-04025,True,True,True,True
+hybrid_unguarded,402,40201,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+hybrid_unguarded,402,40201,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+hybrid_unguarded,402,40201,total_amount,AI_AGREEMENT,VALUE,4671700,4671700.0,True,True,True,True
+hybrid_unguarded,402,40201,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+hybrid_unguarded,402,40201,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,402,40202,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+hybrid_unguarded,402,40202,business_registration_no,AI_AGREEMENT,VALUE,0000004025,000-00-04025,True,True,True,True
+hybrid_unguarded,402,40202,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+hybrid_unguarded,402,40202,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+hybrid_unguarded,402,40202,total_amount,HUMAN_DIRECT_LABEL,VALUE,4671700,4671700.0,True,True,True,True
+hybrid_unguarded,402,40202,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+hybrid_unguarded,402,40202,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,402,40203,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+hybrid_unguarded,402,40203,business_registration_no,AI_AGREEMENT,VALUE,0000004025,000-00-04025,True,True,True,True
+hybrid_unguarded,402,40203,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,402,40203,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,402,40203,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,402,40203,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+hybrid_unguarded,402,40203,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_unguarded,402,40204,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+hybrid_unguarded,402,40204,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04025,000-00-04025,True,True,True,True
+hybrid_unguarded,402,40204,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,402,40204,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,402,40204,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,402,40204,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+hybrid_unguarded,402,40204,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_unguarded,402,40205,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+hybrid_unguarded,402,40205,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04025,000-00-04025,True,True,True,True
+hybrid_unguarded,402,40205,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+hybrid_unguarded,402,40205,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+hybrid_unguarded,402,40205,total_amount,AI_AGREEMENT,VALUE,4671700,4671700.0,True,True,True,True
+hybrid_unguarded,402,40205,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+hybrid_unguarded,402,40205,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,402,40206,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+hybrid_unguarded,402,40206,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04025,000-00-04025,True,True,True,True
+hybrid_unguarded,402,40206,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+hybrid_unguarded,402,40206,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+hybrid_unguarded,402,40206,total_amount,AI_AGREEMENT,VALUE,4671700,4671700.0,True,True,True,True
+hybrid_unguarded,402,40206,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+hybrid_unguarded,402,40206,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,403,40301,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+hybrid_unguarded,403,40301,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+hybrid_unguarded,403,40301,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+hybrid_unguarded,403,40301,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+hybrid_unguarded,403,40301,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+hybrid_unguarded,403,40301,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+hybrid_unguarded,403,40301,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,403,40302,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,,False,False,True,False
+hybrid_unguarded,403,40302,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04030,0000004030,True,True,True,True
+hybrid_unguarded,403,40302,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+hybrid_unguarded,403,40302,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+hybrid_unguarded,403,40302,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+hybrid_unguarded,403,40302,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+hybrid_unguarded,403,40302,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+hybrid_unguarded,403,40303,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+hybrid_unguarded,403,40303,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+hybrid_unguarded,403,40303,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,403,40303,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,403,40303,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,403,40303,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+hybrid_unguarded,403,40303,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_unguarded,403,40304,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+hybrid_unguarded,403,40304,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+hybrid_unguarded,403,40304,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,403,40304,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,403,40304,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,403,40304,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+hybrid_unguarded,403,40304,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_unguarded,403,40305,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+hybrid_unguarded,403,40305,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+hybrid_unguarded,403,40305,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+hybrid_unguarded,403,40305,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+hybrid_unguarded,403,40305,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+hybrid_unguarded,403,40305,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+hybrid_unguarded,403,40305,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,403,40306,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+hybrid_unguarded,403,40306,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+hybrid_unguarded,403,40306,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+hybrid_unguarded,403,40306,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+hybrid_unguarded,403,40306,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+hybrid_unguarded,403,40306,issue_date,HUMAN_DIRECT_LABEL,VALUE,2026-09-18,2026-09-18,True,True,True,False
+hybrid_unguarded,403,40306,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,404,40401,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+hybrid_unguarded,404,40401,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+hybrid_unguarded,404,40401,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_unguarded,404,40401,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+hybrid_unguarded,404,40401,total_amount,AI_AGREEMENT,VALUE,4973100,4973100.0,True,True,True,True
+hybrid_unguarded,404,40401,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+hybrid_unguarded,404,40401,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,404,40402,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,,False,False,True,False
+hybrid_unguarded,404,40402,business_registration_no,AI_AGREEMENT,VALUE,0000004044,0000004044,True,True,True,True
+hybrid_unguarded,404,40402,supply_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_unguarded,404,40402,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+hybrid_unguarded,404,40402,total_amount,HUMAN_OBSERVATION_ADJUDICATED,REVIEW,,5000000.0,True,False,True,True
+hybrid_unguarded,404,40402,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+hybrid_unguarded,404,40402,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+hybrid_unguarded,404,40403,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+hybrid_unguarded,404,40403,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+hybrid_unguarded,404,40403,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,404,40403,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,404,40403,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,404,40403,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+hybrid_unguarded,404,40403,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_unguarded,404,40404,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+hybrid_unguarded,404,40404,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+hybrid_unguarded,404,40404,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,404,40404,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,404,40404,total_amount,HUMAN_DIRECT_LABEL,ABSENT,,,False,True,False,True
+hybrid_unguarded,404,40404,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+hybrid_unguarded,404,40404,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_unguarded,404,40405,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+hybrid_unguarded,404,40405,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+hybrid_unguarded,404,40405,supply_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_unguarded,404,40405,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+hybrid_unguarded,404,40405,total_amount,AI_AGREEMENT,VALUE,4973100,4973100.0,True,True,True,True
+hybrid_unguarded,404,40405,issue_date,HUMAN_DIRECT_LABEL,VALUE,2026-09-19,2026-09-19,True,True,True,False
+hybrid_unguarded,404,40405,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,404,40406,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+hybrid_unguarded,404,40406,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+hybrid_unguarded,404,40406,supply_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_unguarded,404,40406,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+hybrid_unguarded,404,40406,total_amount,HUMAN_DIRECT_LABEL,VALUE,4973100,4973100.0,True,True,True,True
+hybrid_unguarded,404,40406,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+hybrid_unguarded,404,40406,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,405,40501,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+hybrid_unguarded,405,40501,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+hybrid_unguarded,405,40501,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+hybrid_unguarded,405,40501,tax_amount,HUMAN_DIRECT_LABEL,VALUE,465800,465800.0,True,True,True,True
+hybrid_unguarded,405,40501,total_amount,AI_AGREEMENT,VALUE,5123800,5123800.0,True,True,True,True
+hybrid_unguarded,405,40501,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+hybrid_unguarded,405,40501,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,405,40502,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+hybrid_unguarded,405,40502,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+hybrid_unguarded,405,40502,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+hybrid_unguarded,405,40502,tax_amount,AI_AGREEMENT,VALUE,465800,465800.0,True,True,True,True
+hybrid_unguarded,405,40502,total_amount,HUMAN_DIRECT_LABEL,VALUE,5123800,5123800.0,True,True,True,True
+hybrid_unguarded,405,40502,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+hybrid_unguarded,405,40502,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,405,40503,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+hybrid_unguarded,405,40503,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+hybrid_unguarded,405,40503,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,405,40503,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,405,40503,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,405,40503,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+hybrid_unguarded,405,40503,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_unguarded,405,40504,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+hybrid_unguarded,405,40504,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+hybrid_unguarded,405,40504,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,405,40504,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,405,40504,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,405,40504,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+hybrid_unguarded,405,40504,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_unguarded,405,40505,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+hybrid_unguarded,405,40505,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+hybrid_unguarded,405,40505,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+hybrid_unguarded,405,40505,tax_amount,AI_AGREEMENT,VALUE,465800,465800.0,True,True,True,True
+hybrid_unguarded,405,40505,total_amount,AI_AGREEMENT,VALUE,5123800,5123800.0,True,True,True,True
+hybrid_unguarded,405,40505,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+hybrid_unguarded,405,40505,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,405,40506,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+hybrid_unguarded,405,40506,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+hybrid_unguarded,405,40506,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+hybrid_unguarded,405,40506,tax_amount,AI_AGREEMENT,VALUE,465800,465800.0,True,True,True,True
+hybrid_unguarded,405,40506,total_amount,AI_AGREEMENT,VALUE,5123800,5123800.0,True,True,True,True
+hybrid_unguarded,405,40506,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+hybrid_unguarded,405,40506,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,406,40601,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+hybrid_unguarded,406,40601,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+hybrid_unguarded,406,40601,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4795000,4795000.0,True,True,True,True
+hybrid_unguarded,406,40601,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+hybrid_unguarded,406,40601,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+hybrid_unguarded,406,40601,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+hybrid_unguarded,406,40601,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,406,40602,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+hybrid_unguarded,406,40602,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+hybrid_unguarded,406,40602,supply_amount,AI_AGREEMENT,VALUE,4795000,4795000.0,True,True,True,True
+hybrid_unguarded,406,40602,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+hybrid_unguarded,406,40602,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+hybrid_unguarded,406,40602,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+hybrid_unguarded,406,40602,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,406,40603,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+hybrid_unguarded,406,40603,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+hybrid_unguarded,406,40603,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,406,40603,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,406,40603,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,406,40603,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+hybrid_unguarded,406,40603,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_unguarded,406,40604,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+hybrid_unguarded,406,40604,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+hybrid_unguarded,406,40604,supply_amount,HUMAN_DIRECT_LABEL,ABSENT,,,False,True,False,True
+hybrid_unguarded,406,40604,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,406,40604,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_unguarded,406,40604,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+hybrid_unguarded,406,40604,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_unguarded,406,40605,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+hybrid_unguarded,406,40605,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+hybrid_unguarded,406,40605,supply_amount,AI_AGREEMENT,VALUE,4795000,4795000.0,True,True,True,True
+hybrid_unguarded,406,40605,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+hybrid_unguarded,406,40605,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+hybrid_unguarded,406,40605,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+hybrid_unguarded,406,40605,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+hybrid_unguarded,406,40606,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+hybrid_unguarded,406,40606,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+hybrid_unguarded,406,40606,supply_amount,AI_AGREEMENT,VALUE,4795000,4795000.0,True,True,True,True
+hybrid_unguarded,406,40606,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+hybrid_unguarded,406,40606,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+hybrid_unguarded,406,40606,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+hybrid_unguarded,406,40606,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,401,40101,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+hybrid_guarded,401,40101,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04011,000-00-04011,True,True,True,True
+hybrid_guarded,401,40101,supply_amount,AI_AGREEMENT,VALUE,4110000,4110000.0,True,True,True,True
+hybrid_guarded,401,40101,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+hybrid_guarded,401,40101,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_guarded,401,40101,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+hybrid_guarded,401,40101,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,401,40102,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+hybrid_guarded,401,40102,business_registration_no,AI_AGREEMENT,VALUE,0000004011,000-00-04011,True,True,True,True
+hybrid_guarded,401,40102,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4110000,4110000.0,True,True,True,True
+hybrid_guarded,401,40102,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+hybrid_guarded,401,40102,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_guarded,401,40102,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+hybrid_guarded,401,40102,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,401,40103,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+hybrid_guarded,401,40103,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04011,000-00-04011,True,True,True,True
+hybrid_guarded,401,40103,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,401,40103,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,401,40103,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,401,40103,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+hybrid_guarded,401,40103,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_guarded,401,40104,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+hybrid_guarded,401,40104,business_registration_no,AI_AGREEMENT,VALUE,0000004011,000-00-04011,True,True,True,True
+hybrid_guarded,401,40104,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,401,40104,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,401,40104,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,401,40104,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+hybrid_guarded,401,40104,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_guarded,401,40105,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+hybrid_guarded,401,40105,business_registration_no,AI_AGREEMENT,VALUE,0000004011,000-00-04011,True,True,True,True
+hybrid_guarded,401,40105,supply_amount,AI_AGREEMENT,VALUE,4110000,4110000.0,True,True,True,True
+hybrid_guarded,401,40105,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+hybrid_guarded,401,40105,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_guarded,401,40105,issue_date,AI_AGREEMENT,VALUE,2026-09-16,2026-09-16,True,True,True,False
+hybrid_guarded,401,40105,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,401,40106,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 1,가상 새봄기획 1,True,True,True,False
+hybrid_guarded,401,40106,business_registration_no,AI_AGREEMENT,VALUE,0000004011,000-00-04011,True,True,True,True
+hybrid_guarded,401,40106,supply_amount,AI_AGREEMENT,VALUE,4110000,4110000.0,True,True,True,True
+hybrid_guarded,401,40106,tax_amount,AI_AGREEMENT,VALUE,411000,411000.0,True,True,True,True
+hybrid_guarded,401,40106,total_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_guarded,401,40106,issue_date,HUMAN_DIRECT_LABEL,VALUE,2026-09-16,2026-09-16,True,True,True,False
+hybrid_guarded,401,40106,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,402,40201,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+hybrid_guarded,402,40201,business_registration_no,AI_AGREEMENT,VALUE,0000004025,000-00-04025,True,True,True,True
+hybrid_guarded,402,40201,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+hybrid_guarded,402,40201,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+hybrid_guarded,402,40201,total_amount,AI_AGREEMENT,VALUE,4671700,4671700.0,True,True,True,True
+hybrid_guarded,402,40201,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+hybrid_guarded,402,40201,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,402,40202,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+hybrid_guarded,402,40202,business_registration_no,AI_AGREEMENT,VALUE,0000004025,000-00-04025,True,True,True,True
+hybrid_guarded,402,40202,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+hybrid_guarded,402,40202,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+hybrid_guarded,402,40202,total_amount,HUMAN_DIRECT_LABEL,VALUE,4671700,4671700.0,True,True,True,True
+hybrid_guarded,402,40202,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+hybrid_guarded,402,40202,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,402,40203,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+hybrid_guarded,402,40203,business_registration_no,AI_AGREEMENT,VALUE,0000004025,000-00-04025,True,True,True,True
+hybrid_guarded,402,40203,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,402,40203,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,402,40203,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,402,40203,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+hybrid_guarded,402,40203,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_guarded,402,40204,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+hybrid_guarded,402,40204,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04025,000-00-04025,True,True,True,True
+hybrid_guarded,402,40204,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,402,40204,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,402,40204,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,402,40204,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+hybrid_guarded,402,40204,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_guarded,402,40205,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+hybrid_guarded,402,40205,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04025,000-00-04025,True,True,True,True
+hybrid_guarded,402,40205,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+hybrid_guarded,402,40205,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+hybrid_guarded,402,40205,total_amount,AI_AGREEMENT,VALUE,4671700,4671700.0,True,True,True,True
+hybrid_guarded,402,40205,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+hybrid_guarded,402,40205,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,402,40206,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 2,가상 새봄기획 2,True,True,True,False
+hybrid_guarded,402,40206,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04025,000-00-04025,True,True,True,True
+hybrid_guarded,402,40206,supply_amount,AI_AGREEMENT,VALUE,4247000,4247000.0,True,True,True,True
+hybrid_guarded,402,40206,tax_amount,AI_AGREEMENT,VALUE,424700,424700.0,True,True,True,True
+hybrid_guarded,402,40206,total_amount,AI_AGREEMENT,VALUE,4671700,4671700.0,True,True,True,True
+hybrid_guarded,402,40206,issue_date,AI_AGREEMENT,VALUE,2026-09-17,2026-09-17,True,True,True,False
+hybrid_guarded,402,40206,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,403,40301,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+hybrid_guarded,403,40301,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+hybrid_guarded,403,40301,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+hybrid_guarded,403,40301,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+hybrid_guarded,403,40301,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+hybrid_guarded,403,40301,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+hybrid_guarded,403,40301,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,403,40302,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,,False,False,True,False
+hybrid_guarded,403,40302,business_registration_no,HUMAN_DIRECT_LABEL,VALUE,000-00-04030,000-00-04030,True,True,True,True
+hybrid_guarded,403,40302,supply_amount,AI_AGREEMENT,VALUE,4384000,,False,False,True,True
+hybrid_guarded,403,40302,tax_amount,AI_AGREEMENT,VALUE,438400,,False,False,True,True
+hybrid_guarded,403,40302,total_amount,AI_AGREEMENT,VALUE,4822400,,False,False,True,True
+hybrid_guarded,403,40302,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+hybrid_guarded,403,40302,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+hybrid_guarded,403,40303,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+hybrid_guarded,403,40303,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+hybrid_guarded,403,40303,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,403,40303,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,403,40303,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,403,40303,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+hybrid_guarded,403,40303,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_guarded,403,40304,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+hybrid_guarded,403,40304,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+hybrid_guarded,403,40304,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,403,40304,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,403,40304,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,403,40304,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+hybrid_guarded,403,40304,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_guarded,403,40305,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+hybrid_guarded,403,40305,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+hybrid_guarded,403,40305,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+hybrid_guarded,403,40305,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+hybrid_guarded,403,40305,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+hybrid_guarded,403,40305,issue_date,AI_AGREEMENT,VALUE,2026-09-18,2026-09-18,True,True,True,False
+hybrid_guarded,403,40305,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,403,40306,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 3,가상 새봄기획 3,True,True,True,False
+hybrid_guarded,403,40306,business_registration_no,AI_AGREEMENT,VALUE,0000004030,000-00-04030,True,True,True,True
+hybrid_guarded,403,40306,supply_amount,AI_AGREEMENT,VALUE,4384000,4384000.0,True,True,True,True
+hybrid_guarded,403,40306,tax_amount,AI_AGREEMENT,VALUE,438400,438400.0,True,True,True,True
+hybrid_guarded,403,40306,total_amount,AI_AGREEMENT,VALUE,4822400,4822400.0,True,True,True,True
+hybrid_guarded,403,40306,issue_date,HUMAN_DIRECT_LABEL,VALUE,2026-09-18,2026-09-18,True,True,True,False
+hybrid_guarded,403,40306,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,404,40401,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+hybrid_guarded,404,40401,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+hybrid_guarded,404,40401,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_guarded,404,40401,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+hybrid_guarded,404,40401,total_amount,AI_AGREEMENT,VALUE,4973100,4973100.0,True,True,True,True
+hybrid_guarded,404,40401,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+hybrid_guarded,404,40401,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,404,40402,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,,False,False,True,False
+hybrid_guarded,404,40402,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+hybrid_guarded,404,40402,supply_amount,AI_AGREEMENT,VALUE,4521000,,False,False,True,True
+hybrid_guarded,404,40402,tax_amount,AI_AGREEMENT,VALUE,452100,,False,False,True,True
+hybrid_guarded,404,40402,total_amount,HUMAN_OBSERVATION_ADJUDICATED,REVIEW,,,False,True,True,True
+hybrid_guarded,404,40402,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+hybrid_guarded,404,40402,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,UNKNOWN,False,False,True,False
+hybrid_guarded,404,40403,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+hybrid_guarded,404,40403,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+hybrid_guarded,404,40403,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,404,40403,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,404,40403,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,404,40403,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+hybrid_guarded,404,40403,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_guarded,404,40404,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+hybrid_guarded,404,40404,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+hybrid_guarded,404,40404,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,404,40404,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,404,40404,total_amount,HUMAN_DIRECT_LABEL,ABSENT,,,False,True,False,True
+hybrid_guarded,404,40404,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+hybrid_guarded,404,40404,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_guarded,404,40405,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+hybrid_guarded,404,40405,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+hybrid_guarded,404,40405,supply_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_guarded,404,40405,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+hybrid_guarded,404,40405,total_amount,AI_AGREEMENT,VALUE,4973100,4973100.0,True,True,True,True
+hybrid_guarded,404,40405,issue_date,HUMAN_DIRECT_LABEL,VALUE,2026-09-19,2026-09-19,True,True,True,False
+hybrid_guarded,404,40405,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,404,40406,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 4,가상 새봄기획 4,True,True,True,False
+hybrid_guarded,404,40406,business_registration_no,AI_AGREEMENT,VALUE,0000004044,000-00-04044,True,True,True,True
+hybrid_guarded,404,40406,supply_amount,AI_AGREEMENT,VALUE,4521000,4521000.0,True,True,True,True
+hybrid_guarded,404,40406,tax_amount,AI_AGREEMENT,VALUE,452100,452100.0,True,True,True,True
+hybrid_guarded,404,40406,total_amount,HUMAN_DIRECT_LABEL,VALUE,4973100,4973100.0,True,True,True,True
+hybrid_guarded,404,40406,issue_date,AI_AGREEMENT,VALUE,2026-09-19,2026-09-19,True,True,True,False
+hybrid_guarded,404,40406,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,405,40501,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+hybrid_guarded,405,40501,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+hybrid_guarded,405,40501,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+hybrid_guarded,405,40501,tax_amount,HUMAN_DIRECT_LABEL,VALUE,465800,465800.0,True,True,True,True
+hybrid_guarded,405,40501,total_amount,AI_AGREEMENT,VALUE,5123800,5123800.0,True,True,True,True
+hybrid_guarded,405,40501,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+hybrid_guarded,405,40501,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,405,40502,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+hybrid_guarded,405,40502,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+hybrid_guarded,405,40502,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+hybrid_guarded,405,40502,tax_amount,AI_AGREEMENT,VALUE,465800,465800.0,True,True,True,True
+hybrid_guarded,405,40502,total_amount,HUMAN_DIRECT_LABEL,VALUE,5123800,5123800.0,True,True,True,True
+hybrid_guarded,405,40502,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+hybrid_guarded,405,40502,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,405,40503,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+hybrid_guarded,405,40503,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+hybrid_guarded,405,40503,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,405,40503,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,405,40503,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,405,40503,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+hybrid_guarded,405,40503,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_guarded,405,40504,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+hybrid_guarded,405,40504,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+hybrid_guarded,405,40504,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,405,40504,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,405,40504,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,405,40504,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+hybrid_guarded,405,40504,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_guarded,405,40505,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+hybrid_guarded,405,40505,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+hybrid_guarded,405,40505,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+hybrid_guarded,405,40505,tax_amount,AI_AGREEMENT,VALUE,465800,465800.0,True,True,True,True
+hybrid_guarded,405,40505,total_amount,AI_AGREEMENT,VALUE,5123800,5123800.0,True,True,True,True
+hybrid_guarded,405,40505,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+hybrid_guarded,405,40505,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,405,40506,company_name,HUMAN_DIRECT_LABEL,VALUE,가상 새봄기획 5,가상 새봄기획 5,True,True,True,False
+hybrid_guarded,405,40506,business_registration_no,AI_AGREEMENT,VALUE,0000004059,000-00-04059,True,True,True,True
+hybrid_guarded,405,40506,supply_amount,AI_AGREEMENT,VALUE,4658000,4658000.0,True,True,True,True
+hybrid_guarded,405,40506,tax_amount,AI_AGREEMENT,VALUE,465800,465800.0,True,True,True,True
+hybrid_guarded,405,40506,total_amount,AI_AGREEMENT,VALUE,5123800,5123800.0,True,True,True,True
+hybrid_guarded,405,40506,issue_date,AI_AGREEMENT,VALUE,2026-09-20,2026-09-20,True,True,True,False
+hybrid_guarded,405,40506,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,406,40601,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+hybrid_guarded,406,40601,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+hybrid_guarded,406,40601,supply_amount,HUMAN_DIRECT_LABEL,VALUE,4795000,4795000.0,True,True,True,True
+hybrid_guarded,406,40601,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+hybrid_guarded,406,40601,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+hybrid_guarded,406,40601,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+hybrid_guarded,406,40601,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,406,40602,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+hybrid_guarded,406,40602,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+hybrid_guarded,406,40602,supply_amount,AI_AGREEMENT,VALUE,4795000,4795000.0,True,True,True,True
+hybrid_guarded,406,40602,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+hybrid_guarded,406,40602,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+hybrid_guarded,406,40602,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+hybrid_guarded,406,40602,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,406,40603,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+hybrid_guarded,406,40603,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+hybrid_guarded,406,40603,supply_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,406,40603,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,406,40603,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,406,40603,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+hybrid_guarded,406,40603,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_guarded,406,40604,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+hybrid_guarded,406,40604,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+hybrid_guarded,406,40604,supply_amount,HUMAN_DIRECT_LABEL,ABSENT,,,False,True,False,True
+hybrid_guarded,406,40604,tax_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,406,40604,total_amount,AI_AGREEMENT,ABSENT,,,False,True,False,True
+hybrid_guarded,406,40604,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+hybrid_guarded,406,40604,amount_scope,AI_AGREEMENT,ABSENT,,UNKNOWN,False,True,False,False
+hybrid_guarded,406,40605,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+hybrid_guarded,406,40605,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+hybrid_guarded,406,40605,supply_amount,AI_AGREEMENT,VALUE,4795000,4795000.0,True,True,True,True
+hybrid_guarded,406,40605,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+hybrid_guarded,406,40605,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+hybrid_guarded,406,40605,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+hybrid_guarded,406,40605,amount_scope,AI_AGREEMENT,VALUE,FULL,FULL,True,True,True,False
+hybrid_guarded,406,40606,company_name,AI_AGREEMENT,VALUE,가상 새봄기획 6,가상 새봄기획 6,True,True,True,False
+hybrid_guarded,406,40606,business_registration_no,AI_AGREEMENT,VALUE,0000004063,000-00-04063,True,True,True,True
+hybrid_guarded,406,40606,supply_amount,AI_AGREEMENT,VALUE,4795000,4795000.0,True,True,True,True
+hybrid_guarded,406,40606,tax_amount,AI_AGREEMENT,VALUE,479500,479500.0,True,True,True,True
+hybrid_guarded,406,40606,total_amount,AI_AGREEMENT,VALUE,5274500,5274500.0,True,True,True,True
+hybrid_guarded,406,40606,issue_date,AI_AGREEMENT,VALUE,2026-09-21,2026-09-21,True,True,True,False
+hybrid_guarded,406,40606,amount_scope,HUMAN_DIRECT_LABEL,VALUE,FULL,FULL,True,True,True,False
