@@ -5,7 +5,7 @@ import {
   DocumentResponse,
   PilotInfo,
 } from '../types';
-import { api } from '../api/client';
+import { api, downloadProtected } from '../api/client';
 import { Sidebar, NavigationTab } from '../components/Sidebar';
 import { OverallDashboardView } from '../components/OverallDashboardView';
 import { ValidationReportView } from '../components/ValidationReportView';
@@ -40,6 +40,7 @@ import {
   ArrowLeft,
   MoreHorizontal,
   Upload,
+  FileArchive,
 } from 'lucide-react';
 
 export const ContractDashboard: React.FC = () => {
@@ -50,6 +51,24 @@ export const ContractDashboard: React.FC = () => {
   const [advancedDocOpen, setAdvancedDocOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [assignPrefill, setAssignPrefill] = useState<{ title: string; memo: string; document_id: number | null; key: number } | null>(null);
+  const [exporting, setExporting] = useState(false);
+  const exportBundle = async () => {
+    if (!currentContract) return;
+    // 가림이 꺼져 있을 때만 원본 묶음. 원본은 한 번 더 묻는다
+    const masked = isMaskingEnabled;
+    if (!masked && !window.confirm('개인정보 가림이 꺼져 있어 원본 그대로 묶습니다. 사업자번호·계좌 등이 포함됩니다. 계속할까요?')) return;
+    setExporting(true);
+    try {
+      const rev = currentContract.workflow?.revision;
+      await downloadProtected(`/api/contracts/${currentContract.contract_id}/export?masked=${masked}${rev ? `&revision=${rev}` : ''}`,
+        `계약_${currentContract.contract_id}_자료묶음.zip`);
+      showToast('success', masked ? '가린 자료 묶음(ZIP)을 받았습니다. 원본 서류·검수 결과·처리 이력이 들어 있습니다.' : '원본 자료 묶음(ZIP)을 받았습니다. 전달 대상에 주의하세요.');
+    } catch (err) {
+      showToast('error', err instanceof Error ? err.message : '자료 묶음을 만들지 못했습니다.');
+    } finally {
+      setExporting(false);
+    }
+  };
   const [recentUpload, setRecentUpload] = useState<{ contractId: number; names: string[] } | null>(null);
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
   const [contractViewMode, setContractViewMode] = useState<'list' | 'detail'>('list');
@@ -562,6 +581,16 @@ export const ContractDashboard: React.FC = () => {
                     className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-indigo-300"
                   >
                     <Upload className="w-4 h-4" /> 서류 추가
+                  </button>
+                )}
+                {isPilot && (
+                  <button
+                    onClick={() => void exportBundle()}
+                    disabled={exporting}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-indigo-300 disabled:opacity-50"
+                    title="이 계약의 서류(현재본·이전본), 검수 결과, 요청·수정·결재 이력을 ZIP 하나로 받습니다. 대표나 회계 담당자에게 전달할 때 쓰세요."
+                  >
+                    <FileArchive className="w-4 h-4" /> {exporting ? '묶는 중…' : `자료 묶음 받기${isMaskingEnabled ? '' : ' (원본)'}`}
                   </button>
                 )}
                 <button
