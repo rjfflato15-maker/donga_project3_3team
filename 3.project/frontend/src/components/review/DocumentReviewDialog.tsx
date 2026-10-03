@@ -270,8 +270,11 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                   <ul className="mt-1 space-y-1">
                     {cmp.changes.map((c) => {
                       const label = FIELD_ORDER.find((f) => f.key === c.field)?.label ?? c.field;
-                      const fmt = (v: unknown) => display(c.field, v as FieldProvenance['value'], isMaskingEnabled) || '없음';
-                      return <li key={c.field} className="tabular-nums"><span className="text-slate-500">{label}</span> <span className="text-rose-600 line-through">{fmt(c.previous_value)}</span> → <b className="text-emerald-700">{fmt(c.new_value)}</b></li>;
+                      const fmt = (v: unknown) => display(c.field, v as FieldProvenance['value'], isMaskingEnabled);
+                      const unread = !fmt(c.new_value);
+                      return <li key={c.field} className="tabular-nums"><span className="text-slate-500">{label}</span> <span className="text-rose-600 line-through">{fmt(c.previous_value) || '없음'}</span> → {unread
+                        ? <b className="text-amber-700">새 본에서 못 읽음 · 원문 확인 필요</b>
+                        : <b className="text-emerald-700">{fmt(c.new_value)}</b>}</li>;
                     })}
                   </ul>
                 )}
