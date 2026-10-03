@@ -1,0 +1,149 @@
+{
+  "format": "test2-neutral-recheck-v1",
+  "selection_id": "885a67dbd6ddaea501d4e75fd94d139ffb6529121fbeb75b28a90553175714a2",
+  "reviewer": "이창헌",
+  "exported_at": "2026-10-03T02:20:09.444Z",
+  "purpose": "agreement_only_no_label_changes",
+  "responses": [
+    {
+      "id": "401/40102/supply_amount",
+      "choice": "VALUE",
+      "value": "4,110,000",
+      "note": "",
+      "reviewed_at": "2026-10-03T02:15:20.300Z"
+    },
+    {
+      "id": "406/contract/DOCUMENT_PROCESSING/40603",
+      "choice": "READABLE",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:15:25.934Z"
+    },
+    {
+      "id": "401/40101/amount_scope",
+      "choice": "FULL",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:15:31.708Z"
+    },
+    {
+      "id": "404/40402/document_type",
+      "choice": "estimate",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:15:36.020Z"
+    },
+    {
+      "id": "402/40205/amount_scope",
+      "choice": "FULL",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:15:41.100Z"
+    },
+    {
+      "id": "405/40506/company_name",
+      "choice": "VALUE",
+      "value": "가상 새봄기획 5",
+      "note": "",
+      "reviewed_at": "2026-10-03T02:15:57.542Z"
+    },
+    {
+      "id": "403/contract/BUSINESS_STATUS/business_status",
+      "choice": "UNVERIFIABLE",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:16:08.133Z"
+    },
+    {
+      "id": "405/contract/DOCUMENT_TYPE/40505",
+      "choice": "IDENTIFIABLE",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:16:19.494Z"
+    },
+    {
+      "id": "401/contract/missing_types",
+      "choice": "ALL_PRESENT",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:16:28.414Z"
+    },
+    {
+      "id": "404/contract/AMOUNT_BASIS/amount_basis",
+      "choice": "TOTAL",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:16:42.020Z"
+    },
+    {
+      "id": "405/contract/BUSINESS_STATUS/business_status",
+      "choice": "UNVERIFIABLE",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:16:50.812Z"
+    },
+    {
+      "id": "403/contract/DOCUMENT_TYPE/40305",
+      "choice": "IDENTIFIABLE",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:16:58.901Z"
+    },
+    {
+      "id": "401/40105/document_type",
+      "choice": "tax_invoice",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:17:05.326Z"
+    },
+    {
+      "id": "401/40102/amount_scope",
+      "choice": "FULL",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:17:12.029Z"
+    },
+    {
+      "id": "405/40503/document_type",
+      "choice": "business_registration",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:17:16.612Z"
+    },
+    {
+      "id": "404/40406/total_amount",
+      "choice": "VALUE",
+      "value": "4,973,100",
+      "note": "",
+      "reviewed_at": "2026-10-03T02:17:31.700Z"
+    },
+    {
+      "id": "402/40202/amount_scope",
+      "choice": "FULL",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:17:37.756Z"
+    },
+    {
+      "id": "402/40202/total_amount",
+      "choice": "VALUE",
+      "value": "4,671,700",
+      "note": "",
+      "reviewed_at": "2026-10-03T02:17:49.158Z"
+    },
+    {
+      "id": "404/contract/AMOUNT_MATCH_TAX_INVOICE/40405",
+      "choice": "SAME",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:20:00.117Z"
+    },
+    {
+      "id": "403/contract/REQUIRED_DOCUMENTS/inspection_confirmation",
+      "choice": "PRESENT",
+      "value": null,
+      "note": "",
+      "reviewed_at": "2026-10-03T02:20:06.238Z"
+    }
+  ]
+}
