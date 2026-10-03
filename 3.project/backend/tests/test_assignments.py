@@ -1,3 +1,4 @@
+import json
 import pytest
 from fastapi.testclient import TestClient
 from backend.app.main import app
@@ -80,3 +81,69 @@ def test_active_account_cross_contract_revision_and_completion_contract(operator
     assert update_task(representative,cid,aid,1,'COMPLETE').status_code==200
     assert operator_client.delete(f'/api/contracts/{cid}').status_code==204
     with db_factory() as db:assert db.query(WorkAssignment).count()==0
+
+
+@pytest.mark.parametrize('document_task,started,representative_completes',[
+    (True,False,False),(True,True,False),(False,True,False),(True,True,True),
+])
+def test_correcting_assigned_work_can_complete_without_reapproval_or_losing_basis(
+        operator_client,coworker,separate_client,db_factory,document_task,started,representative_completes):
+    other,uid=coworker
+    cid=create_contract(operator_client)['contract_id']
+    did=upload(operator_client,cid,'estimate')['document_id']
+    assigned=create_task(operator_client,cid,uid,document_id=did if document_task else None).json()
+    aid=assigned['assignment_id'];task_revision=assigned['assignment_revision']
+    initial=other.get(f'/api/contracts/{cid}').json()['workflow']
+    if started:
+        response=update_task(other,cid,aid,task_revision,'START')
+        assert response.status_code==200,response.text
+        task_revision=response.json()['assignment_revision']
+    response=other.put(f'/api/documents/{did}/fields',json={'fields':{'total_amount':121},
+        'document_type':'estimate','revision':initial['revision'],'note':'맡은 견적서 합계를 원문으로 확인해 수정'})
+    assert response.status_code==200,response.text
+    current=other.get(f'/api/contracts/{cid}').json()['workflow']
+    assert current['revision']>initial['revision']
+    assert current['fingerprint']!=initial['fingerprint']
+    pending=other.get('/api/pilot/assignments/mine').json()['assignments'][0]
+    assert pending['is_stale'] is True
+    assert update_task(other,cid,aid,task_revision,'START').status_code==409
+    assert update_task(operator_client,cid,aid,task_revision,'COMPLETE').status_code==403
+    assert update_task(other,cid,aid,task_revision,'COMPLETE',note='   ').status_code==422
+    completing=separate_client() if representative_completes else other
+    note='원문 대조 후 금액 수정 완료. 계약 결재와 별도 업무 처리.'
+    response=update_task(completing,cid,aid,task_revision,'COMPLETE',note=note)
+    assert response.status_code==200,response.text
+    completed=response.json()
+    assert completed['status']=='COMPLETED' and completed['completed_at']
+    assert completed['assignment_revision']==task_revision+1
+    assert completed['contract_revision']==initial['revision'] and completed['is_stale'] is True
+    assert other.get('/api/pilot/assignments/mine').json()['count']==0
+    assert other.get('/api/pilot/assignments/mine',params={'include_closed':True}).json()['assignments'][0]['status']=='COMPLETED'
+    assert other.get(f'/api/contracts/{cid}').json()['workflow']==current
+    assert update_task(completing,cid,aid,task_revision+1,'COMPLETE').status_code==409
+    with db_factory() as db:
+        events=db.query(AuditEvent).filter_by(contract_id=cid,action='ASSIGNMENT_CHANGED').all()
+        finished=[e for e in events if json.loads(e.details)['action']=='COMPLETE']
+        assert len(finished)==1
+        details=json.loads(finished[0].details)
+        assert details['note']==note
+        assert details['before']['is_stale'] is True and details['after']['status']=='COMPLETED'
+        assert details['completion_context']=={'was_stale':True,
+            'assigned_basis':{'revision':initial['revision'],'fingerprint':initial['fingerprint']},
+            'completed_basis':{'revision':current['revision'],'fingerprint':current['fingerprint']}}
+        row=db.get(WorkAssignment,aid)
+        assert row.contract_fingerprint==initial['fingerprint']
+
+
+def test_deleted_document_task_cannot_complete_and_stale_task_revision_still_conflicts(operator_client,coworker):
+    other,uid=coworker
+    cid=create_contract(operator_client)['contract_id']
+    did=upload(operator_client,cid,'estimate')['document_id']
+    assigned=create_task(operator_client,cid,uid,document_id=did).json();aid=assigned['assignment_id']
+    changed=update_task(operator_client,cid,aid,1,'UPDATE',memo='현재 금액을 확인해 주세요')
+    assert changed.status_code==200 and changed.json()['assignment_revision']==2
+    assert update_task(other,cid,aid,1,'COMPLETE').status_code==409
+    assert operator_client.delete(f'/api/documents/{did}').status_code==204
+    assert update_task(other,cid,aid,2,'COMPLETE').status_code==409
+    assert other.get('/api/pilot/assignments/mine').json()['assignments'][0]['status']=='OPEN'
+    assert update_task(operator_client,cid,aid,2,'CANCEL').json()['status']=='CANCELLED'

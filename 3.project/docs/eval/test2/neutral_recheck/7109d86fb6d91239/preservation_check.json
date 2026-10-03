@@ -1,0 +1,77 @@
+{
+  "format": "neutral-review-preservation-check-v1",
+  "source_response_sha256": "7109d86fb6d912392b9dda2d22f04e5d2528f1c776234388c8f31832ed3a111c",
+  "protected_files_unchanged": true,
+  "frozen_prediction_package_verified": true,
+  "model_runs": 0,
+  "guard_runs": 0,
+  "performance_rescores": 0,
+  "checks": [
+    {
+      "path": "eval/dataset-v2/ground_truth_test.json",
+      "before_sha256": "0bb2b985279d7afcf767e8baf79d148dbea72eecd0a27bc20dc5f825d307817b",
+      "after_sha256": "0bb2b985279d7afcf767e8baf79d148dbea72eecd0a27bc20dc5f825d307817b",
+      "unchanged": true
+    },
+    {
+      "path": "eval/human_reviews/test2/human_review_result_test2_이창헌.json",
+      "before_sha256": "9ab8b7ef20fa98ba04377ee739cfd4bb5c6e3dcc1dac5b805c22191e614605f5",
+      "after_sha256": "9ab8b7ef20fa98ba04377ee739cfd4bb5c6e3dcc1dac5b805c22191e614605f5",
+      "unchanged": true
+    },
+    {
+      "path": "eval/human_review_page_test2/index.html",
+      "before_sha256": "3f33f8f48e582ac2e893b6a48fbddc25fa92030ba69249d796d7d5a08d29c676",
+      "after_sha256": "3f33f8f48e582ac2e893b6a48fbddc25fa92030ba69249d796d7d5a08d29c676",
+      "unchanged": true
+    },
+    {
+      "path": "eval/human_review_test2.xlsx",
+      "before_sha256": "74603995c9ea890faed123a3e49d37ddc863f73a3e3d3a6f462d3ee89a133160",
+      "after_sha256": "74603995c9ea890faed123a3e49d37ddc863f73a3e3d3a6f462d3ee89a133160",
+      "unchanged": true
+    },
+    {
+      "path": "eval/human_review_page_test2_neutral/index.html",
+      "before_sha256": "09da0902b06dab437b9b0892d98b043dddbecc379ebf4b1aaad757f598634724",
+      "after_sha256": "09da0902b06dab437b9b0892d98b043dddbecc379ebf4b1aaad757f598634724",
+      "unchanged": true
+    },
+    {
+      "path": "eval/human_review_page_test2_neutral/sample_manifest.json",
+      "before_sha256": "5f4a5f6c00a1b4b0498539d0ec14146d484ebd0fe5ab1cfcf1cc249cdc987695",
+      "after_sha256": "5f4a5f6c00a1b4b0498539d0ec14146d484ebd0fe5ab1cfcf1cc249cdc987695",
+      "unchanged": true
+    },
+    {
+      "path": "eval/human_review_page_test2_neutral/comparison_baseline.json",
+      "before_sha256": "aed1805e88e1e6ed02f1c8274ce1282d84fd0605490ed608dec5f926c8faf8cb",
+      "after_sha256": "aed1805e88e1e6ed02f1c8274ce1282d84fd0605490ed608dec5f926c8faf8cb",
+      "unchanged": true
+    },
+    {
+      "path": "docs/eval/test2/v4_scores/human_confirmed_rescore_0bb2b985279d7afc.json",
+      "before_sha256": "3f8bb242b1661e765504fbf5d98fddb98726d206abd9de98d607ed15f72fa3b6",
+      "after_sha256": "3f8bb242b1661e765504fbf5d98fddb98726d206abd9de98d607ed15f72fa3b6",
+      "unchanged": true
+    },
+    {
+      "path": "docs/eval/test2/v4_predictions/receipt.json",
+      "before_sha256": "41bf997df76b901eaaf514620510451c098ee4c2340da55fa9b98506884bcc66",
+      "after_sha256": "41bf997df76b901eaaf514620510451c098ee4c2340da55fa9b98506884bcc66",
+      "unchanged": true
+    },
+    {
+      "path": "docs/eval/test2/v4_predictions/predictions.json",
+      "before_sha256": "29335f9199d7d19a191fbf6d59e36f580e7af1afdeb6d02ed9779414be1f8f86",
+      "after_sha256": "29335f9199d7d19a191fbf6d59e36f580e7af1afdeb6d02ed9779414be1f8f86",
+      "unchanged": true
+    },
+    {
+      "path": "docs/eval/test2/v4_predictions/traces.json",
+      "before_sha256": "1cfd7b659be2e3478c8f3f9f254c38730a616f2e7ccd6eddcf1ca5aa39143153",
+      "after_sha256": "1cfd7b659be2e3478c8f3f9f254c38730a616f2e7ccd6eddcf1ca5aa39143153",
+      "unchanged": true
+    }
+  ]
+}

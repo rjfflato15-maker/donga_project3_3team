@@ -136,8 +136,13 @@ def change_assignment(contract_id:int,assignment_id:int,req:AssignmentChange,db:
         if req.action=='START' and not owner:raise HTTPException(403,'현재 맡은 사람이 시작할 수 있습니다.')
         if req.action=='COMPLETE' and not (owner or actor.role in {'representative','admin'}):raise HTTPException(403,'현재 맡은 사람 또는 대표가 완료할 수 있습니다.')
         before=payload(row,current)
-        if req.action in {'START','COMPLETE'} and before['is_stale']:
+        if req.action=='START' and before['is_stale']:
             raise HTTPException(409,'맡긴 뒤 계약 자료가 바뀌었습니다. 현재 자료를 기준으로 재배정하세요.')
+        if req.action=='COMPLETE' and row.document_id is not None:
+            doc=db.get(Document,row.document_id)
+            if not doc or doc.contract_id!=contract_id:
+                raise HTTPException(409,'맡긴 문서가 현재 계약에 없습니다. 이 업무를 취소하고 현재 자료에 새 업무를 맡기세요.')
+            require_current(doc)
         updates={'assignment_revision':row.assignment_revision+1,'updated_at':datetime.utcnow()}
         if req.action=='REASSIGN':
             if req.contract_revision!=current[0]:raise HTTPException(409,'최신 계약 revision으로 재배정하세요.')
@@ -162,6 +167,13 @@ def change_assignment(contract_id:int,assignment_id:int,req:AssignmentChange,db:
         if changed!=1:
             db.rollback();raise HTTPException(409,'동시에 업무가 변경되었습니다. 다시 불러오세요.')
         db.flush();db.refresh(row)
-        record(db,actor,'ASSIGNMENT_CHANGED',row,{'action':req.action,'note':req.note,'before':before,'after':payload(row,current)})
+        details={'action':req.action,'note':req.note,'before':before,'after':payload(row,current)}
+        if req.action=='COMPLETE':
+            # Fixing the assigned work can change its basis. Keep both snapshots;
+            # completing a task does not approve or refresh the contract review.
+            details['completion_context']={'was_stale':before['is_stale'],
+                'assigned_basis':{'revision':row.contract_revision,'fingerprint':row.contract_fingerprint},
+                'completed_basis':{'revision':current[0],'fingerprint':current[1]}}
+        record(db,actor,'ASSIGNMENT_CHANGED',row,details)
         db.commit()
         return payload(row,current)

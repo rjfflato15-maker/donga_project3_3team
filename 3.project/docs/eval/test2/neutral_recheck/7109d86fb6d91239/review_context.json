@@ -1,0 +1,49 @@
+{
+  "format": "test2-neutral-recheck-context-v1",
+  "response_sha256": "7109d86fb6d912392b9dda2d22f04e5d2528f1c776234388c8f31832ed3a111c",
+  "selection_id": "885a67dbd6ddaea501d4e75fd94d139ffb6529121fbeb75b28a90553175714a2",
+  "context_source": "동일 대화에서 사용자가 질문하고 Codex가 답한 내용. 원본 응답 JSON은 수정하지 않음.",
+  "assistance": [
+    {
+      "id": "401/40102/supply_amount",
+      "question_number": 1,
+      "kind": "TERM_AND_PROCEDURE_CLARIFICATION",
+      "explanation": "사용자가 원문에서 직접 읽은 값을 묻는다는 점, 공급가액은 부가세를 더하기 전 금액이라는 뜻, 입력·저장 방법을 설명했다.",
+      "answer_or_numeric_value_provided": false
+    },
+    {
+      "id": "404/contract/AMOUNT_MATCH_TAX_INVOICE/40405",
+      "question_number": 19,
+      "kind": "REFERENCE_LOCATION_CLARIFICATION",
+      "explanation": "등록 계약의 비교 금액은 미리 등록한 계약금액이며, 오른쪽 등록 계약 합계 기준과 왼쪽 세금계산서 합계금액을 비교하는 질문이라고 설명했다.",
+      "answer_or_numeric_value_provided": false
+    }
+  ],
+  "with_explanation": {
+    "selected": 2,
+    "counts": {
+      "AGREE": 2,
+      "DISAGREE": 0,
+      "UNCERTAIN": 0,
+      "UNANSWERED": 0
+    },
+    "agreement_among_comparable": 1.0
+  },
+  "without_additional_explanation_in_chat": {
+    "selected": 18,
+    "counts": {
+      "AGREE": 18,
+      "DISAGREE": 0,
+      "UNCERTAIN": 0,
+      "UNANSWERED": 0
+    },
+    "agreement_among_comparable": 1.0
+  },
+  "limitations": [
+    "동일 검수자·동일 원문 반복으로 기억·학습 효과를 분리하지 못함",
+    "선택/직접 입력으로 답변 방식도 바뀜",
+    "2문항에 용어·비교 위치 설명이 제공됨",
+    "기존 81문항의 부분집합을 재확인한 것이므로 고유 사람 확인 범위에 20개를 더하지 않음",
+    "N/A 원문 사실 5문항을 N/A 상태 라벨 직접 확정으로 계산하지 않음"
+  ]
+}
