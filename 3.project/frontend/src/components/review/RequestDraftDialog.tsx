@@ -43,7 +43,7 @@ function buildDrafts(contract: ContractDetail, issue: IssueGroup) {
   return { short, long };
 }
 
-export const RequestDraftDialog: React.FC<Props> = ({ contract, issue, canRecord, onClose, onRecorded }) => {
+export const RequestDraftDialog: React.FC<Props> = ({ contract, issue, isMaskingEnabled, canRecord, onClose, onRecorded }) => {
   const drafts = useMemo(() => buildDrafts(contract, issue), [contract, issue]);
   const [mode, setMode] = useState<'short' | 'long'>('short');
   const [text, setText] = useState(drafts.short);
@@ -118,6 +118,7 @@ export const RequestDraftDialog: React.FC<Props> = ({ contract, issue, canRecord
             <button onClick={copy} className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">문구 복사</button>
             <span className="text-xs text-slate-500">{copied}</span>
           </div>
+          {isMaskingEnabled && <p className="text-xs text-amber-700">거래처에 보낼 문구라 개인정보 가림이 켜져 있어도 실제 거래처 이름이 들어갑니다.</p>}
           <p className="text-xs text-slate-500">앱은 메시지를 직접 보내지 않습니다. 평소 쓰는 방법으로 보낸 뒤 아래에서 기록해 주세요.</p>
           {canRecord && (
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 space-y-2">

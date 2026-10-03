@@ -692,7 +692,7 @@ export const ContractDashboard: React.FC = () => {
                   ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
                   : 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
               }`}
-              title="개인정보(주민·계좌·사업자·상호) 비식별화 On/Off 전환"
+              title="개인정보 가림 켜기/끄기. 화면의 상호·사업자번호·계좌·주민번호를 가립니다. 원문 미리보기 가림은 자동이라 빠지는 곳이 있을 수 있고, 값 수정 칸과 거래처 요청 문구에는 실제 값이 들어갑니다."
             >
               <span className={`w-1.5 h-1.5 rounded-full ${isMaskingEnabled ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`}></span>
               <span>개인정보 {isMaskingEnabled ? 'ON' : 'OFF'}</span>

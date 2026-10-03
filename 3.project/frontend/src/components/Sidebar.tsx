@@ -449,7 +449,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     {isMaskingEnabled ? (
                       <span className="text-emerald-700 flex items-center space-x-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-                        <span>ON (주민·계좌·사업자·상호 보호)</span>
+                        <span title="화면의 상호·사업자번호·계좌·주민번호를 가립니다. 원문 미리보기 가림은 자동이라 빠지는 곳이 있을 수 있고, 값 수정 칸과 거래처 요청 문구에는 실제 값이 들어갑니다.">ON · 화면 표시값 가림</span>
                       </span>
                     ) : (
                       <span className="text-amber-700 flex items-center space-x-1">

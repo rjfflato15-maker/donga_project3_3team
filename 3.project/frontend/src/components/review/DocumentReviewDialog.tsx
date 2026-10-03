@@ -215,6 +215,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
           <div className="min-w-0 bg-slate-500/90 p-4">
             <div className="mb-2 flex items-center gap-2 text-xs text-white/85">
               <span>원문{isPdf && pages > 1 ? ` ${page + 1} / ${pages}쪽` : ''}</span>
+              {isMaskingEnabled && <span className="text-[11px] font-normal text-white/75" title="글자를 자동으로 찾아 가립니다. 일부 상호가 남거나 다른 칸이 가려질 수 있습니다.">자동 가림 · 빠진 곳이 있을 수 있음</span>}
               {isPdf && pages > 1 && (
                 <span className="ml-auto flex gap-1">
                   <button disabled={page === 0} onClick={() => setPage((p) => p - 1)} className="rounded bg-white/15 p-1 disabled:opacity-40" aria-label="이전 쪽"><ChevronLeft className="h-4 w-4" /></button>
@@ -294,6 +295,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
             {editing && (
               <div className="space-y-2 rounded-xl border-2 border-indigo-200 bg-indigo-50/40 p-3 text-sm">
                 <div className="font-semibold text-indigo-900">원문을 보면서 틀린 값만 고치세요</div>
+                {isMaskingEnabled && <div className="rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs text-amber-800">개인정보 가림이 켜져 있어도 수정 칸에는 실제 값이 보입니다. 화면 공유 중이면 주의하세요.</div>}
                 {rows.map(({ key, label }) => {
                   const v = (draft as Record<string, unknown>)[key];
                   const changed = changedKeys.includes(key);
