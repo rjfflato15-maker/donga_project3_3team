@@ -79,6 +79,8 @@ Claude가 전달한 추가 UI 통합 보고도 코드와 대조했다. 값 수�
 
 ## 단계별 작업 기록
 
+화요일 시간 비교용 dev 자료 5건과 분리 업무함 생성·초기화 도구를 준비했다. 실제 업로드·검수 경로에서 누락 A/B는 누락만, 재발행 A/B는 견적 금액 차이만 나타나고 수정 후 해소됨을 확인했다. 사람 작업시간은 아직 측정하지 않았다. [준비 결과](history/27_team_test_materials_and_merge_preparation.md)와 [10/5 병합·재시작 점검표](../operations/team_test_merge_checklist.md)에 정리했으며, 사용자 최종 UI 커밋 전달과 화면 확인 전까지 측정 빌드는 미확정이다.
+
 | 내용 | 기록 |
 | --- | --- |
 | 안정화와 동시 처리 | [안정화](history/01_stabilization.md) |
@@ -109,6 +111,7 @@ Claude가 전달한 추가 UI 통합 보고도 코드와 대조했다. 값 수�
 | test2 오류 분해·신뢰구간·출처별 분석·중립 20문항·화요일 기준·UI 통합 보고 확인 | [추가 분석과 측정 기준 수정](history/25_test2_audit_and_measurement_revision.md) |
 | 중립 20문항 실제 결과·20/20 일치·2문항 설명 이력·원본/정답 보존 | [중립 재확인 완료](../eval/test2/neutral_recheck/README.md) |
 | 값 수정 후 업무 완료·이전본 차단·배정/완료 기준 감사 기록 | [맡긴 일 완료 오류 수정](history/26_assignment_completion_after_correction.md) |
+| dev 기반 시간 과제 5건·참가자 ZIP·진행자 정답 분리·빈 업무함 초기화·10/5 병합 준비 | [화요일 자료와 병합 준비](history/27_team_test_materials_and_merge_preparation.md) |
 
 [전체 문서 목록](../README.md) · [변경할 파일 찾기](../architecture/module_map.md)
 

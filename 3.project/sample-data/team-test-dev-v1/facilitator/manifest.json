@@ -1,0 +1,327 @@
+{
+  "version": "team-test-dev-v1",
+  "derivation": "dev_linear template; fresh fictional values",
+  "dev_source_sha256": {
+    "eval/dataset/dev/case_01/document_01.pdf": "8bdbde16d7d46cc7873a1ee7f76f5bbc31beb975ae2cf63ac3c71bce643d4b8b",
+    "eval/dataset/dev/case_01/document_02.png": "2d0358e3d30e98b2869d187b6f1e74c37d43ed7e115f573e99f9390f14f344b9",
+    "eval/dataset/dev/case_01/document_03.docx": "f1da94085c371fe80700d0267c04a4d41260de6a791b9a1e4805b286ad319a9c",
+    "eval/dataset/dev/case_01/document_04.pdf": "a27e1468b6db7f786936be0524a9c5b2dcfbfcc7020b5fe1573ce5601e7b2c5e",
+    "eval/dataset/dev/case_01/document_05.png": "1ef6600dc3135491bbdc0a4e1c5b238214418d470df043ccad40f6b9b36835ea",
+    "eval/dataset/dev/case_01/document_06.docx": "499bcc7a938e89cf6bfb4d35c442517b79377c6a6111044442976af7c36c8d45"
+  },
+  "guide_commit": "681df4ff6314cfc9a6bc2ee24670c0363f05587f",
+  "guide_source": "3.project/docs/operations/team_test_participant_guide.md",
+  "llm_enabled": false,
+  "nts_mode": "disabled",
+  "cases": [
+    {
+      "case_id": "practice",
+      "label": "연습",
+      "registration": {
+        "title": "연습 · 가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 701",
+        "business_number": "000-00-07018",
+        "contract_amount": 1210000,
+        "amount_basis": "TOTAL",
+        "tax_amount": 110000,
+        "payment_mode": "FULL"
+      },
+      "documents": [
+        {
+          "path": "participants/practice/originals/document_01.pdf",
+          "kind": "contract",
+          "sha256": "06fa7505a2263c365fc0c412c546b9c227ebadce2bda013f1b0df206d77deabc"
+        },
+        {
+          "path": "participants/practice/originals/document_02.pdf",
+          "kind": "estimate",
+          "sha256": "fd0d38580c1cc6661f1192a19099615affdb89319c07dabca6970a5445f18384"
+        },
+        {
+          "path": "participants/practice/originals/document_03.pdf",
+          "kind": "business_registration",
+          "sha256": "de99ba18ce7ebb58b4b063d39218c4a62f38c81bc0a9bfb689db34e0732300fd"
+        },
+        {
+          "path": "participants/practice/originals/document_04.pdf",
+          "kind": "bank_account",
+          "sha256": "ed9340ce5a915cd8a3d6109a0041328063972d807a978d9bf4b6d7a3eb6f4277"
+        },
+        {
+          "path": "participants/practice/originals/document_05.pdf",
+          "kind": "tax_invoice",
+          "sha256": "051f4953b4c937ef31bb3f34e2cbfb77db23b5724a18b70604d1801bc5423621"
+        },
+        {
+          "path": "participants/practice/originals/document_06.pdf",
+          "kind": "inspection_confirmation",
+          "sha256": "8d80b1ad808761bff379fbe2b2f61987699f9da13719e3d59a851d9c3238f5a4"
+        }
+      ],
+      "expected_issue": null,
+      "replacement": null
+    },
+    {
+      "case_id": "task_1_A",
+      "label": "과제 1 · A",
+      "registration": {
+        "title": "과제 1 · A · 가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 702",
+        "business_number": "000-00-07022",
+        "contract_amount": 2310000,
+        "amount_basis": "TOTAL",
+        "tax_amount": 210000,
+        "payment_mode": "FULL"
+      },
+      "documents": [
+        {
+          "path": "participants/task_1_A/originals/document_01.pdf",
+          "kind": "contract",
+          "sha256": "ef98ced2a2800f22f1459503577a9457485f1d84260eb63655a1f10faae17f26"
+        },
+        {
+          "path": "participants/task_1_A/originals/document_02.pdf",
+          "kind": "estimate",
+          "sha256": "b58368ce396953186b06c86aa4f16f011a485c41fe9f47b3978f50340053c29a"
+        },
+        {
+          "path": "participants/task_1_A/originals/document_03.pdf",
+          "kind": "business_registration",
+          "sha256": "8198cae9092c56471147d0cb789af29bbe416f414998c1e74e864046d278403f"
+        },
+        {
+          "path": "participants/task_1_A/originals/document_04.pdf",
+          "kind": "tax_invoice",
+          "sha256": "04ea2cf2e01cb997573c280957ed809d0c96afd353a7bd56bb67b7b2c9c651d4"
+        },
+        {
+          "path": "participants/task_1_A/originals/document_05.pdf",
+          "kind": "inspection_confirmation",
+          "sha256": "11d4bee22015d13d6b67bfefdc1b43ca066ec4d67180cb05abf9df8bf57bc3e3"
+        }
+      ],
+      "expected_issue": {
+        "rule_id": "REQUIRED_DOCUMENTS",
+        "status": "MISSING",
+        "field": "bank_account"
+      },
+      "replacement": null
+    },
+    {
+      "case_id": "task_1_B",
+      "label": "과제 1 · B",
+      "registration": {
+        "title": "과제 1 · B · 가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 703",
+        "business_number": "000-00-07037",
+        "contract_amount": 2530000,
+        "amount_basis": "TOTAL",
+        "tax_amount": 230000,
+        "payment_mode": "FULL"
+      },
+      "documents": [
+        {
+          "path": "participants/task_1_B/originals/document_01.pdf",
+          "kind": "contract",
+          "sha256": "c9b2db4db5129fedc3395a9b32ec910c04d631a3f6f77c5f8f05b96aba7f0113"
+        },
+        {
+          "path": "participants/task_1_B/originals/document_02.pdf",
+          "kind": "estimate",
+          "sha256": "e09a9a2c41b2f69e5887d2b9598e96a287573431bc9c86ce28d4c8d5d14e6f24"
+        },
+        {
+          "path": "participants/task_1_B/originals/document_03.pdf",
+          "kind": "business_registration",
+          "sha256": "f1cf3592f092009bf2463b305037c71e34857b469e9b47d9b37f3b2b82630ecc"
+        },
+        {
+          "path": "participants/task_1_B/originals/document_04.pdf",
+          "kind": "tax_invoice",
+          "sha256": "479451d6f85522b415825d09ed1d9052853f6351f68e1683a6aa517431c89d13"
+        },
+        {
+          "path": "participants/task_1_B/originals/document_05.pdf",
+          "kind": "inspection_confirmation",
+          "sha256": "4c76633f8ab7bee7f7237a2df7bd1338d1ee9f02d76cc1bc33a329a343bd1c00"
+        }
+      ],
+      "expected_issue": {
+        "rule_id": "REQUIRED_DOCUMENTS",
+        "status": "MISSING",
+        "field": "bank_account"
+      },
+      "replacement": null
+    },
+    {
+      "case_id": "task_2_A",
+      "label": "과제 2 · A",
+      "registration": {
+        "title": "과제 2 · A · 가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 704",
+        "business_number": "000-00-07041",
+        "contract_amount": 3410000,
+        "amount_basis": "TOTAL",
+        "tax_amount": 310000,
+        "payment_mode": "FULL"
+      },
+      "documents": [
+        {
+          "path": "participants/task_2_A/originals/document_01.pdf",
+          "kind": "contract",
+          "sha256": "fb3ff0f51373ee939eb573f6cc9ebcf8b9cefeca5ff7b2fb38583195f73d3c6a"
+        },
+        {
+          "path": "participants/task_2_A/originals/document_02.pdf",
+          "kind": "estimate",
+          "sha256": "edc0130c844b33a608994343f7bad8e0c986336ef17f77985e05f2b5c124e930"
+        },
+        {
+          "path": "participants/task_2_A/originals/document_03.pdf",
+          "kind": "business_registration",
+          "sha256": "7c1ad5e4897b1a9f86170ebcae5fd7e298e04e19184e414e11d81d700a566b82"
+        },
+        {
+          "path": "participants/task_2_A/originals/document_04.pdf",
+          "kind": "bank_account",
+          "sha256": "f9d3e1936c46e836e4e18f12fddd047c4faad25063e4b116b688325501a8e132"
+        },
+        {
+          "path": "participants/task_2_A/originals/document_05.pdf",
+          "kind": "tax_invoice",
+          "sha256": "9b91d0a663406566543e58951a24bd6783ea8c31980750cf79dd23627853be2b"
+        },
+        {
+          "path": "participants/task_2_A/originals/document_06.pdf",
+          "kind": "inspection_confirmation",
+          "sha256": "7f28c4d37006cd20bdd1fcf33545396346be1dbcca9958dc75c9a143d121c667"
+        }
+      ],
+      "expected_issue": {
+        "rule_id": "AMOUNT_MATCH_ESTIMATE",
+        "status": "FAIL"
+      },
+      "replacement": {
+        "path": "facilitator/replies/task_2_A/received_document.pdf",
+        "sha256": "3427228c7ce59cc54827f7115c7ee80c5cbd18541e379d56b668e7be06013c34",
+        "initial_total": 3520000,
+        "correct_total": 3410000,
+        "difference": 110000
+      }
+    },
+    {
+      "case_id": "task_2_B",
+      "label": "과제 2 · B",
+      "registration": {
+        "title": "과제 2 · B · 가상 업무지원 시스템 구축",
+        "vendor_name": "가상 솔빛제작소 705",
+        "business_number": "000-00-07056",
+        "contract_amount": 3630000,
+        "amount_basis": "TOTAL",
+        "tax_amount": 330000,
+        "payment_mode": "FULL"
+      },
+      "documents": [
+        {
+          "path": "participants/task_2_B/originals/document_01.pdf",
+          "kind": "contract",
+          "sha256": "bc9cbe8902398a0c8edbd86377d4a509f138b245b341736728a05f66e436004b"
+        },
+        {
+          "path": "participants/task_2_B/originals/document_02.pdf",
+          "kind": "estimate",
+          "sha256": "eaf0fc410a931577901e772c9e6a5219189c878f4847d7bd91e755b98f9cb0c5"
+        },
+        {
+          "path": "participants/task_2_B/originals/document_03.pdf",
+          "kind": "business_registration",
+          "sha256": "68d280671fee54796fb9356be104f1f05894fcbe58d6ed960eb18d56c07c7d71"
+        },
+        {
+          "path": "participants/task_2_B/originals/document_04.pdf",
+          "kind": "bank_account",
+          "sha256": "08b319fab3263838c02f9e82d50548b9a6b78413d0194550c6578683baea3d2d"
+        },
+        {
+          "path": "participants/task_2_B/originals/document_05.pdf",
+          "kind": "tax_invoice",
+          "sha256": "57c4093b9dccee4c68f0c933e1797155ece5740a62c055a539ee7c4817dc85fd"
+        },
+        {
+          "path": "participants/task_2_B/originals/document_06.pdf",
+          "kind": "inspection_confirmation",
+          "sha256": "72a4780ea61f7a6e12276ddfaa92723c82f0163858715862e579f9b703be8724"
+        }
+      ],
+      "expected_issue": {
+        "rule_id": "AMOUNT_MATCH_ESTIMATE",
+        "status": "FAIL"
+      },
+      "replacement": {
+        "path": "facilitator/replies/task_2_B/received_document.pdf",
+        "sha256": "d409583cd705f5ce91012a38b337e953d5b3bdd2d3c3c00b7a08f3ce1dbd2e3b",
+        "initial_total": 3740000,
+        "correct_total": 3630000,
+        "difference": 110000
+      }
+    }
+  ],
+  "file_sha256": {
+    "facilitator/replies/task_2_A/received_document.pdf": "3427228c7ce59cc54827f7115c7ee80c5cbd18541e379d56b668e7be06013c34",
+    "facilitator/replies/task_2_B/received_document.pdf": "d409583cd705f5ce91012a38b337e953d5b3bdd2d3c3c00b7a08f3ce1dbd2e3b",
+    "packages/practice.zip": "488f52df27a68eb5b98505189920b23841a21368ef98fb22aae57cb090d84195",
+    "packages/task_1_A.zip": "af49e0dfddb69f5977d5c6e59d34f560fa76a156f17a73c35bd74464f23a5228",
+    "packages/task_1_B.zip": "b24e12f4a8302c52b180862a53bb847c861865c495a1accefbc87862dbdda412",
+    "packages/task_2_A.zip": "11f11b24d243c7c9217ad449652af1e22b5a82311c0be28f568588e4c4a41a14",
+    "packages/task_2_B.zip": "ceb9f41f47a522681d6bc4d89551f8fce51ce77b385660e30433a3ac89e7b935",
+    "participant_guide.md": "4c4f3d54f3bb878df692fa7bc9db53d07db3812ecd1287e9cbeee392e4ee0e5d",
+    "participants/practice/blank_record.csv": "9d4e53b348264ecd9ba4d4fae578e50e32e62fe1f641c5597fef82202249bb76",
+    "participants/practice/business_rules.md": "e9f3b3297f2f32490e858728e9d4137eec8adbf8f9da2b0c26de73e53515db26",
+    "participants/practice/originals/document_01.pdf": "06fa7505a2263c365fc0c412c546b9c227ebadce2bda013f1b0df206d77deabc",
+    "participants/practice/originals/document_02.pdf": "fd0d38580c1cc6661f1192a19099615affdb89319c07dabca6970a5445f18384",
+    "participants/practice/originals/document_03.pdf": "de99ba18ce7ebb58b4b063d39218c4a62f38c81bc0a9bfb689db34e0732300fd",
+    "participants/practice/originals/document_04.pdf": "ed9340ce5a915cd8a3d6109a0041328063972d807a978d9bf4b6d7a3eb6f4277",
+    "participants/practice/originals/document_05.pdf": "051f4953b4c937ef31bb3f34e2cbfb77db23b5724a18b70604d1801bc5423621",
+    "participants/practice/originals/document_06.pdf": "8d80b1ad808761bff379fbe2b2f61987699f9da13719e3d59a851d9c3238f5a4",
+    "participants/practice/registered_contract.json": "560c5c031a009dcda116d734241ca350b36e96c35e27129b5e9d7dde73fe5d1f",
+    "participants/practice/registered_contract.pdf": "8e1f443b6dd54d10b57eb98440e2ae54895e63e85a89a8ef445226e4adabff63",
+    "participants/task_1_A/blank_record.csv": "9d4e53b348264ecd9ba4d4fae578e50e32e62fe1f641c5597fef82202249bb76",
+    "participants/task_1_A/business_rules.md": "e9f3b3297f2f32490e858728e9d4137eec8adbf8f9da2b0c26de73e53515db26",
+    "participants/task_1_A/originals/document_01.pdf": "ef98ced2a2800f22f1459503577a9457485f1d84260eb63655a1f10faae17f26",
+    "participants/task_1_A/originals/document_02.pdf": "b58368ce396953186b06c86aa4f16f011a485c41fe9f47b3978f50340053c29a",
+    "participants/task_1_A/originals/document_03.pdf": "8198cae9092c56471147d0cb789af29bbe416f414998c1e74e864046d278403f",
+    "participants/task_1_A/originals/document_04.pdf": "04ea2cf2e01cb997573c280957ed809d0c96afd353a7bd56bb67b7b2c9c651d4",
+    "participants/task_1_A/originals/document_05.pdf": "11d4bee22015d13d6b67bfefdc1b43ca066ec4d67180cb05abf9df8bf57bc3e3",
+    "participants/task_1_A/registered_contract.json": "37f7bb227bae54a735f86cd047c09d3bdfd7b8263e0100e0b384424c03cca063",
+    "participants/task_1_A/registered_contract.pdf": "bb91e1f071cdc7f0127672df34e3fe91c7362a9b7c515c41b56b5a100604d3ea",
+    "participants/task_1_B/blank_record.csv": "9d4e53b348264ecd9ba4d4fae578e50e32e62fe1f641c5597fef82202249bb76",
+    "participants/task_1_B/business_rules.md": "e9f3b3297f2f32490e858728e9d4137eec8adbf8f9da2b0c26de73e53515db26",
+    "participants/task_1_B/originals/document_01.pdf": "c9b2db4db5129fedc3395a9b32ec910c04d631a3f6f77c5f8f05b96aba7f0113",
+    "participants/task_1_B/originals/document_02.pdf": "e09a9a2c41b2f69e5887d2b9598e96a287573431bc9c86ce28d4c8d5d14e6f24",
+    "participants/task_1_B/originals/document_03.pdf": "f1cf3592f092009bf2463b305037c71e34857b469e9b47d9b37f3b2b82630ecc",
+    "participants/task_1_B/originals/document_04.pdf": "479451d6f85522b415825d09ed1d9052853f6351f68e1683a6aa517431c89d13",
+    "participants/task_1_B/originals/document_05.pdf": "4c76633f8ab7bee7f7237a2df7bd1338d1ee9f02d76cc1bc33a329a343bd1c00",
+    "participants/task_1_B/registered_contract.json": "77b71ec6c9330869d8ff3b9e8617a08d0ba272789b9a53205a29f39b6dea5fd6",
+    "participants/task_1_B/registered_contract.pdf": "8926e3330ade1642251656935859c1bb6e8b4ca06dd37a3f62b076ac14dbbbb9",
+    "participants/task_2_A/blank_record.csv": "9d4e53b348264ecd9ba4d4fae578e50e32e62fe1f641c5597fef82202249bb76",
+    "participants/task_2_A/business_rules.md": "e9f3b3297f2f32490e858728e9d4137eec8adbf8f9da2b0c26de73e53515db26",
+    "participants/task_2_A/originals/document_01.pdf": "fb3ff0f51373ee939eb573f6cc9ebcf8b9cefeca5ff7b2fb38583195f73d3c6a",
+    "participants/task_2_A/originals/document_02.pdf": "edc0130c844b33a608994343f7bad8e0c986336ef17f77985e05f2b5c124e930",
+    "participants/task_2_A/originals/document_03.pdf": "7c1ad5e4897b1a9f86170ebcae5fd7e298e04e19184e414e11d81d700a566b82",
+    "participants/task_2_A/originals/document_04.pdf": "f9d3e1936c46e836e4e18f12fddd047c4faad25063e4b116b688325501a8e132",
+    "participants/task_2_A/originals/document_05.pdf": "9b91d0a663406566543e58951a24bd6783ea8c31980750cf79dd23627853be2b",
+    "participants/task_2_A/originals/document_06.pdf": "7f28c4d37006cd20bdd1fcf33545396346be1dbcca9958dc75c9a143d121c667",
+    "participants/task_2_A/registered_contract.json": "1e5b7d6a5998e6feb19222bbd041a3bb45ee24111ca3790f706d6ee2e8d27400",
+    "participants/task_2_A/registered_contract.pdf": "e85369850dde7344e46fb6df906e607d79d61171b4b26372a17110ed4cebab28",
+    "participants/task_2_B/blank_record.csv": "9d4e53b348264ecd9ba4d4fae578e50e32e62fe1f641c5597fef82202249bb76",
+    "participants/task_2_B/business_rules.md": "e9f3b3297f2f32490e858728e9d4137eec8adbf8f9da2b0c26de73e53515db26",
+    "participants/task_2_B/originals/document_01.pdf": "bc9cbe8902398a0c8edbd86377d4a509f138b245b341736728a05f66e436004b",
+    "participants/task_2_B/originals/document_02.pdf": "eaf0fc410a931577901e772c9e6a5219189c878f4847d7bd91e755b98f9cb0c5",
+    "participants/task_2_B/originals/document_03.pdf": "68d280671fee54796fb9356be104f1f05894fcbe58d6ed960eb18d56c07c7d71",
+    "participants/task_2_B/originals/document_04.pdf": "08b319fab3263838c02f9e82d50548b9a6b78413d0194550c6578683baea3d2d",
+    "participants/task_2_B/originals/document_05.pdf": "57c4093b9dccee4c68f0c933e1797155ece5740a62c055a539ee7c4817dc85fd",
+    "participants/task_2_B/originals/document_06.pdf": "72a4780ea61f7a6e12276ddfaa92723c82f0163858715862e579f9b703be8724",
+    "participants/task_2_B/registered_contract.json": "225e1fb2cc291f44ce1d28b74aa6c9f3e94b07e51e5559925843d77470b41f09",
+    "participants/task_2_B/registered_contract.pdf": "a2587e6a8a88709d52dca64757e0228b82b4d9714e14bc9106662ff3847e8005"
+  }
+}

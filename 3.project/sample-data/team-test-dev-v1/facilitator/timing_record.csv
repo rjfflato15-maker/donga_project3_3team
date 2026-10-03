@@ -1,0 +1,1 @@
+﻿participant_id,app_developer,app_experience,manual_experience,task,variant,method,order,start_at,end_at,excluded_pause_seconds,observed_seconds,completed_seconds,machine_wait_seconds,cap_seconds,timed_out,completion_status,success_without_help,help_count,critical_error,notes,app_commit,ui_commit,dataset_version,llm_mode,nts_mode
