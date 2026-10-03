@@ -312,6 +312,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                         <span>{label}</span>
                         {changed ? <b className="text-indigo-700">· 바뀜 (사람 확인으로 기록)</b>
                           : already ? <span className="text-emerald-700">· 이미 사람 확인</span>
+                          : v == null || v === '' || v === 'UNKNOWN' ? <span className="text-amber-700">· 비어 있음 — 원문을 보고 입력하세요</span>
                           : (
                             <label className="ml-auto inline-flex cursor-pointer items-center gap-1 text-[11px] text-slate-600">
                               <input type="checkbox" checked={confirmed.has(key)} onChange={() => toggleConfirmed(key)} className="h-3.5 w-3.5 accent-emerald-600" />

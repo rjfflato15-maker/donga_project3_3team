@@ -89,7 +89,7 @@ export const AssistantPreview: React.FC<Props> = ({ contract, canEdit, onAssign,
               {it.assignment_draft && onAssign && canEdit && (
                 moved.has(it.issue_id)
                   ? <span className="text-xs font-semibold text-emerald-700">아래 ‘맡기기’ 칸에 옮겼어요</span>
-                  : <button onClick={() => { onAssign({ ...it.assignment_draft!, document_id: it.document_id }); setMoved(new Set(moved).add(it.issue_id)); }}
+                  : <button onClick={() => { onAssign({ ...it.assignment_draft!, title: `${ruleLabel(it.rule_id)} · ${it.assignment_draft!.title}`, document_id: it.document_id }); setMoved(new Set(moved).add(it.issue_id)); }}
                       className="rounded-lg border border-slate-300 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50">담당자에게 맡기기로 옮기기</button>
               )}
               {it.next_action === 'VERIFY_EXTRACTION_FIRST' && it.document_id != null && onOpenDocument && (

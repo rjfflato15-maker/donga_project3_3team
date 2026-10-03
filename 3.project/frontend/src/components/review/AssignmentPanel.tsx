@@ -113,7 +113,9 @@ export const AssignmentPanel: React.FC<{ contract: ContractDetail; prefill?: { t
       <ul className="space-y-2">
         {active.map((a) => {
           const mine = a.assignee_id === me;
-          const canComplete = (mine || rep) && !a.is_stale;
+          // 맡은 일을 처리하면 자료가 바뀌는 게 정상이다. 서류가 재발행으로 바뀐 경우만 끝낼 수 없다
+          const replaced = a.document_id != null && !contract.documents.some((d) => d.document_id === a.document_id && d.version?.is_current !== false);
+          const canComplete = (mine || rep) && !replaced;
           const canCancel = a.assigner_id === me || rep;
           return (
             <li key={a.assignment_id} className={`rounded-xl border p-3 text-sm ${a.is_stale ? 'border-amber-300 bg-amber-50' : 'border-slate-200'}`}>
@@ -124,7 +126,7 @@ export const AssignmentPanel: React.FC<{ contract: ContractDetail; prefill?: { t
                 <span className="ml-auto text-xs text-slate-500">{a.assigner_name} → <b className="text-slate-700">{a.assignee_name}{mine ? ' (나)' : ''}</b>{a.due_on && <> · 기한 <span className={a.overdue ? 'font-bold text-rose-600' : ''}>{a.due_on}{a.overdue ? ' 지남' : ''}</span></>}</span>
               </div>
               {a.memo && <p className="mt-1 whitespace-pre-wrap text-slate-600">{a.memo}</p>}
-              {a.is_stale && <p className="mt-1 text-xs text-amber-800">맡긴 뒤 계약 자료가 바뀌었습니다. {a.document_id ? '이 서류의 일은 취소하고 새로 맡기세요.' : '최신 자료로 다시 맡기거나 취소하세요.'}</p>}
+              {a.is_stale && <p className="mt-1 text-xs text-amber-800">{replaced ? '이 서류가 재발행본으로 바뀌었습니다. 이 일은 취소하고 새 서류에 다시 맡기세요.' : '맡긴 뒤 계약 자료가 바뀌었습니다. 이 일 때문에 고친 거라면 끝냄으로 기록하세요.'}</p>}
               <div className="mt-2 flex flex-wrap gap-2">
                 {mine && a.status === 'OPEN' && !a.is_stale && <button disabled={busy} onClick={() => void change(a, 'START', '시작')} className="rounded-lg bg-indigo-600 px-2.5 py-1 text-xs font-semibold text-white disabled:opacity-40">시작</button>}
                 {canComplete && <button disabled={busy} onClick={() => { setActing({ id: a.assignment_id, action: 'COMPLETE' }); setNote(''); }} className="rounded-lg border border-emerald-300 px-2.5 py-1 text-xs font-semibold text-emerald-700">끝냄</button>}
