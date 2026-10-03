@@ -21,9 +21,13 @@ def prepare_item(check,data):
     request=None;internal=None
     action='VERIFY_EXTRACTION_FIRST'
     if check.rule_id=='BUSINESS_STATUS':
-        action='MANUAL_CONFIRMATION'
-        internal={'title':'사업자 영업 상태 확인 방법 검토','memo':'국세청 연동이 꺼져 있습니다. 이 미리보기는 영업 상태를 조회하지 않습니다. 담당자가 확인 근거를 남기세요.'}
-    elif check.rule_id in {'ORIGINAL_FILE','DOCUMENT_PROCESSING','DOCUMENT_TYPE','AMOUNT_BASIS'}:
+        # This preview always uses DisabledNtsClient. Unqueried is a notice,
+        # not an actionable defect or a vendor resubmission request.
+        action='INFORMATIONAL_NOTICE'
+    elif check.rule_id in {'AMOUNT_EXTRACTION','ORIGINAL_FILE','DOCUMENT_PROCESSING','DOCUMENT_TYPE'} or (check.rule_id=='BUSINESS_NO_MATCH' and check.status.value=='REVIEW'):
+        action='VERIFY_EXTRACTION_FIRST'
+        internal={'title':'원문에서 읽은 값부터 확인','memo':check.message}
+    elif check.rule_id=='AMOUNT_BASIS':
         action='INTERNAL_REVIEW'
         internal={'title':'원문·분류·등록 기준 확인','memo':check.message}
     elif kind in INTERNAL_DOCUMENTS:
@@ -42,7 +46,8 @@ def prepare_item(check,data):
             'reason':check.message,'expected':check.expected,'actual':check.actual,
             'document_id':doc['document_id'] if doc else None,'next_action':action,
             'recheck':{'tool':'LOCAL_RULE_RECHECK','completed':True,'revision':data['revision'],'fingerprint':data['fingerprint']},
-            'request_draft':request,'assignment_draft':internal,'persisted':False}
+            'request_draft':request,'assignment_draft':internal,'persisted':False,
+            'actionable':action!='INFORMATIONAL_NOTICE'}
 
 
 def assistant_preview(db,cid,revision,fingerprint,issue_ids=None):
@@ -64,7 +69,8 @@ def assistant_preview(db,cid,revision,fingerprint,issue_ids=None):
     require_unchanged(db,data)
     return {'contract_id':cid,'revision':data['revision'],'fingerprint':data['fingerprint'],
             'preview_only':True,'persisted':False,'automatic_send':False,'llm_used':False,'external_api_calls':0,
-            'summary':data['summary'].model_dump(),'items':items,'item_count':len(items),'recheck_differences':differences,
+            'summary':data['summary'].model_dump(),'items':items,'item_count':len(items),
+            'actionable_item_count':sum(i['actionable'] for i in items),'recheck_differences':differences,
             'steps':[{'tool':'READ_CURRENT_STORED_EVIDENCE','status':'COMPLETED','document_count':len(data['documents'])},
                      {'tool':'LOCAL_RULE_RECHECK','status':'COMPLETED','writes':0,'nts_mode':'disabled'},
                      {'tool':'PREPARE_DRAFTS','status':'COMPLETED','saved':0,'sent':0}]}
