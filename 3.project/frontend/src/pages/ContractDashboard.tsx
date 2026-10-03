@@ -13,6 +13,8 @@ import { ContractReviewOverview } from '../components/review/ContractReviewOverv
 import { DocumentReviewDialog } from '../components/review/DocumentReviewDialog';
 import { WorkQueueDashboard, DashboardItem } from '../components/review/WorkQueueDashboard';
 import { ApprovalPanel } from '../components/review/ApprovalPanel';
+import { AssignmentPanel } from '../components/review/AssignmentPanel';
+import { MyAssignmentsStrip } from '../components/review/MyAssignmentsStrip';
 import { WorkStatsStrip } from '../components/review/WorkStatsStrip';
 import { DocumentViewerModal } from '../components/DocumentViewerModal';
 import { UploadModal } from '../components/UploadModal';
@@ -467,6 +469,7 @@ export const ContractDashboard: React.FC = () => {
         if (isPilot) {
           return (
             <div className="space-y-5">
+              <MyAssignmentsStrip refreshKey={contracts} contracts={contracts} onOpen={(id) => handleSelectContract(id, 'contracts', 'detail')} />
               <WorkQueueDashboard
                 contracts={contracts as DashboardItem[]}
                 isMaskingEnabled={isMaskingEnabled}
@@ -605,6 +608,7 @@ export const ContractDashboard: React.FC = () => {
               recentUploadNames={recentUpload?.contractId === currentContract.contract_id ? recentUpload.names : undefined}
             />
             {isPilot && <ApprovalPanel contract={currentContract} onChanged={() => refreshCurrentContract()} />}
+            {isPilot && <AssignmentPanel contract={currentContract} />}
             {isPilot && <PilotReviewPanel contract={currentContract} onChanged={refreshCurrentContract} historyOnly />}
           </div>
         );
