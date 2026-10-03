@@ -75,7 +75,7 @@ v3 test와 v4 test2의 정답 확정·예측 보존·확정 채점과 요청한 
 
 추가 분석에서 test2 가드 오류는 금액 빈칸 5개를 포함한 빈칸/UNKNOWN 9개였다. 가드 없는 조건은 빈칸 4개와 잘못 채운 금액 1개다. 필드 204칸의 정답 출처는 사람 직접 라벨 확인 39개·사람 관찰 후 기준 적용 1개·AI 일치 164개로 나누었다. [추가 분석](../eval/test2/result_audit/README.md)과 [중립 20문항 안내](../../eval/human_review_page_test2_neutral/README.md)에 근거를 보존했다. test3는 [동결 뒤 계획](../eval/test2/test3_plan.md)만 작성했다.
 
-Claude가 전달한 추가 UI 통합 보고도 코드와 대조했다. 값 수정 후 맡기기 COMPLETE가 stale 이유로 막히는 문제는 실제로 남아 있다. 현재본의 완료와 이전본의 차단을 구분하는 방향을 검토 기록에 남겼으며 아직 정책은 바꾸지 않았다. ZIP의 masked=false 감사 기록은 확인했고, 실제 버튼 다운로드·취소·원본 확인 흐름은 병합 후 사용자 화면 검증에 포함한다.
+Claude가 전달한 추가 UI 통합 보고도 코드와 대조했다. 값 수정 후 맡기기 COMPLETE가 stale 이유로 막히는 문제는 [현재본 완료 허용·이전본 차단](history/26_assignment_completion_after_correction.md)으로 수정했다. 권한·처리 메모·동시 수정 검사는 유지하고 배정/완료 당시 자료 기준을 감사 기록에 남긴다. 업무 완료로 계약 결재가 바뀌지 않는다. ZIP의 masked=false 감사 기록은 확인했고, 실제 버튼 다운로드·취소·원본 확인 흐름은 병합 후 사용자 화면 검증에 포함한다.
 
 ## 단계별 작업 기록
 
@@ -108,6 +108,7 @@ Claude가 전달한 추가 UI 통합 보고도 코드와 대조했다. 값 수�
 | 계약 ZIP·PNG 표시 가림·칸별 부분 수정·도우미/요약·작업시간 비교 초안 | [고객 점검 후 보완](history/24_contract_bundle_and_display_alignment.md) |
 | test2 오류 분해·신뢰구간·출처별 분석·중립 20문항·화요일 기준·UI 통합 보고 확인 | [추가 분석과 측정 기준 수정](history/25_test2_audit_and_measurement_revision.md) |
 | 중립 20문항 실제 결과·20/20 일치·2문항 설명 이력·원본/정답 보존 | [중립 재확인 완료](../eval/test2/neutral_recheck/README.md) |
+| 값 수정 후 업무 완료·이전본 차단·배정/완료 기준 감사 기록 | [맡긴 일 완료 오류 수정](history/26_assignment_completion_after_correction.md) |
 
 [전체 문서 목록](../README.md) · [변경할 파일 찾기](../architecture/module_map.md)
 

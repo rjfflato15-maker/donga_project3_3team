@@ -184,7 +184,19 @@ document_id와 due_on은 선택이다. 생성 응답(201):
 
 action은 START/COMPLETE/CANCEL/REASSIGN/UPDATE. START는 현재 맡은 사람, COMPLETE는 현재 맡은 사람 또는 대표, 재배정·취소·내용 변경은 맡긴 사람 또는 대표만 가능하다. 모든 변경은 note와 최신 assignment_revision이 필요하고 성공마다 이 값이 1 증가한다. REASSIGN은 assignee_id와 현재 contract_revision도 필수며 OPEN으로 돌아간다. UPDATE/REASSIGN은 title/memo/due_on 변경 가능, due_on=null은 기한 해제다. 완료·취소는 되돌릴 수 없고 필요하면 새 업무를 생성한다. 변경 이력은 기존 `/api/pilot/audit?contract_id=3`의 ASSIGNMENT_CREATED/ASSIGNMENT_CHANGED에 before/after/note로 남긴다.
 
-계약 자료 revision/fingerprint가 바뀌면 is_stale=true다. 과거 자료의 업무를 START/COMPLETE하면 409다. 계약 단위 업무는 최신 자료로 재배정할 수 있고, 재발행된 이전 문서의 업무는 취소 후 새 문서에 새 업무를 맡긴다. 맡기기는 계약 revision/fingerprint와 결재 상태를 변경하지 않는다. 기한은 KST 날짜로 overdue를 계산한다. 기한을 놓쳤다고 자동 상태 변경하지 않는다.
+계약 자료 revision/fingerprint가 바뀌면 is_stale=true다. **START는 stale이면 기존처럼 409지만, COMPLETE는 stale이어도 허용한다.** 맡은 값 수정으로 자료가 바뀌어도 일을 끝낼 수 있다. document_id가 있으면 해당 문서가 같은 계약의 현재본이어야 하며, 재발행된 이전본·삭제된 문서는 409다. document_id=null인 계약 단위 업무도 완료할 수 있다. 현재 맡은 사람·대표·관리자의 완료 권한, 필수 note, 최신 assignment_revision 검사, 종료된 업무의 재변경 차단은 유지한다.
+
+```json
+{"action":"COMPLETE","assignment_revision":2,"note":"원문과 대조해 합계금액 수정 완료"}
+```
+
+요청 형식은 그대로이며 COMPLETE에 contract_revision은 보내지 않는다. 원래 배정 시점의 contract_revision/fingerprint를 덮어쓰지 않아 완료 응답도 is_stale=true일 수 있다. 이는 배정 이후 자료 변경 여부이며 완료 실패를 뜻하지 않는다. 완료한 업무는 기본 mine 목록에서 빠지고 include_closed=true에서 확인할 수 있다. 완료 감사 이벤트는 before/after/note에 다음 completion_context를 추가한다.
+
+```json
+{"completion_context":{"was_stale":true,"assigned_basis":{"revision":8,"fingerprint":"배정 당시 해시"},"completed_basis":{"revision":9,"fingerprint":"완료 당시 해시"}}}
+```
+
+계약 단위 업무는 최신 자료로 재배정할 수 있고, 재발행된 이전 문서의 업무는 취소 후 새 문서에 새 업무를 맡긴다. 맡기기는 계약 revision/fingerprint·검수 결과·결재 상태를 변경하지 않는다. 업무 완료는 계약 승인이나 모든 문제 해결을 뜻하지 않는다. 기한은 KST 날짜로 overdue를 계산한다. 기한을 놓쳤다고 자동 상태 변경하지 않는다. frontend의 e6fb91c에 준비된 끝냄 버튼은 이 백엔드를 가져와 재시작하면 같은 조건으로 사용할 수 있다.
 
 로그인 실패 401, 권한 부족 403, 다른 계약의 업무/문서·없는 계약은 404, 오래된 assignment_revision/contract_revision·이미 종료/자료 변경은 `409 {"detail":"다른 사용자가 업무를 변경했습니다. 새로 불러오세요."}` 등 구체 사유, 비활성 담당자는 400, 스키마 누락·잘못된 action은 422다. 대표가 다른 사람의 업무를 완료해도 결재가 자동 완료되지 않는다.
 ## 계약 요약 문장 (2026-10-03)
