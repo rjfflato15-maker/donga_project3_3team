@@ -1,0 +1,4221 @@
+{
+  "sha256": "1fde7bf5cd38979838e405571683a9414198723cd9a6c4855478681df7d107c2",
+  "payload": {
+    "rule": {
+      "documents": {
+        "40101": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40102": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 1 견적서",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40103": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 1 사업자등록증",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": null,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40104": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 1 통장사본",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": null,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40105": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 1 전자세금계산서",
+            "company_name": "가상 남쪽연구소 1",
+            "business_registration_no": "000-00-04011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40106": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 1 검수확인서",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40201": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40202": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 2 견적서",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40203": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 2 사업자등록증",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": null,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40204": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 2 통장사본",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": null,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40205": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 2 전자세금계산서",
+            "company_name": "가상 남쪽연구소 2",
+            "business_registration_no": "000-00-04025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40206": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 2 검수확인서",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40301": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40302": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "사업자 견적서",
+            "company_name": "사업자",
+            "business_registration_no": "000-00-04030",
+            "amount": null,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40303": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 3 사업자등록증",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": null,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40304": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 3 통장사본",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": null,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40305": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 3 전자세금계산서",
+            "company_name": "가상 남쪽연구소 3",
+            "business_registration_no": "000-00-04030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40306": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 3 검수확인서",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40401": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": 4973100.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 4973100.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40402": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "사업자 견적서",
+            "company_name": "사업자",
+            "business_registration_no": "000-00-04044",
+            "amount": null,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40403": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 4 사업자등록증",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": null,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40404": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 4 통장사본",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": null,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40405": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 4 전자세금계산서",
+            "company_name": "가상 남쪽연구소 4",
+            "business_registration_no": "000-00-04044",
+            "amount": 4973100.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 4973100.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40406": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 4 검수확인서",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": 4973100.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 4973100.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40501": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40502": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 5 견적서",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40503": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 5 사업자등록증",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": null,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40504": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 5 통장사본",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": null,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40505": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 5 전자세금계산서",
+            "company_name": "가상 남쪽연구소 5",
+            "business_registration_no": "000-00-04059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40506": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 5 검수확인서",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40601": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40602": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 6 견적서",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40603": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 6 사업자등록증",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": null,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40604": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 6 통장사본",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": null,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40605": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 6 전자세금계산서",
+            "company_name": "가상 남쪽연구소 6",
+            "business_registration_no": "000-00-04063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40606": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 6 검수확인서",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        }
+      },
+      "contracts": {
+        "401": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40101",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40102",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40103",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40105",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40102",
+              "expected": "4,521,000원",
+              "actual": "4,521,000원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40105",
+              "expected": "4,521,000원",
+              "actual": "4,521,000원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "402": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40201",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40202",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40203",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40205",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40202",
+              "expected": "4,671,700원",
+              "actual": "4,671,700원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40205",
+              "expected": "4,671,700원",
+              "actual": "4,671,700원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "403": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40301",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40302",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40303",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40305",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_EXTRACTION",
+              "status": "REVIEW",
+              "field": "40302",
+              "expected": "공급가액·세액·합계",
+              "actual": "기준 미확인",
+              "message": "document_02.pdf: 금액 의미를 확인하고 추출값을 보완하세요."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40305",
+              "expected": "4,822,400원",
+              "actual": "4,822,400원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "404": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40401",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40402",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40403",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40405",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_EXTRACTION",
+              "status": "REVIEW",
+              "field": "40402",
+              "expected": "공급가액·세액·합계",
+              "actual": "기준 미확인",
+              "message": "document_02.pdf: 금액 의미를 확인하고 추출값을 보완하세요."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40405",
+              "expected": "4,973,100원",
+              "actual": "4,973,100원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "405": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40501",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40502",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40503",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40505",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40502",
+              "expected": "5,123,800원",
+              "actual": "5,123,800원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40505",
+              "expected": "5,123,800원",
+              "actual": "5,123,800원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "406": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40601",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40602",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40603",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40605",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40602",
+              "expected": "5,274,500원",
+              "actual": "5,274,500원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40605",
+              "expected": "5,274,500원",
+              "actual": "5,274,500원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        }
+      }
+    },
+    "llm": {
+      "documents": {
+        "40101": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 남쪽연구소 1",
+            "business_registration_no": "0000004011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40102": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 1 견적서",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "0000004011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40103": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 1 사업자등록증",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "0000004011",
+            "amount": null,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40104": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 1 통장사본",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "0000004011",
+            "amount": null,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40105": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 1 전자세금계산서",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "0000004011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40106": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 1 검수확인서",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "0000004011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40201": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 남쪽연구소 2",
+            "business_registration_no": "0000004025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40202": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 2 견적서",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "0000004025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40203": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 2 사업자등록증",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "0000004025",
+            "amount": null,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40204": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 2 통장사본",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "0000004025",
+            "amount": null,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40205": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 2 전자세금계산서",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "0000004025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40206": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 2 검수확인서",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "0000004025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40301": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 남쪽연구소 3",
+            "business_registration_no": "0000004030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40302": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "사업자 견적서",
+            "company_name": null,
+            "business_registration_no": "0000004030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40303": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 3 사업자등록증",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "0000004030",
+            "amount": null,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40304": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 3 통장사본",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "0000004030",
+            "amount": null,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40305": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 3 전자세금계산서",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "0000004030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40306": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 3 검수확인서",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "0000004030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40401": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "0000004044",
+            "amount": 4973100.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 4973100.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40402": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "사업자 견적서",
+            "company_name": null,
+            "business_registration_no": "0000004044",
+            "amount": 5000000.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 5000000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40403": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 4 사업자등록증",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "0000004044",
+            "amount": null,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40404": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 4 통장사본",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "0000004044",
+            "amount": null,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40405": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 4 전자세금계산서",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "0000004044",
+            "amount": 4973100.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 4973100.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40406": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 4 검수확인서",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "0000004044",
+            "amount": 4973100.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 4973100.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40501": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "0000004059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40502": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 5 견적서",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "0000004059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40503": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 5 사업자등록증",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "0000004059",
+            "amount": null,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40504": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 5 통장사본",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "0000004059",
+            "amount": null,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40505": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 5 전자세금계산서",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "0000004059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40506": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 5 검수확인서",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "0000004059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40601": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 남쪽연구소 6",
+            "business_registration_no": "0000004063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40602": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 6 견적서",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "0000004063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40603": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 6 사업자등록증",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "0000004063",
+            "amount": null,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40604": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 6 통장사본",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "0000004063",
+            "amount": null,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40605": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 6 전자세금계산서",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "0000004063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40606": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 6 검수확인서",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "0000004063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        }
+      },
+      "contracts": {
+        "401": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40101",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40102",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40103",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40105",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40102",
+              "expected": "4,521,000원",
+              "actual": "4,521,000원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40105",
+              "expected": "4,521,000원",
+              "actual": "4,521,000원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "402": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40201",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40202",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40203",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40205",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40202",
+              "expected": "4,671,700원",
+              "actual": "4,671,700원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40205",
+              "expected": "4,671,700원",
+              "actual": "4,671,700원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "403": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40301",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40302",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40303",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40305",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40302",
+              "expected": "4,822,400원",
+              "actual": "4,822,400원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40305",
+              "expected": "4,822,400원",
+              "actual": "4,822,400원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "404": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40401",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40402",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40403",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40405",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_COMPONENTS",
+              "status": "FAIL",
+              "field": "40402",
+              "expected": "4,973,100원",
+              "actual": "5,000,000원",
+              "message": "document_02.pdf: 공급가액과 세액의 합이 표시된 합계와 다릅니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "FAIL",
+              "field": "40402",
+              "expected": "4,973,100원",
+              "actual": "5,000,000원",
+              "message": "document_02.pdf: 합계 기준 26,900원 차이."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40405",
+              "expected": "4,973,100원",
+              "actual": "4,973,100원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "405": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40501",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40502",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40503",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40505",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40502",
+              "expected": "5,123,800원",
+              "actual": "5,123,800원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40505",
+              "expected": "5,123,800원",
+              "actual": "5,123,800원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "406": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40601",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40602",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40603",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40605",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40602",
+              "expected": "5,274,500원",
+              "actual": "5,274,500원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40605",
+              "expected": "5,274,500원",
+              "actual": "5,274,500원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        }
+      }
+    },
+    "hybrid_unguarded": {
+      "documents": {
+        "40101": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40102": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 1 견적서",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40103": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 1 사업자등록증",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": null,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40104": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 1 통장사본",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": null,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40105": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 1 전자세금계산서",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40106": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 1 검수확인서",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40201": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40202": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 2 견적서",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40203": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 2 사업자등록증",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": null,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40204": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 2 통장사본",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": null,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40205": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 2 전자세금계산서",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40206": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 2 검수확인서",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40301": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40302": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "사업자 견적서",
+            "company_name": null,
+            "business_registration_no": "0000004030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40303": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 3 사업자등록증",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": null,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40304": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 3 통장사본",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": null,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40305": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 3 전자세금계산서",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40306": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 3 검수확인서",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40401": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": 4973100.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 4973100.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40402": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "사업자 견적서",
+            "company_name": null,
+            "business_registration_no": "0000004044",
+            "amount": 5000000.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 5000000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40403": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 4 사업자등록증",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": null,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40404": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 4 통장사본",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": null,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40405": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 4 전자세금계산서",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": 4973100.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 4973100.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40406": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 4 검수확인서",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": 4973100.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 4973100.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40501": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40502": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 5 견적서",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40503": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 5 사업자등록증",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": null,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40504": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 5 통장사본",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": null,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40505": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 5 전자세금계산서",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40506": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 5 검수확인서",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40601": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40602": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 6 견적서",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40603": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 6 사업자등록증",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": null,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40604": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 6 통장사본",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": null,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40605": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 6 전자세금계산서",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40606": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 6 검수확인서",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        }
+      },
+      "contracts": {
+        "401": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40101",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40102",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40103",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40105",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40102",
+              "expected": "4,521,000원",
+              "actual": "4,521,000원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40105",
+              "expected": "4,521,000원",
+              "actual": "4,521,000원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "402": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40201",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40202",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40203",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40205",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40202",
+              "expected": "4,671,700원",
+              "actual": "4,671,700원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40205",
+              "expected": "4,671,700원",
+              "actual": "4,671,700원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "403": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40301",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40302",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40303",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40305",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40302",
+              "expected": "4,822,400원",
+              "actual": "4,822,400원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40305",
+              "expected": "4,822,400원",
+              "actual": "4,822,400원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "404": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40401",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40402",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40403",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40405",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_COMPONENTS",
+              "status": "FAIL",
+              "field": "40402",
+              "expected": "4,973,100원",
+              "actual": "5,000,000원",
+              "message": "document_02.pdf: 공급가액과 세액의 합이 표시된 합계와 다릅니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "FAIL",
+              "field": "40402",
+              "expected": "4,973,100원",
+              "actual": "5,000,000원",
+              "message": "document_02.pdf: 합계 기준 26,900원 차이."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40405",
+              "expected": "4,973,100원",
+              "actual": "4,973,100원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "405": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40501",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40502",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40503",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40505",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40502",
+              "expected": "5,123,800원",
+              "actual": "5,123,800원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40505",
+              "expected": "5,123,800원",
+              "actual": "5,123,800원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "406": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40601",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40602",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40603",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40605",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40602",
+              "expected": "5,274,500원",
+              "actual": "5,274,500원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40605",
+              "expected": "5,274,500원",
+              "actual": "5,274,500원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        }
+      }
+    },
+    "hybrid_guarded": {
+      "documents": {
+        "40101": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40102": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 1 견적서",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40103": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 1 사업자등록증",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": null,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40104": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 1 통장사본",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": null,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40105": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 1 전자세금계산서",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40106": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 1 검수확인서",
+            "company_name": "가상 새봄기획 1",
+            "business_registration_no": "000-00-04011",
+            "amount": 4521000.0,
+            "issue_date": "2026-09-16",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4110000.0,
+            "tax_amount": 411000.0,
+            "total_amount": 4521000.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40201": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40202": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 2 견적서",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40203": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 2 사업자등록증",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": null,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40204": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 2 통장사본",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": null,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40205": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 2 전자세금계산서",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40206": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 2 검수확인서",
+            "company_name": "가상 새봄기획 2",
+            "business_registration_no": "000-00-04025",
+            "amount": 4671700.0,
+            "issue_date": "2026-09-17",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4247000.0,
+            "tax_amount": 424700.0,
+            "total_amount": 4671700.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40301": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40302": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "사업자 견적서",
+            "company_name": null,
+            "business_registration_no": "000-00-04030",
+            "amount": null,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40303": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 3 사업자등록증",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": null,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40304": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 3 통장사본",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": null,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40305": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 3 전자세금계산서",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40306": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 3 검수확인서",
+            "company_name": "가상 새봄기획 3",
+            "business_registration_no": "000-00-04030",
+            "amount": 4822400.0,
+            "issue_date": "2026-09-18",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4384000.0,
+            "tax_amount": 438400.0,
+            "total_amount": 4822400.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40401": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": 4973100.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 4973100.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40402": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "사업자 견적서",
+            "company_name": null,
+            "business_registration_no": "000-00-04044",
+            "amount": null,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40403": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 4 사업자등록증",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": null,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40404": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 4 통장사본",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": null,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40405": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 4 전자세금계산서",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": 4973100.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 4973100.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40406": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 4 검수확인서",
+            "company_name": "가상 새봄기획 4",
+            "business_registration_no": "000-00-04044",
+            "amount": 4973100.0,
+            "issue_date": "2026-09-19",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4521000.0,
+            "tax_amount": 452100.0,
+            "total_amount": 4973100.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40501": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40502": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 5 견적서",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40503": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 5 사업자등록증",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": null,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40504": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 5 통장사본",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": null,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40505": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 5 전자세금계산서",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40506": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 5 검수확인서",
+            "company_name": "가상 새봄기획 5",
+            "business_registration_no": "000-00-04059",
+            "amount": 5123800.0,
+            "issue_date": "2026-09-20",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4658000.0,
+            "tax_amount": 465800.0,
+            "total_amount": 5123800.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40601": {
+          "document_type": "contract",
+          "fields": {
+            "title": "가상 업무지원 시스템 구축",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40602": {
+          "document_type": "estimate",
+          "fields": {
+            "title": "가상 새봄기획 6 견적서",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40603": {
+          "document_type": "business_registration",
+          "fields": {
+            "title": "가상 새봄기획 6 사업자등록증",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": null,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40604": {
+          "document_type": "bank_account",
+          "fields": {
+            "title": "가상 새봄기획 6 통장사본",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": null,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": null,
+            "tax_amount": null,
+            "total_amount": null,
+            "amount_basis": "UNKNOWN",
+            "amount_scope": "UNKNOWN"
+          }
+        },
+        "40605": {
+          "document_type": "tax_invoice",
+          "fields": {
+            "title": "가상 남쪽연구소 6 전자세금계산서",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        },
+        "40606": {
+          "document_type": "inspection_confirmation",
+          "fields": {
+            "title": "가상 새봄기획 6 검수확인서",
+            "company_name": "가상 새봄기획 6",
+            "business_registration_no": "000-00-04063",
+            "amount": 5274500.0,
+            "issue_date": "2026-09-21",
+            "contract_period_start": null,
+            "contract_period_end": null,
+            "account_number": null,
+            "bank_name": null,
+            "supply_amount": 4795000.0,
+            "tax_amount": 479500.0,
+            "total_amount": 5274500.0,
+            "amount_basis": "TOTAL",
+            "amount_scope": "FULL"
+          }
+        }
+      },
+      "contracts": {
+        "401": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40101",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40102",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40103",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40105",
+              "expected": "000-00-04011",
+              "actual": "0000004011",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40102",
+              "expected": "4,521,000원",
+              "actual": "4,521,000원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40105",
+              "expected": "4,521,000원",
+              "actual": "4,521,000원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "402": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40201",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40202",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40203",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40205",
+              "expected": "000-00-04025",
+              "actual": "0000004025",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40202",
+              "expected": "4,671,700원",
+              "actual": "4,671,700원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40205",
+              "expected": "4,671,700원",
+              "actual": "4,671,700원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "403": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40301",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40302",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40303",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40305",
+              "expected": "000-00-04030",
+              "actual": "0000004030",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_EXTRACTION",
+              "status": "REVIEW",
+              "field": "40302",
+              "expected": "공급가액·세액·합계",
+              "actual": "기준 미확인",
+              "message": "document_02.pdf: 금액 의미를 확인하고 추출값을 보완하세요."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40305",
+              "expected": "4,822,400원",
+              "actual": "4,822,400원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "404": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40401",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40402",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40403",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40405",
+              "expected": "000-00-04044",
+              "actual": "0000004044",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_EXTRACTION",
+              "status": "REVIEW",
+              "field": "40402",
+              "expected": "공급가액·세액·합계",
+              "actual": "기준 미확인",
+              "message": "document_02.pdf: 금액 의미를 확인하고 추출값을 보완하세요."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40405",
+              "expected": "4,973,100원",
+              "actual": "4,973,100원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "405": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40501",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40502",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40503",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40505",
+              "expected": "000-00-04059",
+              "actual": "0000004059",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40502",
+              "expected": "5,123,800원",
+              "actual": "5,123,800원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40505",
+              "expected": "5,123,800원",
+              "actual": "5,123,800원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        },
+        "406": {
+          "checks": [
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40601",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_01.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40602",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_02.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40603",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_03.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_NO_MATCH",
+              "status": "PASS",
+              "field": "40605",
+              "expected": "000-00-04063",
+              "actual": "0000004063",
+              "message": "document_05.pdf: 사업자등록번호가 일치합니다."
+            },
+            {
+              "rule_id": "BUSINESS_STATUS",
+              "status": "REVIEW",
+              "field": "business_status",
+              "expected": "실제 조회",
+              "actual": "미연동",
+              "message": "사내망 모드에서는 외부 조회를 사용하지 않습니다. 세금계산서 진위 검증 기능은 아닙니다."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_ESTIMATE",
+              "status": "PASS",
+              "field": "40602",
+              "expected": "5,274,500원",
+              "actual": "5,274,500원",
+              "message": "document_02.pdf: 합계 기준 금액 일치."
+            },
+            {
+              "rule_id": "AMOUNT_MATCH_TAX_INVOICE",
+              "status": "PASS",
+              "field": "40605",
+              "expected": "5,274,500원",
+              "actual": "5,274,500원",
+              "message": "document_05.pdf: 합계 기준 금액 일치."
+            }
+          ]
+        }
+      }
+    }
+  }
+}

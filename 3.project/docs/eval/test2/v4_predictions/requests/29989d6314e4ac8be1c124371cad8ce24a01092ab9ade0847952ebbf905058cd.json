@@ -1,0 +1,45 @@
+{
+  "sha256": "9e2def1a6a554dcf0f3f24af8a39a28c94733d4548ce6a24897902f874fe37a3",
+  "payload": {
+    "attempt_id": "61292cd2-9b3c-4396-aae3-84365054aaa7",
+    "request_sha256": "29989d6314e4ac8be1c124371cad8ce24a01092ab9ade0847952ebbf905058cd",
+    "started_at": "2026-10-03T00:36:07.813427+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "견적서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n공급자\n상호\n가상 새봄기획 5\n사업자등록번호\n000-00-04059\n공급받는자\n상호\n가상 남쪽연구소 5\n사업자등록번호\n000-00-16050\n금액 상세는 다음 쪽에 기재\n"
+        },
+        {
+          "page": 2,
+          "location_kind": "page",
+          "text": "견적 금액 상세 - 전체 계약 대금\n공급가액: 4,658,000원\n세액: 465,800원\n합계금액: 5,123,800원\n발행일: 2026-09-20\n"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "issue_date",
+        "amount_scope"
+      ],
+      "document_type": "estimate",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

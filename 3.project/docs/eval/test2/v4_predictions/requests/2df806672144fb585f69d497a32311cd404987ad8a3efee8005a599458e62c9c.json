@@ -1,0 +1,40 @@
+{
+  "sha256": "944d50129d932f7c91f305efa515150f684e73e8913cf461a052d86c159f4cf5",
+  "payload": {
+    "attempt_id": "61292cd2-9b3c-4396-aae3-84365054aaa7",
+    "request_sha256": "2df806672144fb585f69d497a32311cd404987ad8a3efee8005a599458e62c9c",
+    "started_at": "2026-10-03T00:35:54.240015+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "외주용역 계약서\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n계약명\n가상 업무지원 시스템 구축\n발주자\n가상 남쪽연구소 5\n수급인(을)\n가상 새봄기획 5\n사업자등록번호\n000-00-04059\n공급가액\n4,658,000원\n세액\n465,800원\n합계금액\n5,123,800원\n발행일\n2026-09-20\n"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "issue_date",
+        "amount_scope"
+      ],
+      "document_type": "contract",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

@@ -8,5 +8,13 @@
     "수정 필요": 1,
     "보류": 0
   },
-  "final_inference_started": false
+  "final_inference_started": true,
+  "final_inference_completed": true,
+  "prediction_attempt_id": "61292cd2-9b3c-4396-aae3-84365054aaa7",
+  "prediction_receipt_sha256": "41bf997df76b901eaaf514620510451c098ee4c2340da55fa9b98506884bcc66",
+  "prediction_document_count": 36,
+  "score_phase": "human_confirmed_rescore",
+  "score_path": "docs/eval/test2/v4_scores/human_confirmed_rescore_0bb2b985279d7afc.json",
+  "new_inference_calls_at_scoring": 0,
+  "new_guard_runs_at_scoring": 0
 }

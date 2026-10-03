@@ -1,0 +1,38 @@
+{
+  "sha256": "953e74982264023e4438509ebc0b153d6f2fc19c62145add9f5a0d40c3dd17e6",
+  "payload": {
+    "document": {
+      "document_id": 40403,
+      "path": "test2/case_04/document_03.pdf",
+      "sha256": "08e1d06054ed664111fd67c89daf8a2590c0cbf459ecf51ba7be7fa801e42303"
+    },
+    "contract_id": 404,
+    "fields": {
+      "title": "가상 새봄기획 4 사업자등록증",
+      "company_name": "가상 새봄기획 4",
+      "business_registration_no": "000-00-04044",
+      "amount": null,
+      "issue_date": "2026-09-19",
+      "contract_period_start": null,
+      "contract_period_end": null,
+      "account_number": null,
+      "bank_name": null,
+      "supply_amount": null,
+      "tax_amount": null,
+      "total_amount": null,
+      "amount_basis": "UNKNOWN",
+      "amount_scope": "UNKNOWN"
+    },
+    "pages": [
+      {
+        "page": 1,
+        "location_kind": "page",
+        "text": "사업자등록증\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n상호\n가상 새봄기획 4\n사업자등록번호\n000-00-04044\n대표자\n가상 담당자\n업태\n서비스업\n종목\n소프트웨어 개발\n발행일\n2026-09-19\n"
+      }
+    ],
+    "document_type": "business_registration",
+    "processing_failed": false,
+    "rule_seconds": 0.010269600003084633,
+    "targets": []
+  }
+}

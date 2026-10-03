@@ -1,0 +1,40 @@
+{
+  "sha256": "d0c0b733ed8e1edd1c8ecba972c3381027e616fe91652480b7057cfa1d46ca4c",
+  "payload": {
+    "attempt_id": "61292cd2-9b3c-4396-aae3-84365054aaa7",
+    "request_sha256": "ece51bcea8c8e0e679e083ee4050a0afebc9009f5d83029bd47ca4fe934aa35f",
+    "started_at": "2026-10-03T00:34:02.396483+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "통장사본\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n예금주\n가상 새봄기획 3\n은행명\n가상은행\n계좌번호\nTEST-ACCOUNT-001\n사업자등록번호\n000-00-04030\n발행일\n2026-09-18\n"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "issue_date",
+        "amount_scope"
+      ],
+      "document_type": "bank_account",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

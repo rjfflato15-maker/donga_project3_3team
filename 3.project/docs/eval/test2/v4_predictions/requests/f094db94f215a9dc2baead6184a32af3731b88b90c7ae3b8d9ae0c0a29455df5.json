@@ -1,0 +1,40 @@
+{
+  "sha256": "26ee434812bad6e5864adb4f8931252898d0612e32d33f1b4ab9ba0544b4c7d3",
+  "payload": {
+    "attempt_id": "61292cd2-9b3c-4396-aae3-84365054aaa7",
+    "request_sha256": "f094db94f215a9dc2baead6184a32af3731b88b90c7ae3b8d9ae0c0a29455df5",
+    "started_at": "2026-10-03T00:35:05.485976+00:00",
+    "request": {
+      "pages": [
+        {
+          "page": 1,
+          "location_kind": "page",
+          "text": "사업자등록증\n평가용 가상 서류이며 실제 거래에 사용할 수 없습니다.\n상호\n가상 새봄기획 4\n사업자등록번호\n000-00-04044\n대표자\n가상 담당자\n업태\n서비스업\n종목\n소프트웨어 개발\n발행일\n2026-09-19\n"
+        }
+      ],
+      "targets": [
+        "company_name",
+        "business_registration_no",
+        "supply_amount",
+        "tax_amount",
+        "total_amount",
+        "issue_date",
+        "amount_scope"
+      ],
+      "document_type": "business_registration",
+      "settings": {
+        "url": "http://127.0.0.1:11434",
+        "model": "qwen3:latest",
+        "timeout_seconds": 45,
+        "retries": 1,
+        "temperature": 0,
+        "seed": 42,
+        "num_ctx": 4096,
+        "num_predict": 1600,
+        "max_input_chars": 10000
+      },
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "prompt_version": "grounded-fields-v3"
+    }
+  }
+}

@@ -1,0 +1,645 @@
+{
+  "sha256": "88937f49a2efd386b8b313aecf3a2cc32132dffacb5123e42b8e0a43d591f357",
+  "payload": {
+    "fields": {
+      "rule": {
+        "title": "사업자 견적서",
+        "company_name": "사업자",
+        "business_registration_no": "000-00-04030",
+        "amount": null,
+        "issue_date": "2026-09-18",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      },
+      "llm": {
+        "title": "사업자 견적서",
+        "company_name": null,
+        "business_registration_no": "0000004030",
+        "amount": 4822400.0,
+        "issue_date": "2026-09-18",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4384000.0,
+        "tax_amount": 438400.0,
+        "total_amount": 4822400.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "UNKNOWN"
+      },
+      "hybrid_unguarded": {
+        "title": "사업자 견적서",
+        "company_name": null,
+        "business_registration_no": "0000004030",
+        "amount": 4822400.0,
+        "issue_date": "2026-09-18",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": 4384000.0,
+        "tax_amount": 438400.0,
+        "total_amount": 4822400.0,
+        "amount_basis": "TOTAL",
+        "amount_scope": "UNKNOWN"
+      },
+      "hybrid_guarded": {
+        "title": "사업자 견적서",
+        "company_name": null,
+        "business_registration_no": "000-00-04030",
+        "amount": null,
+        "issue_date": "2026-09-18",
+        "contract_period_start": null,
+        "contract_period_end": null,
+        "account_number": null,
+        "bank_name": null,
+        "supply_amount": null,
+        "tax_amount": null,
+        "total_amount": null,
+        "amount_basis": "UNKNOWN",
+        "amount_scope": "UNKNOWN"
+      }
+    },
+    "traces": {
+      "rule": {
+        "effective_seconds": 0.61509460000525,
+        "guard_seconds": 0
+      },
+      "llm": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 11.637854200002039,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date",
+            "amount_scope"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-04030",
+                "page": 1,
+                "line": 14,
+                "quote": "000-00-04030"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "supply_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "4384000",
+                "page": 1,
+                "line": 17,
+                "quote": "4,384,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "tax_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "438400",
+                "page": 1,
+                "line": 18,
+                "quote": "438,400원"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "total_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "4822400",
+                "page": 1,
+                "line": 19,
+                "quote": "4,822,400원"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-18",
+                "page": 1,
+                "line": 20,
+                "quote": "2026-09-18"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "amount_scope",
+              "proposal": {
+                "state": "REVIEW",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": true,
+          "unresolved_fields": [
+            "amount_scope"
+          ],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v4-dev2",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "e47745807184cc4c5a01ab37ad41eb0464f157baef57b0559be2d72fae141b35",
+        "cache_hit": false,
+        "guard_seconds": 0,
+        "effective_seconds": 12.252948800007289
+      },
+      "hybrid_unguarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 11.637854200002039,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date",
+            "amount_scope"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-04030",
+                "page": 1,
+                "line": 14,
+                "quote": "000-00-04030"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "supply_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "4384000",
+                "page": 1,
+                "line": 17,
+                "quote": "4,384,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "tax_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "438400",
+                "page": 1,
+                "line": 18,
+                "quote": "438,400원"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "total_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "4822400",
+                "page": 1,
+                "line": 19,
+                "quote": "4,822,400원"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-18",
+                "page": 1,
+                "line": 20,
+                "quote": "2026-09-18"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "amount_scope",
+              "proposal": {
+                "state": "REVIEW",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": true,
+          "unresolved_fields": [
+            "amount_scope"
+          ],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v4-dev2",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "e47745807184cc4c5a01ab37ad41eb0464f157baef57b0559be2d72fae141b35",
+        "cache_hit": true,
+        "guard_seconds": 0,
+        "shared_response_replay": false,
+        "effective_seconds": 12.252948800007289
+      },
+      "hybrid_guarded": {
+        "review": {
+          "status": "COMPLETED",
+          "error": null,
+          "model": "qwen3:latest",
+          "model_metadata": {
+            "name": "qwen3:latest",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "size": 5225388164,
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen3",
+              "families": [
+                "qwen3"
+              ],
+              "parameter_size": "8.2B",
+              "quantization_level": "Q4_K_M",
+              "context_length": 40960,
+              "embedding_length": 4096
+            }
+          },
+          "elapsed_seconds": 11.637854200002039,
+          "attempts": 1,
+          "targets": [
+            "company_name",
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date",
+            "amount_scope"
+          ],
+          "decisions": [
+            {
+              "field": "company_name",
+              "proposal": {
+                "state": "ABSENT",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            },
+            {
+              "field": "business_registration_no",
+              "proposal": {
+                "state": "VALUE",
+                "value": "000-00-04030",
+                "page": 1,
+                "line": 14,
+                "quote": "000-00-04030"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "supply_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "4384000",
+                "page": 1,
+                "line": 17,
+                "quote": "4,384,000원"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "tax_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "438400",
+                "page": 1,
+                "line": 18,
+                "quote": "438,400원"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "total_amount",
+              "proposal": {
+                "state": "VALUE",
+                "value": "4822400",
+                "page": 1,
+                "line": 19,
+                "quote": "4,822,400원"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "issue_date",
+              "proposal": {
+                "state": "VALUE",
+                "value": "2026-09-18",
+                "page": 1,
+                "line": 20,
+                "quote": "2026-09-18"
+              },
+              "accepted": false,
+              "reasons": [
+                "EVIDENCE_NOT_FOUND",
+                "FIELD_LABEL_OR_VALUE_MISMATCH"
+              ],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": false
+            },
+            {
+              "field": "amount_scope",
+              "proposal": {
+                "state": "REVIEW",
+                "value": null,
+                "page": null,
+                "line": null,
+                "quote": ""
+              },
+              "accepted": true,
+              "reasons": [],
+              "warnings": [],
+              "anchor": null,
+              "human_confirmed": false,
+              "applied": true
+            }
+          ],
+          "manual_review_required": true,
+          "guard_review_required": true,
+          "unresolved_fields": [
+            "business_registration_no",
+            "supply_amount",
+            "tax_amount",
+            "total_amount",
+            "issue_date",
+            "amount_scope"
+          ],
+          "human_confirmed": false,
+          "prompt_version": "grounded-fields-v3",
+          "guard_version": "grounding-v4-dev2",
+          "settings": {
+            "url": "http://127.0.0.1:11434",
+            "model": "qwen3:latest",
+            "timeout_seconds": 45,
+            "retries": 1,
+            "temperature": 0,
+            "seed": 42,
+            "num_ctx": 4096,
+            "num_predict": 1600,
+            "max_input_chars": 10000
+          }
+        },
+        "response_id": "e47745807184cc4c5a01ab37ad41eb0464f157baef57b0559be2d72fae141b35",
+        "cache_hit": true,
+        "guard_seconds": 0.0008925000001909211,
+        "shared_response_replay": true,
+        "effective_seconds": 12.25384130000748
+      }
+    }
+  }
+}
