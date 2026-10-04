@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { maskForDisplay } from './ContractStageView';
 import { useDialogA11y } from '../../hooks/useDialogA11y';
 import { AnalysisFields, DocumentResponse, ValidationCheck } from '../../types';
 import { api, requestJson, downloadProtected } from '../../api/client';
-import { DOCUMENT_TYPE_KO, STATUS_KO, plainMessage, ruleLabel, isUnverifiedBusinessStatus } from '../../utils/reviewSummary';
+import { DOCUMENT_TYPE_KO, plainMessage, ruleLabel, isUnverifiedBusinessStatus } from '../../utils/reviewSummary';
 import { maskBusinessNumber, maskAccountNumber, maskVendorName } from '../../utils/masking';
-import { X, Pencil, Download, ChevronLeft, ChevronRight, Loader2, Save } from 'lucide-react';
+import { X, Pencil, Download, ChevronLeft, ChevronRight, Loader2, Save, Upload } from 'lucide-react';
 
 interface BBox { page: number; x: number; y: number; width: number; height: number }
 interface Anchor { page: number | null; line: number | null; quote: string; location_kind?: string; page_layout_verified?: boolean; bbox?: BBox | null; bboxes?: BBox[] }
@@ -27,6 +28,8 @@ interface Props {
   canEdit: boolean;
   onClose: () => void;
   onChanged: () => Promise<void>;
+  /** 'reissue'면 고친 본 올리기 칸을 펼친 채로 연다 */
+  initialMode?: 'view' | 'reissue';
 }
 
 const FIELD_ORDER: { key: string; label: string; types?: string[] }[] = [
@@ -65,7 +68,7 @@ function display(key: string, value: FieldProvenance['value'], masked: boolean):
 
 const AMOUNT_KEYS = new Set(['supply_amount', 'tax_amount', 'total_amount']);
 
-export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, isMaskingEnabled, canEdit, onClose, onChanged }) => {
+export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, isMaskingEnabled, canEdit, onClose, onChanged, initialMode = 'view' }) => {
   const dialogRef = React.useRef<HTMLDivElement>(null);
   useDialogA11y(dialogRef, onClose);
   const [editing, setEditing] = useState(false);
@@ -75,6 +78,9 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
   const [saveError, setSaveError] = useState('');
   useEffect(() => { setEditing(false); setDraft(doc.analysis.fields); setNote(''); setSaveError(''); }, [doc.document_id, revision]);
   const [cmp, setCmp] = useState<Comparison | null>(null);
+  const [reissueOpen, setReissueOpen] = useState(initialMode === 'reissue');
+  const reissueRef = React.useRef<HTMLDivElement>(null);
+  useEffect(() => { if (reissueOpen) setTimeout(() => reissueRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 50); }, [reissueOpen]);
   const [reissueFile, setReissueFile] = useState<File | null>(null);
   const [reissueNote, setReissueNote] = useState('');
   const [reissuing, setReissuing] = useState(false);
@@ -201,7 +207,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-5 py-3">
           <h2 id="doc-review-title" className="font-bold text-slate-900">{DOCUMENT_TYPE_KO[doc.document_type]}</h2>
           <span className="truncate text-xs text-slate-500">{doc.original_file_name}</span>
-          {versionNo > 1 && <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold text-sky-700">재발행본 · 버전 {versionNo}</span>}
+          {versionNo > 1 && <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold text-sky-700">고친 본 · {versionNo}번째</span>}
           {problems.length > 0 ? (
             <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-rose-700">확인할 것 {problems.length}</span>
           ) : (
@@ -210,8 +216,8 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
           <div className="ml-auto flex items-center gap-2">
             {doc.file_available && (
               <button onClick={() => void downloadProtected(`/api/documents/${doc.document_id}/download?masked=true`, doc.original_file_name)}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-indigo-300">
-                <Download className="h-4 w-4" /> 가린 원본 받기
+                className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm text-slate-600 hover:bg-slate-100" title="개인정보를 가린 원본 파일을 내려받습니다">
+                <Download className="h-4 w-4" /> 원본 받기
               </button>
             )}
             <button onClick={onClose} className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100" aria-label="닫기"><X className="h-5 w-5" /></button>
@@ -284,23 +290,18 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
               </div>
             )}
             {problems.length > 0 && (
-              <div className="space-y-2">
-                {problems.map((c, i) => (
-                  <div key={i} className="rounded-xl border border-rose-200 bg-rose-50/60 px-3 py-2 text-sm">
-                    <div className="text-xs font-semibold text-rose-700">{STATUS_KO[c.status]} · {ruleLabel(c.rule_id)}</div>
-                    <div className="text-slate-800">{plainMessage(c.message)}</div>
-                  </div>
-                ))}
+              <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm">
+                <div className="font-bold text-amber-900">이 서류에서 확인할 것 {problems.length}건</div>
+                <ul className="mt-1 space-y-1 text-slate-800">
+                  {problems.map((c, i) => <li key={i}>· <span className="text-slate-500">{ruleLabel(c.rule_id)}</span> {maskForDisplay(plainMessage(c.message), isMaskingEnabled)}</li>)}
+                </ul>
               </div>
             )}
-            <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
-              값을 누르면 원문 근거를 보여 줍니다 ·
-              <span className="rounded-full bg-violet-100 px-2 py-0.5 font-semibold text-violet-700">AI 보완</span>
-              <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-semibold text-emerald-700">사람 확인</span>
-              <span>표시 없는 값은 규칙이 읽은 값</span>
+            <div className="flex items-center gap-1.5 text-xs text-slate-500">
+              <span>{reissueOpen ? '고친 본을 올리면 새 서류로 다시 읽어요' : '읽은 값 · 누르면 원문에서 위치를 보여 줘요'}</span>
+              <span className="cursor-help rounded-full border border-slate-300 px-1.5 text-[11px]" title={`표시 없음: 규칙이 읽은 값\nAI 보완: 규칙이 못 읽어 PC 안의 AI가 채운 값(원문 근거 확인됨)\n사람 확인: 담당자가 고치거나 원문과 맞다고 확인한 값${(doc.llm?.applied_value_field_count ?? 0) > 0 ? `\n이 서류는 AI가 ${doc.llm?.applied_value_field_count}칸을 채웠어요` : ''}`}>ⓘ</span>
             </div>
-            {doc.llm?.status === 'FAILED' && <div className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">AI 보완을 시도했지만 실패해 규칙 값만 남았습니다{doc.llm.error ? ` (${doc.llm.error})` : ''}.</div>}
-            {(doc.llm?.applied_value_field_count ?? 0) > 0 && <div className="rounded-lg bg-violet-50 px-3 py-2 text-xs text-violet-800">이 서류는 AI가 {doc.llm?.applied_value_field_count}칸을 보완했습니다. 원문 근거가 확인된 값만 채택했으니, 표시된 칸을 원문과 한 번 더 비교해 주세요.</div>}
+            {doc.llm?.status === 'FAILED' && <div className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">AI 보완을 시도했지만 실패해 규칙 값만 남았습니다.</div>}
             {provError && <div className="rounded-lg bg-rose-50 p-3 text-sm text-rose-700">{provError}</div>}
             {!prov && !provError && <div className="flex items-center gap-2 text-sm text-slate-500"><Loader2 className="h-4 w-4 animate-spin" /> 값을 불러오는 중…</div>}
             {editing && (
@@ -359,7 +360,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                 <p className="text-[11px] text-slate-500">저장하면 고친 칸과 ‘원문과 맞음’에 체크한 칸만 확인한 사람·이유와 함께 ‘사람 확인’으로 표시됩니다. 이전 결재는 다시 확인이 필요해집니다.</p>
               </div>
             )}
-            {prov && !editing && (
+            {prov && !editing && !reissueOpen && (
               <ul className="space-y-2">
                 {rows.map(({ key, label }) => {
                   const f = prov.fields[key];
@@ -394,9 +395,13 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                 })}
               </ul>
             )}
-            {canEdit && !editing && doc.version?.is_current !== false && (
-              <div className="rounded-xl border border-dashed border-sky-300 p-3 text-sm space-y-2">
-                <div className="text-slate-600">거래처에서 <b>고쳐서 다시 보낸 서류</b>를 받았다면 여기서 바꿔 올리세요. 이전 서류는 보관되고 검사에서 빠지며, 결재는 다시 받아야 합니다.</div>
+            {canEdit && !editing && reissueOpen && doc.version?.is_current !== false && (
+              <div ref={reissueRef} className="rounded-xl border-2 border-sky-300 bg-sky-50/40 p-3 text-sm space-y-2">
+                <div className="flex items-center gap-2">
+                  <b className="text-sky-900">고친 본 올리기</b>
+                  <button onClick={() => setReissueOpen(false)} className="ml-auto text-xs text-slate-500">닫기</button>
+                </div>
+                <div className="text-slate-600">거래처가 <b>고쳐서 다시 보낸 {DOCUMENT_TYPE_KO[doc.document_type]}</b>을 올리세요. 지금 서류는 이전 본으로 보관되고, 새 서류로 다시 검사해요. 결재는 다시 받아야 해요.</div>
                 <input type="file" aria-label="재발행본 파일" onChange={(e) => setReissueFile(e.target.files?.[0] ?? null)} className="block w-full text-xs text-slate-600" />
                 {reissueFile && (
                   <>
@@ -409,12 +414,18 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                 {reissueError && <p role="alert" className="text-xs text-rose-600">{reissueError}</p>}
               </div>
             )}
-            {canEdit && !editing && (
-              <div className="rounded-xl border border-dashed border-slate-300 p-3 text-sm">
-                <div className="mb-2 text-slate-600">값이 원문과 다르거나 못 읽은 값이 있으면 여기서 바로 고칩니다. 고친 사람과 이유가 기록되고 검사가 다시 돌아갑니다.</div>
-                <button onClick={() => setEditing(true)} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 font-semibold text-white hover:bg-indigo-700">
+            {canEdit && !editing && !reissueOpen && (
+              <div className="sticky bottom-0 -mx-5 -mb-5 flex flex-wrap gap-2 border-t border-slate-100 bg-white px-5 py-3">
+                <button onClick={() => setEditing(true)} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+                  title="앱이 잘못 읽었거나 못 읽은 값을 원문을 보고 고칩니다">
                   <Pencil className="h-4 w-4" /> 값 고치기
                 </button>
+                {doc.version?.is_current !== false && (
+                  <button onClick={() => setReissueOpen(true)} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-indigo-300"
+                    title="거래처가 고쳐서 다시 보낸 서류로 바꿉니다">
+                    <Upload className="h-4 w-4" /> 고친 본 올리기
+                  </button>
+                )}
               </div>
             )}
           </div>

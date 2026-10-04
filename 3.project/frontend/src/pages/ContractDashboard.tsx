@@ -350,7 +350,9 @@ export const ContractDashboard: React.FC = () => {
     }
   };
 
-  const handleOpenDocumentModal = async (doc: DocumentResponse) => {
+  const [docMode, setDocMode] = useState<'view' | 'reissue'>('view');
+  const handleOpenDocumentModal = async (doc: DocumentResponse, mode: 'view' | 'reissue' = 'view') => {
+    setDocMode(mode);
     setSelectedDoc(doc);
     try {
       const freshDoc = await api.getDocument(doc.document_id);
@@ -843,6 +845,7 @@ export const ContractDashboard: React.FC = () => {
           canEdit={canEdit}
           onClose={() => setSelectedDoc(null)}
           onChanged={() => refreshCurrentContract()}
+          initialMode={docMode}
         />
       )}
       <DocumentViewerModal

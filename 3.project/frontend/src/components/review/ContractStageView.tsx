@@ -109,7 +109,7 @@ interface Props {
   representative: boolean;
   ntsMode?: string;
   onBack: () => void;
-  onOpenDocument: (doc: DocumentResponse) => void;
+  onOpenDocument: (doc: DocumentResponse, mode?: 'view' | 'reissue') => void;
   onUploadType: (type?: DocumentType) => void;
   onChanged: () => Promise<void>;
   recentUploadNames?: string[];
@@ -337,7 +337,7 @@ export const ContractStageView: React.FC<Props> = ({
                       <div className="text-sm font-semibold text-slate-700">고친 서류를 받았다면 올리세요</div>
                       <div className="flex flex-wrap gap-2">
                         {vendorIssues.map((i) => i.document
-                          ? <button key={i.key} onClick={() => onOpenDocument(i.document!)} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"><Upload className="h-4 w-4" />{DOCUMENT_TYPE_KO[i.document.document_type]} 고친 본 올리기</button>
+                          ? <button key={i.key} onClick={() => onOpenDocument(i.document!, 'reissue')} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"><Upload className="h-4 w-4" />{DOCUMENT_TYPE_KO[i.document.document_type]} 고친 본 올리기</button>
                           : i.missingType ? <button key={i.key} onClick={() => onUploadType(i.missingType)} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"><Upload className="h-4 w-4" />{DOCUMENT_TYPE_KO[i.missingType]} 올리기</button> : null)}
                       </div>
                       <p className="text-xs text-slate-500">올리면 이전 서류는 보관되고 새 서류로 자동으로 다시 확인해요. 그다음 ‘답 받음’을 눌러 요청을 닫으세요.</p>
