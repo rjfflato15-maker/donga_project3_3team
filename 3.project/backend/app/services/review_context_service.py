@@ -75,7 +75,12 @@ def document_provenance(db, doc):
         lookup = 'total_amount' if key == 'amount' else key
         options = candidates(pages, lookup, doc.document_type) if lookup in {'company_name', 'business_registration_no', 'supply_amount', 'tax_amount', 'total_amount', 'issue_date', 'amount_scope'} else []
         token = canonical(lookup, value)
-        matching = [o for o in options if token is not None and o['value'] == token and (o.get('party') != 'buyer')]
+        # Party boundaries select the supplier's identity, not the shared amount
+        # or date block that often follows the buyer section on an invoice.
+        # This only locates display evidence; it never changes extraction/guards.
+        supplier_identity = lookup in {'company_name', 'business_registration_no'}
+        matching = [o for o in options if token is not None and o['value'] == token
+                    and (not supplier_identity or o.get('party') != 'buyer')]
         for option in matching:
             page = next((p for p in pages if p['page'] == option['page']))
             quote = page['text'].splitlines()[option['line'] - 1]

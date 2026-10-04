@@ -72,13 +72,21 @@ def prepare(output, case_id="practice", *, verify=False, port=8030, intranet=Fal
     return root
 
 
-def install_execution_boundary():
+def install_execution_boundary(*, allow_event_loop_socketpair=False):
     """Fail on forbidden executions/data access even if inherited settings drift."""
     blocked = {"model_guard_calls": 0, "network_attempts": 0, "protected_file_attempts": 0}
     protected = [PROJECT / p for p in ("storage/pilot", "eval/dataset/test", "eval/dataset/test2",
                                       "docs/eval/test", "docs/eval/test2")]
 
     def audit(event, args):
+        # Windows asyncio implements its internal wake-up pipe with socketpair.
+        # Permit only that standard-library caller, never arbitrary loopback HTTP.
+        if allow_event_loop_socketpair and event == "socket.connect":
+            caller = sys._getframe(1)
+            if (caller.f_globals.get("__name__") == "socket"
+                    and caller.f_code.co_name == "_fallback_socketpair"
+                    and args[1][0] in {"127.0.0.1", "::1"}):
+                return
         if event in {"socket.connect", "socket.getaddrinfo"}:
             blocked["network_attempts"] += 1
             raise RuntimeError("측정 자료 준비 중 네트워크 호출은 금지합니다.")

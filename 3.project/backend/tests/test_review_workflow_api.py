@@ -163,3 +163,43 @@ def test_evidence_does_not_reuse_saved_anchor_after_original_changes(operator_cl
     result = operator_client.get(f"/api/documents/{doc['document_id']}/provenance").json()
     assert result['source_version_verified'] is False
     assert all((not field['evidence'] and field['evidence_error'] == 'ORIGINAL_VERSION_CHANGED' for field in result['fields'].values()))
+
+
+@pytest.mark.parametrize('kind,title', [('estimate', '견적서'), ('tax_invoice', '전자세금계산서')])
+def test_shared_amount_block_below_buyer_has_evidence_without_accepting_buyer_identity(
+        operator_client, db_factory, kind, title):
+    cid = create_contract(operator_client, contract_amount=110)['contract_id']
+    text = (title + '\n공급자\n상호: 가상 검증업체\n사업자등록번호: 220-88-12345\n'
+            '공급받는자\n상호: 가상 구매회사\n사업자등록번호: 123-45-67890\n'
+            '공급가액: 100원\n세액: 10원\n합계금액: 110원\n전액 청구: 전체 계약 대금\n발행일: 2026-10-01')
+    uploaded = operator_client.post(f'/api/contracts/{cid}/documents',
+        files=[('files', ('shared-block.txt', text.encode(), 'text/plain'))], data={'target_document_type': kind})
+    assert uploaded.status_code == 200, uploaded.text
+    did = uploaded.json()[0]['document_id']
+    fields = operator_client.get(f'/api/documents/{did}/provenance').json()['fields']
+    for key in ('supply_amount', 'tax_amount', 'total_amount', 'issue_date'):
+        assert fields[key]['evidence_status'] == 'AVAILABLE', (key, fields[key])
+        assert fields[key]['source'] == 'RULE'
+    assert all(e['party'] == 'supplier' for e in fields['business_registration_no']['evidence'])
+    # Even if a stored prediction accidentally contains buyer identity, do not
+    # present the buyer section as supplier evidence.
+    with db_factory() as db:
+        doc = db.get(Document, did)
+        values = json.loads(doc.extract.raw_fields)
+        values.update(company_name='가상 구매회사', business_registration_no='123-45-67890')
+        doc.extract.raw_fields = json.dumps(values, ensure_ascii=False)
+        db.commit()
+    fields = operator_client.get(f'/api/documents/{did}/provenance').json()['fields']
+    assert not fields['company_name']['evidence']
+    assert not fields['business_registration_no']['evidence']
+
+
+def test_duplicate_amount_evidence_stays_ambiguous(operator_client):
+    cid = create_contract(operator_client, contract_amount=110)['contract_id']
+    text = '견적서\n공급가액: 100원\n세액: 10원\n합계금액: 110원\n합계금액: 110원'
+    response = operator_client.post(f'/api/contracts/{cid}/documents',
+        files=[('files', ('duplicate-labels.txt', text.encode(), 'text/plain'))])
+    assert response.status_code == 200
+    did = response.json()[0]['document_id']
+    total = operator_client.get(f'/api/documents/{did}/provenance').json()['fields']['total_amount']
+    assert total['evidence_status'] == 'AMBIGUOUS' and len(total['evidence']) == 2

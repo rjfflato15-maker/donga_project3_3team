@@ -15,5 +15,6 @@
 | 팀원 브라우저 접속 테스트 | [화요일 접속 안내](team_test_network.md) | 서버 PC 담당·팀원 |
 | 시간 비교 자료·과제 초기화 | [자료 준비 안내](team_test_materials.md) · [측정 기준](team_test_measurement.md) | 테스트 진행자 |
 | UI 병합·재시작·측정 빌드 고정 | [병합 점검표](team_test_merge_checklist.md) | 통합 담당·확인자 |
+| 업무 연결·백업 복원 리허설 | [확인 결과](workflow_rehearsal.md) · [5분 시연 대본](demo_rehearsal_script.md) | 시연·통합 담당 |
 
 역할은 작업 책임 구분이며 새 앱 권한을 추가한 것이 아니다. [전체 문서 목록](../README.md) · [개발자 작업 안내](../development/maintenance.md)

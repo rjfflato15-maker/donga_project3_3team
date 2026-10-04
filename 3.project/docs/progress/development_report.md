@@ -79,6 +79,8 @@ Claude가 전달한 추가 UI 통합 보고도 코드와 대조했다. 값 수�
 
 ## 단계별 작업 기록
 
+일정을 앞당겨 실제 API 연결과 백업 복원을 점검했다. 102개 확인 항목과 관련 회귀 테스트 78개 통과. 원문 근거 표시 누락 1종을 수정했고 새 폴더 복원 후 테이블 10개·파일 36개 일치를 확인했다. [연결 점검·한계](history/28_connected_workflow_and_restore.md)에 기록했다. 브라우저 버튼 확인과 측정 빌드 확정은 별도이며, 시간 절감 수치는 아직 없다.
+
 화요일 시간 비교용 dev 자료 5건과 분리 업무함 생성·초기화 도구를 준비했다. 실제 업로드·검수 경로에서 누락 A/B는 누락만, 재발행 A/B는 견적 금액 차이만 나타나고 수정 후 해소됨을 확인했다. 사람 작업시간은 아직 측정하지 않았다. [준비 결과](history/27_team_test_materials_and_merge_preparation.md)와 [10/5 병합·재시작 점검표](../operations/team_test_merge_checklist.md)에 정리했으며, 사용자 최종 UI 커밋 전달과 화면 확인 전까지 측정 빌드는 미확정이다.
 
 | 내용 | 기록 |
@@ -112,6 +114,7 @@ Claude가 전달한 추가 UI 통합 보고도 코드와 대조했다. 값 수�
 | 중립 20문항 실제 결과·20/20 일치·2문항 설명 이력·원본/정답 보존 | [중립 재확인 완료](../eval/test2/neutral_recheck/README.md) |
 | 값 수정 후 업무 완료·이전본 차단·배정/완료 기준 감사 기록 | [맡긴 일 완료 오류 수정](history/26_assignment_completion_after_correction.md) |
 | dev 기반 시간 과제 5건·참가자 ZIP·진행자 정답 분리·빈 업무함 초기화·10/5 병합 준비 | [화요일 자료와 병합 준비](history/27_team_test_materials_and_merge_preparation.md) |
+| 인증 API 연결 102항목·복원 검증·원문 근거 표시 수정·시연 대본 | [업무 흐름·복원 리허설](history/28_connected_workflow_and_restore.md) |
 
 [전체 문서 목록](../README.md) · [변경할 파일 찾기](../architecture/module_map.md)
 
