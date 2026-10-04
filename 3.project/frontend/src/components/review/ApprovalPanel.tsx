@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { ContractDetail } from '../../types';
 import { requestJson } from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
-import { buildReviewOverview } from '../../utils/reviewSummary';
+import { buildReviewOverview, isUnverifiedBusinessStatus } from '../../utils/reviewSummary';
 import { CheckCircle2 } from 'lucide-react';
 
 interface ApprovalState {
@@ -51,6 +51,10 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged, embedded =
   const myTurn = !!nextStep && (user?.role === nextStep.role || user?.role === 'admin');
   const blocked = contract.summary.missing_count > 0 || !contract.documents.length || contract.documents.some((d) => !d.file_available);
   const unverified = contract.checks.some((c) => c.status !== 'PASS');
+  const ntsNotRun = contract.checks.some(isUnverifiedBusinessStatus);
+  const others = overview.issues.length;
+  // 이 앱이 한 일과 하지 않은 일을 구분해 확인받는다. 국세청은 '조회하지 않았음'을 확인할 뿐 진위를 확인했다고 하지 않는다
+  const ackText = `${others ? `남은 확인 항목 ${others}건을 직접 검토했습니다.` : '필수 서류를 검토했습니다.'}${ntsNotRun ? ' 국세청 진위 조회는 이 앱에서 하지 않았음을 확인합니다.' : ''}`;
   const canSubmit = !busy && !blocked && note.trim().length > 0 && (!unverified || (ack && note.trim().length >= 10));
 
   const submit = async (decision: 'CONFIRMED' | 'RETURNED') => {
@@ -110,7 +114,7 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged, embedded =
               {unverified && (
                 <label className="flex items-start gap-2 text-sm text-slate-600">
                   <input type="checkbox" checked={ack} onChange={(e) => setAck(e.target.checked)} className="mt-1 h-4 w-4 accent-indigo-600" />
-                  자동으로 확인되지 않은 항목(국세청 조회 미연동 포함)을 직접 검토했습니다. <span className="text-slate-400">메모 10자 이상 필요</span>
+                  {ackText} <span className="text-slate-400">메모 10자 이상 필요</span>
                 </label>
               )}
               <div className="flex flex-wrap gap-2">

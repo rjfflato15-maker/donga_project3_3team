@@ -21,3 +21,21 @@ describe('계약 단계', () => {
     expect(stageOf({ open_issue_count: 0, approval_status: 'STALE' })).toBe('APPROVAL');
   });
 });
+
+import { stepStates } from './stage';
+
+describe('단계 표시의 완료 체크', () => {
+  it('보완 대기 중이어도 빠진 서류·확인할 것이 남아 있으면 앞 단계는 완료가 아니다', () => {
+    const s = stepStates({ stage: 'WAITING', missing: 2, issues: 3, waiting: 1, requests: 1, approved: false, paid: false });
+    expect(s.RECEIVING).toBe('pending');
+    expect(s.CHECK).toBe('pending');
+    expect(s.WAITING).toBe('todo');
+  });
+  it('요청 없이 결재까지 온 정상 계약은 보완을 해당 없음으로', () => {
+    const s = stepStates({ stage: 'APPROVAL', missing: 0, issues: 0, waiting: 0, requests: 0, approved: false, paid: false });
+    expect([s.RECEIVING, s.CHECK, s.WAITING]).toEqual(['done', 'done', 'skipped']);
+  });
+  it('요청하고 답을 받았으면 보완 완료', () => {
+    expect(stepStates({ stage: 'APPROVAL', missing: 0, issues: 0, waiting: 0, requests: 1, approved: false, paid: false }).WAITING).toBe('done');
+  });
+});

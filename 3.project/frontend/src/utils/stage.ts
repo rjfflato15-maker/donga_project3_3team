@@ -51,3 +51,17 @@ export function stageOf(c: StageInput): Stage {
   if ((c.open_issue_count ?? 0) > 0 || approval === 'RETURNED') return 'CHECK';
   return 'APPROVAL';
 }
+
+export type StepState = 'done' | 'pending' | 'skipped' | 'todo';
+
+/** 실제로 끝난 단계만 'done'. 지금 단계보다 앞인데 남은 일이 있으면 'pending', 요청한 적 없이 지나간 보완은 'skipped' */
+export function stepStates(i: { stage: Stage; missing: number; issues: number; waiting: number; requests: number; approved: boolean; paid: boolean }): Record<Exclude<Stage, 'DONE'>, StepState> {
+  const no = STAGE_NO[i.stage];
+  return {
+    RECEIVING: i.missing === 0 ? 'done' : no > 1 ? 'pending' : 'todo',
+    CHECK: i.issues === 0 ? 'done' : no > 2 ? 'pending' : 'todo',
+    WAITING: i.waiting > 0 ? 'todo' : i.requests > 0 ? 'done' : no > 3 ? 'skipped' : 'todo',
+    APPROVAL: i.approved ? 'done' : 'todo',
+    PAYMENT: i.paid ? 'done' : 'todo',
+  };
+}

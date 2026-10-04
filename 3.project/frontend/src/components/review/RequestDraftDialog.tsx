@@ -60,7 +60,7 @@ export const RequestDraftDialog: React.FC<Props> = ({ contract, issue, isMasking
   const record = async () => {
     setBusy(true); setRecordError('');
     try {
-      const reason = issue.checks.map((c) => c.message.replace(/^[^:]+:\s*/, '')).join(' ');
+      const reason = issue.checks.map((c) => fixParticles(c.message.replace(/^[^:]+:\s*/, ''))).join(' ');
       await followUpApi.record(contract.contract_id, {
         contact_method: method,
         due_on: due || null,

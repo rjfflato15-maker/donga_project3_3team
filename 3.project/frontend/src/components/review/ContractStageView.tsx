@@ -5,14 +5,17 @@ import { followUpApi, ResubmissionRequest, CONTACT_VIA } from '../../api/followU
 import {
   buildReviewOverview, IssueGroup, plainMessage, showsValues, ruleLabel, isInternalDocument, DOCUMENT_TYPE_KO, STATUS_KO,
 } from '../../utils/reviewSummary';
-import { maskVendorName } from '../../utils/masking';
-import { josa } from '../../utils/korean';
-import { Stage, stageOf, STAGE_STEPS, STAGE_NO } from '../../utils/stage';
+import { maskBusinessNumber, maskResidentNumber, maskVendorName } from '../../utils/masking';
+import { fixParticles, josa } from '../../utils/korean';
+import { Stage, stageOf, stepStates, STAGE_STEPS, STAGE_NO } from '../../utils/stage';
 import { RequestDraftDialog } from './RequestDraftDialog';
 import { ApprovalPanel } from './ApprovalPanel';
 import { AssignmentPanel } from './AssignmentPanel';
 import { PilotReviewPanel } from '../PilotReviewPanel';
 import { ArrowLeft, Check, CheckCircle2, ChevronDown, ChevronRight, Copy, Eye, MoreHorizontal, Upload } from 'lucide-react';
+
+/** 화면 표시용 가림: 사업자번호·주민번호만. 쉼표가 있는 금액은 건드리지 않는다 */
+export const maskForDisplay = (text: string, masked: boolean) => (masked ? maskResidentNumber(maskBusinessNumber(text)) : text);
 
 const won = (n?: number | null) => (n == null ? '-' : `${Math.round(n).toLocaleString('ko-KR')}원`);
 const num = (s?: string | null) => {
@@ -41,6 +44,61 @@ const SHORT: Record<string, string> = {
 };
 
 const DOT: Record<ValidationStatus, string> = { FAIL: 'bg-rose-500', MISSING: 'bg-amber-500', REVIEW: 'bg-amber-500', PASS: 'bg-emerald-500' };
+
+/** 문제 하나를 보여 주는 상자. primary면 크게 */
+interface IssueBlockProps {
+  issue: IssueGroup;
+  primary?: boolean;
+  canEdit: boolean;
+  masked: boolean;
+  onOpenDocument: (doc: DocumentResponse) => void;
+  onUploadType: (type?: DocumentType) => void;
+  onDraft: (issue: IssueGroup) => void;
+}
+const IssueBlock: React.FC<IssueBlockProps> = ({ issue, primary, canEdit, masked, onOpenDocument, onUploadType, onDraft }) => {
+  const show = (t?: string | null) => (t ? maskForDisplay(t, masked) : t);
+  const check = issue.checks[0];
+  const a = num(check.expected), b = num(check.actual);
+  const diff = a != null && b != null && a !== b ? Math.abs(a - b) : null;
+  const external = issue.kind === 'vendor' || (issue.kind === 'missing' && !isInternalDocument(issue.missingType));
+  const missingName = issue.missingType ? DOCUMENT_TYPE_KO[issue.missingType] ?? issue.title : issue.title;
+  const title = issue.kind === 'missing'
+    ? (isInternalDocument(issue.missingType) ? `${josa(missingName, '을/를')} 작성해서 올려 주세요` : `${josa(missingName, '이/가')} 아직 없어요`)
+    : issue.kind === 'reading' ? `${issue.title}: 앱이 값을 정확히 못 읽었어요` : `${issue.title}: ${SHORT[check.rule_id] ?? show(plainMessage(check.message))}`;
+  const btn = (on: boolean) => on
+    ? 'inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700'
+    : 'inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-indigo-300';
+  return (
+    <div className={primary ? 'space-y-3' : 'space-y-2 rounded-xl border border-slate-200 bg-white p-3'}>
+      <div className={primary ? 'text-xl font-bold text-slate-900' : 'font-semibold text-slate-900'}>{title}</div>
+      {issue.kind !== 'missing' && primary && (issue.checks.length > 1 || SHORT[check.rule_id]) && (
+        <ul className="space-y-1 text-sm text-slate-600">
+          {issue.checks.map((c, i) => <li key={i}>· {ruleLabel(c.rule_id)}: {show(plainMessage(c.message))}</li>)}
+        </ul>
+      )}
+      {primary && (check.expected || check.actual) && showsValues(check.rule_id) && (
+        <div className="grid max-w-md grid-cols-3 gap-2 text-sm">
+          <div className="rounded-lg border border-slate-200 bg-white p-2"><div className="text-xs text-slate-500">기준</div><b className="tabular-nums">{show(check.expected) || '-'}</b></div>
+          <div className="rounded-lg border border-slate-200 bg-white p-2"><div className="text-xs text-slate-500">서류</div><b className="tabular-nums text-rose-600">{show(check.actual) || '-'}</b></div>
+          {diff != null && <div className="rounded-lg border border-slate-200 bg-white p-2"><div className="text-xs text-slate-500">차이</div><b className="tabular-nums">{diff.toLocaleString('ko-KR')}원</b></div>}
+        </div>
+      )}
+      {primary && (
+        <p className="text-sm text-slate-600">
+          {issue.kind === 'reading' && '원문을 보고 값을 직접 확인해 주세요. 거래처에 요청하기 전에 먼저 할 일이에요.'}
+          {issue.kind === 'vendor' && '먼저 원문을 보고 앱이 제대로 읽었는지 확인하세요. 원문도 같다면 거래처에 고쳐 달라고 요청합니다.'}
+          {issue.kind === 'missing' && (isInternalDocument(issue.missingType) ? '회사 안에서 작성하는 서류라 거래처에 요청하지 않아요.' : '거래처에게 받아야 하는 서류예요.')}
+          {issue.kind === 'contract' && '등록한 계약 기준(금액·방식)이 맞는지 확인하세요.'}
+        </p>
+      )}
+      <div className="flex flex-wrap gap-2">
+        {issue.document && <button onClick={() => onOpenDocument(issue.document!)} className={btn(issue.kind === 'reading' || primary === true && issue.kind === 'vendor')}><Eye className="h-4 w-4" />{issue.kind === 'reading' ? '원문 보고 값 확인' : '원문 보기'}</button>}
+        {external && canEdit && <button onClick={() => onDraft(issue)} className={btn(issue.kind === 'missing')}><Copy className="h-4 w-4" />{issue.kind === 'missing' ? '거래처에 요청 문구 만들기' : '거래처에 보완 요청'}</button>}
+        {issue.missingType && canEdit && <button onClick={() => onUploadType(issue.missingType)} className={btn(isInternalDocument(issue.missingType))}><Upload className="h-4 w-4" />{isInternalDocument(issue.missingType) ? '작성한 파일 올리기' : '이미 받았어요 → 올리기'}</button>}
+      </div>
+    </div>
+  );
+};
 
 interface MenuAction { label: string; onClick: () => void; danger?: boolean; hidden?: boolean }
 
@@ -85,6 +143,8 @@ export const ContractStageView: React.FC<Props> = ({
     open_issue_count: overview.issues.length,
   });
   const stageNo = STAGE_NO[stage];
+  // 실제로 끝난 단계만 체크. 지금 단계보다 앞이어도 남은 일이 있으면 '남음', 요청한 적이 없으면 보완은 '해당 없음'
+  const stepState = stepStates({ stage, missing: missingIssues.length, issues: overview.issues.length, waiting: waiting.length, requests: requests.length, approved: wf?.approval_status === 'CONFIRMED', paid: !!payment?.paid_on });
 
   const [draftFor, setDraftFor] = useState<IssueGroup | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -157,51 +217,8 @@ export const ContractStageView: React.FC<Props> = ({
     { label: '다른 담당자에게 맡기기', onClick: () => setShowAssign(true), hidden: !canEdit && !representative },
   ].filter((m) => !m.hidden);
 
-  /** 문제 하나를 보여 주는 상자. primary면 크게 */
-  const IssueBlock: React.FC<{ issue: IssueGroup; primary?: boolean }> = ({ issue, primary }) => {
-    const check = issue.checks[0];
-    const a = num(check.expected), b = num(check.actual);
-    const diff = a != null && b != null && a !== b ? Math.abs(a - b) : null;
-    const external = issue.kind === 'vendor' || (issue.kind === 'missing' && !isInternalDocument(issue.missingType));
-    const missingName = issue.missingType ? DOCUMENT_TYPE_KO[issue.missingType] ?? issue.title : issue.title;
-    const title = issue.kind === 'missing'
-      ? (isInternalDocument(issue.missingType) ? `${josa(missingName, '을/를')} 작성해서 올려 주세요` : `${josa(missingName, '이/가')} 아직 없어요`)
-      : issue.kind === 'reading' ? `${issue.title}: 앱이 값을 정확히 못 읽었어요` : `${issue.title}: ${SHORT[check.rule_id] ?? plainMessage(check.message)}`;
-    const btn = (on: boolean) => on
-      ? 'inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700'
-      : 'inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-indigo-300';
-    return (
-      <div className={primary ? 'space-y-3' : 'space-y-2 rounded-xl border border-slate-200 bg-white p-3'}>
-        <div className={primary ? 'text-xl font-bold text-slate-900' : 'font-semibold text-slate-900'}>{title}</div>
-        {issue.kind !== 'missing' && primary && (issue.checks.length > 1 || SHORT[check.rule_id]) && (
-          <ul className="space-y-1 text-sm text-slate-600">
-            {issue.checks.map((c, i) => <li key={i}>· {ruleLabel(c.rule_id)}: {plainMessage(c.message)}</li>)}
-          </ul>
-        )}
-        {primary && (check.expected || check.actual) && showsValues(check.rule_id) && (
-          <div className="grid max-w-md grid-cols-3 gap-2 text-sm">
-            <div className="rounded-lg border border-slate-200 bg-white p-2"><div className="text-xs text-slate-500">기준</div><b className="tabular-nums">{check.expected || '-'}</b></div>
-            <div className="rounded-lg border border-slate-200 bg-white p-2"><div className="text-xs text-slate-500">서류</div><b className="tabular-nums text-rose-600">{check.actual || '-'}</b></div>
-            {diff != null && <div className="rounded-lg border border-slate-200 bg-white p-2"><div className="text-xs text-slate-500">차이</div><b className="tabular-nums">{diff.toLocaleString('ko-KR')}원</b></div>}
-          </div>
-        )}
-        {primary && (
-          <p className="text-sm text-slate-600">
-            {issue.kind === 'reading' && '원문을 보고 값을 직접 확인해 주세요. 거래처에 요청하기 전에 먼저 할 일이에요.'}
-            {issue.kind === 'vendor' && '먼저 원문을 보고 앱이 제대로 읽었는지 확인하세요. 원문도 같다면 거래처에 고쳐 달라고 요청합니다.'}
-            {issue.kind === 'missing' && (isInternalDocument(issue.missingType) ? '회사 안에서 작성하는 서류라 거래처에 요청하지 않아요.' : '거래처에게 받아야 하는 서류예요.')}
-            {issue.kind === 'contract' && '등록한 계약 기준(금액·방식)이 맞는지 확인하세요.'}
-          </p>
-        )}
-        <div className="flex flex-wrap gap-2">
-          {issue.document && <button onClick={() => onOpenDocument(issue.document!)} className={btn(issue.kind === 'reading' || primary === true && issue.kind === 'vendor')}><Eye className="h-4 w-4" />{issue.kind === 'reading' ? '원문 보고 값 확인' : '원문 보기'}</button>}
-          {external && canEdit && <button onClick={() => setDraftFor(issue)} className={btn(issue.kind === 'missing')}><Copy className="h-4 w-4" />{issue.kind === 'missing' ? '거래처에 요청 문구 만들기' : '거래처에 보완 요청'}</button>}
-          {issue.missingType && canEdit && <button onClick={() => onUploadType(issue.missingType)} className={btn(isInternalDocument(issue.missingType))}><Upload className="h-4 w-4" />{isInternalDocument(issue.missingType) ? '작성한 파일 올리기' : '이미 받았어요 → 올리기'}</button>}
-        </div>
-      </div>
-    );
-  };
 
+  const blockProps = { canEdit, masked: isMaskingEnabled, onOpenDocument, onUploadType, onDraft: setDraftFor };
   const focusIssues = stage === 'RECEIVING' ? missingIssues : overview.issues;
   // 거래처에게 다시 받을 것: 서류 내용 문제 + 거래처가 내야 하는 빠진 서류
   const vendorIssues = overview.issues.filter((i) => i.kind === 'vendor' || (i.kind === 'missing' && !isInternalDocument(i.missingType)));
@@ -242,16 +259,21 @@ export const ContractStageView: React.FC<Props> = ({
       <div className="rounded-2xl border border-slate-200 bg-white px-4 py-4 sm:px-5">
         <ol className="flex items-center" aria-label="진행 단계">
           {STAGE_STEPS.map((s, i) => {
-            const done = s.no < stageNo;
+            const st = stepState[s.key];
+            const done = st === 'done';
             const now = s.no === stageNo;
+            const pending = st === 'pending' && !now;
+            const skipped = st === 'skipped' && !now;
             return (
               <React.Fragment key={s.key}>
                 {i > 0 && <li aria-hidden="true" className={`mx-1.5 h-0.5 min-w-[8px] flex-1 ${s.no <= stageNo ? 'bg-indigo-500' : 'bg-slate-200'}`} />}
-                <li className={`flex shrink-0 items-center gap-2 text-sm font-semibold ${now ? 'text-indigo-700' : done ? 'text-slate-700' : 'text-slate-400'}`} aria-current={now ? 'step' : undefined}>
-                  <span className={`grid h-7 w-7 place-items-center rounded-full border-2 text-xs ${done ? 'border-indigo-600 bg-indigo-600 text-white' : now ? 'border-indigo-600 bg-white text-indigo-700 ring-4 ring-indigo-100' : 'border-slate-300 bg-white text-slate-400'}`}>
-                    {done ? <Check className="h-3.5 w-3.5" /> : s.no}
+                <li className={`flex shrink-0 items-center gap-2 text-sm font-semibold ${now ? 'text-indigo-700' : pending ? 'text-amber-700' : done ? 'text-slate-700' : 'text-slate-400'}`}
+                  aria-current={now ? 'step' : undefined}
+                  title={pending ? '아직 남은 일이 있어요' : skipped ? '이 계약은 해당 없음' : done ? '끝남' : undefined}>
+                  <span className={`grid h-7 w-7 place-items-center rounded-full border-2 text-xs ${done && !now ? 'border-indigo-600 bg-indigo-600 text-white' : now ? 'border-indigo-600 bg-white text-indigo-700 ring-4 ring-indigo-100' : pending ? 'border-amber-500 bg-amber-50 text-amber-700' : skipped ? 'border-dashed border-slate-300 bg-white text-slate-400' : 'border-slate-300 bg-white text-slate-400'}`}>
+                    {done && !now ? <Check className="h-3.5 w-3.5" /> : pending ? '!' : skipped ? '–' : s.no}
                   </span>
-                  <span className={now ? '' : 'hidden md:inline'}>{s.label}</span>
+                  <span className={now ? '' : 'hidden md:inline'}>{s.label}{pending ? ' · 남음' : skipped ? ' · 해당 없음' : ''}</span>
                 </li>
               </React.Fragment>
             );
@@ -277,7 +299,7 @@ export const ContractStageView: React.FC<Props> = ({
               {(stage === 'RECEIVING' || stage === 'CHECK') && first && (
                 <>
                   {wf?.approval_status === 'RETURNED' && <p className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700">대표가 돌려보낸 계약이에요. 처리 기록에서 이유를 확인하세요.</p>}
-                  <IssueBlock issue={first} primary />
+                  <IssueBlock issue={first} primary {...blockProps} />
                 </>
               )}
 
@@ -298,7 +320,7 @@ export const ContractStageView: React.FC<Props> = ({
                             </span>
                           )}
                         </div>
-                        {r.memo && <div className="mt-0.5 line-clamp-2 text-xs text-slate-500">{r.memo}</div>}
+                        {r.memo && <div className="mt-0.5 line-clamp-2 text-xs text-slate-500">{maskForDisplay(fixParticles(r.memo), isMaskingEnabled)}</div>}
                         {resolving?.id === r.request_id && (
                           <div className="mt-2 flex flex-wrap gap-2">
                             <input value={resolveNote} onChange={(e) => setResolveNote(e.target.value)} aria-label="처리 메모" placeholder={resolving.status === 'RECEIVED' ? '받은 내용' : '취소 이유'}
@@ -374,7 +396,7 @@ export const ContractStageView: React.FC<Props> = ({
           {(stage === 'RECEIVING' || stage === 'CHECK') && (rest.length > 0 || later.length > 0) && (
             <div className="space-y-2">
               <div className="text-sm font-semibold text-slate-600">그다음 할 일 <span className="font-normal text-slate-500">· {kindCounts([...rest, ...later])}</span></div>
-              {[...rest, ...later].map((i) => <IssueBlock key={i.key} issue={i} />)}
+              {[...rest, ...later].map((i) => <IssueBlock key={i.key} issue={i} {...blockProps} />)}
             </div>
           )}
           {followError && <p className="text-xs text-rose-600">{followError}</p>}
