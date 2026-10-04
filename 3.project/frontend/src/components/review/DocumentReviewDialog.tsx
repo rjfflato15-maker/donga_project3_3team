@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useDialogA11y } from '../../hooks/useDialogA11y';
 import { AnalysisFields, DocumentResponse, ValidationCheck } from '../../types';
 import { api, requestJson, downloadProtected } from '../../api/client';
 import { DOCUMENT_TYPE_KO, STATUS_KO, plainMessage, ruleLabel, isUnverifiedBusinessStatus } from '../../utils/reviewSummary';
@@ -65,6 +66,8 @@ function display(key: string, value: FieldProvenance['value'], masked: boolean):
 const AMOUNT_KEYS = new Set(['supply_amount', 'tax_amount', 'total_amount']);
 
 export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, isMaskingEnabled, canEdit, onClose, onChanged }) => {
+  const dialogRef = React.useRef<HTMLDivElement>(null);
+  useDialogA11y(dialogRef, onClose);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState<AnalysisFields>(doc.analysis.fields);
   const [note, setNote] = useState('');
@@ -193,7 +196,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
   }, [text, anchor, isMaskingEnabled]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/50 flex items-center justify-center p-2 sm:p-4" role="dialog" aria-modal="true" aria-labelledby="doc-review-title">
+    <div ref={dialogRef} className="fixed inset-0 z-50 bg-slate-900/50 flex items-center justify-center p-2 sm:p-4" role="dialog" aria-modal="true" aria-labelledby="doc-review-title">
       <div className="flex max-h-full w-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-5 py-3">
           <h2 id="doc-review-title" className="font-bold text-slate-900">{DOCUMENT_TYPE_KO[doc.document_type]}</h2>

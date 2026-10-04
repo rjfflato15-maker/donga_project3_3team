@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
+import { fixParticles, josa } from '../../utils/korean';
+import { useDialogA11y } from '../../hooks/useDialogA11y';
 import { ContractDetail } from '../../types';
 import { IssueGroup, DOCUMENT_TYPE_KO } from '../../utils/reviewSummary';
 import { X } from 'lucide-react';
@@ -20,22 +22,22 @@ function buildDrafts(contract: ContractDetail, issue: IssueGroup) {
   const docName = issue.document ? DOCUMENT_TYPE_KO[issue.document.document_type] : issue.missingType ? DOCUMENT_TYPE_KO[issue.missingType] : '서류';
   const isTaxInvoiceAmount =
     issue.document?.document_type === 'tax_invoice' && issue.checks.some((c) => AMOUNT_RULES.has(c.rule_id));
-  const reasons = issue.checks.map((c) => c.message.replace(/^[^:]+:\s*/, '')).join(' ');
+  const reasons = issue.checks.map((c) => fixParticles(c.message.replace(/^[^:]+:\s*/, ''))).join(' ');
 
   let ask: string;
-  if (issue.missingType) ask = `${docName}을(를) 보내 주시기 바랍니다.`;
+  if (issue.missingType) ask = `${josa(docName, '을/를')} 보내 주시기 바랍니다.`;
   else if (isTaxInvoiceAmount) ask = '홈택스에서 수정 세금계산서를 발행해 주시기 바랍니다.';
-  else ask = `${docName}을(를) 확인하시어 다시 보내 주시기 바랍니다.`;
+  else ask = `${josa(docName, '을/를')} 확인하시어 다시 보내 주시기 바랍니다.`;
 
   const short = issue.missingType
-    ? `[${vendor}] '${contract.title}' 계약 증빙 중 ${docName}이(가) 아직 없어요. ${ask}`
+    ? `[${vendor}] '${contract.title}' 계약 증빙 중 ${josa(docName, '이/가')} 아직 없어요. ${ask}`
     : `[${vendor}] '${contract.title}' 계약 ${docName} 확인 결과: ${reasons} ${ask}`;
 
   const long = [
     `${vendor} 담당자님, 안녕하세요.`,
     '',
     `「${contract.title}」 계약의 증빙 서류를 확인한 결과를 알려 드립니다.`,
-    issue.missingType ? `- ${docName}이(가) 제출되지 않았습니다.` : issue.checks.map((c) => `- ${c.message}`).join('\n'),
+    issue.missingType ? `- ${josa(docName, '이/가')} 제출되지 않았습니다.` : issue.checks.map((c) => `- ${fixParticles(c.message)}`).join('\n'),
     '',
     ask,
     '감사합니다.',
@@ -45,6 +47,8 @@ function buildDrafts(contract: ContractDetail, issue: IssueGroup) {
 
 export const RequestDraftDialog: React.FC<Props> = ({ contract, issue, isMaskingEnabled, canRecord, onClose, onRecorded }) => {
   const drafts = useMemo(() => buildDrafts(contract, issue), [contract, issue]);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialogA11y(dialogRef, onClose);
   const [mode, setMode] = useState<'short' | 'long'>('short');
   const [text, setText] = useState(drafts.short);
   const [copied, setCopied] = useState<string>('');
@@ -87,7 +91,7 @@ export const RequestDraftDialog: React.FC<Props> = ({ contract, issue, isMasking
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/40 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="draft-title">
+    <div ref={dialogRef} className="fixed inset-0 z-50 bg-slate-900/40 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="draft-title">
       <div className="w-full max-w-xl rounded-2xl bg-white shadow-xl">
         <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-4">
           <h2 id="draft-title" className="font-bold text-slate-900">재제출 요청 문구</h2>

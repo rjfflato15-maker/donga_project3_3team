@@ -61,7 +61,7 @@ describe('buildReviewOverview', () => {
 describe('작은 도우미', () => {
   it('메시지 앞의 파일명만 뺀다', () => {
     expect(plainMessage('document_05.png: 공급가액과 세액의 합이 다릅니다.')).toBe('공급가액과 세액의 합이 다릅니다.');
-    expect(plainMessage('통장사본이(가) 제출되지 않았습니다.')).toBe('통장사본이(가) 제출되지 않았습니다.');
+    expect(plainMessage('통장사본이(가) 제출되지 않았습니다.')).toBe('통장사본이 제출되지 않았습니다.');
   });
   it('사업자번호를 못 읽은 확인 필요는 읽기 문제, 다른 번호(불일치)는 아니다', () => {
     expect(isReadingCheck(check('BUSINESS_NO_MATCH', 'REVIEW', '5'))).toBe(true);

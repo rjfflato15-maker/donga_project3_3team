@@ -1,4 +1,5 @@
 import { ContractDetail, DocumentResponse, DocumentType, ValidationCheck, ValidationStatus } from '../types';
+import { fixParticles } from './korean';
 
 export const DOCUMENT_TYPE_KO: Record<DocumentType, string> = {
   contract: '외주용역 계약서',
@@ -42,7 +43,7 @@ export const INTERNAL_DOCUMENT_TYPES: DocumentType[] = ['inspection_confirmation
 export const isInternalDocument = (t?: DocumentType) => !!t && INTERNAL_DOCUMENT_TYPES.includes(t);
 
 /** 카드 제목에 서류 이름이 있으므로 메시지 앞의 '파일명: '은 뺀다. */
-export const plainMessage = (message: string) => message.replace(/^[^:：]{1,80}\.(pdf|png|jpe?g|docx?|hwp|tiff?)\s*[:：]\s*/i, '');
+export const plainMessage = (message: string) => fixParticles(message.replace(/^[^:：]{1,80}\.(pdf|png|jpe?g|docx?|hwp|tiff?)\s*[:：]\s*/i, ''));
 
 /** 기준·서류 값을 보여 줄 의미가 있는 검사인지 */
 export const showsValues = (ruleId: string) => !['REQUIRED_DOCUMENTS', 'AMOUNT_EXTRACTION', 'DOCUMENT_TYPE', 'DOCUMENT_PROCESSING', 'ORIGINAL_FILE'].includes(ruleId);

@@ -6,6 +6,7 @@ import {
   buildReviewOverview, IssueGroup, plainMessage, showsValues, ruleLabel, isInternalDocument, DOCUMENT_TYPE_KO, STATUS_KO,
 } from '../../utils/reviewSummary';
 import { maskVendorName } from '../../utils/masking';
+import { josa } from '../../utils/korean';
 import { Stage, stageOf, STAGE_STEPS, STAGE_NO } from '../../utils/stage';
 import { RequestDraftDialog } from './RequestDraftDialog';
 import { ApprovalPanel } from './ApprovalPanel';
@@ -20,6 +21,10 @@ const num = (s?: string | null) => {
   return m ? Number(m[0]) : null;
 };
 const today = () => new Date().toISOString().slice(0, 10);
+
+const KIND_KO: Record<string, string> = { missing: '빠진 서류', vendor: '서류 내용 확인', reading: '원문 확인', contract: '계약 기준 확인' };
+const kindCounts = (list: IssueGroup[]) => Object.entries(list.reduce<Record<string, number>>((m, i) => ({ ...m, [i.kind]: (m[i.kind] ?? 0) + 1 }), {}))
+  .map(([k, n]) => `${KIND_KO[k] ?? k} ${n}건`).join(' · ');
 
 /** 문제 제목은 짧게: 자세한 설명은 상자 안에서 */
 const SHORT: Record<string, string> = {
@@ -158,8 +163,9 @@ export const ContractStageView: React.FC<Props> = ({
     const a = num(check.expected), b = num(check.actual);
     const diff = a != null && b != null && a !== b ? Math.abs(a - b) : null;
     const external = issue.kind === 'vendor' || (issue.kind === 'missing' && !isInternalDocument(issue.missingType));
+    const missingName = issue.missingType ? DOCUMENT_TYPE_KO[issue.missingType] ?? issue.title : issue.title;
     const title = issue.kind === 'missing'
-      ? `${issue.title}${isInternalDocument(issue.missingType) ? '를 작성해서 올려 주세요' : '가 아직 없어요'}`
+      ? (isInternalDocument(issue.missingType) ? `${josa(missingName, '을/를')} 작성해서 올려 주세요` : `${josa(missingName, '이/가')} 아직 없어요`)
       : issue.kind === 'reading' ? `${issue.title}: 앱이 값을 정확히 못 읽었어요` : `${issue.title}: ${SHORT[check.rule_id] ?? plainMessage(check.message)}`;
     const btn = (on: boolean) => on
       ? 'inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700'
@@ -265,7 +271,7 @@ export const ContractStageView: React.FC<Props> = ({
           ) : (
             <section className="space-y-3 rounded-2xl border-2 border-indigo-500 bg-indigo-50/40 p-5" aria-labelledby="now-title">
               <div id="now-title" className="text-sm font-bold text-indigo-700">
-                지금 할 일{(stage === 'CHECK' || stage === 'RECEIVING') && focusIssues.length > 1 ? ` · ${focusIssues.length}건 중 1` : ''}
+                지금 할 일{(stage === 'CHECK' || stage === 'RECEIVING') && focusIssues.length > 1 ? ` · ${stage === 'RECEIVING' ? '빠진 서류' : '확인할 것'} ${focusIssues.length}건 중 1번째` : ''}
               </div>
 
               {(stage === 'RECEIVING' || stage === 'CHECK') && first && (
@@ -367,7 +373,7 @@ export const ContractStageView: React.FC<Props> = ({
           {/* 그다음 할 일 */}
           {(stage === 'RECEIVING' || stage === 'CHECK') && (rest.length > 0 || later.length > 0) && (
             <div className="space-y-2">
-              <div className="text-sm font-semibold text-slate-600">그다음 할 일</div>
+              <div className="text-sm font-semibold text-slate-600">그다음 할 일 <span className="font-normal text-slate-500">· {kindCounts([...rest, ...later])}</span></div>
               {[...rest, ...later].map((i) => <IssueBlock key={i.key} issue={i} />)}
             </div>
           )}
@@ -394,7 +400,9 @@ export const ContractStageView: React.FC<Props> = ({
         {/* 서류 목록 */}
         <aside className="min-w-0">
           <div className="rounded-2xl border border-slate-200 bg-white p-2">
-            <div className="px-2 pb-1 pt-1 text-sm font-bold text-slate-900">서류 {required.length || contract.documents.length}종</div>
+            <div className="px-2 pb-1 pt-1 text-sm font-bold text-slate-900">
+              {required.length ? <>필요 {required.length}종 · <span className={required.every((t) => submittedTypes.has(t)) ? 'text-emerald-700' : 'text-amber-700'}>받은 {required.filter((t) => submittedTypes.has(t)).length}종</span></> : `서류 ${contract.documents.length}개`}
+            </div>
             {contract.documents.map((doc) => {
               const st = overview.documentStatus.get(doc.document_id) ?? 'PASS';
               return (
