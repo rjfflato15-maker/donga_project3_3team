@@ -23,6 +23,21 @@ export const stageOfItem = (c: DashboardItem): Stage => stageOf({
 
 const today = () => new Date().toISOString().slice(0, 10);
 
+/**
+ * 검색: 거래처·계약명은 글자 그대로, 금액은 '2090000', '2,090,000', '2,090,000원'을 같은 값으로 찾는다.
+ * 숫자·쉼표·원·공백으로만 된 입력일 때만 금액 정규화를 쓴다.
+ */
+export function matchesQuery(c: Pick<DashboardItem, 'title' | 'vendor_name' | 'contract_amount'>, query: string): boolean {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  if (`${c.title} ${c.vendor_name}`.toLowerCase().includes(q)) return true;
+  if (/^[\d,\s원]+$/.test(q)) {
+    const digits = q.replace(/[^\d]/g, '');
+    return digits.length > 0 && String(Math.round(c.contract_amount)).includes(digits);
+  }
+  return false;
+}
+
 /** 표의 '다음 할 일' 한 줄 */
 function nextAction(c: DashboardItem, s: Stage, representative: boolean): string {
   switch (s) {
@@ -65,7 +80,7 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
   const q = query.trim().toLowerCase();
   const rows = (q || history ? withStage : active)
     .filter((x) => filter === 'all' || x.s === filter)
-    .filter((x) => !q || `${x.c.title} ${x.c.vendor_name} ${Math.round(x.c.contract_amount)}`.toLowerCase().includes(q))
+    .filter((x) => matchesQuery(x.c, q))
     .sort((a, b) => history
       ? b.c.created_at.localeCompare(a.c.created_at)
       : order.indexOf(a.s) - order.indexOf(b.s) || (a.c.earliest_due_on || '9999').localeCompare(b.c.earliest_due_on || '9999'));
@@ -82,11 +97,11 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
     <div className="space-y-5">
       <div className="flex flex-wrap items-end gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">{history ? '지난 계약 찾기' : todo ? `오늘 할 일 ${todo}건` : '지금 할 일이 없어요'}</h1>
+          <h1 className="text-2xl font-bold text-slate-900">{history ? '지난 계약 찾기' : todo ? `지금 처리할 계약 ${todo}건` : '지금 처리할 계약이 없어요'}</h1>
           <p className="text-sm text-slate-500">{history ? `모든 계약 ${contracts.length}건 · 최근 등록 순서` : representative ? '결재할 계약부터 보여 줍니다.' : '위에서부터 처리하면 됩니다.'}</p>
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
-          <label className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
+          <label className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200">
             <Search className="h-4 w-4 text-slate-400" />
             <span className="sr-only">계약 검색</span>
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="거래처·계약명·금액"
@@ -155,7 +170,7 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
                   <td className="px-4 py-3 text-right">
                     <button onClick={(e) => { e.stopPropagation(); onOpen(c.contract_id); }}
                       className={mine ? `rounded-lg px-3 py-1.5 text-xs font-semibold text-white ${s === 'PAYMENT' ? 'bg-emerald-700 hover:bg-emerald-800' : 'bg-indigo-600 hover:bg-indigo-700'}` : 'rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700'}>
-                      {mine ? (s === 'PAYMENT' ? '지급 기록' : s === 'APPROVAL' ? '결재하기' : '확인하기') : '보기'}
+                      {mine ? (s === 'PAYMENT' ? '지급 기록' : s === 'APPROVAL' ? '결재하기' : s === 'RECEIVING' ? '서류 받기' : '확인하기') : '보기'}
                     </button>
                   </td>
                 </tr>
