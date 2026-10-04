@@ -118,7 +118,7 @@ export const ContractStageView: React.FC<Props> = ({
       await onChanged();
     } catch (e) {
       const msg = e instanceof Error ? e.message : '';
-      setPayError(/not found|404|405/i.test(msg) ? '지급 기록 기능은 아직 준비 중이에요(백엔드 연결 전).' : msg || '기록하지 못했습니다.');
+      setPayError(/not found|not allowed|404|405/i.test(msg) ? '지급 기록 기능은 아직 준비 중이에요. 지급은 평소대로 하시고, 기능이 연결되면 이 화면에서 기록할 수 있어요.' : msg || '기록하지 못했습니다.');
     } finally { setPayBusy(false); }
   };
 
@@ -197,6 +197,8 @@ export const ContractStageView: React.FC<Props> = ({
   };
 
   const focusIssues = stage === 'RECEIVING' ? missingIssues : overview.issues;
+  // 거래처에게 다시 받을 것: 서류 내용 문제 + 거래처가 내야 하는 빠진 서류
+  const vendorIssues = overview.issues.filter((i) => i.kind === 'vendor' || (i.kind === 'missing' && !isInternalDocument(i.missingType)));
   const [first, ...rest] = focusIssues;
   const later = stage === 'RECEIVING' ? otherIssues : [];
 
@@ -302,16 +304,25 @@ export const ContractStageView: React.FC<Props> = ({
                       </div>
                     );
                   })}
-                  {canEdit && overview.issues.length > 0 && (
+                  {canEdit && vendorIssues.length > 0 && (
                     <div className="space-y-2">
                       <div className="text-sm font-semibold text-slate-700">고친 서류를 받았다면 올리세요</div>
                       <div className="flex flex-wrap gap-2">
-                        {overview.issues.map((i) => i.document
+                        {vendorIssues.map((i) => i.document
                           ? <button key={i.key} onClick={() => onOpenDocument(i.document!)} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"><Upload className="h-4 w-4" />{DOCUMENT_TYPE_KO[i.document.document_type]} 고친 본 올리기</button>
                           : i.missingType ? <button key={i.key} onClick={() => onUploadType(i.missingType)} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"><Upload className="h-4 w-4" />{DOCUMENT_TYPE_KO[i.missingType]} 올리기</button> : null)}
                       </div>
                       <p className="text-xs text-slate-500">올리면 이전 서류는 보관되고 새 서류로 자동으로 다시 확인해요. 그다음 ‘답 받음’을 눌러 요청을 닫으세요.</p>
                     </div>
+                  )}
+                  {canEdit && vendorIssues.length === 0 && (
+                    <button onClick={() => onUploadType()} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"><Upload className="h-4 w-4" />받은 서류 올리기</button>
+                  )}
+                  {canEdit && vendorIssues.length > 0 && (
+                    <button onClick={() => onUploadType()} className="text-xs font-semibold text-indigo-600 hover:underline">다른 서류 올리기</button>
+                  )}
+                  {canEdit && overview.issues.length > vendorIssues.length && (
+                    <p className="text-xs text-slate-500">거래처와 상관없이 확인할 것 {overview.issues.length - vendorIssues.length}건은 답을 받은 뒤 ‘② 확인’에서 처리해요.</p>
                   )}
                   {canEdit && overview.issues.length === 0 && <p className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800">받은 서류로 문제가 모두 풀렸어요. ‘답 받음’을 눌러 요청을 닫으면 결재 단계로 넘어가요.</p>}
                 </div>
