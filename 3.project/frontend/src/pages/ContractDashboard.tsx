@@ -13,6 +13,7 @@ import { ContractReviewOverview } from '../components/review/ContractReviewOverv
 import { DocumentReviewDialog } from '../components/review/DocumentReviewDialog';
 import { StageDashboard, DashboardItem } from '../components/review/StageDashboard';
 import { ContractStageView } from '../components/review/ContractStageView';
+import { ContractSearch } from '../components/review/ContractSearch';
 import { ApprovalPanel } from '../components/review/ApprovalPanel';
 import { AssignmentPanel } from '../components/review/AssignmentPanel';
 import { MyAssignmentsStrip } from '../components/review/MyAssignmentsStrip';
@@ -520,17 +521,7 @@ export const ContractDashboard: React.FC = () => {
 
       case 'contracts':
         if (isPilot && (contractViewMode === 'list' || !currentContract)) {
-          return (
-            <StageDashboard
-              history
-              contracts={contracts as DashboardItem[]}
-              isMaskingEnabled={isMaskingEnabled}
-              canEdit={canEdit}
-              representative={user?.role === 'representative'}
-              onOpen={(id) => handleSelectContract(id, undefined, 'detail')}
-              onNew={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
-            />
-          );
+          return <ContractSearch isMaskingEnabled={isMaskingEnabled} onOpen={(id) => handleSelectContract(id, undefined, 'detail')} />;
         }
         if (contractViewMode === 'list' || !currentContract) {
           return (

@@ -9,6 +9,7 @@ export interface DashboardItem extends ContractListItem {
   stage?: string | null;
   paid_on?: string | null;
   payment?: import('../../types').ContractPayment | null;
+  work_state?: { counts?: { immediate_check_items?: number; waiting_requests?: number }; next_actions?: { role: string; label: string }[]; waiting_for?: string[] } | null;
   action_summary?: string;
   waiting_request_count?: number;
   earliest_due_on?: string | null;
@@ -50,7 +51,10 @@ function nextAction(c: DashboardItem, s: Stage, representative: boolean): string
       const n = c.open_issue_count ?? 0;
       return `${n ? `확인할 것 ${n}건` : '다시 확인하세요'}${ap === 'STALE' ? ' · 서류가 바뀌었어요' : ''}`;
     }
-    case 'WAITING': return '거래처 답을 기다리는 중';
+    case 'WAITING': {
+      const now = c.work_state?.counts?.immediate_check_items ?? 0;
+      return `거래처 답을 기다리는 중${now ? ` · 사내에서 바로 확인할 것 ${now}건` : ''}`;
+    }
     case 'APPROVAL': return representative ? '결재할 차례예요' : '문제 없음 · 대표 결재를 기다려요';
     case 'PAYMENT': return c.payment?.status === 'RECONFIRMATION_REQUIRED' ? `이미 ${c.payment.recorded_paid_on} 지급 · 같은 지급인지 재확인` : '대표 결재 끝 · 지급하고 기록하세요';
     default: return c.paid_on ? `${c.paid_on} 지급 완료` : '끝';
