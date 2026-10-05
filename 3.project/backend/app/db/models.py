@@ -218,6 +218,7 @@ class ResubmissionRequest(Base):
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     resolved_at = Column(DateTime, nullable=True)
     resolution_note = Column(Text, nullable=True)
+    bundle = relationship("RequestBundle", uselist=False, cascade="all, delete-orphan")
 
 
 class ApprovalSignoff(Base):
@@ -328,3 +329,33 @@ class PaymentConfirmation(Base):
     note = Column(Text, nullable=False, default="")
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     __table_args__ = (UniqueConstraint("payment_id", "review_id", name="uq_payment_review_confirmation"),)
+
+
+class RequestBundle(Base):
+    __tablename__ = "pilot_request_bundles"
+    request_id = Column(Integer, ForeignKey("pilot_resubmission_requests.request_id", ondelete="CASCADE"), primary_key=True)
+    contract_id = Column(Integer, ForeignKey("contracts.contract_id", ondelete="CASCADE"), nullable=False, index=True)
+    actor_id = Column(Integer, nullable=False)
+    contract_revision = Column(Integer, nullable=False)
+    contract_fingerprint = Column(String(64), nullable=False)
+    request_revision = Column(Integer, nullable=False, default=1)
+    idempotency_key = Column(String(100), nullable=False)
+    payload_sha256 = Column(String(64), nullable=False)
+    items = relationship("RequestBundleItem", cascade="all, delete-orphan", order_by="RequestBundleItem.item_id")
+    __table_args__ = (UniqueConstraint("contract_id", "actor_id", "idempotency_key", name="uq_request_bundle_key"),)
+
+
+class RequestBundleItem(Base):
+    __tablename__ = "pilot_request_bundle_items"
+    item_id = Column(Integer, primary_key=True, autoincrement=True)
+    request_id = Column(Integer, ForeignKey("pilot_request_bundles.request_id", ondelete="CASCADE"), nullable=False, index=True)
+    issue_key = Column(String(100), nullable=False)
+    title = Column(String(200), nullable=False)
+    document_type = Column(String(50), nullable=True)
+    document_id = Column(Integer, nullable=True)
+    reason = Column(Text, nullable=False)
+    snapshot_json = Column(Text, nullable=False)
+    status = Column(String(30), nullable=False, default="WAITING_RESPONSE")
+    resolution_note = Column(Text, nullable=True)
+    resolved_at = Column(DateTime, nullable=True)
+    __table_args__ = (UniqueConstraint("request_id", "issue_key", name="uq_request_bundle_item_key"),)

@@ -19,12 +19,13 @@ from .pipeline_service import PipelineService
 from .preview_masking_service import mask_image_with_ocr, mask_export_text, SENSITIVE_KEYS
 from .storage_service import resolve_path, read_texts, STORAGE_LOCK
 from .workflow_service import policy_for, fingerprint_for, audit
+from .review_context_service import request_response
 
 RASTERS = {'.png', '.jpg', '.jpeg', '.bmp', '.webp', '.gif', '.tif', '.tiff'}
 MAX_SOURCE_BYTES = 250 * 1024 * 1024
 MAX_EXPORT_BYTES = 250 * 1024 * 1024
-EXCLUDED_KEYS = {'storage_path', 'raw_text', 'masked_text', 'password', 'token', 'prompt', 'response'}
-OPAQUE_KEYS = {'fingerprint', 'contract_fingerprint', 'source_sha256', 'export_sha256', 'sha256'}
+EXCLUDED_KEYS = {'storage_path', 'raw_text', 'masked_text', 'password', 'token', 'prompt', 'response', 'idempotency_key'}
+OPAQUE_KEYS = {'fingerprint', 'contract_fingerprint', 'source_sha256', 'export_sha256', 'sha256', 'payload_sha256'}
 
 
 def row_data(row):
@@ -101,7 +102,14 @@ def export_snapshot(db, cid, revision=None):
         ('payments', ContractPayment, ContractPayment.payment_id),
         ('payment_confirmations', PaymentConfirmation, PaymentConfirmation.confirmation_id),
     ):
-        history[label] = [row_data(row) for row in db.query(model).filter_by(contract_id=cid).order_by(order)]
+        history[label] = []
+        for row in db.query(model).filter_by(contract_id=cid).order_by(order):
+            item = row_data(row)
+            if label == 'requests':
+                # Keep the selected reasons and partial receipts together with
+                # their parent request; metadata is masked recursively below.
+                item['bundle'] = request_response(row).get('bundle')
+            history[label].append(item)
     data = {'contract_id': cid, 'revision': policy['revision'], 'fingerprint': fingerprint,
             'captured_at': datetime.now(timezone.utc).isoformat(),
             'contract': {**row_data(contract), 'policy': policy}, 'documents': documents,

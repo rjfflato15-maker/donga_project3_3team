@@ -14,6 +14,7 @@ from .review_assistant import router as review_assistant_router
 from .upload_jobs import router as upload_jobs_router
 from .contract_exports import router as contract_exports_router
 from .payments import router as payments_router
+from .request_bundles import router as request_bundles_router
 
 api_router = APIRouter()
 api_router.include_router(contracts_router, dependencies=[Depends(authorize_company_request)])
@@ -29,6 +30,7 @@ api_router.include_router(review_assistant_router, dependencies=[Depends(authori
 api_router.include_router(upload_jobs_router, dependencies=[Depends(authorize_company_request)])
 api_router.include_router(contract_exports_router, dependencies=[Depends(authorize_company_request)])
 api_router.include_router(payments_router, dependencies=[Depends(authorize_company_request)])
+api_router.include_router(request_bundles_router, dependencies=[Depends(authorize_company_request)])
 api_router.include_router(auth_router)
 
 __all__ = ["api_router"]

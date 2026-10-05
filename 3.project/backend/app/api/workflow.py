@@ -78,6 +78,8 @@ def resolve_request(contract_id: int, request_id: int, req: RequestResolve, db: 
         row = db.get(ResubmissionRequest, request_id)
         if not row or row.contract_id != contract_id:
             raise HTTPException(404, '요청 기록이 없습니다.')
+        if row.bundle is not None:
+            raise HTTPException(409, '묶음 요청은 항목별 회신 API로 처리하세요. 요청 전체를 한 번에 닫을 수 없습니다.')
         if row.status != 'WAITING_RESPONSE':
             raise HTTPException(409, '이미 회신 처리하거나 취소한 요청입니다.')
         row.status = req.status

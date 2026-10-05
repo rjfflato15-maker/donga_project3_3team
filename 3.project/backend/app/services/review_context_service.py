@@ -31,7 +31,22 @@ def display_anchor(page, line, quote, allow_text_line=False):
             'location_kind': 'text_line', 'page_layout_verified': False, 'text_verified': True}
 
 def request_response(row):
-    return {'request_id': row.request_id, 'contract_id': row.contract_id, 'contact_method': row.contact_method, 'requested_on': row.requested_on, 'due_on': row.due_on, 'memo': row.memo, 'status': row.status, 'actor_name': row.actor_name, 'created_at': row.created_at.isoformat(), 'resolved_at': row.resolved_at.isoformat() if row.resolved_at else None, 'resolution_note': row.resolution_note}
+    result = {'request_id': row.request_id, 'contract_id': row.contract_id, 'contact_method': row.contact_method, 'requested_on': row.requested_on, 'due_on': row.due_on, 'memo': row.memo, 'status': row.status, 'actor_name': row.actor_name, 'created_at': row.created_at.isoformat(), 'resolved_at': row.resolved_at.isoformat() if row.resolved_at else None, 'resolution_note': row.resolution_note}
+    bundle = row.bundle
+    result['bundle'] = None
+    if bundle:
+        items = [{'item_id': item.item_id, 'issue_key': item.issue_key, 'title': item.title,
+            'document_type': item.document_type, 'document_id': item.document_id,
+            'reason': item.reason, 'snapshot': json.loads(item.snapshot_json), 'status': item.status,
+            'resolution_note': item.resolution_note,
+            'resolved_at': item.resolved_at.isoformat() if item.resolved_at else None} for item in bundle.items]
+        result['bundle'] = {'contract_revision': bundle.contract_revision,
+            'contract_fingerprint': bundle.contract_fingerprint, 'request_revision': bundle.request_revision,
+            'idempotency_key': bundle.idempotency_key, 'items': items,
+            'counts': {'total': len(items), 'waiting': sum(i['status'] == 'WAITING_RESPONSE' for i in items),
+                'received': sum(i['status'] == 'RECEIVED' for i in items),
+                'cancelled': sum(i['status'] == 'CANCELLED' for i in items)}}
+    return result
 
 def document_provenance(db, doc):
     fields = json.loads(doc.extract.raw_fields or '{}') if doc.extract else {}
