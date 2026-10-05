@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { BundleCandidate, BundleContext, BundledRequest, BundleReplyPanel, BundleRequestDialog, RequestChecklist, bundleApi } from './BundleRequest';
 import { ContractDetail, DocumentResponse, DocumentType, ValidationStatus } from '../../types';
 import { requestJson } from '../../api/client';
-import { followUpApi, ResubmissionRequest, CONTACT_VIA } from '../../api/followUp';
+import { followUpApi, CONTACT_VIA } from '../../api/followUp';
 import {
   buildReviewOverview, IssueGroup, plainMessage, showsValues, ruleLabel, isInternalDocument, DOCUMENT_TYPE_KO, STATUS_KO,
 } from '../../utils/reviewSummary';
@@ -9,7 +10,6 @@ import { seoulToday } from '../../utils/date';
 import { maskBusinessNumber, maskResidentNumber, maskVendorName } from '../../utils/masking';
 import { fixParticles, josa } from '../../utils/korean';
 import { Stage, stageOf, stepStates, STAGE_STEPS, STAGE_NO } from '../../utils/stage';
-import { RequestDraftDialog } from './RequestDraftDialog';
 import { ApprovalPanel } from './ApprovalPanel';
 import { AssignmentPanel } from './AssignmentPanel';
 import { PilotReviewPanel } from '../PilotReviewPanel';
@@ -32,9 +32,6 @@ const num = (s?: string | null) => {
 };
 const today = () => seoulToday();
 
-const KIND_KO: Record<string, string> = { missing: '빠진 서류', vendor: '서류 내용 확인', reading: '원문 확인', contract: '계약 기준 확인' };
-const kindCounts = (list: IssueGroup[]) => Object.entries(list.reduce<Record<string, number>>((m, i) => ({ ...m, [i.kind]: (m[i.kind] ?? 0) + 1 }), {}))
-  .map(([k, n]) => `${KIND_KO[k] ?? k} ${n}건`).join(' · ');
 
 /** 문제 제목은 짧게: 자세한 설명은 상자 안에서 */
 const SHORT: Record<string, string> = {
@@ -60,14 +57,12 @@ interface IssueBlockProps {
   masked: boolean;
   onOpenDocument: (doc: DocumentResponse) => void;
   onUploadType: (type?: DocumentType) => void;
-  onDraft: (issue: IssueGroup) => void;
 }
-const IssueBlock: React.FC<IssueBlockProps> = ({ issue, primary, canEdit, masked, onOpenDocument, onUploadType, onDraft }) => {
+const IssueBlock: React.FC<IssueBlockProps> = ({ issue, primary, canEdit, masked, onOpenDocument, onUploadType }) => {
   const show = (t?: string | null) => (t ? maskForDisplay(t, masked) : t);
   const check = issue.checks[0];
   const a = num(check.expected), b = num(check.actual);
   const diff = a != null && b != null && a !== b ? Math.abs(a - b) : null;
-  const external = issue.kind === 'vendor' || (issue.kind === 'missing' && !isInternalDocument(issue.missingType));
   const missingName = issue.missingType ? DOCUMENT_TYPE_KO[issue.missingType] ?? issue.title : issue.title;
   const title = issue.kind === 'missing'
     ? (isInternalDocument(issue.missingType) ? `${josa(missingName, '을/를')} 작성해서 올려 주세요` : `${josa(missingName, '이/가')} 아직 없어요`)
@@ -100,7 +95,6 @@ const IssueBlock: React.FC<IssueBlockProps> = ({ issue, primary, canEdit, masked
       )}
       <div className="flex flex-wrap gap-2">
         {issue.document && <button onClick={() => onOpenDocument(issue.document!)} className={btn(issue.kind === 'reading' || primary === true && issue.kind === 'vendor')}><Eye className="h-4 w-4" />{issue.kind === 'reading' ? '원문 보고 값 확인' : '원문 보기'}</button>}
-        {external && canEdit && <button onClick={() => onDraft(issue)} className={btn(issue.kind === 'missing')}><Copy className="h-4 w-4" />{issue.kind === 'missing' ? '거래처에 요청 문구 만들기' : '거래처에 보완 요청'}</button>}
         {issue.missingType && canEdit && <button onClick={() => onUploadType(issue.missingType)} className={btn(isInternalDocument(issue.missingType))}><Upload className="h-4 w-4" />{isInternalDocument(issue.missingType) ? '작성한 파일 올리기' : '이미 받았어요 → 올리기'}</button>}
       </div>
     </div>
@@ -128,7 +122,7 @@ export const ContractStageView: React.FC<Props> = ({
   contract, isMaskingEnabled, canEdit, representative, ntsMode, onBack, onOpenDocument, onUploadType, onChanged, recentUploadNames, menu,
 }) => {
   const overview = useMemo(() => buildReviewOverview(contract), [contract]);
-  const [requests, setRequests] = useState<ResubmissionRequest[]>([]);
+  const [requests, setRequests] = useState<BundledRequest[]>([]);
   const [followError, setFollowError] = useState('');
   const loadRequests = async () => {
     try { setRequests(await followUpApi.list(contract.contract_id)); setFollowError(''); }
@@ -136,13 +130,25 @@ export const ContractStageView: React.FC<Props> = ({
   };
   useEffect(() => { void loadRequests(); }, [contract.contract_id, contract.updated_at]);
   const waiting = requests.filter((r) => r.status === 'WAITING_RESPONSE');
+  // 묶음 요청 후보: 거래처에 요청할 것 / 회사 안에서 확인할 것
+  const [ctx, setCtx] = useState<BundleContext | null>(null);
+  const [ctxError, setCtxError] = useState('');
+  const loadCtx = async () => {
+    try { setCtx(await bundleApi.context(contract.contract_id)); setCtxError(''); }
+    catch (e) { setCtx(null); setCtxError(e instanceof Error ? e.message : '요청 후보를 불러오지 못했습니다.'); }
+  };
+  useEffect(() => { void loadCtx(); }, [contract.contract_id, contract.updated_at, contract.workflow?.revision, contract.workflow?.fingerprint]);
+  const refreshAll = async () => { await Promise.all([loadRequests(), loadCtx()]); await onChanged(); };
+  // 기록하면 요청 버튼이 사라지므로, 창을 닫은 뒤 '답을 기다리는 중'으로 포커스를 옮긴다
+  const waitingRef = useRef<HTMLDivElement>(null);
+  const [bundleFor, setBundleFor] = useState<{ items: BundleCandidate[]; reviewed: Set<string> } | null>(null);
+  const openDocId = (id: number, mode: 'view' | 'reissue' = 'view') => { const d = contract.documents.find((x) => x.document_id === id); if (d) onOpenDocument(d, mode); };
 
   const wf = contract.workflow;
   const payment = contract.payment ?? null;
   // 자료가 바뀌어 다시 확인해야 하는 과거 지급 사실: 다시 지급하라고 안내하지 않는다
   const paidBefore = payment && payment.status === 'RECONFIRMATION_REQUIRED' ? payment : null;
   const missingIssues = overview.issues.filter((i) => i.kind === 'missing');
-  const otherIssues = overview.issues.filter((i) => i.kind !== 'missing');
   const stage: Stage = stageOf({
     stage: (contract as { stage?: string }).stage,
     approval_status: wf?.approval_status,
@@ -155,7 +161,6 @@ export const ContractStageView: React.FC<Props> = ({
   // 실제로 끝난 단계만 체크. 지금 단계보다 앞이어도 남은 일이 있으면 '남음', 요청한 적이 없으면 보완은 '해당 없음'
   const stepState = stepStates({ stage, missing: missingIssues.length, issues: overview.issues.length, waiting: waiting.length, requests: requests.length, approved: wf?.approval_status === 'CONFIRMED', paid: !!payment?.paid_on });
 
-  const [draftFor, setDraftFor] = useState<IssueGroup | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showAssign, setShowAssign] = useState(false);
@@ -250,12 +255,9 @@ export const ContractStageView: React.FC<Props> = ({
   ].filter((m) => !m.hidden);
 
 
-  const blockProps = { canEdit, masked: isMaskingEnabled, onOpenDocument, onUploadType, onDraft: setDraftFor };
-  const focusIssues = stage === 'RECEIVING' ? missingIssues : overview.issues;
-  // 거래처에게 다시 받을 것: 서류 내용 문제 + 거래처가 내야 하는 빠진 서류
-  const vendorIssues = overview.issues.filter((i) => i.kind === 'vendor' || (i.kind === 'missing' && !isInternalDocument(i.missingType)));
-  const [first, ...rest] = focusIssues;
-  const later = stage === 'RECEIVING' ? otherIssues : [];
+  const blockProps = { canEdit, masked: isMaskingEnabled, onOpenDocument, onUploadType, };
+  const vendorKeys = new Set((ctx?.vendor_candidates ?? []).map((c) => (c.document_id != null ? `d${c.document_id}` : `m${c.document_type}`)));
+  const internalIssues = overview.issues.filter((i) => !(i.document ? vendorKeys.has(`d${i.document.document_id}`) && i.kind === 'vendor' : vendorKeys.has(`m${i.missingType}`)));
 
   return (
     <div className="space-y-5">
@@ -329,67 +331,69 @@ export const ContractStageView: React.FC<Props> = ({
             </div>
           ) : (
             <section className="space-y-3 rounded-2xl border-2 border-indigo-500 bg-indigo-50/40 p-5" aria-labelledby="now-title">
-              <div id="now-title" className="text-sm font-bold text-indigo-700">
-                지금 할 일{(stage === 'CHECK' || stage === 'RECEIVING') && focusIssues.length > 1 ? ` · ${stage === 'RECEIVING' ? '빠진 서류' : '확인할 것'} ${focusIssues.length}건 중 1번째` : ''}
-              </div>
+              <div id="now-title" className="text-sm font-bold text-indigo-700">지금 할 일</div>
 
-              {(stage === 'RECEIVING' || stage === 'CHECK') && first && (
-                <>
+              {(stage === 'RECEIVING' || stage === 'CHECK' || stage === 'WAITING') && (
+                <div className="space-y-4">
+                  <div className="text-base font-semibold text-slate-800">
+                    필요 {ctx?.document_counts.required ?? required.length}종 · 받은 {ctx?.document_counts.received ?? required.filter((t) => submittedTypes.has(t)).length}종
+                    {(ctx?.document_counts.missing ?? 0) > 0 && <span className="text-rose-600"> · 빠진 {ctx!.document_counts.missing}종</span>}
+                  </div>
                   {wf?.approval_status === 'RETURNED' && <p className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700">대표가 돌려보낸 계약이에요. 처리 기록에서 이유를 확인하세요.</p>}
-                  <IssueBlock issue={first} primary {...blockProps} />
-                </>
-              )}
 
-              {stage === 'WAITING' && (
-                <div className="space-y-3">
-                  <div className="text-xl font-bold text-slate-900">거래처 답을 기다리는 중</div>
-                  {waiting.map((r) => {
-                    const late = r.due_on && r.due_on < today();
-                    return (
-                      <div key={r.request_id} className="rounded-xl bg-white px-3 py-2 text-sm">
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                          <span className="font-semibold text-slate-800">{r.requested_on.slice(5).replace('-', '/')} {CONTACT_VIA[r.contact_method]} 요청</span>
-                          {r.due_on && <span className={late ? 'font-bold text-rose-600' : 'text-slate-500'}>기한 {r.due_on.slice(5).replace('-', '/')}{late ? ' 지남' : ''}</span>}
-                          {canEdit && (
-                            <span className="ml-auto flex gap-1.5">
-                              <button onClick={() => { setResolving({ id: r.request_id, status: 'RECEIVED' }); setResolveNote(recentUploadNames?.length ? `받은 서류 올림: ${recentUploadNames.join(', ')}`.slice(0, 2000) : '고친 서류 받음'); }} className="rounded-lg bg-sky-600 px-2.5 py-1 text-xs font-semibold text-white">답 받음</button>
-                              <button onClick={() => { setResolving({ id: r.request_id, status: 'CANCELLED' }); setResolveNote(''); }} className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs text-slate-600">요청 취소</button>
-                            </span>
-                          )}
-                        </div>
-                        {r.memo && <div className="mt-0.5 line-clamp-2 text-xs text-slate-500">{maskForDisplay(fixParticles(r.memo), isMaskingEnabled)}</div>}
-                        {resolving?.id === r.request_id && (
-                          <div className="mt-2 flex flex-wrap gap-2">
-                            <input value={resolveNote} onChange={(e) => setResolveNote(e.target.value)} aria-label="처리 메모" placeholder={resolving.status === 'RECEIVED' ? '받은 내용' : '취소 이유'}
-                              className="min-w-0 flex-1 rounded-lg border border-slate-300 px-2 py-1 text-sm" />
-                            <button onClick={submitResolve} disabled={!resolveNote.trim()} className="rounded-lg bg-slate-900 px-3 py-1 text-xs font-semibold text-white disabled:opacity-40">{resolving.status === 'RECEIVED' ? '답 받음으로 기록' : '취소 기록'}</button>
-                            <button onClick={() => setResolving(null)} className="text-xs text-slate-500">닫기</button>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                  {canEdit && vendorIssues.length > 0 && (
+                  {waiting.length > 0 && (
                     <div className="space-y-2">
-                      <div className="text-sm font-semibold text-slate-700">고친 서류를 받았다면 올리세요</div>
-                      <div className="flex flex-wrap gap-2">
-                        {vendorIssues.map((i) => i.document
-                          ? <button key={i.key} onClick={() => onOpenDocument(i.document!, 'reissue')} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"><Upload className="h-4 w-4" />{DOCUMENT_TYPE_KO[i.document.document_type]} 고친 본 올리기</button>
-                          : i.missingType ? <button key={i.key} onClick={() => onUploadType(i.missingType)} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"><Upload className="h-4 w-4" />{DOCUMENT_TYPE_KO[i.missingType]} 올리기</button> : null)}
-                      </div>
-                      <p className="text-xs text-slate-500">올리면 이전 서류는 보관되고 새 서류로 자동으로 다시 확인해요. 그다음 ‘답 받음’을 눌러 요청을 닫으세요.</p>
+                      <div ref={waitingRef} tabIndex={-1} className="text-sm font-bold text-slate-900 outline-none focus:underline">거래처 답을 기다리는 중</div>
+                      {waiting.map((r) => r.bundle ? (
+                        <BundleReplyPanel key={r.request_id} contract={contract} request={r} canEdit={canEdit} isMaskingEnabled={isMaskingEnabled}
+                          onOpenDocumentId={openDocId} onUploadType={onUploadType} onDone={refreshAll} />
+                      ) : (() => {
+                        const late = r.due_on && r.due_on < today();
+                        return (
+                          <div key={r.request_id} className="rounded-xl bg-white px-3 py-2 text-sm">
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                              <span className="font-semibold text-slate-800">{r.requested_on.slice(5).replace('-', '/')} {CONTACT_VIA[r.contact_method]} 요청</span>
+                              {r.due_on && <span className={late ? 'font-bold text-rose-600' : 'text-slate-500'}>기한 {r.due_on.slice(5).replace('-', '/')}{late ? ' 지남' : ''}</span>}
+                              <span className="text-xs text-slate-400">이전 방식 기록</span>
+                              {canEdit && (
+                                <span className="ml-auto flex gap-1.5">
+                                  <button onClick={() => { setResolving({ id: r.request_id, status: 'RECEIVED' }); setResolveNote(recentUploadNames?.length ? `받은 서류 올림: ${recentUploadNames.join(', ')}`.slice(0, 2000) : '고친 서류 받음'); }} className="rounded-lg bg-sky-600 px-2.5 py-1 text-xs font-semibold text-white">답 받음</button>
+                                  <button onClick={() => { setResolving({ id: r.request_id, status: 'CANCELLED' }); setResolveNote(''); }} className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs text-slate-600">요청 취소</button>
+                                </span>
+                              )}
+                            </div>
+                            {r.memo && <div className="mt-0.5 line-clamp-2 text-xs text-slate-500">{maskForDisplay(fixParticles(r.memo), isMaskingEnabled)}</div>}
+                            {resolving?.id === r.request_id && (
+                              <div className="mt-2 flex flex-wrap gap-2">
+                                <input value={resolveNote} onChange={(e) => setResolveNote(e.target.value)} aria-label="처리 메모" placeholder={resolving.status === 'RECEIVED' ? '받은 내용' : '취소 이유'}
+                                  className="min-w-0 flex-1 rounded-lg border border-slate-300 px-2 py-1 text-sm" />
+                                <button onClick={submitResolve} disabled={!resolveNote.trim()} className="rounded-lg bg-slate-900 px-3 py-1 text-xs font-semibold text-white disabled:opacity-40">{resolving.status === 'RECEIVED' ? '답 받음으로 기록' : '취소 기록'}</button>
+                                <button onClick={() => setResolving(null)} className="text-xs text-slate-500">닫기</button>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })())}
+                      {canEdit && <button onClick={() => onUploadType()} className="text-xs font-semibold text-indigo-600 hover:underline">받은 서류 올리기</button>}
                     </div>
                   )}
-                  {canEdit && vendorIssues.length === 0 && (
-                    <button onClick={() => onUploadType()} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"><Upload className="h-4 w-4" />받은 서류 올리기</button>
+
+                  {ctx ? (
+                    <RequestChecklist ctx={ctx} isMaskingEnabled={isMaskingEnabled} canEdit={canEdit} onOpenDocumentId={(id) => openDocId(id)}
+                      onMake={(items, reviewed) => setBundleFor({ items, reviewed })} />
+                  ) : ctxError && (
+                    <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900">거래처 요청 목록을 불러오지 못했어요. 서버를 새 버전으로 다시 시작해야 할 수 있어요. ({ctxError})</p>
                   )}
-                  {canEdit && vendorIssues.length > 0 && (
-                    <button onClick={() => onUploadType()} className="text-xs font-semibold text-indigo-600 hover:underline">다른 서류 올리기</button>
+
+                  {internalIssues.length > 0 && (
+                    <div className="space-y-2">
+                      <div className="text-sm font-bold text-slate-900">회사 안에서 확인할 것 {internalIssues.length}건</div>
+                      {internalIssues.map((i) => <IssueBlock key={i.key} issue={i} {...blockProps} />)}
+                    </div>
                   )}
-                  {canEdit && overview.issues.length > vendorIssues.length && (
-                    <p className="text-xs text-slate-500">거래처와 상관없이 확인할 것 {overview.issues.length - vendorIssues.length}건은 답을 받은 뒤 ‘② 확인’에서 처리해요.</p>
+                  {stage === 'WAITING' && overview.issues.length === 0 && waiting.length > 0 && (
+                    <p className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800">올린 서류로 검사 문제가 모두 풀렸어요. 받은 항목을 체크해 요청을 닫으면 결재 단계로 넘어가요.</p>
                   )}
-                  {canEdit && overview.issues.length === 0 && <p className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800">받은 서류로 문제가 모두 풀렸어요. ‘답 받음’을 눌러 요청을 닫으면 결재 단계로 넘어가요.</p>}
                 </div>
               )}
 
@@ -453,13 +457,6 @@ export const ContractStageView: React.FC<Props> = ({
             </section>
           )}
 
-          {/* 그다음 할 일 */}
-          {(stage === 'RECEIVING' || stage === 'CHECK') && (rest.length > 0 || later.length > 0) && (
-            <div className="space-y-2">
-              <div className="text-sm font-semibold text-slate-600">그다음 할 일 <span className="font-normal text-slate-500">· {kindCounts([...rest, ...later])}</span></div>
-              {[...rest, ...later].map((i) => <IssueBlock key={i.key} issue={i} {...blockProps} />)}
-            </div>
-          )}
           {followError && <p className="text-xs text-rose-600">{followError}</p>}
 
           {/* 문제 없는 항목 */}
@@ -518,15 +515,10 @@ export const ContractStageView: React.FC<Props> = ({
         </div>
       )}
 
-      {draftFor && (
-        <RequestDraftDialog
-          contract={contract}
-          issue={draftFor}
-          isMaskingEnabled={isMaskingEnabled}
-          canRecord={canEdit}
-          onClose={() => setDraftFor(null)}
-          onRecorded={async () => { await loadRequests(); await onChanged(); }}
-        />
+      {bundleFor && ctx && (
+        <BundleRequestDialog contract={contract} ctx={ctx} items={bundleFor.items} reviewed={bundleFor.reviewed} isMaskingEnabled={isMaskingEnabled}
+          onClose={() => setBundleFor(null)} onStale={refreshAll}
+          onRecorded={async () => { await refreshAll(); setTimeout(() => waitingRef.current?.focus(), 120); }} />
       )}
     </div>
   );
