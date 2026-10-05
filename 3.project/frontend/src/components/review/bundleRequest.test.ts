@@ -73,3 +73,20 @@ describe('회사 안에서 확인할 것', () => {
     expect(splitInternalIssues([mixed], new Set())).toEqual([mixed]);
   });
 });
+
+import { itemArrived } from './BundleRequest';
+
+describe('요청한 서류가 올라왔는지', () => {
+  const docs = [
+    { document_id: 9, document_type: 'estimate' as const, version: { logical_document_id: 7, is_current: false } },
+    { document_id: 12, document_type: 'estimate' as const, version: { logical_document_id: 7, is_current: true } },
+  ];
+  it('빠진 서류는 그 종류가 생기면 올라온 것', () => {
+    expect(itemArrived({ issue_key: 'missing:bank_account', document_id: null, document_type: 'bank_account' }, docs)).toBe(false);
+    expect(itemArrived({ issue_key: 'missing:estimate', document_id: null, document_type: 'estimate' }, docs)).toBe(true);
+  });
+  it('서류 보완은 같은 논리 문서의 현재 본이 바뀌면 올라온 것', () => {
+    expect(itemArrived({ issue_key: 'document:7', document_id: 9, document_type: 'estimate' }, docs)).toBe(true);
+    expect(itemArrived({ issue_key: 'document:7', document_id: 12, document_type: 'estimate' }, docs)).toBe(false);
+  });
+});

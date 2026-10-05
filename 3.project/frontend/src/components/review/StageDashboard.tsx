@@ -104,7 +104,7 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
       <div className="flex flex-wrap items-end gap-3">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">{history ? '지난 계약 찾기' : todo ? `지금 처리할 계약 ${todo}건` : '지금 처리할 계약이 없어요'}</h1>
-          <p className="text-sm text-slate-500">{history ? `모든 계약 ${contracts.length}건 · 최근 등록 순서` : representative ? '결재할 계약부터 보여 줍니다.' : '위에서부터 처리하면 됩니다.'}</p>
+          <p className="text-sm text-slate-500">{history ? `모든 계약 ${contracts.length}건 · 최근 등록 순서` : `${representative ? '대표' : '담당자'} 역할이 처리할 계약이에요. 개인에게 맡겨진 일은 위 ‘내가 맡은 일’에 따로 보여요.`}</p>
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
           <label className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200">
@@ -158,7 +158,9 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
             )}
             {rows.map(({ c, s }) => {
               const late = s === 'WAITING' && c.earliest_due_on && c.earliest_due_on < today();
-              const mine = representative ? s === 'APPROVAL' : ['CHECK', 'RECEIVING', 'PAYMENT'].includes(s);
+              const role = representative ? 'representative' : 'operator';
+              const acts = c.work_state?.next_actions;
+              const mine = acts ? acts.some((a) => a.role === role) : representative ? s === 'APPROVAL' : ['CHECK', 'RECEIVING', 'PAYMENT'].includes(s);
               return (
                 <tr key={c.contract_id} className="cursor-pointer hover:bg-slate-50" onClick={() => onOpen(c.contract_id)}>
                   <td className="px-4 py-3"><span className={`whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-bold ${STAGE_PILL[s]}`}>{STAGE_KO[s]}</span></td>

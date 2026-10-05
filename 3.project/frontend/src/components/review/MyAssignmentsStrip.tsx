@@ -26,7 +26,7 @@ export const MyAssignmentsStrip: React.FC<Props> = ({ refreshKey, contracts, onO
   };
   return (
     <section className="rounded-2xl border-2 border-indigo-200 bg-indigo-50/60 p-4" aria-labelledby="mine-title">
-      <h2 id="mine-title" className="mb-2 font-bold text-indigo-900">내가 맡은 일 {items.length}건</h2>
+      <h2 id="mine-title" className="mb-2 font-bold text-indigo-900">내가 맡은 일 {items.length}건 <span className="text-xs font-normal text-indigo-700">· 나에게 개인적으로 맡겨진 일</span></h2>
       <ul className="space-y-1.5">
         {items.map((a) => (
           <li key={a.assignment_id}>

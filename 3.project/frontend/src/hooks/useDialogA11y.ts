@@ -5,8 +5,9 @@ const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([t
 /**
  * 팝업 창 키보드 처리: 열리면 창 안으로 포커스, Tab은 창 안에서만 돌고, Esc로 닫고, 닫히면 원래 버튼으로 포커스를 돌려준다.
  */
-export function useDialogA11y(ref: RefObject<HTMLElement>, onClose: () => void) {
+export function useDialogA11y(ref: RefObject<HTMLElement>, onClose: () => void, active = true) {
   useEffect(() => {
+    if (!active) return;
     const opener = document.activeElement as HTMLElement | null;
     const root = ref.current;
     const items = () => (root ? [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((el) => el.offsetParent !== null) : []);
@@ -30,5 +31,5 @@ export function useDialogA11y(ref: RefObject<HTMLElement>, onClose: () => void) 
     };
     // 열릴 때 한 번만 설정한다
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [active]);
 }

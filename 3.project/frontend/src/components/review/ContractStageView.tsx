@@ -559,7 +559,8 @@ export const ContractStageView: React.FC<Props> = ({
                 <button key={doc.document_id} onClick={() => onOpenDocument(doc)} className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-sm hover:bg-slate-50">
                   <span className={`h-2 w-2 shrink-0 rounded-full ${DOT[st]}`} />
                   <span className={`truncate ${st !== 'PASS' ? 'font-semibold text-slate-900' : 'text-slate-700'}`}>{DOCUMENT_TYPE_KO[doc.document_type]}</span>
-                  {(doc.version?.version_number ?? 1) > 1 && <span className="shrink-0 text-[11px] text-sky-700">고친 본</span>}
+                  {(doc.version?.version_number ?? 1) > 1 && <span className="shrink-0 text-[11px] text-sky-700">고친 본 {doc.version!.version_number}번째</span>}
+                  {contract.documents.filter((d) => d.document_type === doc.document_type).length > 1 && <span className="shrink-0 text-[11px] text-slate-500">같은 종류 {contract.documents.filter((d) => d.document_type === doc.document_type).findIndex((d) => d.document_id === doc.document_id) + 1}</span>}
                   {st !== 'PASS' && <span className="ml-auto shrink-0 text-xs font-semibold text-amber-700">{STATUS_KO[st]}</span>}
                 </button>
               );

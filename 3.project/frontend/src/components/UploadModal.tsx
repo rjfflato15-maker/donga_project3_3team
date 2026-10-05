@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useDialogA11y } from '../hooks/useDialogA11y';
 import { X, UploadCloud, File, Trash2, Tag, Shield } from 'lucide-react';
 import { DocumentType } from '../types';
 
@@ -33,6 +34,9 @@ export const UploadModal: React.FC<UploadModalProps> = ({
     }
   }, [initialTargetType, isOpen]);
   useEffect(() => { if (isOpen) setError(''); }, [isOpen]);
+
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialogA11y(dialogRef, onClose, isOpen);
 
   if (!isOpen) return null;
 
@@ -84,16 +88,17 @@ export const UploadModal: React.FC<UploadModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="upload-title" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-xl overflow-hidden">
         {/* Header */}
         <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
           <div>
-            <h3 className="text-base font-bold text-slate-900">서류 올리기</h3>
-            <p className="text-xs text-slate-500 mt-0.5">계약 ID #{contractId} 건에 증빙서류를 첨부합니다</p>
+            <h3 id="upload-title" className="text-base font-bold text-slate-900">새 서류 추가</h3>
+            <p className="text-xs text-slate-500 mt-0.5">앱 계약 {contractId}번에 서류를 더합니다</p>
           </div>
           <button
             onClick={onClose}
+            aria-label="닫기"
             className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 rounded-xl transition-colors"
           >
             <X className="w-5 h-5" />
@@ -102,7 +107,15 @@ export const UploadModal: React.FC<UploadModalProps> = ({
 
         {/* Body */}
         <div className="p-6 space-y-4">
-          {error && <p role="alert" className="rounded-xl bg-rose-50 p-3 text-xs font-semibold text-rose-800">{error}</p>}
+          <p className="rounded-xl bg-sky-50 p-3 text-xs text-sky-900">거래처가 <b>같은 서류를 고쳐서 다시 보낸 것</b>이라면 여기서 추가하지 말고, 계약 화면에서 그 서류를 열어 <b>‘고친 본 올리기’</b>를 쓰세요. 그래야 이전 본이 보관되고 검사에서 빠져요. 여기는 새 서류를 더하는 곳이에요.</p>
+          {error && (
+            <div role="alert" className="rounded-xl bg-rose-50 p-3 text-xs font-semibold text-rose-800">
+              {error}
+              <div className="mt-1 font-normal">올리지 못한 파일은 아래 목록에 그대로 있어요. 다시 시도하거나, 문제 파일을 빼고 올리세요.
+                {selectedFiles.length > 0 && <button onClick={() => { setSelectedFiles([]); setError(''); }} className="ml-2 font-semibold underline">선택 모두 빼기</button>}
+              </div>
+            </div>
+          )}
           {/* Document Type Category Selector */}
           <div>
             <label className="text-xs font-bold text-slate-700 flex items-center space-x-1.5 mb-1.5">
