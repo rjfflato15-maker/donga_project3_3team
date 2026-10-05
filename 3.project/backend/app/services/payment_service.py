@@ -15,6 +15,8 @@ from .workflow_service import fingerprint_for, policy_for
 class OperationalContractDetailResponse(ContractDetailResponse):
     # Keep the frozen extraction/evaluation schema separate from operational data.
     payment: dict | None = None
+    stage: str | None = None
+    work_state: dict = {}
 
 
 def latest_review(db, contract_id):

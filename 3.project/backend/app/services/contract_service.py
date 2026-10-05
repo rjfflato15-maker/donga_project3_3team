@@ -45,6 +45,7 @@ from .review_summary_service import (
     waiting_request_stats,
 )
 from .payment_service import OperationalContractDetailResponse as ContractDetailResponse, payment_state
+from .work_state_service import build_work_state, operational_documents, pending_keys_by_contract
 
 
 def get_document_response(doc: Document) -> DocumentResponse:
@@ -89,14 +90,15 @@ class ContractService:
     def __init__(self):
         self.pipeline_service = PipelineService()
 
-    def list_contracts(self, db: Session) -> List[ContractDashboardListItem]:
+    def list_contracts(self, db: Session, *, query=None) -> List[ContractDashboardListItem]:
         from .workflow_service import required_types, review_state, fingerprint_for, policy_for
         from .storage_service import resolve_path
         required = required_types(db)
         waiting_by_contract = waiting_request_stats(db)
+        pending_by_contract = pending_keys_by_contract(db)
         state=llm_status()
         result = []
-        for contract in db.query(Contract).order_by(Contract.contract_id.desc()).all():
+        for contract in (query if query is not None else db.query(Contract)).order_by(Contract.contract_id.desc()).all():
             submitted = {d.document_type for d in active_documents(contract)}
             count = sum(t.value in submitted for t in required)
             inputs = self.pipeline_service.validation_inputs(db, contract)
@@ -113,6 +115,10 @@ class ContractService:
             waiting_count, earliest_due_on = waiting_by_contract.get(contract.contract_id, (0, None))
             ai_pending = pending_ai_count(d["fields"].get("ai_review") for d in inputs)
             issue_counts = display_issue_counts(current_checks)
+            payment = payment_state(db, contract.contract_id, workflow['revision'], workflow['fingerprint'])
+            work = build_work_state(current_checks, operational_documents(contract), workflow, approval,
+                                    waiting_count, payment, ai_pending,
+                                    pending_by_contract.get(contract.contract_id, ()))
             result.append(ContractDashboardListItem(
                 contract_id=contract.contract_id, title=contract.title, vendor_name=contract.vendor_name,
                 business_number=contract.business_number, contract_amount=contract.contract_amount,
@@ -126,7 +132,8 @@ class ContractService:
                 waiting_request_count=waiting_count, earliest_due_on=earliest_due_on,
                 approval_next_step=approval["next_step"],
                 llm=contract_execution(inputs,state),
-                payment=payment_state(db, contract.contract_id, workflow['revision'], workflow['fingerprint']),
+                payment=payment, stage=work['stage'], work_state=work,
+                fingerprint=workflow['fingerprint'], registered_by_user_id=contract.user_id,
             ))
         return result
 
@@ -142,13 +149,19 @@ class ContractService:
             docs, required_document_types=required, amount_policy=policy_for(db, contract_id))
         status = "REVIEW" if any(c.status != ValidationStatus.PASS for c in checks) else "PASS"
         workflow = review_state(db, contract_id, fingerprint_for(db, contract, docs))
+        approval = approval_state(db, contract_id, workflow['revision'], workflow['fingerprint'], include_history=False)
+        waiting_count = waiting_request_stats(db).get(contract_id, (0, None))[0]
+        payment = payment_state(db, contract_id, workflow['revision'], workflow['fingerprint'])
+        work = build_work_state(checks, operational_documents(contract), workflow, approval, waiting_count,
+                                payment, pending_ai_count(d['fields'].get('ai_review') for d in docs),
+                                pending_keys_by_contract(db).get(contract_id, ()))
         return ContractDetailResponse(
             contract_id=contract.contract_id, title=contract.title, vendor_name=contract.vendor_name,
             business_number=contract.business_number, contract_amount=contract.contract_amount, review_status=status,
             required_document_types=required, documents=[get_document_response(d) for d in active_documents(contract)],
             summary=summary, checks=checks, created_at=contract.created_at, updated_at=contract.updated_at,
             workflow=workflow,
-            payment=payment_state(db, contract_id, workflow['revision'], workflow['fingerprint']),
+            payment=payment, stage=work['stage'], work_state=work,
             llm=contract_execution(docs),
         )
 

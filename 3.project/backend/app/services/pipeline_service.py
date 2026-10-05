@@ -27,6 +27,14 @@ from ..integrations.nts_client import get_nts_client
 from ..config import RAW_STORAGE_DIR, MASKED_STORAGE_DIR
 
 
+def recorded_fields(raw):
+    """Unreadable legacy metadata must not block replacing a bad document."""
+    try:
+        return AnalysisFields(**json.loads(raw or '{}')).model_dump()
+    except (ValueError, TypeError):
+        return None
+
+
 class PipelineService:
     def __init__(self):
         self.rule_engine = RuleEngine()
@@ -206,10 +214,13 @@ class PipelineService:
                     actor_name=actor.display_name if actor else "시스템",change_note=change_note.strip() or "새 증빙 추가",
                     initial_fields_json=extract.raw_fields))
                 if previous is not None:
-                    db.add(AuditEvent(actor_id=actor.user_id if actor else None,actor_name=actor.display_name if actor else "시스템",
+                    reissue_event = AuditEvent(actor_id=actor.user_id if actor else None,actor_name=actor.display_name if actor else "시스템",
                         action="DOCUMENT_REISSUED",contract_id=contract_id,document_id=doc.document_id,
                         details=json.dumps({"previous_document_id":previous.document_id,"logical_document_id":group,
-                                            "version_number":number,"note":change_note.strip()},ensure_ascii=False)))
+                            "version_number":number,"note":change_note.strip(),
+                            "previous_fields": recorded_fields(previous.extract.raw_fields) if previous.extract else None,
+                            "new_fields": recorded_fields(extract.raw_fields)},ensure_ascii=False))
+                    db.add(reissue_event)
             if job is not None:
                 # Publication receipt commits with the document. A crash or a
                 # validation failure after this point must never upload again.
@@ -219,6 +230,10 @@ class PipelineService:
                 db.add(AuditEvent(actor_id=actor.user_id,actor_name=actor.display_name,action='DOCUMENT_UPLOAD',
                     contract_id=contract_id,document_id=doc.document_id,details=json.dumps({'job_id':job.job_id,'file_name':doc.file_name},ensure_ascii=False)))
             touch_contract(db, contract_id)
+            if previous is not None:
+                recorded = json.loads(reissue_event.details)
+                recorded['revision'] = policy_for(db, contract_id)['revision']
+                reissue_event.details = json.dumps(recorded, ensure_ascii=False)
             db.commit()
             db.refresh(doc)
         self.revalidate_contract(db, contract_id)

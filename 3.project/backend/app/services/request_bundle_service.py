@@ -227,7 +227,12 @@ def create_bundle(db, contract_id, req, actor):
             row.bundle = bundle
             db.add(audit_row(actor, 'RESUBMISSION_BUNDLE_RECORDED', contract_id,
                 {'request_id': row.request_id, 'issue_keys': [item['issue_key'] for item in selected],
-                 'revision': req.revision, 'contact_method': req.contact_method}))
+                 'revision': req.revision, 'fingerprint': req.fingerprint,
+                 'contact_method': req.contact_method, 'requested_on': row.requested_on,
+                 'due_on': row.due_on, 'memo': row.memo,
+                 'items': [{'item_id': item.item_id, 'title': item.title, 'issue_key': item.issue_key,
+                            'document_id': item.document_id, 'reason': item.reason}
+                           for item in bundle.items]}))
             db.commit()
             return request_response(row), True
         except Exception:
@@ -264,7 +269,11 @@ def resolve_items(db, contract_id, request_id, req, actor):
                 row.resolution_note = '\n'.join(f'{item.title}: {item.resolution_note}' for item in bundle.items)
             db.add(audit_row(actor, 'RESUBMISSION_BUNDLE_ITEMS_RESOLVED', contract_id,
                 {'request_id': request_id, 'request_revision': bundle.request_revision,
-                 'items': [change.model_dump(mode='json') for change in req.items]}))
+                 'revision': req.revision, 'fingerprint': req.fingerprint,
+                 'items': [{**change.model_dump(mode='json'),
+                            'title': items[change.item_id].title,
+                            'issue_key': items[change.item_id].issue_key,
+                            'document_id': items[change.item_id].document_id} for change in req.items]}))
             db.commit()
             return request_response(row)
         except Exception:

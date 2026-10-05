@@ -15,8 +15,10 @@ from .upload_jobs import router as upload_jobs_router
 from .contract_exports import router as contract_exports_router
 from .payments import router as payments_router
 from .request_bundles import router as request_bundles_router
+from .work_system import router as work_system_router
 
 api_router = APIRouter()
+api_router.include_router(work_system_router, dependencies=[Depends(authorize_company_request)])
 api_router.include_router(contracts_router, dependencies=[Depends(authorize_company_request)])
 api_router.include_router(auto_contract_router, dependencies=[Depends(authorize_company_request)])
 api_router.include_router(documents_router, dependencies=[Depends(authorize_company_request)])

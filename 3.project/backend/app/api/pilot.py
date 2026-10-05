@@ -123,7 +123,7 @@ def submit_review(contract_id: int, req: ReviewRequest, db: Session = Depends(ge
                                 snapshot_json=json.dumps(snapshot, ensure_ascii=False, default=str))
         db.add(review)
         db.commit()
-        audit(db, actor, "REPRESENTATIVE_" + req.decision, contract_id, details={"revision": req.revision, "note": req.note.strip()})
+        audit(db, actor, "REPRESENTATIVE_" + req.decision, contract_id, details={"revision": req.revision, "fingerprint": req.fingerprint, "review_id": review.review_id, "note": req.note.strip()})
     return service.get_contract_detail(db, contract_id)
 
 

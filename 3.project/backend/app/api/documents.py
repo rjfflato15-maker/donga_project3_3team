@@ -202,7 +202,8 @@ def correct_fields(document_id: int, req: Correction, db: Session = Depends(get_
               {"note": req.note.strip()[:1000], "before": AnalysisFields(**before).model_dump(), "after": fields.model_dump(),
                "previous_document_type":previous_type,"new_document_type":req.document_type.value,
                "ai_review_before":before.get('ai_review'),"llm_execution":before.get('llm_execution'),
-               "changed_fields":changed_fields,"confirmed_fields":confirmed_fields})
+               "changed_fields":changed_fields,"confirmed_fields":confirmed_fields,
+               "revision": policy_for(db, contract_id)['revision']})
     pipeline_service.revalidate_contract(db, contract_id)
     return get_document_response(doc)
 

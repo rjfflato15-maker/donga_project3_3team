@@ -1,5 +1,11 @@
 # Claude 화면 담당자용 API 변경 안내
 
+## 최신 범위: 제품 기반 5개 보강 + UX 오류 4건 (2026-10-05)
+
+사용자의 최신 지시로 테스트 전 UI 정리에 한정한 계획을 확대했다. **[제품 보강 작업 범위·역할·Claude 전달문](../operations/product_workflow_strengthening_2026-10-05.md)**을 따른다. Codex는 공통 상태·처리 이력·검색 서버 API를 제공하고, Claude는 기존 R1·R2와 금액 정정 대상/PASS/현재본·이전본/대표 판단 요약에 새 데이터를 연결한다.
+
+**[work_system.md](work_system.md)**에 JSON·오류·revision·페이지/기간/권한 의미를 적었다. 목록/상세/review-context에 `stage`·`work_state`, `GET /api/contracts/{id}/work-state`, `GET /api/contracts/{id}/activity`, `GET /api/contracts/search`를 추가한다. 기존 기록을 모으는 읽기 전용 API이며 새로운 단계 메타데이터만으로 기존 결재·지급을 무효화하지 않는다. frontend 연결·브라우저 검증 전에는 화면 완료로 보고하지 않는다. 과거 기록이 없는 사실을 보충하거나 규칙 통과를 사람 확인으로 표현하지 않는다.
+
 ## 10/5 테스트 전 금액·검사·현재본·대표 요약 수정 인계
 
 사용자가 전달한 ChatGPT `파일 검토 방향`의 첨부 화면과 현재 main `f903aa8`을 대조했다. **[오늘 수정 범위·기존 API·Claude 전달문](../operations/pre_test_ui_clarity_plan_2026-10-05.md)**을 따른다. 기존 R1·R2를 먼저 마무리하고 금액 정정 대상, 검사 PASS 범위, 동일 값의 여러 근거, 현재본 표시, 대표 검토 요약 순으로 frontend를 보완한다. 새 API는 선행 조건이 아니며 Codex가 서버 의미 확인·병합·관련 검증을 맡는다.

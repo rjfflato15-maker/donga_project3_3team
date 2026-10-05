@@ -19,6 +19,10 @@ class ContractDashboardListItem(ContractListItem):
     approval_next_step: int | None = Field(default=None, ge=1, le=2)
     llm: dict = {}
     payment: dict | None = None
+    stage: str | None = None
+    work_state: dict = {}
+    fingerprint: str | None = None
+    registered_by_user_id: int | None = None
 
 
 def waiting_request_stats(db):
