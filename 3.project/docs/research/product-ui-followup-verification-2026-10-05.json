@@ -1,0 +1,93 @@
+{
+  "verified_ui_commit": "54ef79ee510a123de90f21c870883cab299ed485",
+  "backend_commit": "88cc224",
+  "date": "2026-10-05",
+  "scope": "synthetic UI follow-up; not participant measurement or held-out evaluation",
+  "frontend_tests_passed": 52,
+  "typescript_vite_build_passed": true,
+  "js_asset": "index-BTb1iRFm.js",
+  "css_asset": "index-ChFGu8HL.css",
+  "backend_tests_rerun": false,
+  "qa_storage": "storage/demo/product-ui-followup-20261005-v2",
+  "qa_origin": "http://127.0.0.3:8053/",
+  "llm_enabled": false,
+  "nts_mode": "disabled",
+  "external_api_calls": 0,
+  "model_guard_or_held_out_rerun": false,
+  "existing_user_servers_changed": false,
+  "existing_user_tabs_reloaded": false,
+  "r2": {
+    "automatic_actionable_issues": 0,
+    "waiting_items_before_conflict": 1,
+    "second_tab_receipt_status": 200,
+    "first_tab_stale_receipt_status": 409,
+    "stage_after_refresh": "APPROVAL",
+    "conflict_notice_preserved": true,
+    "passed": true
+  },
+  "item_arrived": {
+    "current_version_change_notice_shown": true,
+    "automatically_checked": false,
+    "passed": true
+  },
+  "upload": {
+    "open_close_escape_reopen_passed": true,
+    "react_hook_order_error_observed": false,
+    "deliberately_invalid_pdf_status": 400,
+    "failed_file_retained_in_same_form": true,
+    "remove_all_clears_selection": true,
+    "upload_disabled_when_empty": true
+  },
+  "r3": {
+    "priority": "P2",
+    "policy": "operator review then representative final approval",
+    "actual_next_role": "operator",
+    "actual_next_action": "APPROVE_CURRENT_REVISION",
+    "dashboard_heading": "지금 처리할 계약이 없어요",
+    "dashboard_next_action": "문제 없음 · 대표 결재를 기다려요",
+    "dashboard_button": "결재하기",
+    "detail_heading": "문제 없어요. 대표님 결재를 받으세요",
+    "reproduced_in_browser": true,
+    "fixed": false
+  },
+  "r4": {
+    "priority": "P1",
+    "selected_for_contract_id": 1,
+    "closed_with": "Escape",
+    "subsequent_contract_id": 2,
+    "selected_file": "new-separate-estimate.txt",
+    "previous_file_remains_in_other_contract": true,
+    "upload_button_enabled": true,
+    "wrong_contract_upload_executed": false,
+    "test_file_selection_removed_after_evidence": true,
+    "reproduced_in_browser": true,
+    "fixed": false
+  },
+  "related_visual_issue": {
+    "viewport": "1280x720",
+    "selected_files": 1,
+    "modal_title_and_footer_at_viewport_edges": true,
+    "internal_scroll_recommended": true
+  },
+  "console": {
+    "first_tab": "one expected PDF format rejection; no React #310",
+    "second_tab_errors": 0
+  },
+  "screenshots_root": "C:/Users/Donga/.codex/visualizations/2026/10/02/01a0fd2b-218b-7200-b673-7fa505fd8a21",
+  "screenshots": [
+    "product-54ef79e-409-approval-notice-kept.png",
+    "product-54ef79e-arrived-unchecked.png",
+    "product-54ef79e-upload-failure-retained.png",
+    "product-54ef79e-operator-approval-count-mismatch.png",
+    "product-54ef79e-cancelled-file-other-contract.png"
+  ],
+  "remaining": [
+    "Claude R4 upload selection lifecycle and modal scroll fix",
+    "Claude R3 consistent role-based counts and guidance",
+    "verify affected UI paths after fixes",
+    "restart latest participant test server",
+    "human actual ZIP save and extraction confirmation",
+    "freeze separate measurement SHA"
+  ],
+  "measurement_sha_fixed": false
+}

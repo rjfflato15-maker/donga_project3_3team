@@ -9,7 +9,7 @@
     "eval/dataset/dev/case_01/document_05.png": "1ef6600dc3135491bbdc0a4e1c5b238214418d470df043ccad40f6b9b36835ea",
     "eval/dataset/dev/case_01/document_06.docx": "499bcc7a938e89cf6bfb4d35c442517b79377c6a6111044442976af7c36c8d45"
   },
-  "guide_commit": "555502f5e6d6fc82821674b617bbe5a5fece6d96",
+  "guide_commit": "936ecf8d9431042073615b65f46c62b91ef75eb8",
   "guide_source": "3.project/docs/operations/team_test_participant_guide.md",
   "llm_enabled": false,
   "nts_mode": "disabled",
@@ -274,7 +274,7 @@
     "packages/task_1_B.zip": "b24e12f4a8302c52b180862a53bb847c861865c495a1accefbc87862dbdda412",
     "packages/task_2_A.zip": "11f11b24d243c7c9217ad449652af1e22b5a82311c0be28f568588e4c4a41a14",
     "packages/task_2_B.zip": "ceb9f41f47a522681d6bc4d89551f8fce51ce77b385660e30433a3ac89e7b935",
-    "participant_guide.md": "1e87af70a403eef449f5b155fc5d7e8ce2087a5e8e071aed5895b21b08440d67",
+    "participant_guide.md": "2ffb78ded49d0259dcc4c92a020fff72d7c0ea69c3d4220de17b873394620454",
     "participants/practice/blank_record.csv": "9d4e53b348264ecd9ba4d4fae578e50e32e62fe1f641c5597fef82202249bb76",
     "participants/practice/business_rules.md": "e9f3b3297f2f32490e858728e9d4137eec8adbf8f9da2b0c26de73e53515db26",
     "participants/practice/originals/document_01.pdf": "06fa7505a2263c365fc0c412c546b9c227ebadce2bda013f1b0df206d77deabc",
@@ -333,6 +333,15 @@
       "guide_sha256": "1e87af70a403eef449f5b155fc5d7e8ce2087a5e8e071aed5895b21b08440d67",
       "date": "2026-10-05",
       "scope": "participant guide wording only; task originals, answers, replies and archives unchanged"
+    },
+    {
+      "source_commit": "936ecf8d9431042073615b65f46c62b91ef75eb8",
+      "previous_source_commit": "555502f5e6d6fc82821674b617bbe5a5fece6d96",
+      "previous_manifest_sha256": "d3548ddc10e4f992698be89a68ca0d6c1af60ef92cfe70cf68c0248b63201f2e",
+      "previous_guide_sha256": "1e87af70a403eef449f5b155fc5d7e8ce2087a5e8e071aed5895b21b08440d67",
+      "guide_sha256": "2ffb78ded49d0259dcc4c92a020fff72d7c0ea69c3d4220de17b873394620454",
+      "date": "2026-10-05",
+      "scope": "bundled request and partial receipt wording only; task originals, answers, replies and archives unchanged"
     }
   ]
 }
