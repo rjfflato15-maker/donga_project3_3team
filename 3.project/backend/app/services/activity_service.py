@@ -93,5 +93,10 @@ def activity(db, cid, *, limit=50, before_event_id=None, masked=True, revision=N
               'limitations': ['과거에 기록되지 않은 사실은 추정해서 채우지 않습니다.',
                               '자동 검사 기록은 원문 사람 확인이나 국세청 진위 조회를 뜻하지 않습니다.']}
     protected = public_data(result, masked, sensitive)
+    # This authenticated company timeline must identify who performed an action.
+    # Restore only the stored actor column, never actor-like keys in free text or
+    # event details. Export masking keeps its separate, unchanged privacy policy.
+    for item, row in zip(protected['items'], rows):
+        item['actor_name'] = row.actor_name
     require_unchanged(db, basis)
     return protected

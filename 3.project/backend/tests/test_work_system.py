@@ -161,6 +161,29 @@ def test_activity_pagination_is_contract_scoped_stable_and_masks_historical_name
     assert first['fingerprint'] == raw['fingerprint']
 
 
+def test_masked_activity_keeps_internal_actor_but_masks_details_and_export(operator_client, db_factory, accounts):
+    cid = create_contract(operator_client, vendor_name='C업체')['contract_id']
+    with db_factory() as db:
+        db.add(AuditEvent(contract_id=cid, actor_id=accounts['operator']['user_id'],
+            actor_name='C업체 담당자', action='CONTRACT_UPDATED',
+            details=json.dumps({'note': 'C업체 220-88-12345 확인',
+                                'actor_name': 'C업체가 보낸 문구'}, ensure_ascii=False)))
+        db.commit()
+    masked = operator_client.get(f'/api/contracts/{cid}/activity').json()
+    event = masked['items'][0]
+    assert event['actor_name'] == 'C업체 담당자'
+    assert event['actor_id'] == accounts['operator']['user_id']
+    assert 'C업체' not in json.dumps(event['data'], ensure_ascii=False)
+    assert '220-88-12345' not in json.dumps(event['data'], ensure_ascii=False)
+    raw = operator_client.get(f'/api/contracts/{cid}/activity', params={'masked': False}).json()
+    assert raw['items'][0]['actor_name'] == event['actor_name']
+    assert raw['items'][0]['data']['note'] == 'C업체 220-88-12345 확인'
+    # A timeline-specific exemption must not spread to shared ZIP redaction.
+    from backend.app.services.contract_export_service import public_data
+    assert 'C업체' not in public_data({'actor_name': event['actor_name']}, True,
+                                    {'vendor_name': 'C업체'})['actor_name']
+
+
 def test_activity_masks_a_name_only_preserved_in_a_historical_review_snapshot(operator_client, db_factory, accounts):
     cid = create_contract(operator_client, vendor_name='현재 이름')['contract_id']
     with db_factory() as db:

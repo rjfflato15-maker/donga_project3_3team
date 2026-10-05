@@ -94,6 +94,8 @@
 
 `masked=true`가 기본이며 전후 상호·번호·사유·메모의 개인정보를 재귀 가린다. 현재 값뿐 아니라 같은 계약의 다른 페이지/이전본/과거 수정의 민감값도 가린다. fingerprint와 SHA 등 식별 해시는 유지하고 내부 경로·prompt·response·idempotency_key 등은 노출하지 않는다. masked=false는 기존 회사 원본 접근 권한 안에서만 사용한다.
 
+인증된 사내 처리 이력의 **items[].actor_name은 당시 기록된 처리자 표시 이름을 유지**한다. 거래처 이름과 일부 글자가 같아도 `C업체 담당자`를 `[가림]`으로 바꾸지 않는다. 사건 data 안의 동명 키·사유·메모는 계속 가리며, ZIP/history.json의 공통 가림 정책은 바꾸지 않는다. actor_id가 없거나 시스템 사건이어도 저장된 이름을 추정하거나 새 이름으로 대체하지 않는다.
+
 ## 과거 계약 찾기
 
 `GET /api/contracts/search?q=새봄&completion=OPEN&stage=WAITING&date_from=2026-10-01&date_to=2026-10-31&limit=50&offset=0`
