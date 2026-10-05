@@ -96,8 +96,8 @@ const IssueBlock: React.FC<IssueBlockProps> = ({ issue, primary, canEdit, masked
       )}
       {primary && (check.expected || check.actual) && showsValues(check.rule_id) && (
         <div className="grid max-w-md grid-cols-3 gap-2 text-sm">
-          <div className="rounded-lg border border-slate-200 bg-white p-2"><div className="text-xs text-slate-500">기준</div><b className="tabular-nums">{show(check.expected) || '-'}</b></div>
-          <div className="rounded-lg border border-slate-200 bg-white p-2"><div className="text-xs text-slate-500">서류</div><b className="tabular-nums text-rose-600">{show(check.actual) || '-'}</b></div>
+          <div className="rounded-lg border border-slate-200 bg-white p-2"><div className="text-xs text-slate-500">검사 기준값</div><b className="tabular-nums">{show(check.expected) || '-'}</b></div>
+          <div className="rounded-lg border border-slate-200 bg-white p-2"><div className="text-xs text-slate-500">지금 저장된 값</div><b className="tabular-nums text-rose-600">{show(check.actual) || '-'}</b></div>
           {diff != null && <div className="rounded-lg border border-slate-200 bg-white p-2"><div className="text-xs text-slate-500">차이</div><b className="tabular-nums">{diff.toLocaleString('ko-KR')}원</b></div>}
         </div>
       )}

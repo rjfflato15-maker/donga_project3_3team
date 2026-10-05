@@ -4,7 +4,7 @@ import { maskForDisplay } from './ContractStageView';
 import { useDialogA11y } from '../../hooks/useDialogA11y';
 import { AnalysisFields, DocumentResponse, ValidationCheck } from '../../types';
 import { api, requestJson, downloadProtected } from '../../api/client';
-import { DOCUMENT_TYPE_KO, plainMessage, ruleLabel, isUnverifiedBusinessStatus } from '../../utils/reviewSummary';
+import { DOCUMENT_TYPE_KO, plainMessage, ruleLabel, isUnverifiedBusinessStatus, showsValues } from '../../utils/reviewSummary';
 import { maskBusinessNumber, maskAccountNumber, maskVendorName } from '../../utils/masking';
 import { X, Pencil, Download, ChevronLeft, ChevronRight, Loader2, Save, Upload } from 'lucide-react';
 
@@ -176,6 +176,19 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
     [checks, doc.document_id]
   );
   const problems = docChecks.filter((c) => c.status !== 'PASS');
+  const passed = docChecks.filter((c) => c.status === 'PASS');
+  const [showPassed, setShowPassed] = useState(false);
+  // 같은 논리 문서의 이전 본 목록(조회만). 같은 종류의 별도 서류는 여기에 섞이지 않는다
+  const [versions, setVersions] = useState<{ document_id: number; version_number: number; is_current: boolean; file_name?: string; change_note?: string | null; actor_name?: string | null; uploaded_at?: string | null }[] | null>(null);
+  const [showVersions, setShowVersions] = useState(false);
+  useEffect(() => {
+    setVersions(null); setShowVersions(false);
+    if ((doc.version?.version_number ?? 1) < 2) return;
+    const controller = new AbortController();
+    requestJson<{ versions: NonNullable<typeof versions> }>(`/api/documents/${doc.document_id}/versions`, { signal: controller.signal })
+      .then((r) => { if (!controller.signal.aborted) setVersions(r.versions); }).catch(() => undefined);
+    return () => controller.abort();
+  }, [doc.document_id, doc.version?.version_number]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -242,11 +255,13 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-5 py-3">
           <h2 id="doc-review-title" className="font-bold text-slate-900">{DOCUMENT_TYPE_KO[doc.document_type]}</h2>
           <span className="truncate text-xs text-slate-500">{doc.original_file_name}</span>
-          {versionNo > 1 && <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold text-sky-700">고친 본 · {versionNo}번째</span>}
+          {versionNo > 1 && <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold text-sky-700">{doc.version?.is_current === false ? `이전 본 · ${versionNo}번째` : `현재 본 · ${versionNo}번째`}</span>}
           {problems.length > 0 ? (
             <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-rose-700">확인할 것 {problems.length}</span>
+          ) : passed.length > 0 ? (
+            <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-700" title="자동 검사가 일치했다는 뜻이에요. 사람이 원문을 확인했다는 뜻은 아니에요.">자동 검사 {passed.length}개 일치</span>
           ) : (
-            <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-700">이상 없음</span>
+            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-bold text-slate-600">적용된 자동 검사 없음</span>
           )}
           <div className="ml-auto flex items-center gap-2">
             {doc.file_available && (
@@ -328,9 +343,57 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
             {problems.length > 0 && (
               <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm">
                 <div className="font-bold text-amber-900">이 서류에서 확인할 것 {problems.length}건</div>
-                <ul className="mt-1 space-y-1 text-slate-800">
-                  {problems.map((c, i) => <li key={i}>· <span className="text-slate-500">{ruleLabel(c.rule_id)}</span> {maskForDisplay(plainMessage(c.message), isMaskingEnabled)}</li>)}
+                <ul className="mt-1 space-y-2 text-slate-800">
+                  {problems.map((c, i) => {
+                    const cmpVals = (c.expected || c.actual) && showsValues(c.rule_id);
+                    return (
+                      <li key={i}>
+                        <div>· <span className="text-slate-500">{ruleLabel(c.rule_id)}</span> {maskForDisplay(plainMessage(c.message), isMaskingEnabled)}</div>
+                        {cmpVals && (
+                          <div className="mt-1 grid max-w-md grid-cols-2 gap-2 pl-3 text-xs">
+                            <div className="rounded-lg border border-amber-200 bg-white p-2"><div className="text-slate-500">검사 기준값</div><b className="tabular-nums">{maskForDisplay(c.expected || '-', isMaskingEnabled)}</b></div>
+                            <div className="rounded-lg border border-amber-200 bg-white p-2"><div className="text-slate-500">지금 저장된 값</div><b className="tabular-nums text-rose-600">{maskForDisplay(c.actual || '-', isMaskingEnabled)}</b></div>
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
+                {problems.some((c) => showsValues(c.rule_id) && (c.expected || c.actual)) && (
+                  <div className="mt-2 rounded-lg bg-white px-3 py-2 text-xs text-slate-700">
+                    <b>원문을 보고 고를 것</b>
+                    <div>· 원문도 저장된 값과 같다 → 서류 내용 문제예요. 거래처에 고친 본을 받아 <b>‘고친 본 올리기’</b>.</div>
+                    <div>· 원문과 다르게 저장돼 있다(잘못 읽음) → <b>‘앱이 읽은 값 수정’</b>으로 원문 값을 넣어요. 계약 기준에 맞춰 바꾸는 게 아니에요.</div>
+                    <div className="text-slate-500">원문 값으로 고쳐도 계약과 다르면 불일치는 그대로 남아요.</div>
+                  </div>
+                )}
+              </div>
+            )}
+            {passed.length > 0 && (
+              <div className="rounded-xl border border-slate-200 text-sm">
+                <button onClick={() => setShowPassed((v) => !v)} aria-expanded={showPassed} className="flex w-full items-center gap-2 px-3 py-2 text-left text-slate-600">
+                  <span className="text-emerald-600">✓</span> 일치한 자동 검사 {passed.length}개 <span className="text-xs text-slate-400">· 사람 확인과는 별개</span>
+                  <span className="ml-auto text-xs">{showPassed ? '접기' : '보기'}</span>
+                </button>
+                {showPassed && <ul className="space-y-1 border-t border-slate-100 px-3 py-2 text-xs text-slate-600">{passed.map((c, i) => <li key={i}>✓ {ruleLabel(c.rule_id)} · {maskForDisplay(plainMessage(c.message), isMaskingEnabled)}</li>)}</ul>}
+              </div>
+            )}
+            {versions && versions.length > 1 && (
+              <div className="rounded-xl border border-slate-200 text-sm">
+                <button onClick={() => setShowVersions((v) => !v)} aria-expanded={showVersions} className="flex w-full items-center gap-2 px-3 py-2 text-left text-slate-600">
+                  이 서류의 본 {versions.length}개 · 검사에는 현재 본만 써요
+                  <span className="ml-auto text-xs">{showVersions ? '접기' : '보기'}</span>
+                </button>
+                {showVersions && (
+                  <ul className="space-y-1 border-t border-slate-100 px-3 py-2 text-xs text-slate-600">
+                    {[...versions].sort((a, b) => b.version_number - a.version_number).map((v) => (
+                      <li key={v.document_id}>
+                        <b className={v.is_current ? 'text-sky-700' : 'text-slate-700'}>{v.version_number}번째{v.is_current ? ' (현재 본)' : ' (이전 본)'}</b>
+                        {v.uploaded_at ? ` · ${v.uploaded_at.slice(0, 10)}` : ''}{v.actor_name ? ` · ${v.actor_name}` : ''}{v.change_note ? ` · ${maskForDisplay(v.change_note, isMaskingEnabled)}` : ''}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             )}
             <div className="flex items-center gap-1.5 text-xs text-slate-500">
@@ -351,7 +414,8 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
             {!prov && !provError && <div className="flex items-center gap-2 text-sm text-slate-500"><Loader2 className="h-4 w-4 animate-spin" /> 값을 불러오는 중…</div>}
             {editing && (
               <div ref={editRef} className="space-y-2 rounded-xl border-2 border-indigo-200 bg-indigo-50/40 p-3 text-sm">
-                <div className="font-semibold text-indigo-900">원문을 보면서 틀린 값은 고치고, 맞는 값은 ‘원문과 맞음’에 체크하세요</div>
+                <div className="font-semibold text-indigo-900">원문 값을 넣으세요. 맞는 값은 ‘원문과 맞음’에 체크하세요</div>
+                <div className="text-[11px] text-amber-800">계약 금액에 맞추려고 바꾸지 마세요. 원문 자체가 틀렸다면 거래처에 고친 본을 받아 ‘고친 본 올리기’를 써요.</div>
                 <div className="text-[11px] text-slate-500">체크하거나 고친 칸만 ‘사람 확인’으로 표시됩니다. 손대지 않은 칸은 원래 출처(규칙·AI)로 남습니다.</div>
                 {isMaskingEnabled && <div className="rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs text-amber-800">개인정보 가림이 켜져 있어도 수정 칸에는 실제 값이 보입니다. 화면 공유 중이면 주의하세요.</div>}
                 {rows.map(({ key, label }) => {
@@ -424,7 +488,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                           {f.source === 'AI_SUPPLEMENT' && <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[11px] font-semibold text-violet-700">AI 보완</span>}
                           {f.source === 'HUMAN_CONFIRMATION' && <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">사람 확인{f.human_confirmation ? ` · ${f.human_confirmation.actor_name}` : ''}</span>}
                           <span className="ml-auto text-xs text-slate-400">
-                            {f.evidence_status === 'AVAILABLE' ? '근거 있음' : f.evidence_status === 'AMBIGUOUS' ? '후보 여러 개' : shown ? '근거 위치 없음' : ''}
+                            {f.evidence_status === 'AVAILABLE' ? '근거 있음' : f.evidence_status === 'AMBIGUOUS' ? `같은 값의 근거 ${f.evidence?.length > 1 ? `${f.evidence.length}곳` : '여러 곳'}` : shown ? '근거 위치 없음' : ''}
                           </span>
                         </div>
                         <div className={`font-semibold tabular-nums ${shown ? 'text-slate-900' : 'text-amber-700'}`}>{shown || '못 읽음 · 원문 확인 필요'}</div>
@@ -462,12 +526,12 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
             {canEdit && !editing && !reissueOpen && (
               <div className="sticky bottom-0 -mx-5 -mb-5 flex flex-wrap gap-2 border-t border-slate-100 bg-white px-5 py-3">
                 <button ref={editBtnRef} onClick={() => setEditing(true)} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
-                  title="앱이 잘못 읽었거나 못 읽은 값을 원문을 보고 고칩니다">
-                  <Pencil className="h-4 w-4" /> 값 고치기
+                  title="원문과 다르게 읽었거나 못 읽은 값을 원문 값으로 고칩니다. 계약 기준에 맞추는 기능이 아니에요">
+                  <Pencil className="h-4 w-4" /> 앱이 읽은 값 수정
                 </button>
                 {doc.version?.is_current !== false && (
                   <button ref={reissueBtnRef} onClick={openReissue} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-indigo-300"
-                    title="거래처가 고쳐서 다시 보낸 서류로 바꿉니다">
+                    title="서류 내용 자체가 틀려 거래처가 고쳐서 다시 보낸 서류로 바꿉니다">
                     <Upload className="h-4 w-4" /> 고친 본 올리기
                   </button>
                 )}
