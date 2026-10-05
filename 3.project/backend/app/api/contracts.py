@@ -7,11 +7,11 @@ from ..db.database import get_db
 from ..schemas.contract import (
     ContractCreate,
     ContractUpdate,
-    ContractDetailResponse,
     ParsedContractResponse,
 )
 from ..services.contract_service import ContractService
 from ..services.review_summary_service import ContractDashboardListItem
+from ..services.payment_service import OperationalContractDetailResponse as ContractDetailResponse
 from ..ai.preprocessor import extract_text_from_file
 from ..ai.extractor import extract_fields
 from ..ai.classifier import classify_document

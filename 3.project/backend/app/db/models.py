@@ -57,6 +57,7 @@ class Contract(Base):
     validation_results = relationship("ValidationResult", back_populates="contract", cascade="all, delete-orphan")
     resubmission_requests = relationship("ResubmissionRequest", cascade="all, delete-orphan")
     approval_signoffs = relationship("ApprovalSignoff", cascade="all, delete-orphan")
+    payment_records = relationship("ContractPayment", cascade="all, delete-orphan")
 
 
 class Document(Base):
@@ -296,3 +297,34 @@ class DocumentUploadJob(Base):
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     __table_args__ = (UniqueConstraint("contract_id","idempotency_key",name="uq_upload_job_request"),)
+
+
+class ContractPayment(Base):
+    """One immutable fact that the whole contract was paid, never a transfer order."""
+    __tablename__ = "pilot_contract_payments"
+    payment_id = Column(Integer, primary_key=True, autoincrement=True)
+    contract_id = Column(Integer, ForeignKey("contracts.contract_id", ondelete="CASCADE"), nullable=False, unique=True)
+    paid_on = Column(String(10), nullable=False)
+    method = Column(String(20), nullable=False)
+    note = Column(Text, nullable=False, default="")
+    actor_id = Column(Integer, nullable=False)
+    actor_name = Column(String(80), nullable=False)
+    snapshot_json = Column(Text, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    confirmations = relationship("PaymentConfirmation", cascade="all, delete-orphan")
+
+
+class PaymentConfirmation(Base):
+    """A new review can confirm the same historical fact without a new payment."""
+    __tablename__ = "pilot_payment_confirmations"
+    confirmation_id = Column(Integer, primary_key=True, autoincrement=True)
+    payment_id = Column(Integer, ForeignKey("pilot_contract_payments.payment_id", ondelete="CASCADE"), nullable=False)
+    contract_id = Column(Integer, ForeignKey("contracts.contract_id", ondelete="CASCADE"), nullable=False, index=True)
+    review_id = Column(Integer, nullable=False)
+    revision = Column(Integer, nullable=False)
+    fingerprint = Column(String(64), nullable=False)
+    actor_id = Column(Integer, nullable=False)
+    actor_name = Column(String(80), nullable=False)
+    note = Column(Text, nullable=False, default="")
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    __table_args__ = (UniqueConstraint("payment_id", "review_id", name="uq_payment_review_confirmation"),)

@@ -13,7 +13,7 @@ from PIL import Image, ImageOps
 
 from ..db.models import (Contract, Document, DocumentFileInfo, ValidationResult,
                          AuditEvent, ContractReview, ApprovalSignoff,
-                         ResubmissionRequest, WorkAssignment)
+                         ResubmissionRequest, WorkAssignment, ContractPayment, PaymentConfirmation)
 from ..schemas.document import AnalysisFields
 from .pipeline_service import PipelineService
 from .preview_masking_service import mask_image_with_ocr, mask_export_text, SENSITIVE_KEYS
@@ -98,6 +98,8 @@ def export_snapshot(db, cid, revision=None):
         ('final_reviews', ContractReview, ContractReview.review_id),
         ('approvals', ApprovalSignoff, ApprovalSignoff.signoff_id),
         ('assignments', WorkAssignment, WorkAssignment.assignment_id),
+        ('payments', ContractPayment, ContractPayment.payment_id),
+        ('payment_confirmations', PaymentConfirmation, PaymentConfirmation.confirmation_id),
     ):
         history[label] = [row_data(row) for row in db.query(model).filter_by(contract_id=cid).order_by(order)]
     data = {'contract_id': cid, 'revision': policy['revision'], 'fingerprint': fingerprint,
@@ -220,7 +222,7 @@ def create_bundle(db, cid, actor, masked=True, revision=None):
             archive.writestr('README.txt',
                 '계약 한 건 자료 묶음\n현재본과 이전본은 documents/current, documents/previous에 있습니다.\n'
                 '검수 결과는 저장 당시 결과이며 이 다운로드는 재판정하거나 결재하지 않습니다.\n'
-                '요청·수정·결재·맡기기 이력은 history.json에 있습니다. 생성 시각 기준입니다.\n'
+                '요청·수정·결재·맡기기·지급 기록 이력은 history.json에 있습니다. 생성 시각 기준입니다.\n'
                 + ('가림 ON: PDF/이미지는 가린 본, Word 등은 가린 본문 TXT입니다(페이지 배치 미보존).\n'
                    'OCR가 읽은 범위와 알려진 민감값을 가립니다. 개인정보 완전 제거를 보증하지 않습니다.\n'
                    if masked else '가림 OFF: 개인정보가 포함될 수 있는 원본입니다. 권한과 전달 대상을 확인하세요.\n'))

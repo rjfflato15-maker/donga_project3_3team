@@ -22,7 +22,6 @@ from ..schemas.common import (
 from ..schemas.contract import (
     ContractCreate,
     ContractUpdate,
-    ContractDetailResponse,
 )
 from ..schemas.document import (
     DocumentResponse,
@@ -45,6 +44,7 @@ from .review_summary_service import (
     pending_ai_count,
     waiting_request_stats,
 )
+from .payment_service import OperationalContractDetailResponse as ContractDetailResponse, payment_state
 
 
 def get_document_response(doc: Document) -> DocumentResponse:
@@ -126,6 +126,7 @@ class ContractService:
                 waiting_request_count=waiting_count, earliest_due_on=earliest_due_on,
                 approval_next_step=approval["next_step"],
                 llm=contract_execution(inputs,state),
+                payment=payment_state(db, contract.contract_id, workflow['revision'], workflow['fingerprint']),
             ))
         return result
 
@@ -140,12 +141,14 @@ class ContractService:
             contract.contract_id, contract.title, contract.vendor_name, contract.business_number, contract.contract_amount,
             docs, required_document_types=required, amount_policy=policy_for(db, contract_id))
         status = "REVIEW" if any(c.status != ValidationStatus.PASS for c in checks) else "PASS"
+        workflow = review_state(db, contract_id, fingerprint_for(db, contract, docs))
         return ContractDetailResponse(
             contract_id=contract.contract_id, title=contract.title, vendor_name=contract.vendor_name,
             business_number=contract.business_number, contract_amount=contract.contract_amount, review_status=status,
             required_document_types=required, documents=[get_document_response(d) for d in active_documents(contract)],
             summary=summary, checks=checks, created_at=contract.created_at, updated_at=contract.updated_at,
-            workflow=review_state(db, contract_id, fingerprint_for(db, contract, docs)),
+            workflow=workflow,
+            payment=payment_state(db, contract_id, workflow['revision'], workflow['fingerprint']),
             llm=contract_execution(docs),
         )
 

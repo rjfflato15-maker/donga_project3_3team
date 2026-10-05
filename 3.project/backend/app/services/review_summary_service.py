@@ -18,6 +18,7 @@ class ContractDashboardListItem(ContractListItem):
     earliest_due_on: date | None = None
     approval_next_step: int | None = Field(default=None, ge=1, le=2)
     llm: dict = {}
+    payment: dict | None = None
 
 
 def waiting_request_stats(db):
