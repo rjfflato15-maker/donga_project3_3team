@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { createLatestGuard, replyNotice } from '../../utils/latest';
 import { Basis, BundleCandidate, BundleContext, BundledRequest, BundleItem, BundleReplyPanel, BundleRequestDialog, RequestChecklist, bundleApi, currentDocumentFor } from './BundleRequest';
 import { ContractDetail, DocumentResponse, DocumentType, ValidationStatus } from '../../types';
 import { requestJson } from '../../api/client';
@@ -139,27 +140,48 @@ export const ContractStageView: React.FC<Props> = ({
   const overview = useMemo(() => buildReviewOverview(contract), [contract]);
   const [requests, setRequests] = useState<BundledRequest[]>([]);
   const [followError, setFollowError] = useState('');
-  // 늦게 도착한 다른 계약의 응답이 지금 계약 목록을 덮어쓰지 않도록 계약 ID를 확인한다
-  const cidRef = useRef(contract.contract_id);
-  cidRef.current = contract.contract_id;
-  const loadRequests = async () => {
-    const cid = contract.contract_id;
-    try { const list = await followUpApi.list(cid); if (cidRef.current === cid) { setRequests(list); setFollowError(''); } }
-    catch (e) { if (cidRef.current === cid) setFollowError(e instanceof Error ? e.message : '요청 기록을 불러오지 못했습니다.'); }
+  // 가장 최근에 보낸 조회만 반영한다(같은 계약의 느린 응답·다른 계약의 응답 모두 버림). 성공 여부를 돌려준다
+  const reqGuard = useRef(createLatestGuard()).current;
+  const ctxGuard = useRef(createLatestGuard()).current;
+  const loadRequests = async (): Promise<boolean> => {
+    const t = reqGuard.next();
+    try { const list = await followUpApi.list(contract.contract_id); if (reqGuard.isLatest(t)) { setRequests(list); setFollowError(''); } return true; }
+    catch (e) { if (reqGuard.isLatest(t)) setFollowError(e instanceof Error ? e.message : '요청 기록을 불러오지 못했습니다.'); return false; }
   };
+  // 계약이 바뀌면 이전 계약의 목록·선택을 비우고 그 조회를 버린다. 아래 조회 effect보다 먼저 선언해야 새 조회를 버리지 않는다
+  useEffect(() => {
+    reqGuard.invalidate(); ctxGuard.invalidate();
+    setCtx(null); setRequests([]); setBundleFor(null); setCtxError(''); setReplyMsg(null); setListStale(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contract.contract_id]);
   useEffect(() => { void loadRequests(); }, [contract.contract_id, contract.updated_at]);
   const waiting = requests.filter((r) => r.status === 'WAITING_RESPONSE');
   // 묶음 요청 후보: 거래처에 요청할 것 / 회사 안에서 확인할 것
   const [ctx, setCtx] = useState<BundleContext | null>(null);
   const [ctxError, setCtxError] = useState('');
-  const loadCtx = async () => {
+  const loadCtx = async (): Promise<boolean> => {
     const cid = contract.contract_id;
-    try { const c = await bundleApi.context(cid); if (cidRef.current === cid && c.contract_id === cid) { setCtx(c); setCtxError(''); } }
-    catch (e) { if (cidRef.current === cid) { setCtx(null); setCtxError(e instanceof Error ? e.message : '요청 후보를 불러오지 못했습니다.'); } }
+    const t = ctxGuard.next();
+    try { const c = await bundleApi.context(cid); if (ctxGuard.isLatest(t) && c.contract_id === cid) { setCtx(c); setCtxError(''); } return true; }
+    catch (e) { if (ctxGuard.isLatest(t)) { setCtx(null); setCtxError(e instanceof Error ? e.message : '요청 후보를 불러오지 못했습니다.'); } return false; }
   };
-  useEffect(() => { setCtx(null); setRequests([]); setBundleFor(null); setCtxError(''); }, [contract.contract_id]);
   useEffect(() => { void loadCtx(); }, [contract.contract_id, contract.updated_at, contract.workflow?.revision, contract.workflow?.fingerprint]);
-  const refreshAll = async () => { await Promise.all([loadRequests(), loadCtx()]); await onChanged(); };
+  const refreshAll = async (): Promise<boolean> => {
+    const [a, b] = await Promise.all([loadRequests(), loadCtx()]);
+    let c = true;
+    try { await onChanged(); } catch { c = false; }
+    const ok = a && b && c;
+    setListStale(!ok);
+    return ok;
+  };
+  // 회신 저장 결과·충돌 이유는 패널이 사라져도(요청 종료) 계약 화면에 남긴다
+  const [replyMsg, setReplyMsg] = useState<{ tone: 'ok' | 'warn' | 'error'; text: string } | null>(null);
+  // 마지막 재조회가 실패했으면 이전 선택·동의로 다시 저장하지 못하게 잠근다
+  const [listStale, setListStale] = useState(false);
+  const afterReply = async (saved: boolean, error?: string) => {
+    const refreshed = await refreshAll();
+    setReplyMsg(replyNotice(saved, refreshed, error));
+  };
   // 기록하면 요청 버튼이 사라지므로, 창을 닫은 뒤 '답을 기다리는 중'으로 포커스를 옮긴다
   const waitingRef = useRef<HTMLDivElement>(null);
   const [bundleFor, setBundleFor] = useState<{ items: BundleCandidate[]; reviewed: Set<string>; basis: Basis } | null>(null);
@@ -367,12 +389,18 @@ export const ContractStageView: React.FC<Props> = ({
                   </div>
                   {wf?.approval_status === 'RETURNED' && <p className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700">대표가 돌려보낸 계약이에요. 처리 기록에서 이유를 확인하세요.</p>}
 
+                  {replyMsg && (
+                    <div role="alert" className={`flex items-start gap-2 rounded-lg px-3 py-2 text-sm ${replyMsg.tone === 'error' ? 'bg-rose-50 text-rose-700' : 'bg-amber-50 text-amber-900'}`}>
+                      <span className="flex-1">{replyMsg.text}</span>
+                      <button onClick={() => setReplyMsg(null)} className="text-xs underline">닫기</button>
+                    </div>
+                  )}
                   {waiting.length > 0 && (
                     <div className="space-y-2">
                       <div ref={waitingRef} tabIndex={-1} className="text-sm font-bold text-slate-900 outline-none focus:underline">거래처 답을 기다리는 중</div>
                       {waiting.map((r) => r.bundle ? (
                         <BundleReplyPanel key={r.request_id} contract={contract} request={r} canEdit={canEdit} isMaskingEnabled={isMaskingEnabled}
-                          onOpenItem={openItem} onUploadType={onUploadType} onDone={refreshAll} />
+                          onOpenItem={openItem} onUploadType={onUploadType} onSaved={afterReply} locked={listStale} />
                       ) : (() => {
                         const late = r.due_on && r.due_on < today();
                         return (
@@ -543,7 +571,7 @@ export const ContractStageView: React.FC<Props> = ({
 
       {bundleFor && ctx && (
         <BundleRequestDialog contract={contract} basis={bundleFor.basis} latest={latestBasis} items={bundleFor.items} reviewed={bundleFor.reviewed} isMaskingEnabled={isMaskingEnabled}
-          onClose={() => setBundleFor(null)} onStale={refreshAll}
+          onClose={() => setBundleFor(null)} onStale={async () => { await refreshAll(); }}
           onRecorded={async () => { await refreshAll(); setTimeout(() => waitingRef.current?.focus(), 120); }} />
       )}
     </div>

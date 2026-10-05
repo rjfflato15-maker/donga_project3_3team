@@ -287,32 +287,35 @@ interface ReplyProps {
   /** 요청 항목의 현재 서류를 연다(재발행으로 ID가 바뀐 경우 포함) */
   onOpenItem: (item: BundleItem, mode?: 'view' | 'reissue') => void;
   onUploadType: (type?: DocumentType) => void;
-  onDone: () => Promise<void>;
+  /** 저장 결과를 계약 화면에 알린다. 계약 화면이 다시 불러오고 안내를 남긴다 */
+  onSaved: (saved: boolean, error?: string) => Promise<void>;
+  /** 마지막 재조회 실패로 이전 선택으로 저장하면 안 될 때 */
+  locked?: boolean;
 }
 
-export const BundleReplyPanel: React.FC<ReplyProps> = ({ contract, request, canEdit, isMaskingEnabled, onOpenItem, onUploadType, onDone }) => {
+export const BundleReplyPanel: React.FC<ReplyProps> = ({ contract, request, canEdit, isMaskingEnabled, onOpenItem, onUploadType, onSaved, locked = false }) => {
   const b = request.bundle!;
   const waitingItems = b.items.filter((i) => i.status === 'WAITING_RESPONSE');
   const [got, setGot] = useState<Set<number>>(new Set());
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
-  // 요청·자료가 바뀌면 이전 체크·메모는 쓰지 않는다(오류 안내는 남겨 이유를 보이게 한다)
+  // 요청·자료가 바뀌면 이전 체크·메모는 쓰지 않는다(오류 안내는 계약 화면이 보관한다)
   const basis = `${b.request_revision}|${contract.workflow?.revision}|${contract.workflow?.fingerprint}`;
   useEffect(() => { setGot(new Set()); setNote(''); }, [basis]);
   const late = request.due_on && request.due_on < seoulToday();
   const save = async (status: 'RECEIVED' | 'CANCELLED') => {
-    setBusy(true); setError('');
+    setBusy(true);
+    let saved = false; let error: string | undefined;
     try {
       await bundleApi.resolve(contract.contract_id, request.request_id, {
         revision: contract.workflow?.revision, fingerprint: contract.workflow?.fingerprint, request_revision: b.request_revision,
         items: [...got].map((id) => ({ item_id: id, status, note: note.trim() })),
       });
-      await onDone();
+      saved = true;
     } catch (e) {
-      setError(`${e instanceof Error ? e.message : '기록하지 못했습니다.'} 최신 상태를 다시 불러왔어요. 다시 골라 주세요.`);
-      await onDone();
-    } finally { setBusy(false); }
+      error = e instanceof Error ? e.message : '기록하지 못했습니다.';
+    }
+    try { await onSaved(saved, error); } finally { setBusy(false); }
   };
   return (
     <div className="space-y-2 rounded-xl bg-white px-3 py-3 text-sm">
@@ -350,15 +353,14 @@ export const BundleReplyPanel: React.FC<ReplyProps> = ({ contract, request, canE
           <div className="flex flex-wrap items-center gap-2">
             <input value={note} onChange={(e) => setNote(e.target.value)} maxLength={2000} aria-label="받은 내용 또는 취소 이유" placeholder="받은 내용 또는 취소 이유"
               className="min-w-0 flex-1 rounded-lg border border-slate-300 px-2 py-1 text-sm" />
-            <button onClick={() => void save('RECEIVED')} disabled={busy || got.size === 0 || !note.trim()}
+            <button onClick={() => void save('RECEIVED')} disabled={busy || locked || got.size === 0 || !note.trim()}
               className="rounded-lg bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-40">{busy ? '기록 중…' : `받은 ${got.size}건 기록`}</button>
-            <button onClick={() => void save('CANCELLED')} disabled={busy || got.size === 0 || !note.trim()}
+            <button onClick={() => void save('CANCELLED')} disabled={busy || locked || got.size === 0 || !note.trim()}
               className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-600 disabled:opacity-40">선택 {got.size}건 요청 취소</button>
           </div>
         </div>
       )}
       <p className="text-[11px] text-slate-500">받았다고 기록해도 검사 통과는 아니에요. 올린 서류로 다시 검사한 결과를 확인하세요.</p>
-      {error && <p role="alert" className="text-xs text-rose-600">{error}</p>}
     </div>
   );
 };
