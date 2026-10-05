@@ -3,6 +3,7 @@ import { ContractDetail } from '../../types';
 import { requestJson } from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
 import { buildReviewOverview, isUnverifiedBusinessStatus } from '../../utils/reviewSummary';
+import { josa } from '../../utils/korean';
 import { CheckCircle2 } from 'lucide-react';
 
 interface ApprovalState {
@@ -134,7 +135,7 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged, embedded =
           ) : (
             nextStep && (
               <p className="rounded-xl bg-white px-4 py-3 text-sm text-indigo-900">
-                {embedded ? <>{ROLE_KO[nextStep.role]} 계정에서 <b>{nextStep.label}</b>을 하면 {isLastStepWaiting ? '다음 단계(지급)로 넘어가요' : '다음 결재 단계로 넘어가요'}.</> : <>다음 단계: <b>{nextStep.label}</b> ({ROLE_KO[nextStep.role]} 계정에서 진행합니다)</>}
+                {embedded ? <>{ROLE_KO[nextStep.role]} 계정에서 <b>{josa(nextStep.label, '을/를')}</b> 하면 {isLastStepWaiting ? '다음 단계(지급)로 넘어가요' : '다음 결재 단계로 넘어가요'}.</> : <>다음 단계: <b>{nextStep.label}</b> ({ROLE_KO[nextStep.role]} 계정에서 진행합니다)</>}
               </p>
             )
           )}
