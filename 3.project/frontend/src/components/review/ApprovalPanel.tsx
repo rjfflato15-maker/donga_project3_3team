@@ -49,6 +49,7 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged, embedded =
   const nextStep = nextIndex !== null ? steps[nextIndex] : null;
   const isLast = nextIndex !== null && nextIndex === steps.length - 1;
   const myTurn = !!nextStep && (user?.role === nextStep.role || user?.role === 'admin');
+  const isLastStepWaiting = nextIndex !== null && nextIndex === steps.length - 1;
   const blocked = contract.summary.missing_count > 0 || !contract.documents.length || contract.documents.some((d) => !d.file_available);
   const unverified = contract.checks.some((c) => c.status !== 'PASS');
   const ntsNotRun = contract.checks.some(isUnverifiedBusinessStatus);
@@ -133,7 +134,7 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged, embedded =
           ) : (
             nextStep && (
               <p className="rounded-xl bg-white px-4 py-3 text-sm text-indigo-900">
-                {embedded ? <>대표님이 대표 계정으로 들어와 <b>{nextStep.label}</b>을 하면 다음 단계(지급)로 넘어가요.</> : <>다음 단계: <b>{nextStep.label}</b> ({ROLE_KO[nextStep.role]} 계정에서 진행합니다)</>}
+                {embedded ? <>{ROLE_KO[nextStep.role]} 계정에서 <b>{nextStep.label}</b>을 하면 {isLastStepWaiting ? '다음 단계(지급)로 넘어가요' : '다음 결재 단계로 넘어가요'}.</> : <>다음 단계: <b>{nextStep.label}</b> ({ROLE_KO[nextStep.role]} 계정에서 진행합니다)</>}
               </p>
             )
           )}

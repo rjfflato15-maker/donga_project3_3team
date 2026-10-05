@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { ContractListItem } from '../../types';
 import { seoulToday } from '../../utils/date';
 import { maskVendorName } from '../../utils/masking';
-import { Stage, stageOf, STAGE_KO, STAGE_PILL } from '../../utils/stage';
+import { Stage, stageOf, STAGE_KO, STAGE_PILL, isMyTurn, approvalWaitingFor, Role } from '../../utils/stage';
 import { Plus, Search } from 'lucide-react';
 
 export interface DashboardItem extends ContractListItem {
@@ -42,7 +42,9 @@ export function matchesQuery(c: Pick<DashboardItem, 'title' | 'vendor_name' | 'c
 }
 
 /** 표의 '다음 할 일' 한 줄 */
-function nextAction(c: DashboardItem, s: Stage, representative: boolean): string {
+export function nextAction(c: DashboardItem, s: Stage, representative: boolean): string {
+  const role: Role = representative ? 'representative' : 'operator';
+  const mine = isMyTurn(s, c.work_state?.next_actions, role);
   switch (s) {
     case 'RECEIVING': return `서류 ${c.submitted_docs_count}/${c.total_docs_count}종 · 빠진 서류를 받으세요`;
     case 'CHECK': {
@@ -55,8 +57,12 @@ function nextAction(c: DashboardItem, s: Stage, representative: boolean): string
       const now = c.work_state?.counts?.immediate_check_items ?? 0;
       return `거래처 답을 기다리는 중${now ? ` · 사내에서 바로 확인할 것 ${now}건` : ''}`;
     }
-    case 'APPROVAL': return representative ? '결재할 차례예요' : '문제 없음 · 대표 결재를 기다려요';
-    case 'PAYMENT': return c.payment?.status === 'RECONFIRMATION_REQUIRED' ? `이미 ${c.payment.recorded_paid_on} 지급 · 같은 지급인지 재확인` : '대표 결재 끝 · 지급하고 기록하세요';
+    case 'APPROVAL': {
+      if (mine) return representative ? '결재할 차례예요' : '문제 없음 · 담당 검토 결재 차례예요';
+      const w = approvalWaitingFor(c.work_state?.next_actions);
+      return w === 'operator' ? '담당자 검토 결재를 기다려요' : '문제 없음 · 대표 결재를 기다려요';
+    }
+    case 'PAYMENT': return c.payment?.status === 'RECONFIRMATION_REQUIRED' ? `이미 ${c.payment.recorded_paid_on} 지급 · 같은 지급인지 재확인` : mine ? '대표 결재 끝 · 지급하고 기록하세요' : '대표 결재 끝 · 담당자가 지급을 기록해요';
     default: return c.paid_on ? `${c.paid_on} 지급 완료` : '끝';
   }
 }
@@ -79,6 +85,8 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
   const withStage = useMemo(() => contracts.map((c) => ({ c, s: stageOfItem(c) })), [contracts]);
   const count = (s: Stage) => withStage.filter((x) => x.s === s).length;
   // 담당자는 손댈 것부터, 대표는 결재할 것부터
+  const role: Role = representative ? 'representative' : 'operator';
+  const mineOf = (x: { c: DashboardItem; s: Stage }) => isMyTurn(x.s, x.c.work_state?.next_actions, role);
   const order: Stage[] = representative
     ? ['APPROVAL', 'PAYMENT', 'CHECK', 'RECEIVING', 'WAITING']
     : ['CHECK', 'RECEIVING', 'PAYMENT', 'WAITING', 'APPROVAL'];
@@ -89,8 +97,9 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
     .filter((x) => matchesQuery(x.c, q))
     .sort((a, b) => history
       ? b.c.created_at.localeCompare(a.c.created_at)
-      : order.indexOf(a.s) - order.indexOf(b.s) || (a.c.earliest_due_on || '9999').localeCompare(b.c.earliest_due_on || '9999'));
-  const todo = active.filter((x) => (representative ? ['APPROVAL', 'PAYMENT'] : ['CHECK', 'RECEIVING', 'PAYMENT']).includes(x.s)).length;
+      : Number(mineOf(b)) - Number(mineOf(a)) || order.indexOf(a.s) - order.indexOf(b.s) || (a.c.earliest_due_on || '9999').localeCompare(b.c.earliest_due_on || '9999'));
+  // 제목 건수 = 이 역할의 차례인 계약(버튼·문구와 같은 기준)
+  const todo = active.filter(mineOf).length;
   const tiles: { s: Stage; label: string }[] = [
     { s: 'RECEIVING', label: '① 서류 받을 것' },
     { s: 'CHECK', label: '② 확인할 것' },
@@ -158,9 +167,7 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
             )}
             {rows.map(({ c, s }) => {
               const late = s === 'WAITING' && c.earliest_due_on && c.earliest_due_on < today();
-              const role = representative ? 'representative' : 'operator';
-              const acts = c.work_state?.next_actions;
-              const mine = acts ? acts.some((a) => a.role === role) : representative ? s === 'APPROVAL' : ['CHECK', 'RECEIVING', 'PAYMENT'].includes(s);
+              const mine = mineOf({ c, s });
               return (
                 <tr key={c.contract_id} className="cursor-pointer hover:bg-slate-50" onClick={() => onOpen(c.contract_id)}>
                   <td className="px-4 py-3"><span className={`whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-bold ${STAGE_PILL[s]}`}>{STAGE_KO[s]}</span></td>

@@ -65,3 +65,24 @@ export function stepStates(i: { stage: Stage; missing: number; issues: number; w
     PAYMENT: i.paid ? 'done' : 'todo',
   };
 }
+
+export interface NextAction { role: string; code?: string; label?: string }
+export type Role = 'operator' | 'representative';
+
+/**
+ * 이 역할의 차례인지. 서버 공통 상태의 next_actions가 있으면 그것만 따른다(2단계 결재의 담당 검토 포함).
+ * 없을 때만 단계로 추정한다. 끝난 계약은 누구의 차례도 아니다.
+ */
+export function isMyTurn(stage: Stage, actions: NextAction[] | null | undefined, role: Role): boolean {
+  if (stage === 'DONE') return false;
+  if (actions) return actions.some((a) => a.role === role);
+  return role === 'representative' ? stage === 'APPROVAL' : stage === 'CHECK' || stage === 'RECEIVING' || stage === 'PAYMENT';
+}
+
+/** 결재 단계에서 누구를 기다리는지(서버 next_actions 기준) */
+export function approvalWaitingFor(actions: NextAction[] | null | undefined): Role | null {
+  if (!actions) return null;
+  if (actions.some((a) => a.role === 'operator')) return 'operator';
+  if (actions.some((a) => a.role === 'representative')) return 'representative';
+  return null;
+}

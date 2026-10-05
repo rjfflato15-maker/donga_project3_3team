@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   ContractDetail,
   ContractListItem,
@@ -218,6 +218,7 @@ export const ContractDashboard: React.FC = () => {
 
   const handleUploadFiles = async (files: File[], targetDocumentType?: string) => {
     if (!currentContract || !canEdit) return;
+    const targetId = currentContract.contract_id;
     try {
       setActionLoading(true);
       await api.uploadDocuments(currentContract.contract_id, files, targetDocumentType);
@@ -230,11 +231,12 @@ export const ContractDashboard: React.FC = () => {
       }
 
       // Reload current contract detail
-      const updated = await api.getContract(currentContract.contract_id);
-      setCurrentContract(updated);
+      // 업로드 중에 다른 계약으로 옮겼다면 그 화면을 이전 계약으로 덮어쓰지 않는다
+      const updated = await api.getContract(targetId);
+      if (currentIdRef.current === targetId) setCurrentContract(updated);
       const list = await api.listContracts();
       setContracts(list);
-      if (isPilot) setRecentUpload({ contractId: currentContract.contract_id, names: files.map((f) => f.name) });
+      if (isPilot) setRecentUpload({ contractId: targetId, names: files.map((f) => f.name) });
       showToast('success', `${files.length}건의 원본을 등록했습니다. 자동 검수 결과를 확인하세요.`);
     } catch (err: any) {
       console.error(err);
@@ -244,6 +246,9 @@ export const ContractDashboard: React.FC = () => {
       setActionLoading(false);
     }
   };
+
+  const currentIdRef = useRef<number | undefined>(undefined);
+  currentIdRef.current = currentContract?.contract_id;
 
   const handleOpenUploadModal = (targetType?: string | null) => {
     if (!canEdit) return;

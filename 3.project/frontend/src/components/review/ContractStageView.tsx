@@ -10,7 +10,7 @@ import {
 import { seoulToday } from '../../utils/date';
 import { maskBusinessNumber, maskResidentNumber, maskVendorName } from '../../utils/masking';
 import { fixParticles, josa } from '../../utils/korean';
-import { Stage, stageOf, stepStates, STAGE_STEPS, STAGE_NO } from '../../utils/stage';
+import { Stage, stageOf, stepStates, STAGE_STEPS, STAGE_NO, NextAction, isMyTurn, approvalWaitingFor } from '../../utils/stage';
 import { ApprovalPanel } from './ApprovalPanel';
 import { AssignmentPanel } from './AssignmentPanel';
 import { ActivityTimeline } from './ActivityTimeline';
@@ -206,6 +206,10 @@ export const ContractStageView: React.FC<Props> = ({
     open_issue_count: overview.issues.length,
   });
   const stageNo = STAGE_NO[stage];
+  // 결재 차례: 서버 next_actions 기준(2단계 결재의 담당 검토 포함)
+  const nextActions = (contract as { work_state?: { next_actions?: NextAction[] } | null }).work_state?.next_actions;
+  const myApprovalTurn = isMyTurn(stage, nextActions, representative ? 'representative' : 'operator');
+  const waitingFor = approvalWaitingFor(nextActions) ?? (representative ? null : 'representative');
   // 실제로 끝난 단계만 체크. 지금 단계보다 앞이어도 남은 일이 있으면 '남음', 요청한 적이 없으면 보완은 '해당 없음'
   const stepState = stepStates({ stage, missing: missingIssues.length, issues: overview.issues.length, waiting: waiting.length, requests: requests.length, approved: wf?.approval_status === 'CONFIRMED', paid: !!payment?.paid_on });
 
@@ -453,7 +457,10 @@ export const ContractStageView: React.FC<Props> = ({
 
               {stage === 'APPROVAL' && (
                 <div className="space-y-3">
-                  <div className="text-xl font-bold text-slate-900">{representative ? '결재할 차례예요' : '문제 없어요. 대표님 결재를 받으세요'}</div>
+                  <div className="text-xl font-bold text-slate-900">
+                    {myApprovalTurn ? (representative ? '결재할 차례예요' : '문제 없어요. 담당 검토 결재 차례예요')
+                      : waitingFor === 'operator' ? '담당자 검토 결재를 기다려요' : representative ? '결재를 기다리는 중이에요' : '문제 없어요. 대표님 결재를 받으세요'}
+                  </div>
                   {representative && (
                     <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-4 text-sm" aria-label="대표 검토 요약">
                       <div className="font-bold text-slate-900">검토 요약</div>
@@ -470,7 +477,7 @@ export const ContractStageView: React.FC<Props> = ({
                       </div>
                     </div>
                   )}
-                  {!representative && brief && (
+                  {!representative && !myApprovalTurn && waitingFor === 'representative' && brief && (
                     <div className="flex flex-wrap items-start gap-2 rounded-xl bg-white p-3 text-sm text-slate-700">
                       <p className="min-w-0 flex-1">{brief}</p>
                       <button onClick={copyBrief} className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 text-xs text-slate-600"><Copy className="h-3.5 w-3.5" />{copied ? '복사했어요' : '대표님께 보낼 문장 복사'}</button>

@@ -26,14 +26,18 @@ export const UploadModal: React.FC<UploadModalProps> = ({
   const [dragActive, setDragActive] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // 열기·닫기(취소·Esc 포함)·대상 계약이 바뀔 때마다 선택·오류·종류·파일 입력을 새로 시작한다.
+  // 같은 창에서 실패 후 다시 시도할 때는 이 effect가 돌지 않으므로 파일이 남는다.
+  // session은 늦게 끝난 업로드가 이미 닫혔거나 다른 계약으로 바뀐 창을 건드리지 않게 한다.
+  const session = useRef(0);
   useEffect(() => {
-    if (initialTargetType) {
-      setTargetType(initialTargetType);
-    } else {
-      setTargetType('');
-    }
-  }, [initialTargetType, isOpen]);
-  useEffect(() => { if (isOpen) setError(''); }, [isOpen]);
+    session.current += 1;
+    setSelectedFiles([]);
+    setError('');
+    setDragActive(false);
+    setTargetType(initialTargetType || '');
+    if (inputRef.current) inputRef.current.value = '';
+  }, [isOpen, contractId, initialTargetType]);
 
   const dialogRef = useRef<HTMLDivElement>(null);
   useDialogA11y(dialogRef, onClose, isOpen);
@@ -76,22 +80,23 @@ export const UploadModal: React.FC<UploadModalProps> = ({
 
   const handleSubmit = async () => {
     if (selectedFiles.length === 0) return;
+    const mine = session.current;
     try {
       setError('');
       await onUpload(selectedFiles, targetType || undefined);
-      setSelectedFiles([]);
-      setTargetType('');
+      if (session.current !== mine) return;
       onClose();
     } catch (reason) {
+      if (session.current !== mine) return;
       setError(reason instanceof Error ? reason.message : '업로드하지 못했습니다.');
     }
   };
 
   return (
     <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="upload-title" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-xl overflow-hidden">
+      <div className="flex max-h-[calc(100vh-2rem)] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
         {/* Header */}
-        <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <div className="p-5 border-b border-slate-200 flex shrink-0 items-center justify-between bg-slate-50">
           <div>
             <h3 id="upload-title" className="text-base font-bold text-slate-900">새 서류 추가</h3>
             <p className="text-xs text-slate-500 mt-0.5">앱 계약 {contractId}번에 서류를 더합니다</p>
@@ -106,7 +111,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
         </div>
 
         {/* Body */}
-        <div className="p-6 space-y-4">
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-6">
           <p className="rounded-xl bg-sky-50 p-3 text-xs text-sky-900">거래처가 <b>같은 서류를 고쳐서 다시 보낸 것</b>이라면 여기서 추가하지 말고, 계약 화면에서 그 서류를 열어 <b>‘고친 본 올리기’</b>를 쓰세요. 그래야 이전 본이 보관되고 검사에서 빠져요. 여기는 새 서류를 더하는 곳이에요.</p>
           {error && (
             <div role="alert" className="rounded-xl bg-rose-50 p-3 text-xs font-semibold text-rose-800">
@@ -156,7 +161,8 @@ export const UploadModal: React.FC<UploadModalProps> = ({
               multiple
               accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.tiff,.tif,.gif,.txt,.docx,.doc,.hwp,.hwpx,.xlsx,.xls,.csv"
               className="hidden"
-              onChange={(e) => handleFiles(e.target.files)}
+              onChange={(e) => { handleFiles(e.target.files); e.target.value = ''; }}
+              aria-label="올릴 파일 고르기"
             />
             <div className="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mb-3 shadow-xs">
               <UploadCloud className="w-6 h-6" />
@@ -238,6 +244,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
                         e.stopPropagation();
                         removeFile(idx);
                       }}
+                      aria-label={`${file.name} 빼기`}
                       className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -262,7 +269,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-slate-50 border-t border-slate-200 flex justify-end space-x-2">
+        <div className="p-4 bg-slate-50 border-t border-slate-200 flex shrink-0 justify-end space-x-2">
           <button
             onClick={onClose}
             className="px-4 py-2 bg-white border border-slate-300 text-slate-700 font-semibold text-xs rounded-xl hover:bg-slate-50 transition-colors"
