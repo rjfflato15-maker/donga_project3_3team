@@ -365,6 +365,12 @@ export const ContractStageView: React.FC<Props> = ({
 
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_260px]">
         <div className="min-w-0 space-y-4">
+          {replyMsg && (
+            <div role="alert" className={`flex items-start gap-2 rounded-xl px-4 py-3 text-sm ${replyMsg.tone === 'error' ? 'border border-rose-200 bg-rose-50 text-rose-700' : 'border border-amber-200 bg-amber-50 text-amber-900'}`}>
+              <span className="flex-1">{replyMsg.text}</span>
+              <button onClick={() => setReplyMsg(null)} className="text-xs underline">닫기</button>
+            </div>
+          )}
           {paidBefore && stage !== 'PAYMENT' && (
             <p role="status" className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
               이 계약은 <b>{paidBefore.recorded_paid_on}</b>에 계약 전체 지급 완료로 기록돼 있어요. 자료가 바뀌어 다시 확인 중이에요. <b>다시 지급하지 말고</b>, 확인·결재가 끝나면 같은 지급인지 재확인하세요.
@@ -389,12 +395,6 @@ export const ContractStageView: React.FC<Props> = ({
                   </div>
                   {wf?.approval_status === 'RETURNED' && <p className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700">대표가 돌려보낸 계약이에요. 처리 기록에서 이유를 확인하세요.</p>}
 
-                  {replyMsg && (
-                    <div role="alert" className={`flex items-start gap-2 rounded-lg px-3 py-2 text-sm ${replyMsg.tone === 'error' ? 'bg-rose-50 text-rose-700' : 'bg-amber-50 text-amber-900'}`}>
-                      <span className="flex-1">{replyMsg.text}</span>
-                      <button onClick={() => setReplyMsg(null)} className="text-xs underline">닫기</button>
-                    </div>
-                  )}
                   {waiting.length > 0 && (
                     <div className="space-y-2">
                       <div ref={waitingRef} tabIndex={-1} className="text-sm font-bold text-slate-900 outline-none focus:underline">거래처 답을 기다리는 중</div>
