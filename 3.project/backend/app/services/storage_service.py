@@ -69,7 +69,19 @@ def resolve_path(key: str):
     roots = [STORAGE_DIR, (PROJECT_ROOT / "storage").resolve()]
     candidates = [Path(key)] if Path(key).is_absolute() else [STORAGE_DIR / key]
     base = ntpath.basename(key)
-    candidates += [root / sub / base for root in roots for sub in ("raw", "masked")]
+    # Legacy absolute paths can move with a restored company inbox. Keep their
+    # namespace: a privacy sidecar must never stand in for a missing original
+    # (or an original for a missing privacy sidecar).
+    parts = ntpath.normpath(key).replace("\\", "/").split("/")
+    namespace_index = next((i for i in range(len(parts) - 2, -1, -1)
+                            if parts[i].lower() in {"raw", "masked", "text"}), None)
+    if namespace_index is not None:
+        namespace = parts[namespace_index].lower()
+        portable = Path(namespace, *parts[namespace_index + 1:])
+        candidates += [root / portable for root in roots]
+        candidates += [root / namespace / base for root in roots]
+    else:
+        candidates += [root / sub / base for root in roots for sub in ("raw", "masked")]
     for candidate in candidates:
         resolved = candidate.resolve()
         if any(resolved.is_relative_to(root) for root in roots) and resolved.is_file():

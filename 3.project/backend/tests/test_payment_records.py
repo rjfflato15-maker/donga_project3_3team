@@ -186,10 +186,41 @@ def test_original_disappearance_invalidates_payment_even_without_revision_change
         resolve_path(doc.storage_path).unlink()
     current = operator_client.get(f'/api/contracts/{cid}').json()
     assert current['workflow']['revision'] == review['revision']
+    assert current['workflow']['fingerprint'] != review['fingerprint']
+    assert current['workflow']['approval_status'] == 'STALE'
     assert current['payment']['paid_on'] is None
     assert current['payment']['recorded_paid_on'] == '2026-01-02'
-    assert current['payment']['blocked_reason'] == 'SOURCE_VERSION_UNVERIFIED'
+    assert current['payment']['blocked_reason'] == 'FINAL_REVIEW_REQUIRED'
     assert operator_client.post(path, json=payment_body(review['revision'])).status_code == 409
+
+
+def test_changed_original_bytes_block_payment_even_with_current_workflow_fingerprint(operator_client, separate_client, db_factory):
+    from backend.app.db.models import Document
+    from backend.app.services.storage_service import resolve_path
+    _, cid, review = approved_contract(operator_client, separate_client)
+    path = f'/api/pilot/contracts/{cid}/payment'
+    original = operator_client.post(path, json=payment_body(review['revision']))
+    assert original.status_code == 201
+    with db_factory() as db:
+        doc = db.query(Document).filter_by(contract_id=cid).first()
+        source = resolve_path(doc.storage_path)
+        source.write_bytes(source.read_bytes() + b'\nChanged unit-test source bytes\n')
+        assert resolve_path(doc.storage_path) == source
+    current = operator_client.get(f'/api/contracts/{cid}').json()
+    # Stored extraction and receipt metadata still describe the reviewed inputs.
+    # Payment independently checks actual source bytes against the receipt.
+    assert current['workflow']['revision'] == review['revision']
+    assert current['workflow']['fingerprint'] == review['fingerprint']
+    assert current['workflow']['approval_status'] == 'CONFIRMED'
+    assert current['payment']['paid_on'] is None
+    assert current['payment']['recorded_paid_on'] == '2026-01-02'
+    assert current['payment']['reconfirmation_allowed'] is False
+    assert current['payment']['blocked_reason'] == 'SOURCE_VERSION_UNVERIFIED'
+    rejected = operator_client.post(path, json=payment_body(review['revision']))
+    assert rejected.status_code == 409 and '등록 당시 해시' in rejected.json()['detail']
+    with db_factory() as db:
+        assert db.query(ContractPayment).count() == 1
+        assert db.query(AuditEvent).filter_by(action='PAYMENT_RECORDED').count() == 1
 
 
 def test_changed_payee_cannot_reuse_existing_whole_payment(operator_client, separate_client):
