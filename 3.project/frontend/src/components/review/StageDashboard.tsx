@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { ContractListItem } from '../../types';
+import { seoulToday } from '../../utils/date';
 import { maskVendorName } from '../../utils/masking';
 import { Stage, stageOf, STAGE_KO, STAGE_PILL } from '../../utils/stage';
 import { Plus, Search } from 'lucide-react';
@@ -22,7 +23,7 @@ export const stageOfItem = (c: DashboardItem): Stage => stageOf({
   open_issue_count: c.open_issue_count,
 });
 
-const today = () => new Date().toISOString().slice(0, 10);
+const today = () => seoulToday();
 
 /**
  * 검색: 거래처·계약명은 글자 그대로, 금액은 '2090000', '2,090,000', '2,090,000원'을 같은 값으로 찾는다.

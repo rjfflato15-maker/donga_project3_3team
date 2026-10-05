@@ -5,6 +5,7 @@ import { followUpApi, ResubmissionRequest, CONTACT_VIA } from '../../api/followU
 import {
   buildReviewOverview, IssueGroup, plainMessage, showsValues, ruleLabel, isInternalDocument, DOCUMENT_TYPE_KO, STATUS_KO,
 } from '../../utils/reviewSummary';
+import { seoulToday } from '../../utils/date';
 import { maskBusinessNumber, maskResidentNumber, maskVendorName } from '../../utils/masking';
 import { fixParticles, josa } from '../../utils/korean';
 import { Stage, stageOf, stepStates, STAGE_STEPS, STAGE_NO } from '../../utils/stage';
@@ -29,7 +30,7 @@ const num = (s?: string | null) => {
   const m = s.replace(/[,\s원]/g, '').match(/^-?\d+(\.\d+)?$/);
   return m ? Number(m[0]) : null;
 };
-const today = () => new Date().toISOString().slice(0, 10);
+const today = () => seoulToday();
 
 const KIND_KO: Record<string, string> = { missing: '빠진 서류', vendor: '서류 내용 확인', reading: '원문 확인', contract: '계약 기준 확인' };
 const kindCounts = (list: IssueGroup[]) => Object.entries(list.reduce<Record<string, number>>((m, i) => ({ ...m, [i.kind]: (m[i.kind] ?? 0) + 1 }), {}))
@@ -197,6 +198,12 @@ export const ContractStageView: React.FC<Props> = ({
   // 같은 지급 사실 재확인(새 지급을 만들지 않음)
   const [sameAck, setSameAck] = useState(false);
   const [reNote, setReNote] = useState('');
+  // 이전 자료에 대해 한 체크·메모를 새 자료에 그대로 쓰지 않는다
+  const lastReview = wf?.reviews?.length ? Math.max(...wf.reviews.map((r) => r.review_id)) : null;
+  const paymentBasis = [contract.contract_id, wf?.revision, wf?.fingerprint, wf?.approval_status, lastReview, payment?.payment_id, payment?.status, payment?.reconfirmation_allowed].join('|');
+  useEffect(() => {
+    setSameAck(false); setReNote(''); setPayError(''); setPayNote(''); setPaidOn(today()); setPayMethod('TRANSFER');
+  }, [paymentBasis]);
   const reconfirm = async () => {
     if (!paidBefore) return;
     setPayBusy(true); setPayError('');

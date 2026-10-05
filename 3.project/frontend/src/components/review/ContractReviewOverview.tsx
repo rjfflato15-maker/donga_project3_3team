@@ -12,6 +12,7 @@ import {
   isInternalDocument,
 } from '../../utils/reviewSummary';
 import { maskVendorName } from '../../utils/masking';
+import { seoulToday } from '../../utils/date';
 import { AlertTriangle, CheckCircle2, ChevronDown, ChevronRight, Copy, Eye, Info, Upload } from 'lucide-react';
 import { RequestDraftDialog } from './RequestDraftDialog';
 import { AssistantPreview, AssignDraft } from './AssistantPreview';
@@ -174,7 +175,7 @@ export const ContractReviewOverview: React.FC<Props> = ({
             <div key={r.request_id} className="rounded-xl bg-white/80 px-3 py-2 text-sm">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                 <span className="font-semibold text-slate-800">{r.requested_on} {CONTACT_VIA[r.contact_method]} 요청</span>
-                {r.due_on && <span className={`text-xs ${r.due_on < new Date().toISOString().slice(0, 10) ? 'font-bold text-rose-600' : 'text-slate-500'}`}>기한 {r.due_on}</span>}
+                {r.due_on && <span className={`text-xs ${r.due_on < seoulToday() ? 'font-bold text-rose-600' : 'text-slate-500'}`}>기한 {r.due_on}</span>}
                 <span className="text-xs text-slate-400">{r.actor_name}</span>
                 {canEdit && (
                   <span className="ml-auto flex gap-1.5">
