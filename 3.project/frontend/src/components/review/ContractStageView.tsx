@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { BundleCandidate, BundleContext, BundledRequest, BundleReplyPanel, BundleRequestDialog, RequestChecklist, bundleApi } from './BundleRequest';
+import { Basis, BundleCandidate, BundleContext, BundledRequest, BundleItem, BundleReplyPanel, BundleRequestDialog, RequestChecklist, bundleApi, currentDocumentFor } from './BundleRequest';
 import { ContractDetail, DocumentResponse, DocumentType, ValidationStatus } from '../../types';
 import { requestJson } from '../../api/client';
 import { followUpApi, CONTACT_VIA } from '../../api/followUp';
@@ -23,6 +23,21 @@ const BLOCKED_KO: Record<string, string> = {
   SOURCE_VERSION_UNVERIFIED: '원본 파일이 등록 당시와 달라 확인할 수 없어요. 원본을 다시 등록하고 결재를 받아 주세요.',
   PAYEE_OR_AMOUNT_CHANGED: '거래처 사업자번호나 계약 금액·지급 방식이 바뀌어 기존 지급을 이 계약에 연결할 수 없어요. 실제 지급 내역을 따로 확인해 주세요.',
 };
+
+/**
+ * 회사 안에서 확인할 것: 거래처 요청 후보가 아닌 문제.
+ * 같은 서류에 거래처 문제(FAIL)와 판독 문제(REVIEW)가 함께 있으면 판독 문제만 따로 남긴다.
+ */
+export function splitInternalIssues(issues: IssueGroup[], vendorKeys: Set<string>): IssueGroup[] {
+  const out: IssueGroup[] = [];
+  for (const i of issues) {
+    const vendorDoc = i.document ? vendorKeys.has(`d${i.document.document_id}`) : vendorKeys.has(`m${i.missingType}`);
+    if (!vendorDoc) { out.push(i); continue; }
+    const reviews = i.document ? i.checks.filter((c) => c.status === 'REVIEW') : [];
+    if (reviews.length) out.push({ ...i, key: `${i.key}-review`, kind: 'reading', status: 'REVIEW', checks: reviews });
+  }
+  return out;
+}
 
 const won = (n?: number | null) => (n == null ? '-' : `${Math.round(n).toLocaleString('ko-KR')}원`);
 const num = (s?: string | null) => {
@@ -124,9 +139,13 @@ export const ContractStageView: React.FC<Props> = ({
   const overview = useMemo(() => buildReviewOverview(contract), [contract]);
   const [requests, setRequests] = useState<BundledRequest[]>([]);
   const [followError, setFollowError] = useState('');
+  // 늦게 도착한 다른 계약의 응답이 지금 계약 목록을 덮어쓰지 않도록 계약 ID를 확인한다
+  const cidRef = useRef(contract.contract_id);
+  cidRef.current = contract.contract_id;
   const loadRequests = async () => {
-    try { setRequests(await followUpApi.list(contract.contract_id)); setFollowError(''); }
-    catch (e) { setFollowError(e instanceof Error ? e.message : '요청 기록을 불러오지 못했습니다.'); }
+    const cid = contract.contract_id;
+    try { const list = await followUpApi.list(cid); if (cidRef.current === cid) { setRequests(list); setFollowError(''); } }
+    catch (e) { if (cidRef.current === cid) setFollowError(e instanceof Error ? e.message : '요청 기록을 불러오지 못했습니다.'); }
   };
   useEffect(() => { void loadRequests(); }, [contract.contract_id, contract.updated_at]);
   const waiting = requests.filter((r) => r.status === 'WAITING_RESPONSE');
@@ -134,14 +153,21 @@ export const ContractStageView: React.FC<Props> = ({
   const [ctx, setCtx] = useState<BundleContext | null>(null);
   const [ctxError, setCtxError] = useState('');
   const loadCtx = async () => {
-    try { setCtx(await bundleApi.context(contract.contract_id)); setCtxError(''); }
-    catch (e) { setCtx(null); setCtxError(e instanceof Error ? e.message : '요청 후보를 불러오지 못했습니다.'); }
+    const cid = contract.contract_id;
+    try { const c = await bundleApi.context(cid); if (cidRef.current === cid && c.contract_id === cid) { setCtx(c); setCtxError(''); } }
+    catch (e) { if (cidRef.current === cid) { setCtx(null); setCtxError(e instanceof Error ? e.message : '요청 후보를 불러오지 못했습니다.'); } }
   };
+  useEffect(() => { setCtx(null); setRequests([]); setBundleFor(null); setCtxError(''); }, [contract.contract_id]);
   useEffect(() => { void loadCtx(); }, [contract.contract_id, contract.updated_at, contract.workflow?.revision, contract.workflow?.fingerprint]);
   const refreshAll = async () => { await Promise.all([loadRequests(), loadCtx()]); await onChanged(); };
   // 기록하면 요청 버튼이 사라지므로, 창을 닫은 뒤 '답을 기다리는 중'으로 포커스를 옮긴다
   const waitingRef = useRef<HTMLDivElement>(null);
-  const [bundleFor, setBundleFor] = useState<{ items: BundleCandidate[]; reviewed: Set<string> } | null>(null);
+  const [bundleFor, setBundleFor] = useState<{ items: BundleCandidate[]; reviewed: Set<string>; basis: Basis } | null>(null);
+  const latestBasis: Basis | null = ctx ? { contractId: ctx.contract_id, revision: ctx.revision, fingerprint: ctx.fingerprint } : null;
+  const openItem = (item: BundleItem, mode: 'view' | 'reissue' = 'view') => {
+    const id = currentDocumentFor(item, contract.documents);
+    if (id != null) openDocId(id, mode); else onUploadType(item.document_type ?? undefined);
+  };
   const openDocId = (id: number, mode: 'view' | 'reissue' = 'view') => { const d = contract.documents.find((x) => x.document_id === id); if (d) onOpenDocument(d, mode); };
 
   const wf = contract.workflow;
@@ -257,7 +283,7 @@ export const ContractStageView: React.FC<Props> = ({
 
   const blockProps = { canEdit, masked: isMaskingEnabled, onOpenDocument, onUploadType, };
   const vendorKeys = new Set((ctx?.vendor_candidates ?? []).map((c) => (c.document_id != null ? `d${c.document_id}` : `m${c.document_type}`)));
-  const internalIssues = overview.issues.filter((i) => !(i.document ? vendorKeys.has(`d${i.document.document_id}`) && i.kind === 'vendor' : vendorKeys.has(`m${i.missingType}`)));
+  const internalIssues = splitInternalIssues(overview.issues, vendorKeys);
 
   return (
     <div className="space-y-5">
@@ -346,7 +372,7 @@ export const ContractStageView: React.FC<Props> = ({
                       <div ref={waitingRef} tabIndex={-1} className="text-sm font-bold text-slate-900 outline-none focus:underline">거래처 답을 기다리는 중</div>
                       {waiting.map((r) => r.bundle ? (
                         <BundleReplyPanel key={r.request_id} contract={contract} request={r} canEdit={canEdit} isMaskingEnabled={isMaskingEnabled}
-                          onOpenDocumentId={openDocId} onUploadType={onUploadType} onDone={refreshAll} />
+                          onOpenItem={openItem} onUploadType={onUploadType} onDone={refreshAll} />
                       ) : (() => {
                         const late = r.due_on && r.due_on < today();
                         return (
@@ -380,7 +406,7 @@ export const ContractStageView: React.FC<Props> = ({
 
                   {ctx ? (
                     <RequestChecklist ctx={ctx} isMaskingEnabled={isMaskingEnabled} canEdit={canEdit} onOpenDocumentId={(id) => openDocId(id)}
-                      onMake={(items, reviewed) => setBundleFor({ items, reviewed })} />
+                      onMake={(items, reviewed) => latestBasis && setBundleFor({ items, reviewed, basis: latestBasis })} />
                   ) : ctxError && (
                     <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900">거래처 요청 목록을 불러오지 못했어요. 서버를 새 버전으로 다시 시작해야 할 수 있어요. ({ctxError})</p>
                   )}
@@ -516,7 +542,7 @@ export const ContractStageView: React.FC<Props> = ({
       )}
 
       {bundleFor && ctx && (
-        <BundleRequestDialog contract={contract} ctx={ctx} items={bundleFor.items} reviewed={bundleFor.reviewed} isMaskingEnabled={isMaskingEnabled}
+        <BundleRequestDialog contract={contract} basis={bundleFor.basis} latest={latestBasis} items={bundleFor.items} reviewed={bundleFor.reviewed} isMaskingEnabled={isMaskingEnabled}
           onClose={() => setBundleFor(null)} onStale={refreshAll}
           onRecorded={async () => { await refreshAll(); setTimeout(() => waitingRef.current?.focus(), 120); }} />
       )}

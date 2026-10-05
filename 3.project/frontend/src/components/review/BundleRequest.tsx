@@ -53,6 +53,21 @@ export const bundleApi = {
   }),
 };
 
+/** 선택·동의를 받은 자료 기준. 기준이 바뀌면 그 동의로 저장하지 않는다 */
+export interface Basis { contractId: number; revision: number; fingerprint: string }
+export const sameBasis = (a: Basis, b: Basis) => a.contractId === b.contractId && a.revision === b.revision && a.fingerprint === b.fingerprint;
+
+/** 요청 항목의 현재 서류: 재발행으로 ID가 바뀌어도 같은 논리 문서(issue_key 'document:{논리 ID}')의 현재 본을 찾는다 */
+export function currentDocumentFor(item: { issue_key: string; document_id: number | null }, docs: { document_id: number; version?: { logical_document_id: number; is_current: boolean } | null }[]): number | null {
+  const m = /^document:(\d+)$/.exec(item.issue_key);
+  if (m) {
+    const logical = Number(m[1]);
+    const cur = docs.find((d) => (d.version?.logical_document_id ?? d.document_id) === logical && d.version?.is_current !== false);
+    if (cur) return cur.document_id;
+  }
+  return item.document_id != null && docs.some((d) => d.document_id === item.document_id) ? item.document_id : null;
+}
+
 const mask = (t: string, on: boolean) => (on ? maskResidentNumber(maskBusinessNumber(t)) : t);
 const docName = (c: { document_type: DocumentType | null; title: string }) => (c.document_type ? DOCUMENT_TYPE_KO[c.document_type] ?? c.title : c.title);
 const newKey = () => (typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
@@ -137,13 +152,14 @@ export const RequestChecklist: React.FC<ChecklistProps> = ({ ctx, isMaskingEnabl
 /* ---------- 한 번에 요청하기 ---------- */
 const AMOUNT_RULE_WORDS = /금액|합계|세액|공급가액/;
 
-function buildText(contract: ContractDetail, items: BundleCandidate[], long: boolean) {
+export function buildText(contract: Pick<ContractDetail, 'vendor_name' | 'title'>, items: BundleCandidate[], long: boolean) {
   const lines = items.map((c) => {
     const name = docName(c);
     if (!c.document_id) return `- ${josa(name, '을/를')} 보내 주세요.`;
-    const why = fixParticles(c.reason.split('\n')[0].replace(/^[^:]+:\s*/, ''));
+    const reasons = c.reason.split('\n').map((r) => fixParticles(r.replace(/^[^:]+:\s*/, '').trim())).filter(Boolean);
     const fix = c.document_type === 'tax_invoice' && AMOUNT_RULE_WORDS.test(c.reason) ? '홈택스에서 수정 세금계산서를 발행해 주세요.' : `확인 후 고친 ${josa(name, '을/를')} 보내 주세요.`;
-    return `- ${name}: ${why} ${fix}`;
+    if (long) return [`- ${name}`, ...reasons.map((r) => `  · ${r}`), `  → ${fix}`].join('\n');
+    return `- ${name}: ${reasons[0] ?? ''}${reasons.length > 1 ? ` 외 ${reasons.length - 1}건` : ''} ${fix}`;
   });
   if (!long) return `[${contract.vendor_name}] '${contract.title}' 계약 증빙 관련 요청드립니다.\n${lines.join('\n')}`;
   return [`${contract.vendor_name} 담당자님, 안녕하세요.`, '', `「${contract.title}」 계약의 증빙 서류를 확인한 결과, 아래 ${items.length}건을 부탁드립니다.`, ...lines, '', '감사합니다.'].join('\n');
@@ -151,7 +167,10 @@ function buildText(contract: ContractDetail, items: BundleCandidate[], long: boo
 
 interface DialogProps {
   contract: ContractDetail;
-  ctx: BundleContext;
+  /** 선택·원문 확인을 받은 기준 */
+  basis: Basis;
+  /** 지금 불러온 최신 기준 */
+  latest: Basis | null;
   items: BundleCandidate[];
   reviewed: Set<string>;
   isMaskingEnabled: boolean;
@@ -160,7 +179,7 @@ interface DialogProps {
   onStale: () => Promise<void>;
 }
 
-export const BundleRequestDialog: React.FC<DialogProps> = ({ contract, ctx, items, reviewed, isMaskingEnabled, onClose, onRecorded, onStale }) => {
+export const BundleRequestDialog: React.FC<DialogProps> = ({ contract, basis, latest, items, reviewed, isMaskingEnabled, onClose, onRecorded, onStale }) => {
   const ref = useRef<HTMLDivElement>(null);
   useDialogA11y(ref, onClose);
   const [long, setLong] = useState(false);
@@ -181,11 +200,12 @@ export const BundleRequestDialog: React.FC<DialogProps> = ({ contract, ctx, item
   if (sigRef.current !== contentSig) { sigRef.current = contentSig; keyRef.current = newKey(); }
 
   const memoTooLong = memo.trim().length > 2000;
+  const changed = !latest || !sameBasis(basis, latest);
   const record = async () => {
     setBusy(true); setError('');
     try {
       await bundleApi.create(contract.contract_id, {
-        revision: ctx.revision, fingerprint: ctx.fingerprint, idempotency_key: keyRef.current,
+        revision: basis.revision, fingerprint: basis.fingerprint, idempotency_key: keyRef.current,
         contact_method: method, due_on: due || null, memo: memo.trim(),
         items: items.map((c) => ({ issue_key: c.issue_key, reviewed_original: c.requires_original_review ? reviewed.has(c.issue_key) : false })),
       });
@@ -236,7 +256,13 @@ export const BundleRequestDialog: React.FC<DialogProps> = ({ contract, ctx, item
             <label className="grid gap-1 text-xs text-slate-600">기록 메모
               <input value={memo} onChange={(e) => setMemo(e.target.value)} className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800" /></label>
             {memoTooLong && <p className="text-xs text-rose-600">메모는 2,000자까지예요. 줄여 주세요.</p>}
-            <button onClick={() => void record()} disabled={busy || stale || !memo.trim() || memoTooLong}
+            {changed && (
+              <p role="alert" className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-900">
+                고른 뒤 계약 자료가 바뀌었어요. 이 선택과 원문 확인으로는 기록할 수 없어요. 창을 닫고 최신 목록에서 다시 골라 주세요.
+                <button onClick={() => { void onStale().then(onClose); }} className="ml-2 font-semibold underline">닫고 다시 고르기</button>
+              </p>
+            )}
+            <button onClick={() => void record()} disabled={busy || stale || changed || !memo.trim() || memoTooLong}
               className="rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-700 disabled:opacity-40">{busy ? '기록 중…' : `요청했어요 · ${items.length}건 한 번에 기록하기`}</button>
             <p className="text-[11px] text-slate-500">요청 1건에 서류 {items.length}개가 묶여 기록돼요. 이 계약은 ‘③ 보완’으로 넘어가요. 앱은 메시지를 보내지 않아요.</p>
           </div>
@@ -258,32 +284,33 @@ interface ReplyProps {
   request: BundledRequest;
   canEdit: boolean;
   isMaskingEnabled: boolean;
-  onOpenDocumentId: (documentId: number, mode?: 'view' | 'reissue') => void;
+  /** 요청 항목의 현재 서류를 연다(재발행으로 ID가 바뀐 경우 포함) */
+  onOpenItem: (item: BundleItem, mode?: 'view' | 'reissue') => void;
   onUploadType: (type?: DocumentType) => void;
   onDone: () => Promise<void>;
 }
 
-export const BundleReplyPanel: React.FC<ReplyProps> = ({ contract, request, canEdit, isMaskingEnabled, onOpenDocumentId, onUploadType, onDone }) => {
+export const BundleReplyPanel: React.FC<ReplyProps> = ({ contract, request, canEdit, isMaskingEnabled, onOpenItem, onUploadType, onDone }) => {
   const b = request.bundle!;
   const waitingItems = b.items.filter((i) => i.status === 'WAITING_RESPONSE');
   const [got, setGot] = useState<Set<number>>(new Set());
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  // 요청·자료가 바뀌면 이전 체크를 쓰지 않는다
+  // 요청·자료가 바뀌면 이전 체크·메모는 쓰지 않는다(오류 안내는 남겨 이유를 보이게 한다)
   const basis = `${b.request_revision}|${contract.workflow?.revision}|${contract.workflow?.fingerprint}`;
-  useEffect(() => { setGot(new Set()); setNote(''); setError(''); }, [basis]);
+  useEffect(() => { setGot(new Set()); setNote(''); }, [basis]);
   const late = request.due_on && request.due_on < seoulToday();
-  const save = async () => {
+  const save = async (status: 'RECEIVED' | 'CANCELLED') => {
     setBusy(true); setError('');
     try {
       await bundleApi.resolve(contract.contract_id, request.request_id, {
         revision: contract.workflow?.revision, fingerprint: contract.workflow?.fingerprint, request_revision: b.request_revision,
-        items: [...got].map((id) => ({ item_id: id, status: 'RECEIVED', note: note.trim() })),
+        items: [...got].map((id) => ({ item_id: id, status, note: note.trim() })),
       });
       await onDone();
     } catch (e) {
-      setError(e instanceof Error ? e.message : '기록하지 못했습니다.');
+      setError(`${e instanceof Error ? e.message : '기록하지 못했습니다.'} 최신 상태를 다시 불러왔어요. 다시 골라 주세요.`);
       await onDone();
     } finally { setBusy(false); }
   };
@@ -301,7 +328,7 @@ export const BundleReplyPanel: React.FC<ReplyProps> = ({ contract, request, canE
               <label className="flex flex-1 cursor-pointer items-center gap-2">
                 <input type="checkbox" checked={got.has(i.item_id)} onChange={() => setGot((s) => { const n = new Set(s); if (n.has(i.item_id)) n.delete(i.item_id); else n.add(i.item_id); return n; })} className="h-4 w-4 accent-sky-600" />
                 <span className="font-medium text-slate-800">{docName(i)}</span>
-                <span className="text-xs text-slate-500">받았으면 체크</span>
+
               </label>
             ) : (
               <span className={`flex-1 ${i.status === 'RECEIVED' ? 'text-emerald-700' : i.status === 'CANCELLED' ? 'text-slate-400 line-through' : 'text-slate-700'}`}>
@@ -310,23 +337,28 @@ export const BundleReplyPanel: React.FC<ReplyProps> = ({ contract, request, canE
               </span>
             )}
             {i.status === 'WAITING_RESPONSE' && canEdit && (
-              i.document_id
-                ? <button onClick={() => onOpenDocumentId(i.document_id!, 'reissue')} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 hover:border-indigo-300"><Upload className="h-3.5 w-3.5" />고친 본 올리기</button>
+              i.document_id != null
+                ? <button onClick={() => onOpenItem(i, 'reissue')} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 hover:border-indigo-300"><Upload className="h-3.5 w-3.5" />고친 본 올리기</button>
                 : i.document_type && <button onClick={() => onUploadType(i.document_type!)} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 hover:border-indigo-300"><Upload className="h-3.5 w-3.5" />파일 올리기</button>
             )}
           </li>
         ))}
       </ul>
       {canEdit && waitingItems.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-2">
-          <input value={note} onChange={(e) => setNote(e.target.value)} maxLength={2000} aria-label="받은 내용 메모" placeholder="받은 내용 (예: 통장사본 카톡으로 받음)"
-            className="min-w-0 flex-1 rounded-lg border border-slate-300 px-2 py-1 text-sm" />
-          <button onClick={() => void save()} disabled={busy || got.size === 0 || !note.trim()}
-            className="rounded-lg bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-40">{busy ? '기록 중…' : `받은 ${got.size}건 기록`}</button>
+        <div className="space-y-2 border-t border-slate-100 pt-2">
+          <div className="text-xs text-slate-500">위에서 받은 항목(또는 잘못 요청해 취소할 항목)을 고르고 메모를 남기세요.</div>
+          <div className="flex flex-wrap items-center gap-2">
+            <input value={note} onChange={(e) => setNote(e.target.value)} maxLength={2000} aria-label="받은 내용 또는 취소 이유" placeholder="받은 내용 또는 취소 이유"
+              className="min-w-0 flex-1 rounded-lg border border-slate-300 px-2 py-1 text-sm" />
+            <button onClick={() => void save('RECEIVED')} disabled={busy || got.size === 0 || !note.trim()}
+              className="rounded-lg bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-40">{busy ? '기록 중…' : `받은 ${got.size}건 기록`}</button>
+            <button onClick={() => void save('CANCELLED')} disabled={busy || got.size === 0 || !note.trim()}
+              className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-600 disabled:opacity-40">선택 {got.size}건 요청 취소</button>
+          </div>
         </div>
       )}
       <p className="text-[11px] text-slate-500">받았다고 기록해도 검사 통과는 아니에요. 올린 서류로 다시 검사한 결과를 확인하세요.</p>
-      {error && <p role="alert" className="text-xs text-rose-600">{error} 최신 상태를 다시 불러왔어요. 다시 체크해 주세요.</p>}
+      {error && <p role="alert" className="text-xs text-rose-600">{error}</p>}
     </div>
   );
 };
