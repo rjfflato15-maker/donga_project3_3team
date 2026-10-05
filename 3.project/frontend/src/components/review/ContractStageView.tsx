@@ -13,7 +13,7 @@ import { fixParticles, josa } from '../../utils/korean';
 import { Stage, stageOf, stepStates, STAGE_STEPS, STAGE_NO } from '../../utils/stage';
 import { ApprovalPanel } from './ApprovalPanel';
 import { AssignmentPanel } from './AssignmentPanel';
-import { PilotReviewPanel } from '../PilotReviewPanel';
+import { ActivityTimeline } from './ActivityTimeline';
 import { ArrowLeft, Check, CheckCircle2, ChevronDown, ChevronRight, Copy, Eye, MoreHorizontal, Upload } from 'lucide-react';
 
 /** 화면 표시용 가림: 사업자번호·주민번호만. 쉼표가 있는 금액은 건드리지 않는다 */
@@ -454,6 +454,22 @@ export const ContractStageView: React.FC<Props> = ({
               {stage === 'APPROVAL' && (
                 <div className="space-y-3">
                   <div className="text-xl font-bold text-slate-900">{representative ? '결재할 차례예요' : '문제 없어요. 대표님 결재를 받으세요'}</div>
+                  {representative && (
+                    <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-4 text-sm" aria-label="대표 검토 요약">
+                      <div className="font-bold text-slate-900">검토 요약</div>
+                      {brief && <p className="text-slate-700">{brief}</p>}
+                      <ul className="space-y-1 text-slate-700">
+                        <li>· 남은 확인 항목: <b>{overview.issues.length ? `${overview.issues.length}건` : '없음'}</b>{overview.issues.length ? ` (${overview.issues.map((i) => i.title).join(', ')})` : ''}</li>
+                        <li>· 서류: 필요 {required.length}종 중 {required.filter((t) => submittedTypes.has(t)).length}종, 검사는 각 서류의 현재 본으로만</li>
+                        {ntsMode === 'disabled' && <li>· 국세청 진위 조회는 이 앱에서 하지 않았어요.</li>}
+                        {wf?.approval_status === 'STALE' && <li className="text-amber-800">· 이전 결재 뒤 자료가 바뀌어 다시 결재하는 계약이에요.</li>}
+                      </ul>
+                      <div>
+                        <div className="mb-1 text-xs font-semibold text-slate-500">최근 처리 (수정 사유·전후 값 포함)</div>
+                        <ActivityTimeline contractId={contract.contract_id} revision={wf?.revision} fingerprint={wf?.fingerprint} masked={isMaskingEnabled} limit={8} compact />
+                      </div>
+                    </div>
+                  )}
                   {!representative && brief && (
                     <div className="flex flex-wrap items-start gap-2 rounded-xl bg-white p-3 text-sm text-slate-700">
                       <p className="min-w-0 flex-1">{brief}</p>
@@ -565,7 +581,7 @@ export const ContractStageView: React.FC<Props> = ({
       {!showAssign && <AssignmentPanel contract={contract} hideWhenEmpty />}
       {showHistory && (
         <div ref={historyRef}>
-          <PilotReviewPanel contract={contract} onChanged={onChanged} historyOnly />
+          <ActivityTimeline contractId={contract.contract_id} masked={isMaskingEnabled} />
         </div>
       )}
 
