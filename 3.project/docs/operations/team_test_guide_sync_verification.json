@@ -1,0 +1,21 @@
+{
+  "dataset_version": "team-test-dev-v1",
+  "guide_source_commit": "555502f5e6d6fc82821674b617bbe5a5fece6d96",
+  "previous_manifest_sha256": "a2a36bfba9ae9ea3da3d600b1cd76503f4c12d102043514ad8de96beb4a09345",
+  "manifest_sha256": "d3548ddc10e4f992698be89a68ca0d6c1af60ef92cfe70cf68c0248b63201f2e",
+  "previous_guide_sha256": "4c4f3d54f3bb878df692fa7bc9db53d07db3812ecd1287e9cbeee392e4ee0e5d",
+  "guide_sha256": "1e87af70a403eef449f5b155fc5d7e8ce2087a5e8e071aed5895b21b08440d67",
+  "changed_bundle_files": [
+    "facilitator/manifest.json",
+    "participant_guide.md"
+  ],
+  "all_other_bundle_files_unchanged": true,
+  "participant_archives_unchanged": true,
+  "answers_and_reply_files_unchanged": true,
+  "facilitator_only_sections_removed": true,
+  "previous_rule_verification": "storage/demo/team-test/verify-20261005-ui4d71446/verification.json",
+  "previous_rule_verification_retained_without_rewriting": true,
+  "evaluation_model_or_guard_rerun": false,
+  "passed": true,
+  "line_endings": "CRLF preserved from existing receipt files"
+}
