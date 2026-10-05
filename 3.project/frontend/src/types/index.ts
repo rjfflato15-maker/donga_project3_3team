@@ -118,6 +118,21 @@ export interface ContractDetail {
   updated_at: string;
   workflow?: Workflow;
   llm?: ContractLlm | null;
+  payment?: ContractPayment | null;
+}
+
+/** 계약 전체 지급 완료 사실(송금 아님). paid_on은 현재 결재에 연결된 경우에만 채워진다 */
+export interface ContractPayment {
+  payment_id: number;
+  scope: 'WHOLE_CONTRACT';
+  status: 'RECORDED' | 'RECONFIRMATION_REQUIRED';
+  paid_on: string | null;
+  recorded_paid_on: string;
+  method: 'TRANSFER' | 'OTHER';
+  note: string;
+  actor_name?: string;
+  reconfirmation_allowed?: boolean;
+  blocked_reason?: 'FINAL_REVIEW_REQUIRED' | 'SOURCE_VERSION_UNVERIFIED' | 'PAYEE_OR_AMOUNT_CHANGED' | null;
 }
 
 export interface LlmStatus {

@@ -7,6 +7,7 @@ import { Plus, Search } from 'lucide-react';
 export interface DashboardItem extends ContractListItem {
   stage?: string | null;
   paid_on?: string | null;
+  payment?: import('../../types').ContractPayment | null;
   action_summary?: string;
   waiting_request_count?: number;
   earliest_due_on?: string | null;
@@ -15,7 +16,7 @@ export interface DashboardItem extends ContractListItem {
 }
 
 export const stageOfItem = (c: DashboardItem): Stage => stageOf({
-  stage: c.stage, approval_status: c.approval_status, paid_on: c.paid_on ?? (c as { payment?: { paid_on?: string } }).payment?.paid_on,
+  stage: c.stage, approval_status: c.approval_status, paid_on: c.paid_on ?? c.payment?.paid_on,
   waiting_request_count: c.waiting_request_count,
   missing_count: Math.max(0, (c.total_docs_count ?? 0) - (c.submitted_docs_count ?? 0)),
   open_issue_count: c.open_issue_count,
@@ -50,7 +51,7 @@ function nextAction(c: DashboardItem, s: Stage, representative: boolean): string
     }
     case 'WAITING': return '거래처 답을 기다리는 중';
     case 'APPROVAL': return representative ? '결재할 차례예요' : '문제 없음 · 대표 결재를 기다려요';
-    case 'PAYMENT': return '대표 결재 끝 · 지급하고 기록하세요';
+    case 'PAYMENT': return c.payment?.status === 'RECONFIRMATION_REQUIRED' ? `이미 ${c.payment.recorded_paid_on} 지급 · 같은 지급인지 재확인` : '대표 결재 끝 · 지급하고 기록하세요';
     default: return c.paid_on ? `${c.paid_on} 지급 완료` : '끝';
   }
 }
@@ -163,6 +164,7 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
                   <td className="px-4 py-3 text-right tabular-nums">{Math.round(c.contract_amount).toLocaleString('ko-KR')}원</td>
                   <td className="px-4 py-3 text-slate-700">
                     {nextAction(c, s, representative)}
+                    {s !== 'PAYMENT' && c.payment?.status === 'RECONFIRMATION_REQUIRED' && <span className="ml-1 rounded bg-amber-100 px-1.5 py-0.5 text-xs font-semibold text-amber-800">이미 지급한 계약 · 다시 지급 금지</span>}
                     {s === 'WAITING' && c.earliest_due_on && (
                       <span className={`ml-1 text-xs ${late ? 'font-bold text-rose-600' : 'text-slate-500'}`}>· 기한 {c.earliest_due_on.slice(5).replace('-', '/')}{late ? ' 지남' : ''}</span>
                     )}
@@ -170,7 +172,7 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
                   <td className="px-4 py-3 text-right">
                     <button onClick={(e) => { e.stopPropagation(); onOpen(c.contract_id); }}
                       className={mine ? `rounded-lg px-3 py-1.5 text-xs font-semibold text-white ${s === 'PAYMENT' ? 'bg-emerald-700 hover:bg-emerald-800' : 'bg-indigo-600 hover:bg-indigo-700'}` : 'rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700'}>
-                      {mine ? (s === 'PAYMENT' ? '지급 기록' : s === 'APPROVAL' ? '결재하기' : s === 'RECEIVING' ? '서류 받기' : '확인하기') : '보기'}
+                      {mine ? (s === 'PAYMENT' ? (c.payment?.status === 'RECONFIRMATION_REQUIRED' ? '재확인' : '지급 기록') : s === 'APPROVAL' ? '결재하기' : s === 'RECEIVING' ? '서류 받기' : '확인하기') : '보기'}
                     </button>
                   </td>
                 </tr>

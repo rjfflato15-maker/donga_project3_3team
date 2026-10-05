@@ -17,6 +17,12 @@ import { ArrowLeft, Check, CheckCircle2, ChevronDown, ChevronRight, Copy, Eye, M
 /** 화면 표시용 가림: 사업자번호·주민번호만. 쉼표가 있는 금액은 건드리지 않는다 */
 export const maskForDisplay = (text: string, masked: boolean) => (masked ? maskResidentNumber(maskBusinessNumber(text)) : text);
 
+const BLOCKED_KO: Record<string, string> = {
+  FINAL_REVIEW_REQUIRED: '바뀐 자료로 대표 결재를 다시 받아야 재확인할 수 있어요.',
+  SOURCE_VERSION_UNVERIFIED: '원본 파일이 등록 당시와 달라 확인할 수 없어요. 원본을 다시 등록하고 결재를 받아 주세요.',
+  PAYEE_OR_AMOUNT_CHANGED: '거래처 사업자번호나 계약 금액·지급 방식이 바뀌어 기존 지급을 이 계약에 연결할 수 없어요. 실제 지급 내역을 따로 확인해 주세요.',
+};
+
 const won = (n?: number | null) => (n == null ? '-' : `${Math.round(n).toLocaleString('ko-KR')}원`);
 const num = (s?: string | null) => {
   if (!s) return null;
@@ -131,7 +137,9 @@ export const ContractStageView: React.FC<Props> = ({
   const waiting = requests.filter((r) => r.status === 'WAITING_RESPONSE');
 
   const wf = contract.workflow;
-  const payment = (contract as { payment?: { paid_on?: string; method?: string; note?: string } | null }).payment ?? null;
+  const payment = contract.payment ?? null;
+  // 자료가 바뀌어 다시 확인해야 하는 과거 지급 사실: 다시 지급하라고 안내하지 않는다
+  const paidBefore = payment && payment.status === 'RECONFIRMATION_REQUIRED' ? payment : null;
   const missingIssues = overview.issues.filter((i) => i.kind === 'missing');
   const otherIssues = overview.issues.filter((i) => i.kind !== 'missing');
   const stage: Stage = stageOf({
@@ -183,7 +191,24 @@ export const ContractStageView: React.FC<Props> = ({
       await onChanged();
     } catch (e) {
       const msg = e instanceof Error ? e.message : '';
-      setPayError(/not found|not allowed|404|405/i.test(msg) ? '지급 기록 기능은 아직 준비 중이에요. 지급은 평소대로 하시고, 기능이 연결되면 이 화면에서 기록할 수 있어요.' : msg || '기록하지 못했습니다.');
+      setPayError(/not found|not allowed|404|405/i.test(msg) ? '지급 기록 기능을 쓸 수 없어요. 서버를 새 버전으로 다시 시작해야 해요.' : msg || '기록하지 못했습니다.');
+    } finally { setPayBusy(false); }
+  };
+  // 같은 지급 사실 재확인(새 지급을 만들지 않음)
+  const [sameAck, setSameAck] = useState(false);
+  const [reNote, setReNote] = useState('');
+  const reconfirm = async () => {
+    if (!paidBefore) return;
+    setPayBusy(true); setPayError('');
+    try {
+      await requestJson(`/api/pilot/contracts/${contract.contract_id}/payment/${paidBefore.payment_id}/reconfirm`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ revision: wf?.revision, note: reNote.trim(), acknowledge_same_payment: true }),
+      });
+      setSameAck(false); setReNote('');
+      await onChanged();
+    } catch (e) {
+      setPayError(e instanceof Error ? e.message : '재확인하지 못했습니다.');
     } finally { setPayBusy(false); }
   };
 
@@ -283,11 +308,16 @@ export const ContractStageView: React.FC<Props> = ({
 
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_260px]">
         <div className="min-w-0 space-y-4">
+          {paidBefore && stage !== 'PAYMENT' && (
+            <p role="status" className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+              이 계약은 <b>{paidBefore.recorded_paid_on}</b>에 계약 전체 지급 완료로 기록돼 있어요. 자료가 바뀌어 다시 확인 중이에요. <b>다시 지급하지 말고</b>, 확인·결재가 끝나면 같은 지급인지 재확인하세요.
+            </p>
+          )}
           {/* 지금 할 일 */}
           {stage === 'DONE' ? (
             <div className="space-y-2 rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-5">
               <div className="flex items-center gap-2 text-xl font-bold text-emerald-900"><CheckCircle2 className="h-6 w-6" /> 끝났어요</div>
-              <p className="text-sm text-emerald-800">{payment?.paid_on} 지급 완료{payment?.note ? ` · ${payment.note}` : ''}. 이 계약은 ‘할 일’에서 빠지고 ‘지난 계약 찾기’에 남아요.</p>
+              <p className="text-sm text-emerald-800">{payment?.paid_on} 계약 전체 지급 완료{payment?.method === 'TRANSFER' ? ' (계좌이체)' : ''}{payment?.note ? ` · ${payment.note}` : ''}. 이 계약은 ‘할 일’에서 빠지고 ‘지난 계약 찾기’에 남아요.</p>
               {brief && <button onClick={copyBrief} className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-white px-3 py-1.5 text-sm font-semibold text-emerald-800"><Copy className="h-4 w-4" />{copied ? '복사했어요' : '요약 복사'}</button>}
             </div>
           ) : (
@@ -369,20 +399,44 @@ export const ContractStageView: React.FC<Props> = ({
                 </div>
               )}
 
-              {stage === 'PAYMENT' && (
+              {stage === 'PAYMENT' && paidBefore && (
                 <div className="space-y-3">
-                  <div className="text-xl font-bold text-slate-900">대표 결재 끝. 지급하셨나요?</div>
+                  <div className="text-xl font-bold text-slate-900">이미 지급한 계약이에요. 같은 지급인지 확인해 주세요</div>
+                  <p className="text-sm text-slate-700">{paidBefore.recorded_paid_on}에 <b>계약 전체 지급 완료</b>로 기록돼 있어요{paidBefore.actor_name ? ` (${paidBefore.actor_name})` : ''}. 그 뒤 서류나 계약 기준이 바뀌어 다시 결재했어요. <b>다시 지급하지 마세요.</b></p>
+                  {paidBefore.reconfirmation_allowed ? (canEdit || representative) && (
+                    <div className="space-y-2 rounded-xl bg-white p-3 text-sm">
+                      <label className="flex items-start gap-2 text-slate-700">
+                        <input type="checkbox" checked={sameAck} onChange={(e) => setSameAck(e.target.checked)} className="mt-1 h-4 w-4 accent-emerald-600" />
+                        바뀐 자료를 다시 결재했고, 기존 지급이 이 계약 전체에 대한 같은 지급임을 확인합니다.
+                      </label>
+                      <textarea value={reNote} onChange={(e) => setReNote(e.target.value)} rows={2} maxLength={2000} placeholder="예: 견적서 정정본으로 재결재, 9/10 이체 내역이 같은 계약 전체 지급임을 확인"
+                        className="w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5" aria-label="재확인 메모" />
+                      <button onClick={() => void reconfirm()} disabled={payBusy || !sameAck || reNote.trim().length < 10}
+                        className="rounded-lg bg-emerald-700 px-4 py-2 font-semibold text-white hover:bg-emerald-800 disabled:opacity-40">{payBusy ? '확인 중…' : '같은 지급으로 재확인'}</button>
+                      <p className="text-xs text-slate-500">새 지급 기록을 만들지 않고, 기존 지급 사실을 지금 결재에 연결해요. 메모 10자 이상.</p>
+                    </div>
+                  ) : (
+                    <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900">{BLOCKED_KO[paidBefore.blocked_reason ?? ''] ?? '지금은 재확인할 수 없어요.'}</p>
+                  )}
+                  {payError && <p role="alert" className="text-sm text-rose-600">{payError}</p>}
+                </div>
+              )}
+
+              {stage === 'PAYMENT' && !paidBefore && (
+                <div className="space-y-3">
+                  <div className="text-xl font-bold text-slate-900">대표 결재 끝. 계약 전체 지급을 마쳤나요?</div>
+                  <p className="text-sm text-slate-600">{wf?.payment_mode === 'INSTALLMENT' ? '분할 지급 계약이에요. 모든 회차를 다 지급한 뒤에 기록하세요.' : '지급을 마친 날짜를 기록하세요.'}</p>
                   {canEdit || representative ? (
                     <div className="flex flex-wrap items-end gap-2 text-sm">
                       <label className="grid gap-1"><span className="text-xs text-slate-500">지급일</span>
-                        <input type="date" value={paidOn} onChange={(e) => setPaidOn(e.target.value)} className="rounded-lg border border-slate-300 bg-white px-2 py-1.5" /></label>
+                        <input type="date" value={paidOn} max={today()} onChange={(e) => setPaidOn(e.target.value)} className="rounded-lg border border-slate-300 bg-white px-2 py-1.5" /></label>
                       <label className="grid gap-1"><span className="text-xs text-slate-500">방법</span>
                         <select value={payMethod} onChange={(e) => setPayMethod(e.target.value as 'TRANSFER' | 'OTHER')} className="rounded-lg border border-slate-300 bg-white px-2 py-1.5">
                           <option value="TRANSFER">계좌이체</option><option value="OTHER">기타</option>
                         </select></label>
                       <label className="grid min-w-[180px] flex-1 gap-1"><span className="text-xs text-slate-500">메모 (선택)</span>
                         <input value={payNote} onChange={(e) => setPayNote(e.target.value)} maxLength={500} placeholder="예: 기업은행 이체" className="rounded-lg border border-slate-300 bg-white px-2 py-1.5" /></label>
-                      <button onClick={() => void recordPayment()} disabled={payBusy || !paidOn} className="rounded-lg bg-emerald-700 px-4 py-2 font-semibold text-white hover:bg-emerald-800 disabled:opacity-40">{payBusy ? '기록 중…' : '지급 완료로 기록'}</button>
+                      <button onClick={() => void recordPayment()} disabled={payBusy || !paidOn} className="rounded-lg bg-emerald-700 px-4 py-2 font-semibold text-white hover:bg-emerald-800 disabled:opacity-40">{payBusy ? '기록 중…' : '계약 전체 지급 완료로 기록'}</button>
                     </div>
                   ) : <p className="text-sm text-slate-600">담당자가 지급하고 기록합니다.</p>}
                   <p className="text-xs text-slate-500">앱은 돈을 보내지 않아요. 지급했다는 기록만 남깁니다.</p>

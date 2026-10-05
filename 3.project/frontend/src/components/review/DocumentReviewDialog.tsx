@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { josa } from '../../utils/korean';
 import { maskForDisplay } from './ContractStageView';
 import { useDialogA11y } from '../../hooks/useDialogA11y';
 import { AnalysisFields, DocumentResponse, ValidationCheck } from '../../types';
@@ -70,7 +71,8 @@ const AMOUNT_KEYS = new Set(['supply_amount', 'tax_amount', 'total_amount']);
 
 export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, isMaskingEnabled, canEdit, onClose, onChanged, initialMode = 'view' }) => {
   const dialogRef = React.useRef<HTMLDivElement>(null);
-  useDialogA11y(dialogRef, onClose);
+  const escRef = React.useRef<() => void>(onClose);
+  useDialogA11y(dialogRef, () => escRef.current());
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState<AnalysisFields>(doc.analysis.fields);
   const [note, setNote] = useState('');
@@ -78,21 +80,52 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
   const [saveError, setSaveError] = useState('');
   useEffect(() => { setEditing(false); setDraft(doc.analysis.fields); setNote(''); setSaveError(''); }, [doc.document_id, revision]);
   const [cmp, setCmp] = useState<Comparison | null>(null);
+  const [cmpError, setCmpError] = useState(false);
+  const [legendOpen, setLegendOpen] = useState(false);
+  const [cmpKey, setCmpKey] = useState(0);
   const [reissueOpen, setReissueOpen] = useState(initialMode === 'reissue');
-  const reissueRef = React.useRef<HTMLDivElement>(null);
-  useEffect(() => { if (reissueOpen) setTimeout(() => reissueRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 50); }, [reissueOpen]);
   const [reissueFile, setReissueFile] = useState<File | null>(null);
   const [reissueNote, setReissueNote] = useState('');
   const [reissuing, setReissuing] = useState(false);
   const [reissueError, setReissueError] = useState('');
-  const versionNo = doc.version?.version_number ?? 1;
+  // 파일 입력은 다시 열 때마다 새로 만든다. 닫으면 고른 파일·사유·오류를 모두 비운다(닫은 폼의 파일이 몰래 전송되지 않게)
+  const [fileInputKey, setFileInputKey] = useState(0);
+  const resetReissue = () => { setReissueFile(null); setReissueNote(''); setReissueError(''); setFileInputKey((k) => k + 1); };
+  // 모드 전환 포커스: 폼이 열리면 첫 입력, 닫히면 그 폼을 연 버튼으로
+  const reissueRef = React.useRef<HTMLDivElement>(null);
+  const editRef = React.useRef<HTMLDivElement>(null);
+  const editBtnRef = React.useRef<HTMLButtonElement>(null);
+  const reissueBtnRef = React.useRef<HTMLButtonElement>(null);
+  const returnFocus = React.useRef<'edit' | 'reissue' | null>(null);
+  const openReissue = () => { resetReissue(); setReissueOpen(true); };
+  const closeReissue = () => { resetReissue(); setReissueOpen(false); returnFocus.current = 'reissue'; };
   useEffect(() => {
-    setCmp(null); setReissueFile(null); setReissueNote(''); setReissueError('');
+    const t = setTimeout(() => {
+      if (reissueOpen) {
+        reissueRef.current?.scrollIntoView({ block: 'nearest' });
+        reissueRef.current?.querySelector<HTMLElement>('input[type="file"]')?.focus();
+      } else if (editing) {
+        editRef.current?.querySelector<HTMLElement>('input, select, textarea')?.focus();
+      } else if (returnFocus.current) {
+        (returnFocus.current === 'edit' ? editBtnRef : reissueBtnRef).current?.focus();
+        returnFocus.current = null;
+      }
+    }, 30);
+    return () => clearTimeout(t);
+  }, [reissueOpen, editing]);
+  escRef.current = reissueOpen ? closeReissue : editing ? () => { returnFocus.current = 'edit'; setEditing(false); setDraft(doc.analysis.fields); } : onClose;
+  const versionNo = doc.version?.version_number ?? 1;
+  useEffect(() => { resetReissue(); }, [doc.document_id]);
+  // 비교는 저장된 현재 값을 기준으로 하므로 문서·revision·저장 뒤마다 다시 조회한다. 실패를 '같음'으로 보이지 않는다
+  useEffect(() => {
+    setCmp(null); setCmpError(false);
     if (versionNo < 2) return;
     const controller = new AbortController();
-    requestJson<Comparison>(`/api/documents/${doc.document_id}/compare`, { signal: controller.signal }).then(setCmp).catch(() => undefined);
+    requestJson<Comparison>(`/api/documents/${doc.document_id}/compare`, { signal: controller.signal })
+      .then((r) => { if (!controller.signal.aborted) setCmp(r); })
+      .catch(() => { if (!controller.signal.aborted) setCmpError(true); });
     return () => controller.abort();
-  }, [doc.document_id, versionNo]);
+  }, [doc.document_id, versionNo, revision, cmpKey]);
   const reissue = async () => {
     if (!reissueFile) return;
     setReissuing(true); setReissueError('');
@@ -117,7 +150,9 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
     try {
       await api.correctFields(doc.document_id, draft, doc.document_type, revision, note.trim(), confirmedKeys);
       await onChanged();
+      returnFocus.current = 'edit';
       setEditing(false);
+      setCmpKey((k) => k + 1);
     } catch (e) {
       setSaveError(e instanceof Error ? e.message : '저장하지 못했습니다.');
     } finally {
@@ -217,7 +252,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
             {doc.file_available && (
               <button onClick={() => void downloadProtected(`/api/documents/${doc.document_id}/download?masked=true`, doc.original_file_name)}
                 className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm text-slate-600 hover:bg-slate-100" title="개인정보를 가린 원본 파일을 내려받습니다">
-                <Download className="h-4 w-4" /> 원본 받기
+                <Download className="h-4 w-4" /> 가린 원본 받기
               </button>
             )}
             <button onClick={onClose} className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100" aria-label="닫기"><X className="h-5 w-5" /></button>
@@ -272,6 +307,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
 
           {/* 읽은 값 */}
           <div className="min-w-0 space-y-3 p-5">
+            {cmpError && versionNo > 1 && <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">이전 본과 비교하지 못했어요. 창을 닫았다가 다시 열어 주세요.</div>}
             {cmp && (
               <div className="rounded-xl border border-sky-200 bg-sky-50 p-3 text-sm">
                 <div className="font-semibold text-sky-900">무엇이 바뀌었나 · 버전 {cmp.previous_version} → {cmp.new_version}</div>
@@ -298,14 +334,23 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
               </div>
             )}
             <div className="flex items-center gap-1.5 text-xs text-slate-500">
-              <span>{reissueOpen ? '고친 본을 올리면 새 서류로 다시 읽어요' : '읽은 값 · 누르면 원문에서 위치를 보여 줘요'}</span>
-              <span className="cursor-help rounded-full border border-slate-300 px-1.5 text-[11px]" title={`표시 없음: 규칙이 읽은 값\nAI 보완: 규칙이 못 읽어 PC 안의 AI가 채운 값(원문 근거 확인됨)\n사람 확인: 담당자가 고치거나 원문과 맞다고 확인한 값${(doc.llm?.applied_value_field_count ?? 0) > 0 ? `\n이 서류는 AI가 ${doc.llm?.applied_value_field_count}칸을 채웠어요` : ''}`}>ⓘ</span>
+              <span>{reissueOpen ? '고친 본을 올리면 새 서류로 다시 읽어요' : '읽은 값 · 누르면 근거 위치를 확인해요'}</span>
+              <button type="button" onClick={() => setLegendOpen((v) => !v)} aria-expanded={legendOpen} aria-label="값 표시 설명"
+                className="rounded-full border border-slate-300 px-1.5 text-[11px] hover:bg-slate-100">ⓘ</button>
             </div>
+            {legendOpen && (
+              <ul className="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-600">
+                <li>표시 없음: 규칙이 읽은 값</li>
+                <li><span className="font-semibold text-violet-700">AI 보완</span>: 규칙이 못 읽어 PC 안의 AI가 채운 값(원문 근거 확인됨){(doc.llm?.applied_value_field_count ?? 0) > 0 ? ` · 이 서류는 ${doc.llm?.applied_value_field_count}칸` : ''}</li>
+                <li><span className="font-semibold text-emerald-700">사람 확인</span>: 담당자가 고치거나 원문과 맞다고 확인한 값</li>
+                <li>근거 위치: 이미지·PDF는 원문에 노란 상자, Word는 줄 번호로 알려 줘요{isMaskingEnabled ? ' (가림 중에는 문장 강조 없이 줄 번호만)' : ''}.</li>
+              </ul>
+            )}
             {doc.llm?.status === 'FAILED' && <div className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">AI 보완을 시도했지만 실패해 규칙 값만 남았습니다.</div>}
             {provError && <div className="rounded-lg bg-rose-50 p-3 text-sm text-rose-700">{provError}</div>}
             {!prov && !provError && <div className="flex items-center gap-2 text-sm text-slate-500"><Loader2 className="h-4 w-4 animate-spin" /> 값을 불러오는 중…</div>}
             {editing && (
-              <div className="space-y-2 rounded-xl border-2 border-indigo-200 bg-indigo-50/40 p-3 text-sm">
+              <div ref={editRef} className="space-y-2 rounded-xl border-2 border-indigo-200 bg-indigo-50/40 p-3 text-sm">
                 <div className="font-semibold text-indigo-900">원문을 보면서 틀린 값은 고치고, 맞는 값은 ‘원문과 맞음’에 체크하세요</div>
                 <div className="text-[11px] text-slate-500">체크하거나 고친 칸만 ‘사람 확인’으로 표시됩니다. 손대지 않은 칸은 원래 출처(규칙·AI)로 남습니다.</div>
                 {isMaskingEnabled && <div className="rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs text-amber-800">개인정보 가림이 켜져 있어도 수정 칸에는 실제 값이 보입니다. 화면 공유 중이면 주의하세요.</div>}
@@ -354,7 +399,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                     className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 font-semibold text-white disabled:opacity-40">
                     <Save className="h-4 w-4" /> {saving ? '저장 중…' : `저장하고 다시 검사 (고친 칸 ${changedKeys.length} · 맞음 확인 ${confirmedKeys.length})`}
                   </button>
-                  <button onClick={() => { setEditing(false); setDraft(doc.analysis.fields); }} className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-600">취소</button>
+                  <button onClick={() => { returnFocus.current = 'edit'; setEditing(false); setDraft(doc.analysis.fields); }} className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-600">취소</button>
                 </div>
                 {saveError && <p role="alert" className="text-xs text-rose-600">{saveError}</p>}
                 <p className="text-[11px] text-slate-500">저장하면 고친 칸과 ‘원문과 맞음’에 체크한 칸만 확인한 사람·이유와 함께 ‘사람 확인’으로 표시됩니다. 이전 결재는 다시 확인이 필요해집니다.</p>
@@ -399,16 +444,16 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
               <div ref={reissueRef} className="rounded-xl border-2 border-sky-300 bg-sky-50/40 p-3 text-sm space-y-2">
                 <div className="flex items-center gap-2">
                   <b className="text-sky-900">고친 본 올리기</b>
-                  <button onClick={() => setReissueOpen(false)} className="ml-auto text-xs text-slate-500">닫기</button>
+                  <button onClick={closeReissue} className="ml-auto text-xs text-slate-500">닫기</button>
                 </div>
-                <div className="text-slate-600">거래처가 <b>고쳐서 다시 보낸 {DOCUMENT_TYPE_KO[doc.document_type]}</b>을 올리세요. 지금 서류는 이전 본으로 보관되고, 새 서류로 다시 검사해요. 결재는 다시 받아야 해요.</div>
-                <input type="file" aria-label="재발행본 파일" onChange={(e) => setReissueFile(e.target.files?.[0] ?? null)} className="block w-full text-xs text-slate-600" />
+                <div className="text-slate-600">거래처가 고쳐서 다시 보낸 <b>{josa(DOCUMENT_TYPE_KO[doc.document_type], '을/를')}</b> 올리세요. 지금 서류는 이전 본으로 보관되고, 새 서류로 다시 검사해요. 결재는 다시 받아야 해요.</div>
+                <input key={fileInputKey} type="file" aria-label="고친 본 파일" onChange={(e) => setReissueFile(e.target.files?.[0] ?? null)} className="block w-full text-xs text-slate-600" />
                 {reissueFile && (
                   <>
                     <input value={reissueNote} onChange={(e) => setReissueNote(e.target.value)} maxLength={500} placeholder="무엇을 고친 재발행본인지 (예: 합계 금액 정정)"
                       className="w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800" />
-                    <button onClick={() => void reissue()} disabled={reissuing || !reissueNote.trim()}
-                      className="rounded-lg bg-sky-600 px-3 py-1.5 font-semibold text-white disabled:opacity-40">{reissuing ? '올리는 중… (서류를 읽고 있어요)' : '재발행본으로 바꾸기'}</button>
+                    <button onClick={() => void reissue()} disabled={reissuing || !reissueFile || !reissueNote.trim()}
+                      className="rounded-lg bg-sky-600 px-3 py-1.5 font-semibold text-white disabled:opacity-40">{reissuing ? '올리는 중… (서류를 읽고 있어요)' : `‘${reissueFile?.name ?? ''}’로 바꾸기`}</button>
                   </>
                 )}
                 {reissueError && <p role="alert" className="text-xs text-rose-600">{reissueError}</p>}
@@ -416,12 +461,12 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
             )}
             {canEdit && !editing && !reissueOpen && (
               <div className="sticky bottom-0 -mx-5 -mb-5 flex flex-wrap gap-2 border-t border-slate-100 bg-white px-5 py-3">
-                <button onClick={() => setEditing(true)} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+                <button ref={editBtnRef} onClick={() => setEditing(true)} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
                   title="앱이 잘못 읽었거나 못 읽은 값을 원문을 보고 고칩니다">
                   <Pencil className="h-4 w-4" /> 값 고치기
                 </button>
                 {doc.version?.is_current !== false && (
-                  <button onClick={() => setReissueOpen(true)} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-indigo-300"
+                  <button ref={reissueBtnRef} onClick={openReissue} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-indigo-300"
                     title="거래처가 고쳐서 다시 보낸 서류로 바꿉니다">
                     <Upload className="h-4 w-4" /> 고친 본 올리기
                   </button>
