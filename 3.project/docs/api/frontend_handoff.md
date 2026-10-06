@@ -1,5 +1,9 @@
 # Claude 화면 담당자용 API 변경 안내
 
+## 10/6 후속 선택: 기존 화면 vs Codex 사이드바안만 비교
+
+사용자는 새 비교 대상으로 Codex 사이드바 디자인을 선택했고 Claude ERP 새 안은 빼 달라고 명시했다. [비교 HTML과 같은 계약 14단계 클릭 시안](../ux/codex_sidebar_example/comparison-README.md)을 만들었다. 이전 앱 구조 재현은 왼쪽 자료로만 읽어 사용했다. 비교 도구의 단계 이동과 앱 사이드바를 구분했고, 대표 전달은 현행 문장 복사 의미를 유지했다. [QA 범위](../ux/codex_sidebar_example/comparison-design-qa.md)는 문서 폴더의 독립 시안만이다. 운영 앱에 반영하거나 서버와 연결한 결과가 아니다.
+
 ## 10/6 Codex 독립 UI 예시
 
 사용자가 Codex의 UI 예시도 요청해 [사이드바 클릭 시안](../ux/codex_sidebar_example/README.md)을 별도 문서 폴더에 만들었다. Claude W6의 요약·변경·결재 구조를 바탕으로 왼쪽 메뉴 토글, 여유 있는 글자/간격, 모바일 메뉴와 원문/값 전환을 보여 준다. 독립 `codex-sidebar-example.html`도 제공한다. 업무함·계약 상세·대표 결재·원문 대조와 묶음 요청/부분 회신을 로컬 가상 상태로 눌러 볼 수 있다. 기존 앱 코드·Claude 시안·운영 DB·측정 빌드는 변경하지 않았다. [검증 범위](../ux/codex_sidebar_example/design-qa.md)는 해당 시안만을 뜻하며 실제 서버 통합·권한/평가 완료와 구분한다. 비교 페이지에 세 번째 방향으로 넣을 수 있다.

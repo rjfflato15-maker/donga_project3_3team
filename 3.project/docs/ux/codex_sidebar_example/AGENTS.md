@@ -6,6 +6,7 @@
 - User prefers a left sidebar that toggles open/closed, like Codex. Global navigation stays there; contract tabs stay in the content.
 - Keep sidebar toggling from resetting the contract, tab or entered opinion. Mobile uses an overlay sidebar and sequential original/field views.
 - Use synthetic contract data only. Keep this isolated from frontend/, live databases and protected evaluations. No backend connections or external integrations.
+- 2026-10-06 comparison choice: left is the former screen structure; right is this Codex sidebar design only. Exclude Claude's ERP alternative from the comparison. Extend other workflow screens with the same design, contract and amount. Keep comparison controls outside app navigation.
 
 Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
 

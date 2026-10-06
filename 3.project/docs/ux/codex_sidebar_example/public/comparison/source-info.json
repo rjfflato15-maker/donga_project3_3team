@@ -1,0 +1,12 @@
+{
+  "source": "C:\\3조 색인-ui\\3.project\\docs\\ux\\flow_prototype\\index.html",
+  "sourceKind": "현재 구조 재현 HTML",
+  "date": "2026-10-06",
+  "fixtureEdits": [
+    "C2: 누락 2종, 파일 4종",
+    "E1: 받은 서류 4종",
+    "D7/D9: 같은 계약명·3,410,000원",
+    "WAIT: S3 받음 선택 전 상태"
+  ],
+  "excluded": "Claude ERP redesign"
+}
