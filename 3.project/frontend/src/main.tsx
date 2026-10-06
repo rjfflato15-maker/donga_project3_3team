@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
 import './sidebar-ui.css'
+import './compare-ui.css'
+import './compare-runtime.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

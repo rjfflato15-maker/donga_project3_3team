@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { ApprovalPanel, ApprovalState } from './ApprovalPanel';
 import { ContractDetail } from '../../types';
 import { requestJson } from '../../api/client';
+import { BundledRequest } from './BundleRequest';
 vi.mock('../../api/client', () => ({ requestJson: vi.fn() }));
 let role = 'representative';
 vi.mock('../../context/AuthContext', () => ({ useAuth: () => ({ user:{ role } }) }));
@@ -12,6 +13,13 @@ const fixture = (unverified=false):ContractDetail => ({ contract_id:1,title:'가
 beforeEach(() => {role='representative';vi.mocked(requestJson).mockImplementation(async (url) => url.includes('/activity') ? {items:[]} : single);});
 afterEach(() => {cleanup();vi.resetAllMocks();});
 describe('새 결재 화면의 실제 활성 조건', () => {
+  it('결재 요약의 수령 기록은 받은 항목만 표시하고 자동 검사로 바꾸지 않는다', async () => {
+    const request={request_id:3,bundle:{items:[{item_id:1,issue_key:'missing:bank_account',document_id:null,document_type:'bank_account',title:'통장사본',status:'RECEIVED'},{item_id:2,issue_key:'missing:tax_invoice',document_id:null,document_type:'tax_invoice',title:'세금계산서',status:'CANCELLED'}]}} as BundledRequest;
+    render(<ApprovalPanel contract={fixture()} onChanged={async()=>{}} requests={[request]}/>);
+    expect(await screen.findByText('받음 기록')).toBeTruthy();
+    expect(screen.getByText('자동 검사와 별도')).toBeTruthy();
+    expect(screen.queryByText('세금계산서')).toBeNull();
+  });
   it('일반 승인에는 의견 1자, 반려는 최종 단계에서만 가능', async () => {
     render(<ApprovalPanel contract={fixture()} onChanged={async () => {}} />);
     const note=await screen.findByLabelText(/결재 의견/);

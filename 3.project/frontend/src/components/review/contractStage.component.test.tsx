@@ -27,9 +27,9 @@ it('마지막 회신 저장 충돌 후 결재 단계와 다른 탭에서도 실�
   fireEvent.change(screen.getByLabelText('받은 내용 또는 취소 이유'),{target:{value:'가상 통장사본 수신'}});
   fireEvent.click(screen.getByRole('button',{name:'받은 1건 기록'}));
   expect(await screen.findByRole('alert')).toHaveProperty('textContent',expect.stringContaining('다른 사용자가 회신 기록을 변경했습니다'));
-  expect(screen.queryByRole('checkbox',{name:'통장사본 선택'})).toBeNull();
+  expect((screen.getByRole('checkbox',{name:'통장사본 선택'}) as HTMLInputElement).disabled).toBe(true);
   fireEvent.click(screen.getByRole('tab',{name:'결재'}));
-  expect(screen.getByText('새 결재 화면')).toBeTruthy();
+  expect(screen.getByText('대표에게 검토 내용 전달')).toBeTruthy();
   expect(screen.getByRole('alert').textContent).toContain('최신 상태를 다시 불러왔어요');
 });
 it('지급일이 한국 오늘보다 미래이면 지급 완료 기록 버튼을 잠근다', () => {

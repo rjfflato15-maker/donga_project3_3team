@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { requestJson } from '../../api/client';
 import { createLatestGuard } from '../../utils/latest';
 import { History } from 'lucide-react';
+import { Surface } from '../ui/Surface';
 import { fixParticles } from '../../utils/korean';
 
 export interface ActivityItem {
@@ -146,27 +147,10 @@ export const ActivityTimeline: React.FC<Props> = ({ contractId, revision, finger
   };
   useEffect(() => { setItems([]); setNext(null); void load(null); return () => guard.invalidate(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [contractId, revision, fingerprint, masked]);
 
-  return (
-    <section className={compact ? 'cp-history cp-history-compact' : 'cp-history cp-surface'} aria-label={title}>
-      {!compact && <h2 className="cp-section-title">{title}</h2>}
-      {error && <p role="alert" className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700">처리 기록을 불러오지 못했어요: {error}</p>}
-      {!error && !loading && items.length === 0 && <p className="text-sm text-slate-500">기록된 처리가 없어요.</p>}
-      <ol className="cp-history-list">
-        {items.filter((i) => !(compact && i.type === 'RULE_VALIDATION')).map((i) => {
-          const lines = i.details_available ? summarize(i) : ['상세 기록을 읽을 수 없어요'];
-          return (
-            <li key={i.event_id} className="cp-history-entry">
-              <History size={17} /><div className="flex flex-wrap items-baseline gap-x-2">
-                <b className="text-slate-900">{i.title}</b>
-                <span className="text-xs text-slate-500">{kst(i.occurred_at)}{i.actor_name ? ` · ${i.actor_name}` : ''}</span>
-              </div>
-              {lines.map((l, k) => <div key={k} className="text-xs text-slate-600">{l}</div>)}
-            </li>
-          );
-        })}
-      </ol>
-      {next != null && <button onClick={() => void load(next)} disabled={loading} className="text-xs font-semibold text-indigo-600 hover:underline disabled:opacity-40">{loading ? '불러오는 중…' : '이전 기록 더 보기'}</button>}
-      {!compact && <p className="text-[11px] text-slate-400">기록된 사건만 보여요. 자동 검사 기록은 사람의 원문 확인이나 국세청 진위 조회를 뜻하지 않아요.</p>}
-    </section>
-  );
+  return <Surface title={compact?undefined:title}>
+    {error&&<p className="story-alert" role="alert">처리 기록 조회 실패: {error}</p>}
+    {!error&&!loading&&!items.length&&<div className="empty">기록된 처리가 없습니다.</div>}
+    <div className="history">{items.filter(i=>!(compact&&i.type==='RULE_VALIDATION')).map(i=><article key={i.event_id}><History size={17}/><div><div><strong>{i.title}</strong><small>{kst(i.occurred_at)}{i.actor_name?` · ${i.actor_name}`:''}</small></div>{(i.details_available?summarize(i):['상세 기록을 읽을 수 없습니다.']).map((line,key)=><p key={key}>{line}</p>)}</div></article>)}</div>
+    {next!=null&&<div className="panel-footer"><button className="text-button" disabled={loading} onClick={()=>void load(next)}>이전 기록 더 보기</button></div>}
+  </Surface>;
 };

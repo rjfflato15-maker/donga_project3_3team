@@ -24,7 +24,7 @@ describe('묶음 요청 문구', () => {
   it('여러 서류를 한 문구로, 빠진 서류는 보내 달라고', () => {
     const t = buildText(contract, [cand({}), cand({ issue_key: 'missing:tax_invoice', title: '세금계산서 제출 요청', document_type: 'tax_invoice', reason: '세금계산서 제출이 필요합니다.' }), twoFails], false);
     expect(t).toContain('통장사본을 보내 주세요');
-    expect(t).toContain('전자세금계산서를 보내 주세요');
+    expect(t).toContain('세금계산서를 보내 주세요');
     expect(t.split('\n').filter((l) => l.startsWith('- '))).toHaveLength(3);
   });
 });

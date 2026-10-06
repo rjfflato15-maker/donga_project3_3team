@@ -10,7 +10,7 @@ import { Search } from 'lucide-react';
 interface SearchResult { items: DashboardItem[]; total: number; limit: number; offset: number }
 
 const PAGE = 50;
-const LABEL:Record<Stage,string> = {RECEIVING:'서류 받기',CHECK:'확인 필요',WAITING:'회신 대기',APPROVAL:'결재 대기',PAYMENT:'지급 대기',DONE:'완료'};
+const LABEL:Record<Stage,string> = {RECEIVING:'확인 필요',CHECK:'확인 필요',WAITING:'회신 대기',APPROVAL:'결재 대기',PAYMENT:'지급 대기',DONE:'완료'};
 
 /** 서버 검색 조건(쿼리 문자열). 빈 값은 보내지 않는다 */
 export function searchQuery(f: { q: string; completion: 'ALL' | 'OPEN' | 'DONE'; from: string; to: string }, offset: number) {
@@ -63,56 +63,15 @@ export const ContractSearch: React.FC<Props> = ({ isMaskingEnabled, onOpen, comp
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, completion, from, to]);
 
-  const input = 'rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200';
-  return (
-    <div className={compact ? 'cp-search-results p-4 space-y-4' : 'cp-search-results space-y-4'}>
-      {!compact && <div className="cp-heading">
-        <h1 className="text-2xl font-bold text-slate-900">계약 찾기</h1>
-        <p className="text-sm text-slate-500">끝난 계약까지 모두 찾아요. 기간은 <b>계약을 처음 등록한 날</b> 기준입니다.</p>
-      </div>}
-      <div className="flex flex-wrap items-end gap-2">
-        <label className="flex min-w-[220px] flex-1 items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200">
-          <Search className="h-4 w-4 text-slate-400" />
-          <span className="sr-only">검색어</span>
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="거래처·계약명·금액·앱 계약 번호" className="min-w-0 flex-1 bg-white text-slate-800 outline-none" />
-        </label>
-        <label className="grid gap-1 text-xs text-slate-500">진행
-          <select value={completion} onChange={(e) => setCompletion(e.target.value as 'ALL' | 'OPEN' | 'DONE')} className={input}>
-            <option value="ALL">전체</option><option value="OPEN">진행 중</option><option value="DONE">지급까지 끝</option>
-          </select></label>
-        <label className="grid gap-1 text-xs text-slate-500">등록일부터<input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className={input} /></label>
-        <label className="grid gap-1 text-xs text-slate-500">등록일까지<input type="date" value={to} min={from || undefined} onChange={(e) => setTo(e.target.value)} className={input} /></label>
-      </div>
-      {error && <p role="alert" className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700">{error}</p>}
-      <div className="cp-table-scroll cp-surface">
-        <table className="cp-data-table cp-inbox-table">
-          <thead className="bg-slate-50 text-left text-slate-500">
-            <tr><th className="px-4 py-2.5 font-medium">단계</th><th className="px-4 py-2.5 font-medium">계약</th><th className="px-4 py-2.5 text-right font-medium">금액</th><th className="px-4 py-2.5 font-medium">등록일</th><th className="px-4 py-2.5 font-medium">지급</th></tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {!loading && rows.length === 0 && <tr><td colSpan={5} className="px-4 py-10 text-center text-slate-500">찾는 계약이 없어요.</td></tr>}
-            {rows.map((c) => {
-              const s: Stage = stageOfItem(c);
-              return (
-                <tr key={c.contract_id} className="cursor-pointer hover:bg-slate-50" onClick={() => onOpen(c.contract_id)}>
-                  <td className="px-4 py-3"><Badge tone={s==='DONE'?'green':s==='APPROVAL'?'blue':'amber'}>{LABEL[s]}</Badge></td>
-                  <td className="px-4 py-3">
-                    <button className="cp-contract-link" onClick={(e) => { e.stopPropagation(); onOpen(c.contract_id); }}>{c.title}</button>
-                    <div className="text-xs text-slate-500">계약 #{c.contract_id} · {maskVendorName(c.vendor_name, isMaskingEnabled)}</div>
-                  </td>
-                  <td className="px-4 py-3 text-right tabular-nums">{Math.round(c.contract_amount).toLocaleString('ko-KR')}원</td>
-                  <td className="px-4 py-3 tabular-nums text-slate-600">{c.created_at ? kstDate(c.created_at) : '-'}</td>
-                  <td className="px-4 py-3 text-slate-600">{c.payment?.paid_on ? c.payment.paid_on : c.payment?.status === 'RECONFIRMATION_REQUIRED' ? `${c.payment.recorded_paid_on} (재확인 필요)` : '-'}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex items-center gap-3 text-xs text-slate-500">
-        <span>{total}건 중 {rows.length}건</span>
-        {rows.length < total && <button onClick={() => void run(rows.length)} disabled={loading} className="font-semibold text-indigo-600 hover:underline disabled:opacity-40">{loading ? '불러오는 중…' : '더 보기'}</button>}
-      </div>
-    </div>
-  );
+
+  return <>
+    {!compact&&<div className="heading"><div><small className="eyebrow">CONTRACT WORKSPACE</small><h1>계약 찾기</h1><p>등록일과 진행 상태로 지난 계약까지 찾습니다.</p></div></div>}
+    <div className="toolbar"><label className="search"><Search size={17}/><input aria-label="검색어" value={q} onChange={e=>setQ(e.target.value)} placeholder="계약명, 거래처, 금액 검색"/></label><small>{loading?'조회 중…':`${total}건`}</small></div>
+    {!compact&&<div className="search-period"><label>진행<select value={completion} onChange={e=>setCompletion(e.target.value as typeof completion)}><option value="ALL">전체</option><option value="OPEN">진행 중</option><option value="DONE">완료</option></select></label><label>등록일부터<input type="date" value={from} onChange={e=>setFrom(e.target.value)}/></label><label>등록일까지<input type="date" value={to} min={from||undefined} onChange={e=>setTo(e.target.value)}/></label></div>}
+    {error&&<p className="story-alert" role="alert">{error}</p>}
+    <div className="desktop-list table-wrap"><table className="contracts"><thead><tr><th>계약</th><th>거래처</th><th className="right">계약 금액</th><th>상태</th><th>다음 할 일</th></tr></thead><tbody>{rows.map(c=>{const s=stageOfItem(c);return <tr key={c.contract_id}><td><button className="contract-link" onClick={()=>onOpen(c.contract_id)}>{c.title}</button><small className="sub">계약 #{c.contract_id} · {kstDate(c.created_at)}</small></td><td>{maskVendorName(c.vendor_name,isMaskingEnabled)}</td><td className="right number">{Math.round(c.contract_amount).toLocaleString('ko-KR')}원</td><td><Badge tone={s==='DONE'?'green':s==='APPROVAL'?'blue':'amber'}>{LABEL[s]}</Badge></td><td className="next">{c.payment?.status==='RECONFIRMATION_REQUIRED'?`이미 ${c.payment.recorded_paid_on} 지급 · 재확인 필요`:c.payment?.paid_on?`${c.payment.paid_on} 지급 완료`:c.action_summary||LABEL[s]}</td></tr>;})}</tbody></table></div>
+    <div className="mobile-list">{rows.map(c=><button key={c.contract_id} onClick={()=>onOpen(c.contract_id)}><div><Badge>{LABEL[stageOfItem(c)]}</Badge><small>계약 #{c.contract_id}</small></div><strong>{c.title}</strong><span>{maskVendorName(c.vendor_name,isMaskingEnabled)}</span><div><b>{Math.round(c.contract_amount).toLocaleString('ko-KR')}원</b></div></button>)}</div>
+    {!loading&&!rows.length&&<div className="empty">검색 결과가 없습니다.</div>}
+    <div className="panel-footer"><span>{total}건 중 {rows.length}건</span>{rows.length<total&&<button className="text-button" disabled={loading} onClick={()=>void run(rows.length)}>더 보기</button>}</div>
+  </>;
 };

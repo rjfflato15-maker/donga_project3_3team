@@ -11,7 +11,7 @@ import { AppShell } from '../components/AppShell';
 import { OverallDashboardView } from '../components/OverallDashboardView';
 import { ValidationReportView } from '../components/ValidationReportView';
 import { ContractReviewOverview } from '../components/review/ContractReviewOverview';
-import { DocumentReviewDialog } from '../components/review/DocumentReviewDialog';
+import { CompareRegistration } from '../components/CompareRegistration';
 import { StageDashboard, DashboardItem } from '../components/review/StageDashboard';
 import { ContractStageView } from '../components/review/ContractStageView';
 import { ContractSearch } from '../components/review/ContractSearch';
@@ -82,10 +82,15 @@ export const ContractDashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const [selectedDoc, setSelectedDoc] = useState<DocumentResponse | null>(null);
+  const selectedDocRef=useRef(selectedDoc);selectedDocRef.current=selectedDoc;
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [uploadTargetType, setUploadTargetType] = useState<string | null>(null);
   const [isNewContractOpen, setIsNewContractOpen] = useState(false);
   const [isAutoBatchOpen, setIsAutoBatchOpen] = useState(false);
+  const registrationEpoch=useRef(0), documentEpoch=useRef(0);
+  const openRegistration=()=>{registrationEpoch.current++;setSelectedDoc(null);setIsAutoBatchOpen(true);};
+  const closeRegistration=()=>{registrationEpoch.current++;setIsAutoBatchOpen(false);};
+  const closeSource=()=>{documentEpoch.current++;setSelectedDoc(null);};
   const [isEditContractOpen, setIsEditContractOpen] = useState(false);
   const [editingContractTarget, setEditingContractTarget] = useState<ContractDetail | ContractListItem | null>(null);
 
@@ -138,6 +143,7 @@ export const ContractDashboard: React.FC = () => {
     targetTab?: NavigationTab,
     viewMode: 'list' | 'detail' = 'detail'
   ) => {
+    closeSource();
     try {
       setActionLoading(true);
       const detail = await api.getContract(contractId);
@@ -159,11 +165,15 @@ export const ContractDashboard: React.FC = () => {
     const [list, environment, detail] = await Promise.all([
       api.listContracts(), isPilot ? api.pilotInfo() : Promise.resolve(null), target ? api.getContract(target) : Promise.resolve(null),
     ]);
-    setContracts(list); setPilotInfo(environment); setCurrentContract(detail);
-    if (selectedDoc && detail) setSelectedDoc(detail.documents.find(doc => doc.document_id === selectedDoc.document_id) || null);
+    setContracts(list);setPilotInfo(environment);
+    if(target!==currentIdRef.current)return;
+    setCurrentContract(detail);
+    const selected=selectedDocRef.current;
+    if(selected&&detail)setSelectedDoc(detail.documents.find(doc=>doc.document_id===selected.document_id)||null);
   };
 
   const handleTabChange = (tab: NavigationTab) => {
+    closeRegistration();closeSource();setIsUploadOpen(false);
     setActiveTab(tab);
     if (tab === 'contracts') {
       setContractViewMode('list');
@@ -227,6 +237,7 @@ export const ContractDashboard: React.FC = () => {
 
   const handleOpenUploadModal = (targetType?: string | null) => {
     if (!canEdit) return;
+    closeSource();
     setUploadTargetType(targetType || null);
     setIsUploadOpen(true);
   };
@@ -333,10 +344,13 @@ export const ContractDashboard: React.FC = () => {
 
   const [docMode, setDocMode] = useState<'view' | 'reissue'>('view');
   const handleOpenDocumentModal = async (doc: DocumentResponse, mode: 'view' | 'reissue' = 'view') => {
+    if(currentIdRef.current!==doc.contract_id)return;
+    const generation=++documentEpoch.current;
     setDocMode(mode);
     setSelectedDoc(doc);
     try {
       const freshDoc = await api.getDocument(doc.document_id);
+      if(generation!==documentEpoch.current||currentIdRef.current!==doc.contract_id)return;
       setSelectedDoc(freshDoc);
       setCurrentContract((prev) => {
         if (!prev) return prev;
@@ -439,6 +453,8 @@ export const ContractDashboard: React.FC = () => {
   };
 
   const renderActiveContent = () => {
+    const sourceGeneration=documentEpoch.current;
+    if(isPilot && isAutoBatchOpen){const session=registrationEpoch.current;return <CompareRegistration key={session} onClose={closeRegistration} onSuccess={async(id)=>{const [list,detail]=await Promise.all([api.listContracts(),api.getContract(id)]);setContracts(list);if(session!==registrationEpoch.current)return;setCurrentContract(detail);setActiveTab('contracts');setContractViewMode('detail');closeRegistration();}}/>;}
     if (loading) {
       return (
         <div className="py-24 flex flex-col items-center justify-center text-slate-400 space-y-3">
@@ -471,16 +487,16 @@ export const ContractDashboard: React.FC = () => {
       case 'dashboard':
         if (isPilot) {
           return (
-            <div className="space-y-5">
-              <MyAssignmentsStrip refreshKey={contracts} contracts={contracts} onOpen={(id) => handleSelectContract(id, 'contracts', 'detail')} />
+            <div className="work-inbox">
               <StageDashboard
                 contracts={contracts as DashboardItem[]}
                 isMaskingEnabled={isMaskingEnabled}
                 canEdit={canEdit}
                 representative={user?.role === 'representative'}
                 onOpen={(id) => handleSelectContract(id, 'contracts', 'detail')}
-                onNew={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+                onNew={canEdit ? openRegistration : undefined}
               />
+              <MyAssignmentsStrip refreshKey={contracts} contracts={contracts} onOpen={(id) => handleSelectContract(id, 'contracts', 'detail')} />
             </div>
           );
         }
@@ -495,7 +511,7 @@ export const ContractDashboard: React.FC = () => {
             }}
             onEditContract={canEdit ? (item) => { void handleOpenEditModal(item); } : undefined}
             onDeleteContract={canEdit ? (id, title) => handleDeleteContract(id, title) : undefined}
-            onOpenAutoBatchContract={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+            onOpenAutoBatchContract={canEdit ? openRegistration : undefined}
           />
         );
 
@@ -511,7 +527,7 @@ export const ContractDashboard: React.FC = () => {
               onSelectContract={async (id) => {
                 await handleSelectContract(id, undefined, 'detail');
               }}
-              onOpenAutoBatchContract={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+              onOpenAutoBatchContract={canEdit ? openRegistration : undefined}
               onOpenNewContract={isPilot && canEdit ? () => setIsNewContractOpen(true) : undefined}
               pilot={isPilot}
               requiredDocumentTypes={pilotInfo?.required_document_types}
@@ -532,7 +548,10 @@ export const ContractDashboard: React.FC = () => {
               canEdit={canEdit}
               representative={user?.role === 'representative'}
               ntsMode={pilotInfo?.nts_mode}
-              onBack={() => { setActiveTab('dashboard'); setContractViewMode('list'); }}
+              onReissuedDocument={doc=>{if(documentEpoch.current===sourceGeneration)void handleOpenDocumentModal(doc,'view');}}
+              sourceDocument={selectedDoc} sourceMode={docMode} onCloseSource={closeSource}
+              uploadOpen={isUploadOpen} uploadLoading={actionLoading} uploadTarget={uploadTargetType} onCloseUpload={()=>setIsUploadOpen(false)} onUploadFiles={handleUploadFiles}
+              onBack={() => { setSelectedDoc(null);setActiveTab('dashboard'); setContractViewMode('list'); }}
               onOpenDocument={handleOpenDocumentModal}
               onUploadType={(type) => handleOpenUploadModal(type)}
               onChanged={() => refreshCurrentContract()}
@@ -676,10 +695,10 @@ export const ContractDashboard: React.FC = () => {
 
   return (
     <AppShell
-      title={activeTab === 'dashboard' ? '업무함' : activeTab === 'contracts' ? (contractViewMode === 'detail' ? '계약 상세' : '계약 찾기') : activeTab === 'account-settings' ? '설정' : '검수 리포트'}
+      title={isAutoBatchOpen ? '새 계약 등록' : activeTab === 'dashboard' ? '업무함' : activeTab === 'contracts' ? (contractViewMode === 'detail' ? `계약 #${currentContract?.contract_id ?? ''}` : '계약 찾기') : activeTab === 'account-settings' ? '설정' : '검수 리포트'}
       activeTab={activeTab} onTabChange={handleTabChange}
       companyName={pilotInfo?.company_name}
-      onOpenAutoBatchContract={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+      onOpenAutoBatchContract={canEdit ? openRegistration : undefined}
       onOpenUpload={canEdit ? () => handleOpenUploadModal() : undefined}
       onOpenNewContract={canEdit ? () => setIsNewContractOpen(true) : undefined}
       isMaskingEnabled={isMaskingEnabled} onToggleMasking={() => setIsMaskingEnabled((v) => !v)}
@@ -688,18 +707,6 @@ export const ContractDashboard: React.FC = () => {
       {renderActiveContent()}
       {/* Modals */}
       {advancedDocOpen && selectedDoc && currentContract?.workflow && <PilotDocumentDialog doc={selectedDoc} revision={currentContract.workflow.revision} canEdit={canEdit} onClose={() => setAdvancedDocOpen(false)} onChanged={refreshCurrentContract} />}
-      {isPilot && selectedDoc && !advancedDocOpen && currentContract && (
-        <DocumentReviewDialog
-          doc={selectedDoc}
-          checks={currentContract.checks}
-          revision={currentContract.workflow?.revision ?? 0}
-          isMaskingEnabled={isMaskingEnabled}
-          canEdit={canEdit}
-          onClose={() => setSelectedDoc(null)}
-          onChanged={() => refreshCurrentContract()}
-          initialMode={docMode}
-        />
-      )}
       <DocumentViewerModal
         document={advancedDocOpen || isPilot ? null : selectedDoc}
         onManage={isPilot && canEdit ? () => setAdvancedDocOpen(true) : undefined}
@@ -712,7 +719,7 @@ export const ContractDashboard: React.FC = () => {
         <>
           <UploadModal
             contractId={currentContract.contract_id}
-            isOpen={isUploadOpen}
+            isOpen={!isPilot && isUploadOpen}
             onClose={() => setIsUploadOpen(false)}
             onUpload={handleUploadFiles}
             loading={actionLoading}
@@ -741,7 +748,7 @@ export const ContractDashboard: React.FC = () => {
       />
 
       <AutoBatchContractModal
-        isOpen={isAutoBatchOpen}
+        isOpen={!isPilot && isAutoBatchOpen}
         onClose={() => setIsAutoBatchOpen(false)}
         onSuccess={async (newContractId) => {
           const list = await api.listContracts();

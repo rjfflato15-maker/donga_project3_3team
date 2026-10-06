@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { DocumentReviewDialog } from './DocumentReviewDialog';
+import { DocumentWorkspace } from './DocumentWorkspace';
 import { DocumentResponse } from '../../types';
 import { api, requestJson } from '../../api/client';
 vi.mock('../../api/client',()=>({api:{correctFields:vi.fn()},requestJson:vi.fn(),downloadProtected:vi.fn()}));
@@ -11,17 +11,18 @@ afterEach(()=>{cleanup();vi.resetAllMocks();});
 describe('원문 확인과 읽기 전용 이전 본',()=>{
   it('0원도 원문 확인 가능하며 고른 한 칸만 확인으로 전송한다',async()=>{
     const changed=vi.fn(async()=>{});
-    render(<DocumentReviewDialog doc={doc} checks={[]} revision={3} isMaskingEnabled={false} canEdit onClose={()=>{}} onChanged={changed}/>);
-    fireEvent.click(await screen.findByRole('button',{name:/^세액 규칙/}));
-    await waitFor(()=>expect((screen.getByRole('button',{name:'원문과 같음'}) as HTMLButtonElement).disabled).toBe(false));
+    render(<DocumentWorkspace doc={doc} checks={[]} revision={3} isMaskingEnabled={false} canEdit onClose={()=>{}} onChanged={changed}/>);
+    fireEvent.click(await screen.findByRole('button',{name:/^부가세 규칙/}));
+    await screen.findByText('가상 견적서 세액 0원 합계 100원');
+    fireEvent.click(screen.getByRole('checkbox',{name:'원문과 저장값이 같음을 확인'}));
     fireEvent.click(screen.getByRole('button',{name:'원문과 같음'}));
     await waitFor(()=>expect(api.correctFields).toHaveBeenCalledWith(4,doc.analysis.fields,'estimate',3,'원문과 같은 세액 확인',['tax_amount']));
     expect(changed).toHaveBeenCalledOnce();
   });
   it('이전 본에는 수정·확인·재발행 저장 동작을 제공하지 않는다',async()=>{
-    render(<DocumentReviewDialog doc={{...doc,version:{...doc.version!,is_current:false}}} checks={[]} revision={3} isMaskingEnabled canEdit onClose={()=>{}} onChanged={async()=>{}}/>);
-    await screen.findByRole('button',{name:/^세액 규칙/});
-    expect(screen.getByText('이전 본 · 1번째')).toBeTruthy();
+    render(<DocumentWorkspace doc={{...doc,version:{...doc.version!,is_current:false}}} checks={[]} revision={3} isMaskingEnabled canEdit onClose={()=>{}} onChanged={async()=>{}}/>);
+    await screen.findByRole('button',{name:/^부가세 규칙/});
+    expect(screen.getByText('이전 본 · 읽기 전용')).toBeTruthy();
     expect(screen.queryByRole('button',{name:'원문과 같음'})).toBeNull();
     expect(screen.queryByRole('button',{name:'읽은 값 수정'})).toBeNull();
     expect(screen.queryByRole('button',{name:'고친 본 올리기'})).toBeNull();

@@ -1,14 +1,14 @@
+import { DOCUMENT_LABEL as DOCUMENT_TYPE_KO } from '../../utils/documentLabels';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ContractDetail, DocumentType } from '../../types';
 import { requestJson } from '../../api/client';
 import { ContactMethod, CONTACT_KO, CONTACT_VIA, ResubmissionRequest } from '../../api/followUp';
-import { Badge } from '../ui/Surface';
-import { isUnverifiedBusinessStatus, DOCUMENT_TYPE_KO } from '../../utils/reviewSummary';
+import { Badge, Surface } from '../ui/Surface';
+import { isUnverifiedBusinessStatus } from '../../utils/reviewSummary';
 import { fixParticles, josa } from '../../utils/korean';
 import { seoulToday } from '../../utils/date';
-import { useDialogA11y } from '../../hooks/useDialogA11y';
 import { maskBusinessNumber, maskResidentNumber, maskVendorName } from '../../utils/masking';
-import { ChevronDown, ChevronRight, Copy, Eye, Upload, X } from 'lucide-react';
+import { Copy, Eye, Upload, Send } from 'lucide-react';
 
 /* ---------- API ---------- */
 export interface BundleCandidate {
@@ -111,54 +111,13 @@ export const RequestChecklist: React.FC<ChecklistProps> = ({ ctx, isMaskingEnabl
   const toggle = (set: Set<string>, key: string) => { const n = new Set(set); if (n.has(key)) n.delete(key); else n.add(key); return n; };
   const chosen = open.filter((c) => picked.has(c.issue_key) && (!c.requires_original_review || reviewed.has(c.issue_key)));
 
-  if (!open.length && !waitingAlready.length) return null;
-  return (
-    <div className="space-y-2">
-      {open.length > 0 && <div className="text-sm font-bold text-slate-900">거래처에 요청할 것 {open.length}건</div>}
-      {open.length > 0 && (
-        <ul className="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white">
-          {open.map((c) => {
-            const on = picked.has(c.issue_key);
-            const needReview = c.requires_original_review && !reviewed.has(c.issue_key);
-            return (
-              <li key={c.issue_key} className="px-3 py-2 text-sm">
-                <div className="flex flex-wrap items-center gap-2">
-                  <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-2">
-                    <input type="checkbox" checked={on} disabled={!canEdit} onChange={() => setPicked((s) => toggle(s, c.issue_key))} className="h-4 w-4 accent-indigo-600" />
-                    <span className="font-semibold text-slate-900">{docName(c)}</span>
-                    <span className="truncate text-slate-500">{c.document_id ? '내용 확인 후 다시 받기' : '아직 없음'}</span>
-                  </label>
-                  {c.document_id != null && (
-                    <button onClick={() => onOpenDocumentId(c.document_id!)} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold text-indigo-700 hover:bg-indigo-50"><Eye className="h-3.5 w-3.5" />원문</button>
-                  )}
-                  <button onClick={() => setExpanded(expanded === c.issue_key ? null : c.issue_key)} aria-expanded={expanded === c.issue_key}
-                    className="inline-flex items-center gap-0.5 rounded-lg px-2 py-1 text-xs text-slate-500 hover:bg-slate-100">
-                    이유 {expanded === c.issue_key ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
-                  </button>
-                </div>
-                {expanded === c.issue_key && <p className="mt-1 whitespace-pre-wrap pl-6 text-xs text-slate-600">{mask(fixParticles(c.reason), isMaskingEnabled)}</p>}
-                {c.requires_original_review && on && (
-                  <label className={`mt-1 flex items-center gap-2 pl-6 text-xs ${needReview ? 'text-amber-800' : 'text-slate-600'}`}>
-                    <input type="checkbox" checked={reviewed.has(c.issue_key)} onChange={() => setReviewed((s) => toggle(s, c.issue_key))} className="h-3.5 w-3.5 accent-emerald-600" />
-                    원문도 계약 기준과 다름을 확인
-                  </label>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      {waitingAlready.length > 0 && (
-        <p className="text-xs text-slate-500">이미 요청해서 답을 기다리는 것: {waitingAlready.map(docName).join(', ')}</p>
-      )}
-      {open.length > 0 && canEdit && (
-        <button onClick={() => onMake(chosen, reviewed)} disabled={chosen.length === 0}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-40">
-          <Copy className="h-4 w-4" /> 선택한 {chosen.length}건 요청 문구 만들기
-        </button>
-      )}
-    </div>
-  );
+
+  if(!open.length&&!waitingAlready.length)return null;
+  return <><Badge tone="amber">거래처 보완 {open.length}건</Badge><h3>{open.some(c=>c.document_id)?'빠진 서류와 서류 정정':'거래처에 한 번에 요청'}</h3>
+    {open.map(c=><div key={c.issue_key}><div className="request-choice"><label className="check-label"><input type="checkbox" checked={picked.has(c.issue_key)} disabled={!canEdit||c.requires_original_review&&!reviewed.has(c.issue_key)} onChange={()=>setPicked(s=>toggle(s,c.issue_key))}/><span>{docName(c)}<small>{c.document_id?'원문 확인 후 선택':'아직 등록되지 않음'}</small></span></label><button className="icon" aria-label={`${docName(c)} 사유 보기`} aria-expanded={expanded===c.issue_key} onClick={()=>setExpanded(expanded===c.issue_key?null:c.issue_key)}>ⓘ</button></div>{expanded===c.issue_key&&<p>{mask(fixParticles(c.reason),isMaskingEnabled)}</p>}</div>)}
+    {open.filter(c=>c.document_id!=null).map(c=><button key={c.issue_key} className="button" onClick={()=>onOpenDocumentId(c.document_id!)}>{docName(c)} 원문 확인<Eye size={14}/></button>)}
+    {canEdit&&open.length>0&&<button className="button primary" disabled={!chosen.length} onClick={()=>onMake(chosen,reviewed)}>{chosen.length}건 요청 작성</button>}{waitingAlready.length>0&&<small>{waitingAlready.length}항목은 이미 요청해 회신 대기 중입니다.</small>}
+  </>;
 };
 
 /* ---------- 한 번에 요청하기 ---------- */
@@ -177,7 +136,7 @@ export function buildText(contract: Pick<ContractDetail, 'vendor_name' | 'title'
   return [`${contract.vendor_name} 담당자님, 안녕하세요.`, '', `「${contract.title}」 계약의 증빙 서류를 확인한 결과, 아래 ${items.length}건을 부탁드립니다.`, ...lines, '', '감사합니다.'].join('\n');
 }
 
-interface DialogProps {
+interface RequestPageProps {
   contract: ContractDetail;
   /** 선택·원문 확인을 받은 기준 */
   basis: Basis;
@@ -187,21 +146,25 @@ interface DialogProps {
   reviewed: Set<string>;
   isMaskingEnabled: boolean;
   onClose: () => void;
-  onRecorded: () => Promise<void>;
+  onRecorded: (recorded?: BundledRequest) => Promise<void>;
   onStale: () => Promise<void>;
 }
 
-export const BundleRequestDialog: React.FC<DialogProps> = ({ contract, basis, latest, items, reviewed, isMaskingEnabled, onClose, onRecorded, onStale }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  useDialogA11y(ref, onClose);
-  const [long, setLong] = useState(false);
-  const draft = useMemo(() => buildText(contract, items, long), [contract, items, long]);
+export const BundleRequestPage: React.FC<RequestPageProps> = ({ contract, basis, latest, items:availableItems, reviewed, isMaskingEnabled, onClose, onRecorded, onStale }) => {
+  const alive=useRef(true);useEffect(()=>{alive.current=true;return()=>{alive.current=false;};},[]);
+  const [pickedItems,setPickedItems]=useState(()=>new Set(availableItems.map(i=>i.issue_key)));
+  const items=availableItems.filter(i=>pickedItems.has(i.issue_key));
+  const [due, setDue] = useState('');
+  const [long, setLong] = useState(true);
+  const draft = useMemo(() => buildText(contract, items, long)+(due?'\n\n회신 기한: '+due:''), [contract, items, long,due]);
   const [text, setText] = useState(draft);
   useEffect(() => setText(draft), [draft]);
   const [copied, setCopied] = useState('');
-  const [method, setMethod] = useState<ContactMethod>('KAKAO');
-  const [due, setDue] = useState('');
+  const [method, setMethod] = useState<ContactMethod>('EMAIL');
   const [memo, setMemo] = useState(`${items.map(docName).join(', ')} 요청`);
+  const defaultMemo=items.map(docName).join(', ')+' 요청';
+  const previousMemo=useRef(defaultMemo);
+  useEffect(()=>{setMemo(old=>old===previousMemo.current?defaultMemo:old);previousMemo.current=defaultMemo;},[defaultMemo]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [stale, setStale] = useState(false);
@@ -216,12 +179,13 @@ export const BundleRequestDialog: React.FC<DialogProps> = ({ contract, basis, la
   const record = async () => {
     setBusy(true); setError('');
     try {
-      await bundleApi.create(contract.contract_id, {
+      const recorded=await bundleApi.create(contract.contract_id, {
         revision: basis.revision, fingerprint: basis.fingerprint, idempotency_key: keyRef.current,
         contact_method: method, due_on: due || null, memo: memo.trim(),
         items: items.map((c) => ({ issue_key: c.issue_key, reviewed_original: c.requires_original_review ? reviewed.has(c.issue_key) : false })),
       });
-      await onRecorded();
+      if(!alive.current)return;
+      await onRecorded(recorded);
       onClose();
     } catch (e) {
       const msg = e instanceof Error ? e.message : '기록하지 못했습니다.';
@@ -234,25 +198,22 @@ export const BundleRequestDialog: React.FC<DialogProps> = ({ contract, basis, la
     catch { setCopied('복사하지 못했어요. 글을 선택해 Ctrl+C로 복사하세요.'); }
   };
 
-  return <div ref={ref} className="cp-modal-shade" role="dialog" aria-modal="true" aria-labelledby="bundle-title">
-    <section className="cp-modal cp-request-modal">
-      <div className="cp-modal-heading"><div><small>계약 #{contract.contract_id}</small><h2 id="bundle-title">거래처 요청 작성</h2></div><button className="cp-icon" aria-label="닫기" onClick={onClose}><X size={20}/></button></div>
-      <div className="cp-modal-body">
-        <div className="cp-request-form"><div><small>거래처</small><strong>{maskVendorName(contract.vendor_name,isMaskingEnabled)}</strong></div><label>연락 방법<select value={method} onChange={(e) => setMethod(e.target.value as ContactMethod)}>{(Object.keys(CONTACT_KO) as ContactMethod[]).map((m) => <option key={m} value={m}>{CONTACT_KO[m]}</option>)}</select></label><label>회신 기한 (선택)<input data-autofocus type="date" value={due} min={seoulToday()} onChange={(e) => setDue(e.target.value)}/></label></div>
-        <div className="cp-request-items"><h3>요청할 서류 <small>{items.length}건</small></h3>{items.map((item) => <div key={item.issue_key}><strong>{docName(item)}</strong><small>{mask(fixParticles(item.reason),isMaskingEnabled)}</small></div>)}</div>
-        <div className="flex items-center justify-between mb-2"><label className="cp-field-label" htmlFor="bundle-text">보낼 문구</label><div className="cp-mini-tabs" role="tablist" aria-label="요청 문구 길이"><button role="tab" aria-selected={!long} onClick={() => setLong(false)}>짧게</button><button role="tab" aria-selected={long} onClick={() => setLong(true)}>자세히</button></div></div>
-        <textarea id="bundle-text" value={text} onChange={(e) => setText(e.target.value)} rows={7} />
-        <small className="cp-help">메일·전화 등으로 요청한 뒤 기록합니다. 앱은 메시지를 발송하지 않습니다.</small>
-        {isMaskingEnabled && <p className="cp-help">보낼 문구에는 실제 거래처 이름이 들어갑니다.</p>}
-        <label className="cp-record-memo">기록 메모<input value={memo} maxLength={2000} onChange={(e) => setMemo(e.target.value)}/></label>
-        {memoTooLong && <p role="alert" className="cp-alert">메모는 2,000자까지입니다.</p>}
-        {copied && <p role="status" className="cp-help">{copied}</p>}
-        {changed && <p role="alert" className="cp-alert">고른 뒤 계약 자료가 바뀌었습니다. 최신 목록에서 다시 고르세요.<button className="cp-text-button" onClick={() => {void onStale().then(onClose);}}>닫고 다시 고르기</button></p>}
-        {error && <p role="alert" className="cp-alert">{error}{stale && <button className="cp-text-button" onClick={() => {void onStale().then(onClose);}}>최신 자료 불러오기</button>}</p>}
-      </div>
-      <div className="cp-modal-footer"><button className="cp-button" onClick={onClose}>취소</button><div><button className="cp-button" onClick={() => void copy()}>문구 복사</button><button className="cp-button cp-primary" disabled={busy || stale || changed || !memo.trim() || memoTooLong} onClick={() => void record()}>{busy ? '기록 중…' : `보낸 뒤 ${items.length}건 기록`}</button></div></div>
-    </section>
-  </div>;
+
+  const itemSummary=(item:BundleCandidate)=>{
+    if(item.issue_key.startsWith('missing:'))return '미제출';
+    const checks=(contract.checks??[]).filter(c=>c.field===String(item.document_id)&&c.status==='FAIL'&&c.expected&&c.actual);
+    const first=checks[0];
+    return first?`기준 ${mask(first.expected!,isMaskingEnabled)} / 저장 ${mask(first.actual!,isMaskingEnabled)}${checks.length>1?` · 외 ${checks.length-1}건`:''}`:mask(fixParticles(item.reason),isMaskingEnabled);
+  };
+  return <Surface title="거래처 요청 작성" sub="선택한 항목을 문구 하나로" className="story-request">
+    <div className="story-form"><div className="request-form"><div><small>받는 곳</small><strong>{maskVendorName(contract.vendor_name,isMaskingEnabled)}</strong></div><label>연락 방법<select value={method} onChange={e=>setMethod(e.target.value as ContactMethod)}>{(Object.keys(CONTACT_KO) as ContactMethod[]).map(m=><option key={m} value={m}>{CONTACT_KO[m]}</option>)}</select></label><label>회신 기한<input type="date" value={due} min={seoulToday()} onChange={e=>setDue(e.target.value)}/></label></div>
+      <div className="request-items"><h3>요청 항목 <small>{items.length}건</small></h3>{availableItems.map(item=><div className="story-request-item" key={item.issue_key}><input type="checkbox" aria-label={`${docName(item)} 요청 선택`} checked={pickedItems.has(item.issue_key)} disabled={busy||changed} onChange={()=>setPickedItems(old=>{const next=new Set(old);if(next.has(item.issue_key))next.delete(item.issue_key);else next.add(item.issue_key);return next;})}/><strong>{docName(item)}{item.requires_original_review?' 정정':''}</strong><small title={mask(fixParticles(item.reason),isMaskingEnabled)}>{itemSummary(item)}</small></div>)}</div>
+      <div className="request-text-heading"><label className="field-label" htmlFor="bundle-text">보낼 문구</label><div className="tabs"><button className={!long?'selected':''} onClick={()=>setLong(false)}>짧게</button><button className={long?'selected':''} onClick={()=>setLong(true)}>자세히</button></div></div><textarea id="bundle-text" rows={7} value={text} onChange={e=>setText(e.target.value)}/>
+      {isMaskingEnabled&&<small>보낼 문구에는 실제 거래처 이름이 들어갑니다.</small>}
+      <details className="record-memo"><summary>기록 메모</summary><label>기록 메모<input value={memo} maxLength={2000} onChange={e=>setMemo(e.target.value)}/></label></details>
+      {copied&&<p role="status">{copied}</p>}{memoTooLong&&<p className="story-alert" role="alert">메모는 2,000자까지입니다.</p>}{changed&&<p className="story-alert" role="alert">고른 뒤 자료가 바뀌었습니다. 최신 목록에서 다시 고르세요.<button className="text-button" onClick={()=>void onStale().then(onClose)}>닫고 다시 고르기</button></p>}{error&&<p className="story-alert" role="alert">{error}{stale&&<button className="text-button" onClick={()=>void onStale().then(onClose)}>최신 자료 불러오기</button>}</p>}
+    </div><div className="panel-footer"><span>외부에서 요청한 뒤 기록합니다.</span><div className="story-button-row"><button className="button" onClick={onClose}>취소</button><button className="button" onClick={()=>void copy()}><Copy size={15}/>문구 복사</button><button className="button primary" disabled={busy||stale||changed||!items.length||!memo.trim()||memoTooLong} onClick={()=>void record()}><Send size={15}/>{busy?'기록 중…':`요청했어요 · ${items.length}건 기록`}</button></div></div>
+  </Surface>;
 };
 
 /* ---------- 받은 항목만 체크 ---------- */
@@ -295,16 +256,16 @@ export const BundleReplyPanel: React.FC<ReplyProps> = ({ contract, request, canE
     }
     try { await onSaved(saved, error); } finally { setBusy(false); }
   };
-  return <article className="cp-request-record">
-    <div className="cp-request-header"><div><strong>요청 #{request.request_id}</strong><Badge tone={b.counts.waiting ? 'amber' : b.counts.cancelled === b.counts.total ? 'gray' : 'green'}>{b.counts.waiting ? b.counts.received ? `부분 회신 ${b.counts.received}/${b.counts.total}` : '회신 대기' : b.counts.cancelled === b.counts.total ? '취소' : '처리 완료'}</Badge>{b.counts.cancelled > 0 && <Badge>취소 {b.counts.cancelled}</Badge>}</div><small>{CONTACT_VIA[request.contact_method]} · {request.requested_on}{request.due_on ? ` · 기한 ${request.due_on}${late ? ' 지남' : ''}` : ''}</small></div>
-    <div className="cp-table-scroll"><table className="cp-data-table cp-reply-table"><thead><tr><th>선택</th><th>요청 항목</th><th>회신</th><th>자동 검사</th><th /></tr></thead><tbody>{b.items.map((item) => {
+  return <article className="request-record">
+    <div className="request-header"><div><strong>요청 #{request.request_id}</strong><Badge tone={b.counts.waiting ? 'amber' : b.counts.cancelled === b.counts.total ? 'gray' : 'green'}>{`${b.counts.total}건 요청 · ${b.counts.received}건 받음 · ${b.counts.waiting}건 대기`}</Badge>{b.counts.cancelled > 0 && <Badge>취소 {b.counts.cancelled}</Badge>}</div><small>{CONTACT_VIA[request.contact_method]} · {request.requested_on}{request.due_on ? ` · 기한 ${request.due_on}${late ? ' 지남' : ''}` : ''}</small></div>
+    <div className="table-wrap"><table className="reply-table"><thead><tr><th>선택</th><th>요청 항목</th><th>회신</th><th>자동 검사</th><th /></tr></thead><tbody>{b.items.map((item) => {
       const logicalId = currentDocumentFor(item,contract.documents);
       const doc = logicalId != null ? contract.documents.find((d) => d.document_id === logicalId) : undefined;
       const checks = doc ? contract.checks.filter((c) => c.field === String(doc.document_id) && !isUnverifiedBusinessStatus(c)) : [];
       const checkLabel = !doc || !checks.length ? '—' : checks.some((c) => c.status === 'FAIL') ? '불일치' : checks.some((c) => c.status !== 'PASS') ? '확인 필요' : '일치';
-      return <tr key={item.item_id}><td>{item.status === 'WAITING_RESPONSE' && canEdit && <input type="checkbox" aria-label={`${docName(item)} 선택`} checked={got.has(item.item_id)} onChange={() => setGot((s) => { const n=new Set(s);if(n.has(item.item_id))n.delete(item.item_id);else n.add(item.item_id);return n; })}/>}</td><td><strong>{docName(item)}</strong><small className="cp-sub">{mask(fixParticles(item.reason),isMaskingEnabled)}</small>{arrived(item) && item.status === 'WAITING_RESPONSE' && <small className="cp-sub text-emerald-700">서류 도착 · 받은 항목만 체크</small>}{item.resolution_note && <small className="cp-sub">{mask(fixParticles(item.resolution_note),isMaskingEnabled)}</small>}</td><td><Badge tone={item.status === 'RECEIVED' ? 'green' : item.status === 'CANCELLED' ? 'gray' : 'amber'}>{item.status === 'RECEIVED' ? '받음' : item.status === 'CANCELLED' ? '취소' : '대기'}</Badge></td><td><Badge tone={checkLabel === '일치' ? 'green' : checkLabel === '불일치' ? 'red' : 'gray'}>{checkLabel}</Badge></td><td><div className="cp-row-actions">{doc && <button className="cp-text-button" onClick={() => onOpenItem(item,'view')}><Eye size={14}/>원문 대조</button>}{item.status === 'WAITING_RESPONSE' && canEdit && (item.document_id != null && !arrived(item) ? <button className="cp-text-button" onClick={() => onOpenItem(item,'reissue')}><Upload size={14}/>고친 본 올리기</button> : !doc && <button className="cp-text-button" onClick={() => onUploadType(item.document_type ?? undefined)}><Upload size={14}/>파일 올리기</button>)}</div></td></tr>;
+      return <tr key={item.item_id}><td>{<input disabled={item.status!=='WAITING_RESPONSE'||!canEdit} type="checkbox" aria-label={`${docName(item)} 선택`} checked={got.has(item.item_id)} onChange={() => setGot((s) => { const n=new Set(s);if(n.has(item.item_id))n.delete(item.item_id);else n.add(item.item_id);return n; })}/>}</td><td><strong>{docName(item)}</strong><small className="sub">{mask(fixParticles(item.reason),isMaskingEnabled)}</small>{arrived(item) && item.status === 'WAITING_RESPONSE' && <small className="sub text-emerald-700">서류 도착 · 받은 항목만 체크</small>}{item.resolution_note && <small className="sub">{mask(fixParticles(item.resolution_note),isMaskingEnabled)}</small>}</td><td><Badge tone={item.status === 'RECEIVED' ? 'green' : item.status === 'CANCELLED' ? 'gray' : 'amber'}>{item.status === 'RECEIVED' ? '받음' : item.status === 'CANCELLED' ? '취소' : '대기'}</Badge></td><td><Badge tone={checkLabel === '일치' ? 'green' : checkLabel === '불일치' ? 'red' : 'gray'}>{checkLabel}</Badge></td><td><div className="row-actions">{doc && <button className="text-button" onClick={() => onOpenItem(item,'view')}><Eye size={14}/>원문 대조</button>}{item.status === 'WAITING_RESPONSE' && canEdit && (item.document_id != null && !arrived(item) ? <button className="text-button" onClick={() => onOpenItem(item,'reissue')}><Upload size={14}/>고친 본 올리기</button> : !doc && <button className="text-button" onClick={() => onUploadType(item.document_type ?? undefined)}><Upload size={14}/>파일 올리기</button>)}</div></td></tr>;
     })}</tbody></table></div>
-    <div className="cp-panel-footer"><span>{b.counts.total}건 요청 · {b.counts.received}건 받음 · {b.counts.waiting}건 기다림{b.counts.cancelled ? ` · ${b.counts.cancelled}건 취소` : ''}</span></div>
-    {canEdit && waitingItems.length > 0 && <div className="cp-reply-actions"><label>받은 내용 또는 취소 이유<input value={note} maxLength={2000} onChange={(e) => setNote(e.target.value)} placeholder="받은 내용 또는 취소 이유"/></label><div><button className="cp-button" disabled={busy || locked || !got.size || !note.trim()} onClick={() => void save('CANCELLED')}>선택 {got.size}건 요청 취소</button><button className="cp-button cp-primary" disabled={busy || locked || !got.size || !note.trim()} onClick={() => void save('RECEIVED')}>{busy ? '기록 중…' : `받은 ${got.size}건 기록`}</button></div></div>}
+    <div className="panel-footer"><span>수령 기록과 자동 검사 결과는 별도</span></div>
+    {canEdit && waitingItems.length > 0 && <div className="reply-actions"><label>받은 내용 또는 취소 이유<input value={note} maxLength={2000} onChange={(e) => setNote(e.target.value)} placeholder="받은 내용 또는 취소 이유"/></label><div><button className="button" disabled={busy || locked || !got.size || !note.trim()} onClick={() => void save('CANCELLED')}>선택 {got.size}건 요청 취소</button><button className="button primary" disabled={busy || locked || !got.size || !note.trim()} onClick={() => void save('RECEIVED')}>{busy ? '기록 중…' : `받은 ${got.size}건 기록`}</button></div></div>}
   </article>;
 };

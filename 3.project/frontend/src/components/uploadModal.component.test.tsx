@@ -2,7 +2,7 @@
 import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { UploadModal } from './UploadModal';
+import { DocumentUploadPage } from './DocumentUploadPage';
 
 afterEach(cleanup);
 
@@ -10,28 +10,28 @@ const pick = (name = '견적서.pdf') => {
   const input = screen.getByLabelText('올릴 파일 고르기') as HTMLInputElement;
   fireEvent.change(input, { target: { files: [new File(['x'], name, { type: 'application/pdf' })] } });
 };
-const props = (over: Partial<React.ComponentProps<typeof UploadModal>> = {}) => ({
+const props = (over: Partial<React.ComponentProps<typeof DocumentUploadPage>> = {}) => ({
   contractId: 1, isOpen: true, onClose: () => undefined, onUpload: async () => undefined, loading: false, ...over,
 });
 
 describe('새 서류 추가 창의 파일 선택 상태', () => {
   it('취소(닫힘) 뒤 다시 열거나 다른 계약에서 열면 이전 파일이 없다', () => {
-    const { rerender } = render(<UploadModal {...props()} />);
+    const { rerender } = render(<DocumentUploadPage {...props()} />);
     pick();
     expect(screen.getByText('견적서.pdf')).toBeTruthy();
-    rerender(<UploadModal {...props({ isOpen: false })} />);
-    rerender(<UploadModal {...props()} />);
+    rerender(<DocumentUploadPage {...props({ isOpen: false })} />);
+    rerender(<DocumentUploadPage {...props()} />);
     expect(screen.queryByText('견적서.pdf')).toBeNull();
     pick('통장사본.pdf');
-    rerender(<UploadModal {...props({ contractId: 2 })} />);
+    rerender(<DocumentUploadPage {...props({ contractId: 2 })} />);
     expect(screen.queryByText('통장사본.pdf')).toBeNull();
-    expect((screen.getByText('업로드 및 자동 검수 실행').closest('button') as HTMLButtonElement).disabled).toBe(true);
+    expect((screen.getByRole('button',{name:/선택 [01]개 서류 등록/}).closest('button') as HTMLButtonElement).disabled).toBe(true);
   });
   it('같은 창에서 실패하면 파일을 남겨 다시 시도할 수 있다', async () => {
     const onUpload = vi.fn().mockRejectedValue(new Error('서버 오류'));
-    render(<UploadModal {...props({ onUpload })} />);
+    render(<DocumentUploadPage {...props({ onUpload })} />);
     pick();
-    await act(async () => { fireEvent.click(screen.getByText('업로드 및 자동 검수 실행')); });
+    await act(async () => { fireEvent.click(screen.getByRole('button',{name:/선택 [01]개 서류 등록/})); });
     expect(screen.getByRole('alert').textContent).toContain('서버 오류');
     expect(screen.getByText('견적서.pdf')).toBeTruthy();
   });
@@ -39,10 +39,10 @@ describe('새 서류 추가 창의 파일 선택 상태', () => {
     let finish: () => void = () => undefined;
     const onClose = vi.fn();
     const onUpload = vi.fn((): Promise<void> => new Promise<void>((r) => { finish = r; }));
-    const { rerender } = render(<UploadModal {...props({ onUpload, onClose })} />);
+    const { rerender } = render(<DocumentUploadPage {...props({ onUpload, onClose })} />);
     pick();
-    fireEvent.click(screen.getByText('업로드 및 자동 검수 실행'));
-    rerender(<UploadModal {...props({ onUpload, onClose, contractId: 2 })} />);
+    fireEvent.click(screen.getByRole('button',{name:/선택 [01]개 서류 등록/}));
+    rerender(<DocumentUploadPage {...props({ onUpload, onClose, contractId: 2 })} />);
     await act(async () => { finish(); });
     expect(onClose).not.toHaveBeenCalled();
     expect(screen.queryByRole('alert')).toBeNull();

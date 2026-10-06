@@ -20,7 +20,7 @@ const waitingWithCheck = base({ contract_id: 3, title: '교육 콘텐츠', contr
 const payment = base({ contract_id: 4, title: '서버 임대', contract_amount: 5500000, stage: 'PAYMENT', approval_status: 'CONFIRMED', work_state: { next_actions: [{ role: 'operator', label: '지급 기록' }] } });
 const done = base({ contract_id: 5, title: '지급 마친 장비 임대', stage: 'DONE', work_state: { next_actions: [] } });
 
-const rowOf = (title: string) => screen.getByText(title).closest('tr') as HTMLElement;
+const rowOf = (title: string) => screen.getAllByText(title).find(el=>el.closest('tr'))!.closest('tr') as HTMLElement;
 
 describe('첫 화면: 역할별 차례가 건수·문구·버튼에서 같다', () => {
   it('담당자: 2단계 결재의 담당 검토·사내 확인·지급이 내 차례', () => {
@@ -29,12 +29,12 @@ describe('첫 화면: 역할별 차례가 건수·문구·버튼에서 같다', 
     expect(screen.getByText(/지금 처리할 계약 3건/)).toBeTruthy();
     const op = rowOf('업무지원 시스템 구축');
     expect(within(op).getByText(/담당 검토 결재 차례예요/)).toBeTruthy();
-    expect(within(op).getByRole('button').textContent).toBe('결재하기');
+    expect(within(op).getByRole('button').getAttribute('aria-label')).toContain('담당 검토 결재 차례');
     const rep = rowOf('홈페이지 유지보수');
     expect(within(rep).getByText(/대표 결재를 기다려요/)).toBeTruthy();
-    expect(within(rep).getByRole('button').textContent).toBe('보기');
-    expect(within(rowOf('교육 콘텐츠')).getByRole('button').textContent).toBe('확인하기');
-    expect(within(rowOf('서버 임대')).getByRole('button').textContent).toBe('지급 기록');
+    expect(within(rep).getByRole('button').getAttribute('aria-label')).toContain('대표 결재를 기다려요');
+    expect(within(rowOf('교육 콘텐츠')).getByRole('button').getAttribute('aria-label')).toContain('사내에서 바로 확인할 것');
+    expect(within(rowOf('서버 임대')).getByRole('button').getAttribute('aria-label')).toContain('지급하고 기록');
     expect(screen.queryByText('지급 마친 장비 임대')).toBeNull();
     // 내 차례가 위로
     const titles = screen.getAllByRole('row').slice(1).map((r) => r.textContent ?? '');
@@ -45,8 +45,8 @@ describe('첫 화면: 역할별 차례가 건수·문구·버튼에서 같다', 
     expect(screen.getByText(/지금 처리할 계약 1건/)).toBeTruthy();
     const op = rowOf('업무지원 시스템 구축');
     expect(within(op).getByText(/담당자 검토 결재를 기다려요/)).toBeTruthy();
-    expect(within(op).getByRole('button').textContent).toBe('보기');
-    expect(within(rowOf('홈페이지 유지보수')).getByRole('button').textContent).toBe('결재하기');
+    expect(within(op).getByRole('button').getAttribute('aria-label')).toContain('담당자 검토 결재를 기다려요');
+    expect(within(rowOf('홈페이지 유지보수')).getByRole('button').getAttribute('aria-label')).toContain('결재할 차례');
     expect(within(rowOf('서버 임대')).getByText(/담당자가 지급을 기록해요/)).toBeTruthy();
   });
   it('회신 대기 중 사내 확인 건수를 보인다', () => {
