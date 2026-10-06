@@ -22,6 +22,7 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged, masked = t
   const [note, setNote] = useState(''), [ack, setAck] = useState(false), [busy, setBusy] = useState(false);
   const [error, setError] = useState(''), [queryError, setQueryError] = useState('');
   const [reload, setReload] = useState(0), [events, setEvents] = useState<ActivityItem[]>([]), [eventError,setEventError] = useState('');
+  const [eventLoading,setEventLoading] = useState(true);
   const overview = useMemo(() => buildReviewOverview(contract), [contract]);
   const wf = contract.workflow;
   useEffect(() => { setError(''); }, [contract.contract_id]);
@@ -34,10 +35,11 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged, masked = t
     return () => controller.abort();
   }, [contract.contract_id, contract.updated_at, wf?.revision, wf?.fingerprint, wf?.approval_status, reload]);
   useEffect(() => {
-    const controller = new AbortController(); setEvents([]);setEventError('');
+    const controller = new AbortController(); setEvents([]);setEventError('');setEventLoading(true);
     requestJson<{ items:ActivityItem[] }>(`/api/contracts/${contract.contract_id}/activity?limit=30&masked=${masked}&revision=${wf?.revision ?? 0}`, {signal:controller.signal})
       .then((r) => { if (!controller.signal.aborted) setEvents(r.items); })
-      .catch((e) => { if (!controller.signal.aborted) setEventError(e.message); });
+      .catch((e) => { if (!controller.signal.aborted) setEventError(e.message); })
+      .finally(() => {if(!controller.signal.aborted)setEventLoading(false);});
     return () => controller.abort();
   }, [contract.contract_id, wf?.revision, masked]);
   if (!wf) return null;
@@ -75,7 +77,7 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged, masked = t
         <div className="cp-panel-footer"><span>자동 검사와 사람의 원문 확인은 별도 기록입니다.</span></div>
       </Surface>
       <Surface title="최근 기록된 변경" sub="현재 조회된 처리 기록 기준">
-        {eventError ? <p role="alert" className="cp-panel-body">변경 기록 조회 실패: {eventError}</p> : changes.length ? <div className="cp-table-scroll"><table className="cp-data-table cp-changes"><thead><tr><th>서류·처리</th><th>변경 내용</th></tr></thead><tbody>{changes.map(({event,lines}) => <tr key={event.event_id}><td><strong>{event.title}</strong><small className="cp-sub">{kst(event.occurred_at)} · {event.actor_name}</small>{event.document_id != null && <small className="cp-sub">문서 #{event.document_id}</small>}</td><td>{lines.map((line,i) => <div key={i}>{line}</div>)}</td></tr>)}</tbody></table></div> : <p className="cp-panel-body cp-muted">조회된 기록에 값 변경이 없습니다.</p>}
+        {eventLoading ? <p role="status" className="cp-panel-body cp-muted">변경 기록 조회 중…</p> : eventError ? <p role="alert" className="cp-panel-body">변경 기록 조회 실패: {eventError}</p> : changes.length ? <div className="cp-table-scroll"><table className="cp-data-table cp-changes"><thead><tr><th>서류·처리</th><th>변경 내용</th></tr></thead><tbody>{changes.map(({event,lines}) => <tr key={event.event_id}><td><strong>{event.title}</strong><small className="cp-sub">{kst(event.occurred_at)} · {event.actor_name}</small>{event.document_id != null && <small className="cp-sub">문서 #{event.document_id}</small>}</td><td>{lines.map((line,i) => <div key={i}>{line}</div>)}</td></tr>)}</tbody></table></div> : <p className="cp-panel-body cp-muted">조회된 기록에 값 변경이 없습니다.</p>}
       </Surface>
       {currentSignoff && <Surface title="담당 검토 의견"><div className="cp-panel-body"><p>{displayNote(currentSignoff.note)}</p><small className="cp-sub">{currentSignoff.actor_name} · {kst(currentSignoff.created_at)}</small></div></Surface>}
     </div>

@@ -2,13 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { requestJson } from '../../api/client';
 import { maskVendorName } from '../../utils/masking';
 import { createLatestGuard } from '../../utils/latest';
-import { STAGE_KO, STAGE_PILL, Stage } from '../../utils/stage';
+import { Stage } from '../../utils/stage';
+import { Badge } from '../ui/Surface';
 import { DashboardItem, stageOfItem } from './StageDashboard';
 import { Search } from 'lucide-react';
 
 interface SearchResult { items: DashboardItem[]; total: number; limit: number; offset: number }
 
 const PAGE = 50;
+const LABEL:Record<Stage,string> = {RECEIVING:'서류 받기',CHECK:'확인 필요',WAITING:'회신 대기',APPROVAL:'결재 대기',PAYMENT:'지급 대기',DONE:'완료'};
 
 /** 서버 검색 조건(쿼리 문자열). 빈 값은 보내지 않는다 */
 export function searchQuery(f: { q: string; completion: 'ALL' | 'OPEN' | 'DONE'; from: string; to: string }, offset: number) {
@@ -93,10 +95,10 @@ export const ContractSearch: React.FC<Props> = ({ isMaskingEnabled, onOpen, comp
               const s: Stage = stageOfItem(c);
               return (
                 <tr key={c.contract_id} className="cursor-pointer hover:bg-slate-50" onClick={() => onOpen(c.contract_id)}>
-                  <td className="px-4 py-3"><span className={`whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-bold ${STAGE_PILL[s]}`}>{STAGE_KO[s]}</span></td>
+                  <td className="px-4 py-3"><Badge tone={s==='DONE'?'green':s==='APPROVAL'?'blue':'amber'}>{LABEL[s]}</Badge></td>
                   <td className="px-4 py-3">
                     <button className="cp-contract-link" onClick={(e) => { e.stopPropagation(); onOpen(c.contract_id); }}>{c.title}</button>
-                    <div className="text-xs text-slate-500">{maskVendorName(c.vendor_name, isMaskingEnabled)} · 앱 계약 {c.contract_id}번</div>
+                    <div className="text-xs text-slate-500">계약 #{c.contract_id} · {maskVendorName(c.vendor_name, isMaskingEnabled)}</div>
                   </td>
                   <td className="px-4 py-3 text-right tabular-nums">{Math.round(c.contract_amount).toLocaleString('ko-KR')}원</td>
                   <td className="px-4 py-3 tabular-nums text-slate-600">{c.created_at ? kstDate(c.created_at) : '-'}</td>

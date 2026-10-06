@@ -405,7 +405,7 @@ export const ContractStageView: React.FC<Props> = ({
     {detailTab === 'approval' && <>
       {stage === 'PAYMENT' || stage === 'DONE' ? <div className="cp-approval-grid"><div><Surface title="결재 요약"><dl className="cp-summary"><div><dt>계약 금액</dt><dd>{won(contract.contract_amount)}</dd></div><div><dt>결재</dt><dd><Badge tone="green">결재 완료</Badge></dd></div><div><dt>필수 서류</dt><dd>{required.filter((t) => submittedTypes.has(t)).length}/{required.length}종</dd></div><div><dt>국세청 진위 조회</dt><dd><Badge>미조회</Badge></dd></div></dl></Surface><ActivityTimeline contractId={contract.contract_id} revision={wf?.revision} fingerprint={wf?.fingerprint} masked={isMaskingEnabled} limit={8} compact /></div><Surface title={stage === 'DONE' ? '지급 기록 완료' : '계약 전체 지급 완료 기록'} className="cp-payment-panel"><div className="cp-panel-body">              {stage === 'PAYMENT' && paidBefore && (
                 <div className="space-y-3">
-                  <div className="text-xl font-bold text-slate-900">이미 지급한 계약이에요. 같은 지급인지 확인해 주세요</div>
+                  <div className="text-xl font-bold text-slate-900">기존 지급 재확인</div>
                   <p className="text-sm text-slate-700">{paidBefore.recorded_paid_on}에 <b>계약 전체 지급 완료</b>로 기록돼 있어요{paidBefore.actor_name ? ` (${paidBefore.actor_name})` : ''}. 그 뒤 서류나 계약 기준이 바뀌어 다시 결재했어요. <b>다시 지급하지 마세요.</b></p>
                   {paidBefore.reconfirmation_allowed ? (canEdit || representative) && (
                     <div className="space-y-2 rounded-xl bg-white p-3 text-sm">
@@ -428,7 +428,7 @@ export const ContractStageView: React.FC<Props> = ({
 
               {stage === 'PAYMENT' && !paidBefore && (
                 <div className="space-y-3">
-                  <div className="text-xl font-bold text-slate-900">대표 결재 끝. 계약 전체 지급을 마쳤나요?</div>
+                  <div className="text-xl font-bold text-slate-900">계약 전체 지급 완료 기록</div>
                   <p className="text-sm text-slate-600">{wf?.payment_mode === 'INSTALLMENT' ? '분할 지급 계약이에요. 모든 회차를 다 지급한 뒤에 기록하세요.' : '지급을 마친 날짜를 기록하세요.'}</p>
                   {canEdit || representative ? (
                     <div className="flex flex-wrap items-end gap-2 text-sm">
@@ -440,7 +440,7 @@ export const ContractStageView: React.FC<Props> = ({
                         </select></label>
                       <label className="grid min-w-[180px] flex-1 gap-1"><span className="text-xs text-slate-500">메모 (선택)</span>
                         <input value={payNote} onChange={(e) => setPayNote(e.target.value)} maxLength={500} placeholder="예: 기업은행 이체" className="rounded-lg border border-slate-300 bg-white px-2 py-1.5" /></label>
-                      <button onClick={() => void recordPayment()} disabled={payBusy || !paidOn} className="rounded-lg bg-emerald-700 px-4 py-2 font-semibold text-white hover:bg-emerald-800 disabled:opacity-40">{payBusy ? '기록 중…' : '계약 전체 지급 완료로 기록'}</button>
+                      <button onClick={() => void recordPayment()} disabled={payBusy || !paidOn || paidOn > today()} className="cp-button cp-button-primary">{payBusy ? '기록 중…' : '계약 전체 지급 완료로 기록'}</button>
                     </div>
                   ) : <p className="text-sm text-slate-600">담당자가 지급하고 기록합니다.</p>}
                   <p className="text-xs text-slate-500">앱은 돈을 보내지 않아요. 지급했다는 기록만 남깁니다.</p>
@@ -449,7 +449,7 @@ export const ContractStageView: React.FC<Props> = ({
               )}
 
       {stage === 'DONE' && (            <div className="space-y-2 rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-5">
-              <div className="flex items-center gap-2 text-xl font-bold text-emerald-900"><CheckCircle2 className="h-6 w-6" /> 끝났어요</div>
+              <div className="flex items-center gap-2 text-xl font-bold text-emerald-900"><CheckCircle2 className="h-6 w-6" /> 지급 완료</div>
               <p className="text-sm text-emerald-800">{payment?.paid_on} 계약 전체 지급 완료{payment?.method === 'TRANSFER' ? ' (계좌이체)' : ''}{payment?.note ? ` · ${payment.note}` : ''}. 이 계약은 ‘할 일’에서 빠지고 ‘지난 계약 찾기’에 남아요.</p>
               {brief && <button onClick={copyBrief} className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-white px-3 py-1.5 text-sm font-semibold text-emerald-800"><Copy className="h-4 w-4" />{copied ? '복사했어요' : '요약 복사'}</button>}
             </div>

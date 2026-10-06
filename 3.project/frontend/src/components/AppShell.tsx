@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { Sidebar, SidebarProps } from './Sidebar';
 import { useDialogA11y } from '../hooks/useDialogA11y';
@@ -11,6 +11,9 @@ export const AppShell: React.FC<SidebarProps & { children: React.ReactNode; titl
     try { return localStorage.getItem(STORAGE_KEY) !== 'closed'; } catch { return true; }
   });
   const navRef = useRef<HTMLDivElement>(null), mainRef = useRef<HTMLDivElement>(null), toggleRef = useRef<HTMLButtonElement>(null);
+  const wasMobileOpen = useRef(false);
+  // 포커스 이동 effect보다 먼저 메뉴를 활성화한다. 닫힌 메뉴는 키보드로 들어갈 수 없다.
+  useLayoutEffect(() => { if (navRef.current) navRef.current.inert = !open; }, [open]);
   useDialogA11y(navRef, () => setOpen(false), mobile && open);
   useEffect(() => {
     const media = window.matchMedia('(max-width: 900px)');
@@ -21,10 +24,11 @@ export const AppShell: React.FC<SidebarProps & { children: React.ReactNode; titl
   useEffect(() => {
     if (mainRef.current) {
       mainRef.current.inert = mobile && open;
-      if (mobile && !open && navRef.current?.contains(document.activeElement)) toggleRef.current?.focus();
+      if (wasMobileOpen.current && !(mobile && open)) toggleRef.current?.focus();
     }
+    wasMobileOpen.current = mobile && open;
   }, [mobile, open]);
-  const closeMobile = () => { if (mobile) { setOpen(false); toggleRef.current?.focus(); } };
+  const closeMobile = () => { if (mobile) setOpen(false); };
   return <div className={`cp-app ${open ? 'cp-nav-open' : 'cp-nav-closed'}`}>
     {mobile && open && <button className="cp-nav-shade" aria-label="메뉴 닫기" tabIndex={-1} onClick={() => setOpen(false)} />}
     <div id="app-navigation" className="cp-nav" ref={navRef} role={mobile && open ? 'dialog' : undefined} aria-modal={mobile && open ? true : undefined} aria-label={mobile && open ? '앱 메뉴' : undefined}>

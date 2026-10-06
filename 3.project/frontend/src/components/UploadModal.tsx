@@ -99,7 +99,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
         <div className="p-5 border-b border-slate-200 flex shrink-0 items-center justify-between bg-slate-50">
           <div>
             <h3 id="upload-title" className="text-base font-bold text-slate-900">새 서류 추가</h3>
-            <p className="text-xs text-slate-500 mt-0.5">앱 계약 {contractId}번에 서류를 더합니다</p>
+            <p className="text-xs text-slate-500 mt-0.5">계약 #{contractId}</p>
           </div>
           <button
             onClick={onClose}
@@ -112,7 +112,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
 
         {/* Body */}
         <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-6">
-          <p className="rounded-xl bg-sky-50 p-3 text-xs text-sky-900">거래처가 <b>같은 서류를 고쳐서 다시 보낸 것</b>이라면 여기서 추가하지 말고, 계약 화면에서 그 서류를 열어 <b>‘고친 본 올리기’</b>를 쓰세요. 그래야 이전 본이 보관되고 검사에서 빠져요. 여기는 새 서류를 더하는 곳이에요.</p>
+          <p className="rounded-xl bg-sky-50 p-3 text-xs text-sky-900">같은 서류의 수정본은 원문 대조창의 <b>‘고친 본 올리기’</b>에서 등록합니다. 이전 본은 자동 보관됩니다.</p>
           {error && (
             <div role="alert" className="rounded-xl bg-rose-50 p-3 text-xs font-semibold text-rose-800">
               {error}
@@ -133,22 +133,26 @@ export const UploadModal: React.FC<UploadModalProps> = ({
               className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="">종류 자동으로 나누기 (추천)</option>
-              <option value="contract">📄 계약서 (contract)</option>
-              <option value="estimate">📊 견적서 (estimate)</option>
-              <option value="business_registration">🏢 사업자등록증 (business_registration)</option>
-              <option value="bank_account">💳 통장사본 (bank_account)</option>
-              <option value="tax_invoice">🧾 세금계산서 (tax_invoice)</option>
-              <option value="inspection_confirmation">✅ 검수확인서 (inspection_confirmation)</option>
+              <option value="contract">계약서</option>
+              <option value="estimate">견적서</option>
+              <option value="business_registration">사업자등록증</option>
+              <option value="bank_account">통장사본</option>
+              <option value="tax_invoice">세금계산서</option>
+              <option value="inspection_confirmation">검수확인서</option>
             </select>
           </div>
 
           {/* Dropzone */}
           <div
+            role="button"
+            tabIndex={0}
+            aria-label="파일 선택"
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
             onDrop={handleDrop}
             onClick={() => inputRef.current?.click()}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef.current?.click(); } }}
             className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition-all ${
               dragActive
                 ? 'border-indigo-500 bg-indigo-50/50'

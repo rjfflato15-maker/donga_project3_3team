@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Mail, Lock, LogIn, AlertCircle, RefreshCw, Sparkles } from 'lucide-react';
+import { ShieldCheck, Mail, Lock, LogIn, AlertCircle, RefreshCw } from 'lucide-react';
 import { authApi } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
 
@@ -40,21 +40,19 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="cp-auth">
       {/* Dynamic Background Glow Elements */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/30 rounded-full blur-3xl" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl" />
 
       {/* Main Card */}
-      <div className="max-w-md w-full bg-white/95 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border border-white/20 relative z-10">
+      <div className="cp-login-card">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-violet-600 via-indigo-600 to-blue-500 mx-auto flex items-center justify-center text-white shadow-xl shadow-indigo-500/30 mb-4 transition-transform hover:scale-105">
+          <div className="cp-login-icon">
             <ShieldCheck className="w-7 h-7" />
           </div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Smart Contract</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">증빙검수</h1>
           <p className="text-xs font-bold text-indigo-600 tracking-widest uppercase mt-0.5">
-            EVIDENCE HUB
+            계약 증빙 관리
           </p>
           <p className="text-xs font-semibold text-slate-500 mt-2">
             계약 증빙서류 누락·불일치 자동 검수 시스템
@@ -64,7 +62,6 @@ export const LoginPage: React.FC = () => {
         {/* Quick Demo Info Box */}
         <div className="mb-6 bg-indigo-50/80 border border-indigo-100 rounded-2xl p-3.5 text-xs text-indigo-900">
           <div className="flex items-center space-x-1.5 font-bold mb-1">
-            <Sparkles className="w-4 h-4 text-indigo-600" />
             <span>사내 계정으로 접속</span>
           </div>
           <p className="text-[11px] text-indigo-700/90 font-medium">
@@ -128,7 +125,7 @@ export const LoginPage: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-extrabold py-3 px-4 rounded-xl text-sm shadow-lg shadow-indigo-500/25 flex items-center justify-center space-x-2 transition-all disabled:opacity-50"
+            className="cp-button cp-primary w-full mt-2"
           >
             {loading ? (
               <RefreshCw className="w-4 h-4 animate-spin" />
@@ -142,7 +139,7 @@ export const LoginPage: React.FC = () => {
         </form>
 
         <p className="mt-8 text-center text-[11px] font-semibold text-slate-400">
-          Smart Contract Evidence Hub • 3조 B2B 검수 시스템
+          회사 계정으로 로그인
         </p>
       </div>
     </div>

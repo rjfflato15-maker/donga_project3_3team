@@ -7,9 +7,10 @@ vi.mock('../context/AuthContext', () => ({ useAuth: () => ({ user: { display_nam
 let mobile = false;
 beforeEach(() => {
   localStorage.clear(); mobile = false;
+  vi.spyOn(HTMLElement.prototype,'offsetParent','get').mockImplementation(function(this:HTMLElement){return this.parentElement;});
   window.matchMedia = vi.fn(() => ({ matches: mobile, addEventListener: vi.fn(), removeEventListener: vi.fn() } as unknown as MediaQueryList));
 });
-afterEach(cleanup);
+afterEach(() => {cleanup();vi.restoreAllMocks();});
 function Screen() {
   const [note,setNote] = useState('');
   return <AppShell title="결재" activeTab="dashboard" onTabChange={() => {}} isMaskingEnabled><label>결재 의견<input value={note} onChange={(e) => setNote(e.target.value)} /></label></AppShell>;
@@ -30,8 +31,11 @@ describe('앱 셸: 메뉴는 업무 입력과 독립', () => {
     fireEvent.click(screen.getByRole('button', { name: '메뉴 펼치기' }));
     expect(screen.getByRole('dialog', { name: '앱 메뉴' })).toBeTruthy();
     expect((document.querySelector('.cp-main') as HTMLElement).inert).toBe(true);
+    expect(document.activeElement).toBe(screen.getByRole('button',{name:'업무함'}));
     fireEvent.keyDown(document, { key: 'Escape' });
     expect(screen.queryByRole('dialog')).toBeNull();
     expect((document.querySelector('.cp-main') as HTMLElement).inert).toBe(false);
+    expect(document.activeElement).toBe(screen.getByRole('button',{name:'메뉴 펼치기'}));
+    expect((document.querySelector('.cp-nav') as HTMLElement).inert).toBe(true);
   });
 });

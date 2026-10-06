@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useDialogA11y } from '../hooks/useDialogA11y';
 import {
   X,
   Upload,
@@ -52,6 +53,9 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
   const [taxAmount, setTaxAmount] = useState('');
   const [paymentMode, setPaymentMode] = useState<'FULL' | 'INSTALLMENT'>('FULL');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  useDialogA11y(dialogRef, onClose, isOpen);
   const resetForm = () => {
     setSelectedFiles([]);
     setParsing(false);
@@ -193,12 +197,12 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50" role="dialog" aria-modal="true">
+    <div ref={dialogRef} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50" role="dialog" aria-modal="true" aria-labelledby="register-contract-title">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl overflow-hidden flex flex-col max-h-[92vh]">
         {/* Header */}
         <div className="flex items-start gap-3 border-b border-slate-100 px-6 py-4 shrink-0">
           <div className="min-w-0">
-            <h3 className="text-lg font-bold text-slate-900">서류 6종으로 계약 등록</h3>
+            <h3 id="register-contract-title" className="text-lg font-bold text-slate-900">서류 6종으로 계약 등록</h3>
             <p className="mt-0.5 text-sm text-slate-500">서류를 올리면 종류를 나누고 계약명·거래처·금액을 읽어 미리 채웁니다. 내용을 확인하고 계약 기준을 고르면 등록됩니다.</p>
           </div>
           <button onClick={onClose} aria-label="닫기" className="ml-auto rounded-lg p-1.5 text-slate-400 hover:bg-slate-100">
@@ -220,10 +224,11 @@ export const AutoBatchContractModal: React.FC<AutoBatchContractModalProps> = ({
                   PDF·이미지·워드·한글·엑셀 파일을 올릴 수 있어요. 한 번에 여러 개 골라도 됩니다.
                 </p>
               </div>
-              <label className="cursor-pointer inline-flex items-center space-x-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold rounded-xl shadow-sm transition-all hover:scale-[1.02]">
+              <label role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileRef.current?.click(); } }} className="cursor-pointer inline-flex items-center space-x-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold rounded-xl shadow-sm transition-all hover:scale-[1.02]">
                 <Upload className="w-3.5 h-3.5" />
                 <span>파일 고르기</span>
                 <input
+                  ref={fileRef}
                   type="file"
                   multiple
                   accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.tiff,.tif,.gif,.txt,.docx,.doc,.hwp,.hwpx,.xlsx,.xls,.csv"
