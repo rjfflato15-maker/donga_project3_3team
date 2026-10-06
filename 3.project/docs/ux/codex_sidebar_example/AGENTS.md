@@ -7,6 +7,7 @@
 - Keep sidebar toggling from resetting the contract, tab or entered opinion. Mobile uses an overlay sidebar and sequential original/field views.
 - Use synthetic contract data only. Keep this isolated from frontend/, live databases and protected evaluations. No backend connections or external integrations.
 - 2026-10-06 comparison choice: left is the former screen structure; right is this Codex sidebar design only. Exclude Claude's ERP alternative from the comparison. Extend other workflow screens with the same design, contract and amount. Keep comparison controls outside app navigation.
+- 2026-10-06 user decision: the team approved adopting this Codex sidebar direction in the real app after reviewing masking. Keep the existing masking scope and edit/request exceptions. The prototype stays isolated; real frontend adoption follows `../codex_sidebar_implementation_handoff_20261006.md`. The user subsequently assigned Claude to document the accepted design as an implementation specification, with Codex implementing and verifying the actual frontend after that specification arrives.
 
 Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
 
