@@ -13,7 +13,9 @@ export function useDialogA11y(ref: RefObject<HTMLElement>, onClose: () => void, 
     const items = () => (root ? [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((el) => el.offsetParent !== null) : []);
     // 닫기 버튼보다 본문 첫 칸에 먼저 가도록, 닫기(X)가 첫 번째면 그다음 요소로
     const list = items();
-    const first = list.find((el) => el.getAttribute('aria-label') !== '닫기') ?? list[0];
+    const first = list.find((el) => el.hasAttribute('data-autofocus'))
+      ?? list.find((el) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(el.tagName))
+      ?? list.find((el) => !el.getAttribute('aria-label')?.includes('닫기')) ?? list[0];
     first?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') { e.stopPropagation(); onClose(); return; }

@@ -25,7 +25,8 @@ const rowOf = (title: string) => screen.getByText(title).closest('tr') as HTMLEl
 describe('첫 화면: 역할별 차례가 건수·문구·버튼에서 같다', () => {
   it('담당자: 2단계 결재의 담당 검토·사내 확인·지급이 내 차례', () => {
     render(<StageDashboard contracts={[operatorTurn, repTurn, waitingWithCheck, payment, done]} isMaskingEnabled={false} canEdit onOpen={() => undefined} />);
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('지금 처리할 계약 3건');
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('업무함');
+    expect(screen.getByText(/지금 처리할 계약 3건/)).toBeTruthy();
     const op = rowOf('업무지원 시스템 구축');
     expect(within(op).getByText(/담당 검토 결재 차례예요/)).toBeTruthy();
     expect(within(op).getByRole('button').textContent).toBe('결재하기');
@@ -41,7 +42,7 @@ describe('첫 화면: 역할별 차례가 건수·문구·버튼에서 같다', 
   });
   it('대표: 담당 검토 중인 계약은 내 차례가 아니고, 대표 결재만 내 차례', () => {
     render(<StageDashboard contracts={[operatorTurn, repTurn, waitingWithCheck, payment]} isMaskingEnabled={false} canEdit={false} representative onOpen={() => undefined} />);
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('지금 처리할 계약 1건');
+    expect(screen.getByText(/지금 처리할 계약 1건/)).toBeTruthy();
     const op = rowOf('업무지원 시스템 구축');
     expect(within(op).getByText(/담당자 검토 결재를 기다려요/)).toBeTruthy();
     expect(within(op).getByRole('button').textContent).toBe('보기');

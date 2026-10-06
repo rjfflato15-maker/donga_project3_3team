@@ -2,7 +2,9 @@ import React, { useMemo, useState } from 'react';
 import { ContractListItem } from '../../types';
 import { seoulToday } from '../../utils/date';
 import { maskVendorName } from '../../utils/masking';
-import { Stage, stageOf, STAGE_KO, STAGE_PILL, isMyTurn, approvalWaitingFor, Role } from '../../utils/stage';
+import { Stage, stageOf, STAGE_KO, isMyTurn, approvalWaitingFor, Role } from '../../utils/stage';
+import { ContractSearch } from './ContractSearch';
+import { Badge } from '../ui/Surface';
 import { Plus, Search } from 'lucide-react';
 
 export interface DashboardItem extends ContractListItem {
@@ -81,7 +83,7 @@ interface Props {
 /** 첫 화면 '할 일': 끝나지 않은 계약을 단계 순서대로, 계약마다 다음 할 일 한 줄과 버튼 하나 */
 export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, canEdit, representative = false, onOpen, onNew, history = false }) => {
   const [query, setQuery] = useState('');
-  const [filter, setFilter] = useState<Stage | 'all'>('all');
+  const [filter, setFilter] = useState<Stage | 'all' | 'mine' | 'everything'>('all');
   const withStage = useMemo(() => contracts.map((c) => ({ c, s: stageOfItem(c) })), [contracts]);
   const count = (s: Stage) => withStage.filter((x) => x.s === s).length;
   // 담당자는 손댈 것부터, 대표는 결재할 것부터
@@ -93,69 +95,43 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
   const active = withStage.filter((x) => x.s !== 'DONE');
   const q = query.trim().toLowerCase();
   const rows = (q || history ? withStage : active)
-    .filter((x) => filter === 'all' || x.s === filter)
+    .filter((x) => filter === 'all' || filter === 'everything' || filter === 'mine' && mineOf(x) || x.s === filter)
     .filter((x) => matchesQuery(x.c, q))
     .sort((a, b) => history
       ? b.c.created_at.localeCompare(a.c.created_at)
       : Number(mineOf(b)) - Number(mineOf(a)) || order.indexOf(a.s) - order.indexOf(b.s) || (a.c.earliest_due_on || '9999').localeCompare(b.c.earliest_due_on || '9999'));
   // 제목 건수 = 이 역할의 차례인 계약(버튼·문구와 같은 기준)
   const todo = active.filter(mineOf).length;
-  const tiles: { s: Stage; label: string }[] = [
+  /* const tiles: { s: Stage; label: string }[] = [
     { s: 'RECEIVING', label: '① 서류 받을 것' },
     { s: 'CHECK', label: '② 확인할 것' },
     { s: 'WAITING', label: '③ 보완 기다리는 중' },
     { s: 'APPROVAL', label: '④ 결재 대기' },
     { s: 'PAYMENT', label: '⑤ 지급할 것' },
-  ];
+  ]; */
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-wrap items-end gap-3">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">{history ? '지난 계약 찾기' : todo ? `지금 처리할 계약 ${todo}건` : '지금 처리할 계약이 없어요'}</h1>
-          <p className="text-sm text-slate-500">{history ? `모든 계약 ${contracts.length}건 · 최근 등록 순서` : `${representative ? '대표' : '담당자'} 역할이 처리할 계약이에요. 개인에게 맡겨진 일은 위 ‘내가 맡은 일’에 따로 보여요.`}</p>
-        </div>
-        <div className="ml-auto flex flex-wrap items-center gap-2">
-          <label className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200">
-            <Search className="h-4 w-4 text-slate-400" />
-            <span className="sr-only">계약 검색</span>
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="거래처·계약명·금액"
-              className="w-44 bg-white text-slate-800 outline-none" />
-          </label>
-          {canEdit && onNew && (
-            <button onClick={onNew} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
-              <Plus className="h-4 w-4" /> 새 계약 등록
-            </button>
-          )}
-        </div>
+    <div className="cp-inbox">
+      <div className="cp-heading"><div><h1>{history ? '계약 찾기' : '업무함'}</h1><p>지금 처리할 계약 {todo}건 · {representative ? '대표' : '담당자'} 역할 기준</p></div>
+        {canEdit && onNew && <button onClick={onNew} className="cp-button cp-primary"><Plus size={15} />계약 등록</button>}
       </div>
-
-      <div className={history ? 'hidden' : 'grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6'}>
-        {tiles.map((t) => {
-          const on = filter === t.s;
-          const n = count(t.s);
-          return (
-            <button key={t.s} onClick={() => setFilter(on ? 'all' : t.s)} aria-pressed={on}
-              className={`rounded-xl border bg-white p-3 text-left text-sm transition ${on ? 'border-indigo-500 ring-2 ring-indigo-200' : 'border-slate-200 hover:border-indigo-300'}`}>
-              <div className="text-slate-500">{t.label}</div>
-              <div className={`text-2xl font-bold tabular-nums ${n ? 'text-slate-900' : 'text-slate-300'}`}>{n}</div>
-            </button>
-          );
-        })}
-        <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm">
-          <div className="text-slate-500">끝난 계약</div>
-          <div className="text-2xl font-bold tabular-nums text-slate-400">{count('DONE')}</div>
+      {!history && <div className="cp-stats">
+        {[['진행 중', active.length, 'all'], ['내 차례', todo, 'mine'], ['회신 대기', count('WAITING'), 'WAITING'], ['완료', count('DONE'), 'DONE']].map(([label, n, value]) => <button key={String(value)} aria-pressed={filter === value} onClick={() => setFilter(value as typeof filter)}><span>{label}</span><strong>{n}</strong></button>)}
+      </div>}
+      <section className="cp-surface">
+        <div className="cp-tabs cp-inbox-tabs" role="tablist" aria-label="업무함 필터">
+          {[['all', '진행 중'], ['mine', '내 차례'], ['CHECK', '확인 필요'], ['WAITING', '회신 대기'], ['APPROVAL', '결재 대기'], ['PAYMENT', '지급 대기'], ['DONE', '완료'], ['everything', '전체']].map(([value,label]) => <button key={value} role="tab" aria-selected={filter === value} onClick={() => setFilter(value as typeof filter)}>{label}</button>)}
         </div>
-      </div>
-
-      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
-        <table className="w-full min-w-[640px] text-sm">
+        {filter === 'DONE' || filter === 'everything' ? <ContractSearch key={filter} compact initialCompletion={filter === 'DONE' ? 'DONE' : 'ALL'} isMaskingEnabled={isMaskingEnabled} onOpen={onOpen} /> : <>
+        <div className="cp-toolbar"><label className="cp-search"><Search size={15} /><span className="sr-only">계약 검색</span><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="거래처·계약명·금액" /></label><small>{rows.length}건</small></div>
+      <div className="cp-table-scroll">
+        <table className="cp-data-table cp-inbox-table">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
               <th className="px-4 py-2.5 font-medium">단계</th>
               <th className="px-4 py-2.5 font-medium">계약</th>
               <th className="px-4 py-2.5 text-right font-medium">금액</th>
-              <th className="px-4 py-2.5 font-medium">다음 할 일</th>
+              <th className="cp-next-col px-4 py-2.5 font-medium">다음 할 일</th>
               <th className="px-4 py-2.5" />
             </tr>
           </thead>
@@ -170,13 +146,13 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
               const mine = mineOf({ c, s });
               return (
                 <tr key={c.contract_id} className="cursor-pointer hover:bg-slate-50" onClick={() => onOpen(c.contract_id)}>
-                  <td className="px-4 py-3"><span className={`whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-bold ${STAGE_PILL[s]}`}>{STAGE_KO[s]}</span></td>
+                  <td className="px-4 py-3"><Badge tone={s === 'DONE' ? 'green' : s === 'APPROVAL' ? 'blue' : 'amber'}>{STAGE_KO[s].replace(/^[①②③④⑤]\s*/, '')}</Badge></td>
                   <td className="px-4 py-3">
-                    <div className="max-w-[18rem] truncate font-semibold text-slate-900">{c.title}</div>
-                    <div className="text-xs text-slate-500">{maskVendorName(c.vendor_name, isMaskingEnabled)}</div>
+                    <div className="cp-contract-link">{c.title}</div>
+                    <div className="text-xs text-slate-500">계약 #{c.contract_id} · {maskVendorName(c.vendor_name, isMaskingEnabled)}</div>
                   </td>
                   <td className="px-4 py-3 text-right tabular-nums">{Math.round(c.contract_amount).toLocaleString('ko-KR')}원</td>
-                  <td className="px-4 py-3 text-slate-700">
+                  <td className="cp-next-col px-4 py-3 text-slate-700">
                     {nextAction(c, s, representative)}
                     {s !== 'PAYMENT' && c.payment?.status === 'RECONFIRMATION_REQUIRED' && <span className="ml-1 rounded bg-amber-100 px-1.5 py-0.5 text-xs font-semibold text-amber-800">이미 지급한 계약 · 다시 지급 금지</span>}
                     {s === 'WAITING' && c.earliest_due_on && (
@@ -195,7 +171,8 @@ export const StageDashboard: React.FC<Props> = ({ contracts, isMaskingEnabled, c
           </tbody>
         </table>
       </div>
-      {!history && <p className="text-xs text-slate-500">끝난 계약은 여기서 빠지고 ‘지난 계약 찾기’에 남아요. 검색하면 끝난 계약도 함께 찾아요.</p>}
+      </>}
+      </section>
     </div>
   );
 };

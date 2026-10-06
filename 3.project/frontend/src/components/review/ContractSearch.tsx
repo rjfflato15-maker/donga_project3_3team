@@ -24,17 +24,19 @@ const kstDate = (iso: string) => new Intl.DateTimeFormat('sv-SE', { timeZone: 'A
 interface Props {
   isMaskingEnabled: boolean;
   onOpen: (contractId: number) => void;
+  compact?: boolean;
+  initialCompletion?: 'ALL' | 'OPEN' | 'DONE';
 }
 
 /** 지난 계약 찾기: 서버 검색(계약명·거래처·앱 계약 ID·금액, 진행 중/끝, 등록 기간) */
-export const ContractSearch: React.FC<Props> = ({ isMaskingEnabled, onOpen }) => {
+export const ContractSearch: React.FC<Props> = ({ isMaskingEnabled, onOpen, compact = false, initialCompletion = 'ALL' }) => {
   const [q, setQ] = useState('');
-  const [completion, setCompletion] = useState<'ALL' | 'OPEN' | 'DONE'>('ALL');
+  const [completion, setCompletion] = useState<'ALL' | 'OPEN' | 'DONE'>(initialCompletion);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [rows, setRows] = useState<DashboardItem[]>([]);
   const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const guard = useRef(createLatestGuard()).current;
 
@@ -53,18 +55,19 @@ export const ContractSearch: React.FC<Props> = ({ isMaskingEnabled, onOpen }) =>
   };
   // 입력이 멈추면 검색
   useEffect(() => {
+    guard.invalidate(); setLoading(true); setRows([]); setTotal(0);
     const id = setTimeout(() => { void run(0); }, 250);
-    return () => clearTimeout(id);
+    return () => { clearTimeout(id); guard.invalidate(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, completion, from, to]);
 
   const input = 'rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200';
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">지난 계약 찾기</h1>
-        <p className="text-sm text-slate-500">끝난 계약까지 모두 찾아요. 기간은 <b>계약을 처음 등록한 날</b> 기준이에요.</p>
-      </div>
+    <div className={compact ? 'cp-search-results p-4 space-y-4' : 'cp-search-results space-y-4'}>
+      {!compact && <div className="cp-heading">
+        <h1 className="text-2xl font-bold text-slate-900">계약 찾기</h1>
+        <p className="text-sm text-slate-500">끝난 계약까지 모두 찾아요. 기간은 <b>계약을 처음 등록한 날</b> 기준입니다.</p>
+      </div>}
       <div className="flex flex-wrap items-end gap-2">
         <label className="flex min-w-[220px] flex-1 items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200">
           <Search className="h-4 w-4 text-slate-400" />
@@ -79,8 +82,8 @@ export const ContractSearch: React.FC<Props> = ({ isMaskingEnabled, onOpen }) =>
         <label className="grid gap-1 text-xs text-slate-500">등록일까지<input type="date" value={to} min={from || undefined} onChange={(e) => setTo(e.target.value)} className={input} /></label>
       </div>
       {error && <p role="alert" className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700">{error}</p>}
-      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
-        <table className="w-full min-w-[640px] text-sm">
+      <div className="cp-table-scroll cp-surface">
+        <table className="cp-data-table cp-inbox-table">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr><th className="px-4 py-2.5 font-medium">단계</th><th className="px-4 py-2.5 font-medium">계약</th><th className="px-4 py-2.5 text-right font-medium">금액</th><th className="px-4 py-2.5 font-medium">등록일</th><th className="px-4 py-2.5 font-medium">지급</th></tr>
           </thead>
@@ -92,7 +95,7 @@ export const ContractSearch: React.FC<Props> = ({ isMaskingEnabled, onOpen }) =>
                 <tr key={c.contract_id} className="cursor-pointer hover:bg-slate-50" onClick={() => onOpen(c.contract_id)}>
                   <td className="px-4 py-3"><span className={`whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-bold ${STAGE_PILL[s]}`}>{STAGE_KO[s]}</span></td>
                   <td className="px-4 py-3">
-                    <div className="max-w-[18rem] truncate font-semibold text-slate-900">{c.title}</div>
+                    <button className="cp-contract-link" onClick={(e) => { e.stopPropagation(); onOpen(c.contract_id); }}>{c.title}</button>
                     <div className="text-xs text-slate-500">{maskVendorName(c.vendor_name, isMaskingEnabled)} · 앱 계약 {c.contract_id}번</div>
                   </td>
                   <td className="px-4 py-3 text-right tabular-nums">{Math.round(c.contract_amount).toLocaleString('ko-KR')}원</td>

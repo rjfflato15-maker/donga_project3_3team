@@ -6,7 +6,8 @@ import {
   PilotInfo,
 } from '../types';
 import { api, downloadProtected } from '../api/client';
-import { Sidebar, NavigationTab } from '../components/Sidebar';
+import { NavigationTab } from '../components/Sidebar';
+import { AppShell } from '../components/AppShell';
 import { OverallDashboardView } from '../components/OverallDashboardView';
 import { ValidationReportView } from '../components/ValidationReportView';
 import { ContractReviewOverview } from '../components/review/ContractReviewOverview';
@@ -73,32 +74,6 @@ export const ContractDashboard: React.FC = () => {
   const [recentUpload, setRecentUpload] = useState<{ contractId: number; names: string[] } | null>(null);
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
   const [contractViewMode, setContractViewMode] = useState<'list' | 'detail'>('list');
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 1280) return false;
-    try {
-      const saved = localStorage.getItem('sidebar_visible');
-      return saved !== null ? saved === 'true' : true;
-    } catch {
-      return true;
-    }
-  });
-
-  // 노트북 화면(1280px 미만)에서는 표가 잘리지 않도록 사이드바를 자동으로 접는다
-  useEffect(() => {
-    const onResize = () => { if (window.innerWidth < 1280) setIsSidebarOpen(false); };
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-
-  useEffect(() => {
-    if (window.innerWidth < 1280) return;
-    try {
-      localStorage.setItem('sidebar_visible', String(isSidebarOpen));
-    } catch {
-      // ignore
-    }
-  }, [isSidebarOpen]);
-
   const [isMaskingEnabled, setIsMaskingEnabled] = useState<boolean>(true);
   const [contracts, setContracts] = useState<ContractListItem[]>([]);
   const [currentContract, setCurrentContract] = useState<ContractDetail | null>(null);
@@ -125,7 +100,7 @@ export const ContractDashboard: React.FC = () => {
     setToasts((prev) => [...prev, { id, type, message }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 3500);
+    }, 6000);
   };
 
   const handleDismissToast = (id: string) => {
@@ -700,136 +675,17 @@ export const ContractDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex">
-      {/* Left Navigation Sidebar */}
-      <Sidebar
-        isOpen={isSidebarOpen}
-        onToggleCollapse={() => setIsSidebarOpen((prev) => !prev)}
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-        onOpenAutoBatchContract={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
-        onOpenUpload={canEdit ? () => handleOpenUploadModal() : undefined}
-        onOpenNewContract={canEdit ? () => setIsNewContractOpen(true) : undefined}
-        isMaskingEnabled={isMaskingEnabled}
-        onToggleMasking={() => setIsMaskingEnabled((prev) => !prev)}
-        onSeedDemo={!isPilot && canEdit ? handleSeedDemo : undefined}
-        loading={actionLoading}
-      />
-
-      {/* Main Container */}
-      <div className="flex-1 flex flex-col min-w-0 transition-all duration-300">
-        {/* Top Header Bar */}
-        <header className="bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 py-2.5 flex items-center justify-between sticky top-0 z-20 shadow-2xs transition-all">
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2 text-xs font-bold text-slate-700">
-              <span className="text-indigo-600 font-extrabold">
-                {activeTab === 'dashboard' && (isPilot ? '할 일' : '대시보드')}
-                {activeTab === 'contracts' && (contractViewMode === 'list' ? (isPilot ? '지난 계약 찾기' : '계약 목록') : (isPilot ? '계약' : '계약 검수'))}
-                {/* {activeTab === 'documents' && '증빙서류 관리'} */}
-                {activeTab === 'reports' && 'AI 교차검수 리포트'}
-                {activeTab === 'account-settings' && (isPilot ? '설정' : '계정 정보 및 비밀번호 변경')}
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            {isPilot && <span className="hidden sm:inline rounded-lg border border-indigo-100 bg-indigo-50 px-2.5 py-1 text-xs font-bold text-indigo-700">{user?.role === 'representative' ? '대표' : '담당자'} · {pilotInfo?.company_name}</span>}
-            <button
-              onClick={() => setIsMaskingEnabled((prev) => !prev)}
-              className={`inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border transition-colors shadow-2xs ${
-                isMaskingEnabled
-                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
-                  : 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
-              }`}
-              title="개인정보 가림 켜기/끄기. 화면의 상호·사업자번호·계좌·주민번호를 가립니다. 원문 미리보기 가림은 자동이라 빠지는 곳이 있을 수 있고, 값 수정 칸과 거래처 요청 문구에는 실제 값이 들어갑니다."
-            >
-              <span className={`w-1.5 h-1.5 rounded-full ${isMaskingEnabled ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`}></span>
-              <span>개인정보 {isMaskingEnabled ? 'ON' : 'OFF'}</span>
-            </button>
-          </div>
-        </header>
-
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 sm:py-8">
-          {renderActiveContent()}
-        </main>
-
-        {isPilot ? (
-          <footer className="border-t border-slate-200/80 bg-white px-4 py-3 text-center text-xs text-slate-500">
-            Smart Contract Evidence Hub · 3조 계약 증빙 자동 검수 · 자료는 이 회사의 서버 PC 안에만 저장됩니다
-          </footer>
-        ) : (
-        <footer className="bg-white/95 backdrop-blur-xs border-t border-slate-200/80 py-3.5 px-4 text-xs text-slate-700 select-none">
-            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 font-medium">
-              <span className="font-extrabold text-slate-900 tracking-tight">Smart Contract Evidence Hub</span>
-              <span className="text-slate-300 hidden sm:inline">|</span>
-  
-              {/* 3조 스마트 계약 증빙 누락·불일치 자동 검증 시스템 */}
-              <div className="inline-flex items-center space-x-1.5">
-                <svg viewBox="0 0 24 24" className="w-4 h-4 text-slate-700 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                  <path d="m9 12 2 2 4-4" />
-                </svg>
-                <span className="font-bold text-slate-800">3조 스마트 계약 증빙 누락·불일치 자동 검증 시스템</span>
-              </div>
-  
-              <span className="text-slate-300 hidden sm:inline">|</span>
-  
-              {/* 시스템 기술 스택 */}
-              <div className="inline-flex items-center space-x-1.5 text-slate-600">
-                <svg className="w-4 h-4 text-slate-700 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="6" cy="12" r="3" />
-                  <path d="M9 12h5" />
-                  <circle cx="18" cy="6" r="2.5" />
-                  <circle cx="18" cy="18" r="2.5" />
-                  <path d="M14 12l2-4" />
-                  <path d="M14 12l2 4" />
-                </svg>
-                <span className="font-bold text-slate-800">시스템 기술 스택</span>
-              </div>
-  
-              <span className="text-slate-300 hidden sm:inline">|</span>
-  
-              {/* FastAPI */}
-              <div className="inline-flex items-center space-x-1.5">
-                <span className="w-4 h-4 rounded-full bg-slate-800 text-white flex items-center justify-center shrink-0">
-                  <svg className="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                  </svg>
-                </span>
-                <span className="font-semibold text-slate-700">FastAPI</span>
-              </div>
-  
-              <span className="text-slate-400 font-bold">•</span>
-  
-              {/* React */}
-              <div className="inline-flex items-center space-x-1.5">
-                <svg viewBox="-11.5 -10.23 23 20.46" className="w-4 h-4 text-slate-800 shrink-0" fill="none" stroke="currentColor">
-                  <circle cx="0" cy="0" r="2.05" fill="currentColor" />
-                  <g strokeWidth="1.2">
-                    <ellipse rx="11" ry="4.2" />
-                    <ellipse rx="11" ry="4.2" transform="rotate(60)" />
-                    <ellipse rx="11" ry="4.2" transform="rotate(120)" />
-                  </g>
-                </svg>
-                <span className="font-semibold text-slate-700">React</span>
-              </div>
-  
-              <span className="text-slate-400 font-bold">•</span>
-  
-              {/* Document AI */}
-              <div className="inline-flex items-center space-x-1.5">
-                <svg viewBox="0 0 24 24" className="w-4 h-4 text-slate-800 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                  <text x="6.5" y="17.5" fill="currentColor" stroke="none" fontSize="7" fontWeight="900" fontFamily="sans-serif">AI</text>
-                </svg>
-                <span className="font-semibold text-slate-700">Document AI</span>
-              </div>
-            </div>
-          </footer>
-        )}
-      </div>
-
+    <AppShell
+      title={activeTab === 'dashboard' ? '업무함' : activeTab === 'contracts' ? (contractViewMode === 'detail' ? '계약 상세' : '계약 찾기') : activeTab === 'account-settings' ? '설정' : '검수 리포트'}
+      activeTab={activeTab} onTabChange={handleTabChange}
+      companyName={pilotInfo?.company_name}
+      onOpenAutoBatchContract={canEdit ? () => setIsAutoBatchOpen(true) : undefined}
+      onOpenUpload={canEdit ? () => handleOpenUploadModal() : undefined}
+      onOpenNewContract={canEdit ? () => setIsNewContractOpen(true) : undefined}
+      isMaskingEnabled={isMaskingEnabled} onToggleMasking={() => setIsMaskingEnabled((v) => !v)}
+      onSeedDemo={!isPilot && canEdit ? handleSeedDemo : undefined} loading={actionLoading}
+    >
+      {renderActiveContent()}
       {/* Modals */}
       {advancedDocOpen && selectedDoc && currentContract?.workflow && <PilotDocumentDialog doc={selectedDoc} revision={currentContract.workflow.revision} canEdit={canEdit} onClose={() => setAdvancedDocOpen(false)} onChanged={refreshCurrentContract} />}
       {isPilot && selectedDoc && !advancedDocOpen && currentContract && (
@@ -942,7 +798,7 @@ export const ContractDashboard: React.FC = () => {
 
       {/* 플로팅 알림 토스트 컨테이너 */}
       <ToastContainer toasts={toasts} onDismiss={handleDismissToast} />
-    </div>
+    </AppShell>
   );
 };
 
