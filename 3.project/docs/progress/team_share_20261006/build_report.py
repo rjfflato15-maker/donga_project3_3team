@@ -1,0 +1,366 @@
+"""Build the offline team progress report from a reviewed feature inventory.
+
+Reads source references only. Does not import the app, touch its DB, or run AI.
+"""
+from collections import Counter
+from hashlib import sha256
+from html import escape
+import json
+from pathlib import Path
+import zipfile
+
+HERE = Path(__file__).resolve().parent
+PROJECT = HERE.parents[2]
+WORKSPACE = PROJECT.parent
+APP_COMMIT = "f27e8df5e356c1d5d85632f8620c12ae5979c122"
+BASELINE_COMMIT = "afc34b2"
+OLD_ARCHIVE = WORKSPACE / "팀공유_시범C안.zip"
+ROWS = []
+GROUPS = []
+
+
+def group(title, description, refs):
+    GROUPS.append({"title": title, "description": description, "refs": refs})
+
+
+def item(kind, title, before, current, note="", refs=None):
+    ROWS.append({"id": f"F{len(ROWS) + 1:03}", "group": GROUPS[-1]["title"],
+                 "kind": kind, "title": title, "before": before,
+                 "current": current, "note": note,
+                 "references": refs or GROUPS[-1]["refs"]})
+
+
+group("01 로그인·비밀번호·계정", "Caps Lock부터 퇴사 처리까지. 이 보안 기반은 C안 때 이미 구현된 부분입니다.", [
+    "backend/app/api/auth.py", "backend/app/security.py", "frontend/src/pages/LoginPage.tsx",
+    "frontend/src/components/PilotPasswordChange.tsx", "backend/app/api/pilot.py",
+    "backend/tests/test_api.py", "backend/tests/test_security_regressions.py"])
+item("기존", "등록 계정 로그인", "C안에 이미 있음", "이메일·비밀번호로 로그인. 이메일 앞뒤 공백을 제거하고 서버에서 소문자로 비교합니다. 로그인 중 버튼을 비활성화하고 실패 이유를 보여 줍니다.")
+item("기존", "Caps Lock 안내", "C안 공유에 이미 포함", "비밀번호 칸에서 키를 누르거나 뗄 때 Caps Lock 상태를 확인해 경고합니다. 칸을 벗어나면 경고를 숨깁니다.", "입력 편의 기능입니다. 추가 인증이나 보안 키가 아닙니다.")
+item("기존", "반복 로그인 제한", "C안에 이미 있음", "같은 IP·이메일 조합에서 최근 5분간 8회 시도한 뒤 다음 시도는 429로 제한합니다. ‘5분 후 다시 시도하세요’라고 안내합니다.", "8회 실패 뒤 9번째 시도가 막히는 경우가 대표적입니다. 성공 시 기록 초기화. 단일 서버 메모리 기준이라 서버 재시작 후 유지되는 영구 계정 잠금은 아닙니다.")
+item("기존", "비밀번호 해시 저장", "C안에서 보강 완료", "무작위 salt를 넣은 PBKDF2-SHA256 해시를 저장합니다. 같은 비밀번호도 서로 다른 저장값이 됩니다. 평문·옛 SHA256 기록으로는 로그인할 수 없습니다.", "앱 로그인 비밀번호를 원문으로 저장하지 않는다는 뜻이며 DB 전체 암호화를 뜻하지 않습니다.")
+item("기존", "첫 로그인 후 임시 비밀번호 변경", "C안에 이미 있음", "초기 계정과 대표가 비밀번호를 초기화한 계정은 새 비밀번호를 정해야 합니다. 변경 전 업무 저장 요청은 서버에서도 차단합니다.")
+item("기존", "비밀번호 변경의 세부 조건", "C안에 이미 있음", "현재 비밀번호 확인, 새 비밀번호 두 번 입력, 12~128자, 현재와 다른 비밀번호를 검사합니다. 입력 불일치·현재 비밀번호 오류를 알려 줍니다.")
+item("기존", "세션 유지·만료·로그아웃", "C안에 이미 있음", "HttpOnly·SameSite 쿠키와 서버 세션을 사용합니다. 기본 만료는 8시간이며 설정 가능. 새로고침 때 세션을 확인하고, 만료 응답을 받으면 로그인 상태를 해제합니다. 로그아웃은 서버 세션도 삭제합니다.", "HTTPS용 Secure 쿠키는 운영 설정이 필요합니다. 현재 로컬 실행이 HTTPS 자동 구성까지 제공하는 것은 아닙니다.")
+item("기존", "비밀번호 변경 시 다른 로그인 해제", "C안에 이미 있음", "이 계정의 기존 세션을 모두 폐기하고 변경한 화면에 새 세션을 발급합니다. 다른 PC·탭의 옛 세션은 다음 요청에서 사용할 수 없습니다.")
+item("기존", "담당자·대표의 서버 권한", "C안에 이미 있음", "화면 버튼뿐 아니라 API에서 담당자의 자료 등록·수정, 대표의 최종 확인·계정 관리 권한을 확인합니다. 담당자가 대표 결재 API를 직접 호출해도 차단됩니다.")
+item("기존", "직원 계정 추가·임시 비밀번호 초기화", "C안에 이미 있음", "대표가 이메일·표시 이름·담당자/대표 역할로 계정을 만들고 임시 비밀번호를 지정합니다. 중복 이메일·허용하지 않는 역할·짧은 비밀번호를 거절합니다.")
+item("기존", "계정 사용 중지·재개", "C안에 이미 있음", "대표가 계정을 중지하면 기존 세션을 폐기하고 새 로그인을 막습니다. 업무·감사 이력은 남습니다. 자기 계정을 직접 중지할 수는 없습니다.", "화면을 원격으로 즉시 닫는 기능은 아닙니다. 중지된 세션은 다음 서버 요청에서 차단되며 이미 내려받은 파일은 회수하지 못합니다.")
+item("기존", "사내망 비밀번호 복구 방식", "C안에서 변경 완료", "외부 이메일 인증코드 방식 대신 로그인 후 본인 변경 또는 대표의 임시 비밀번호 초기화를 사용합니다. 폐기된 이메일 초기화 endpoint는 410 안내를 반환합니다.")
+
+group("02 계약 등록·파일 올리기", "기존 등록 기능을 유지하면서, 추가와 교체를 구분하고 취소·실패·화면 이동을 보강했습니다.", [
+    "backend/app/api/contracts.py", "backend/app/api/auto_contract.py", "backend/app/api/documents.py",
+    "backend/app/services/storage_service.py", "frontend/src/components/UploadModal.tsx",
+    "frontend/src/components/uploadModal.component.test.tsx", "backend/tests/test_api.py"])
+item("기존", "직접 계약 등록·수정·삭제", "C안에도 기본 계약 관리가 있음", "계약명·거래처·사업자번호·계약금액·금액 기준·세액·일괄/분할 지급 방식을 등록합니다. 계약 기준 수정과 서류 추출값 수정은 별개입니다.")
+item("기존", "서류로 계약 정보 초안 만들기", "C안에 파일 분석·묶음 등록이 있음", "파일에서 계약명·거래처·번호·금액을 읽어 등록 초안을 만듭니다. 여러 서류를 분석해 묶음 계약을 만들 수도 있습니다.", "파일에서 만든 초안이 곧 사용자가 확인한 계약 기준값이라는 뜻은 아닙니다.")
+item("기존", "6종 서류 분류·다중 형식 읽기", "C안에 이미 있음", "계약서·견적서·사업자등록증·통장사본·세금계산서·검수확인서와 미분류를 구분합니다. PDF·이미지·DOC/DOCX·HWP/HWPX·XLS/XLSX·CSV·텍스트를 처리합니다.", "해당 형식 처리 코드가 있다는 뜻입니다. 모든 문서의 레이아웃·가독성을 동일하게 보장하지는 않습니다.")
+item("기존", "파일 수·크기·실제 형식 검사", "C안 보안 기반에 이미 있음", "일반 업로드는 1~20개. 서버 파일당 기본 20MB이고 설정 가능하며 화면은 20MB 기준을 안내합니다. 빈 파일·지원하지 않는 확장자·PDF/패키지 문서의 잘못된 시작 형식을 거절합니다.")
+item("기존", "원본 파일 보관·해시", "C안에 이미 있음", "파일명을 정리하고 UUID 경로에 원본을 보관합니다. 등록 SHA-256을 기록하며 가림 사본·추출 텍스트와 원본 경로를 구분합니다.")
+item("개선", "‘새 서류 추가’와 ‘고친 본 올리기’ 구분", "업로드와 교체 의도가 화면에서 불명확", "새 서류는 ADD, 같은 서류의 정정본은 REISSUE로 명시합니다. 새 서류 창에도 고친 본은 별도 버튼을 쓰라는 안내가 있습니다.")
+item("개선", "업로드 취소·다른 계약 이동 시 초기화", "닫은 창의 파일이나 종류가 다른 계약에 남을 수 있었음", "열기·닫기·Esc·계약 변경 때 파일·종류·오류·실제 파일 입력을 초기화합니다. 새 계약의 창에서 옛 파일이 전송되지 않습니다.")
+item("개선", "실패 파일 재시도·선택 모두 빼기", "실패와 취소가 같은 상태처럼 섞였음", "같은 창 안에서 업로드가 실패하면 파일을 남겨 다시 시도할 수 있습니다. 선택을 모두 뺄 수도 있고, 창을 닫고 다시 열면 새 상태로 시작합니다.")
+item("개선", "늦은 업로드 완료가 화면을 덮지 않음", "A 계약 업로드 뒤 B로 옮겨도 A 화면으로 되돌아갈 수 있었음", "업로드를 시작한 창·계약 기준으로 완료를 확인합니다. 다른 계약의 창을 닫거나 현재 화면을 옛 계약으로 돌리지 않습니다.")
+item("개선", "인식 실패·원본 없음의 안내", "기본 인식 실패 표시가 있었음", "인식 실패·미분류·원본 유실은 ‘원문/추출값 확인’ 대상으로 표시합니다. 파일을 받았다는 사실만으로 자동 통과시키지 않습니다.")
+
+group("03 자동 검사·금액 기준", "기존 핵심 검사도 빠뜨리지 않았습니다. 자동 검사 결과와 사람의 확인은 별개입니다.", [
+    "backend/app/validation/engine.py", "backend/app/validation/financial.py", "backend/app/schemas/contract.py",
+    "backend/tests/test_financial_extraction.py", "backend/tests/test_rules.py"])
+item("기존", "필수 서류 누락 검사", "C안에 이미 있음", "필수 서류 종류 중 없는 것을 MISSING으로 표시합니다. 같은 종류 파일을 여러 개 올려도 받은 종류 수를 중복해서 세지 않습니다.")
+item("기존", "사업자번호 일치 검사", "C안에 이미 있음", "계약·견적·세금계산서·사업자등록증의 번호와 계약 기준번호를 비교합니다. 하이픈을 제거해 비교하고 유효한 10자리 값이 없으면 확인 필요로 남깁니다.")
+item("기존", "부가세 포함 여부·세액 확인", "C안 안정화에서 이미 보강", "합계 기준인지 공급가액 기준인지 구분합니다. 공급가액 기준은 입력된 세액을 더해 비교하며, 기준이 불명확하면 확인 필요입니다.", "앱이 임의로 10% 세율을 적용해 합계를 만들어 확정하지 않습니다.")
+item("기존", "견적서·세금계산서 금액 비교", "C안에 이미 있음", "서류 합계와 계약 기준금액을 비교합니다. 공급가액+세액과 서류 합계의 자체 계산도 확인합니다. 금액 미추출과 실제 불일치는 다르게 표시합니다.")
+item("기존", "분할 청구 누적·중복 서류 검사", "C안의 금액 의미 보강에 포함", "분할 지급이면 부분 청구 여부와 세금계산서 누적 합계를 확인합니다. 같은 원본 해시의 중복 청구 자료는 확인 필요로 남깁니다.", "회차별 송금·잔액 관리 기능과는 다릅니다.")
+item("개선", "‘이상 없음’의 과장 제거", "일부 화면이 적용 범위와 무관하게 이상 없음으로 표시", "‘자동 검사 N개 일치’·‘적용된 자동 검사 없음’으로 표시하고 일치한 검사 목록을 펼칠 수 있습니다.", "자동 검사가 일치했다고 원문 사람 확인이나 국세청 확인이 끝난 것은 아닙니다.", ["frontend/src/components/review/DocumentReviewDialog.tsx", "backend/app/validation/engine.py"])
+item("개선", "국세청 미조회와 해야 할 일 분리", "미연동 REVIEW가 문제 건수에 섞일 수 있었음", "국세청 disabled 안내는 별도로 남기고 일반 문제 건수·거래처 요청에서 제외합니다. 결재 확인 문구에는 이 앱에서 조회하지 않았음을 명시합니다.", "국세청 실제 조회·세금계산서 진위 검증은 현재 시범 운영에서 하지 않습니다.")
+
+group("04 로컬 AI·근거 대조", "C안의 로컬 AI를 실제 근거 화면과 운영 상태에 연결했습니다.", [
+    "backend/app/ai/local_llm.py", "backend/app/ai/llm_supplement.py", "backend/app/ai/grounding.py",
+    "backend/app/services/review_context_service.py", "backend/app/services/evidence_geometry_service.py",
+    "backend/app/services/llm_status_service.py", "frontend/src/components/review/DocumentReviewDialog.tsx",
+    "backend/tests/test_evidence_geometry.py", "backend/tests/test_performance_llm_status.py"])
+item("기존", "규칙 실패·모순 칸만 로컬 AI 보완", "C안에 qwen3 보완 구현", "규칙이 못 읽거나 모순이 있는 핵심 필드에만 Ollama/qwen3 보완을 사용합니다. AI는 값을 제안하고 최종 검사 판정은 규칙이 합니다.", "LLM은 기본 꺼짐입니다. 로컬 모델·연결·설정이 준비되어야 동작합니다.")
+item("기존", "AI 근거 검증·거절 사유", "C안에 가드 v3 구현", "원문 인용·필드 라벨·공급자 구역·형식·계산·모호성을 확인합니다. 채택하지 않은 제안과 이유도 남겨 사람 확인으로 넘깁니다.")
+item("개선", "LLM 실패 때 기본 결과 보존", "C안에도 규칙 결과를 보존", "문서별 호출 여부·횟수·실패 사유를 기록하고 규칙 추출 결과를 유지합니다. AI 연결 실패와 사람이 확인할 칸을 구분해 보여 줍니다.")
+item("신규", "값별 출처·원문 근거 보기", "C안에서는 근거 화면을 후속 시안으로 제안", "규칙/AI/사람 확인 출처와 근거 인용을 제공합니다. 값 선택에서 관련 원문 위치로 이동하고 거절된 AI 근거도 확인할 수 있습니다.")
+item("신규", "PDF·이미지의 근거 상자", "C안에는 표시 좌표 기능이 없음", "PDF 글자 상자 또는 OCR 글자 상자로 확인된 위치만 원문 위에 표시합니다. 페이지·x·y·너비·높이는 이미지 기준 0~1 좌표입니다.", "좌표를 확인하지 못하거나 모호하면 bbox=null. 위치를 임의로 만들지 않습니다.")
+item("신규", "PDF 쪽 넘기기·DOCX 글자 강조", "C안에는 일반 미리보기는 있음", "여러 쪽 PDF를 넘겨 근거를 확인하고 DOCX는 문단·표에서 확인된 글자 근거를 강조합니다.", "DOCX 텍스트 근거와 실제 인쇄 페이지 위치는 다릅니다. 물리 페이지 좌표를 보장하지 않습니다.")
+item("개선", "금액·날짜 공통 블록의 근거 누락 보완", "공급받는자 아래 금액 블록을 통째로 제외할 수 있었음", "사업자 식별값은 공급자 구역을 따지고 금액·날짜는 실제 라벨·값 근거로 표시합니다. 값 추출 결과를 바꾸지 않고 표시 누락을 수정했습니다.")
+item("개선", "근거 여러 곳·근거 위치 없음 표시", "후보 여러 개라는 내부 표현이 사용됨", "같은 저장값을 지지하는 복수 근거는 ‘같은 값의 근거 N곳’으로 표시합니다. 근거를 못 찾으면 위치 없음으로 남깁니다.", "서로 다른 숫자 후보나 읽을 수 없는 값까지 ‘같은 값’으로 확정하는 것은 아닙니다.")
+item("신규", "실제 AI 상태·보완 칸 수", "C안 후 초기 화면의 연결 값은 항상 false였음", "설정상 ON/OFF, 로컬 서버 연결, 모델 설치, 추론 준비 여부를 나눕니다. 계약·문서별 호출·실패·실제로 채택한 VALUE 칸 수를 기록합니다.", "설정이 켜짐, 서버가 연결됨, 이 문서에서 AI를 사용함은 서로 다른 사실입니다.")
+item("개선", "원본 변경 뒤 오래된 근거 차단", "기본 해시·자료 변경 검사는 있었음", "현재 원본과 저장 SHA/revision 기준이 맞지 않으면 옛 위치·근거를 새 원본에 붙이지 않습니다. 사람 수정값에도 과거 AI 위치를 무조건 재사용하지 않습니다.")
+
+group("05 사람 확인·수정·재발행", "앱이 잘못 읽은 값과 서류 자체가 틀린 경우를 구분합니다.", [
+    "backend/app/api/documents.py", "backend/app/services/field_confirmation_service.py",
+    "backend/app/services/document_version_service.py", "frontend/src/components/review/DocumentReviewDialog.tsx",
+    "backend/tests/test_field_confirmation_scope.py", "backend/tests/test_document_versions.py"])
+item("개선", "기준값과 지금 저장된 값 대조", "값 목록은 있었지만 무엇을 고칠지 불명확", "불일치 검사에 계약 기준값과 지금 저장된 값을 나란히 보여 줍니다. 원문이 계약과 다르면 고친 서류를 받고, 앱이 오독했으면 읽은 값을 수정하도록 안내합니다.", "계약과 맞추려고 원문과 다른 값으로 덮는 기능으로 설명하지 않습니다.")
+item("개선", "읽은 값 수정·수정 사유", "C안에도 담당자 수정·감사 이력 있음", "문서 종류·금액 의미 등 추출값을 담당자가 고치고 사유를 남깁니다. 값 변경과 원문 파일 재발행은 서로 다른 행동입니다.")
+item("신규", "값은 그대로, 원문과 맞음 확인", "같은 값에 대한 칸별 확인이 없었음", "값을 바꾸지 않고 특정 칸을 ‘원문과 맞음’으로 명시 확인할 수 있습니다. 실제로 바뀐 칸과 명시 체크한 칸만 사람 확인으로 기록합니다.")
+item("개선", "전체 칸을 사람 확인으로 바꾸던 오류 수정", "한 칸 저장해도 모든 값이 사람 확인처럼 표시될 수 있었음", "확인하지 않은 칸은 기존 규칙/AI 출처와 미확인 상태를 유지합니다. 확인한 값의 확인자·시각·값·방식은 API에 보존하고 화면에 사람 확인·처리자를 표시합니다.", "확인 시각까지 별도 표 열로 보여 주는 새 ERP 시안은 아직 반영 전입니다.")
+item("신규", "같은 서류의 고친 본·버전 이력", "C안에는 정정본 버전 체계가 없음", "REISSUE는 이전본을 보존하고 같은 논리 문서의 2번째·3번째 본으로 연결합니다. 등록자·등록일·사유·현재/이전본을 볼 수 있습니다.")
+item("신규", "현재본만 검사·이전본 읽기 전용", "업로드한 서류를 현재 자료로 함께 취급", "검수는 현재본만 사용합니다. 이전본의 원본·값은 열람하되 수정·재발행·이전본 업무 완료는 막습니다. 같은 종류의 별도 ADD 서류는 따로 유지합니다.")
+item("신규", "이전값→새값 버전 비교", "C안에는 버전 비교 없음", "같은 논리 문서의 이전본과 현재본 저장값을 비교합니다. 수정 저장 후 바로 재조회하고, 비교 실패는 ‘비교하지 못했어요’로 표시합니다.", "읽지 못한 새 값을 삭제·0원으로 단정하지 않습니다. 비교 기준은 저장된 추출값입니다.")
+item("개선", "재발행 실패·동시 수정 보호", "C안에는 재발행 전용 보호 없음", "대상 문서·현재 revision·변경 사유를 요구합니다. 분석 실패면 기존 현재본을 유지하고, 처리 중 자료가 바뀌면 새 본의 게시를 거절합니다.")
+item("개선", "재발행 입력창 취소·저장 초기화", "닫았던 폼의 파일이 재사용될 수 있었음", "닫기·Esc 때 파일·사유·오류를 비웁니다. 새 파일 선택 전에는 저장 행동을 제시하지 않고 고른 파일명을 버튼에 표시합니다.")
+
+group("06 공통 상태·업무함·검색", "목록과 상세가 같은 상태·차례를 사용하도록 연결했습니다.", [
+    "backend/app/services/work_state_service.py", "backend/app/api/work_system.py", "docs/api/work_system.md",
+    "frontend/src/components/review/StageDashboard.tsx", "frontend/src/components/review/ContractSearch.tsx",
+    "frontend/src/utils/stage.ts", "frontend/src/components/review/stageDashboard.component.test.tsx",
+    "backend/tests/test_work_system.py"])
+item("개선", "통계 중심 목록→지금 처리할 계약", "C안은 계약 목록·통계 중심, 할 일 중심은 제안", "서류 받기→확인→보완→결재→지급→끝 단계로 계약을 모읍니다. 처음 화면의 건수·다음 행동·버튼이 현재 업무를 가리킵니다.")
+item("신규", "서버 공통 stage·work_state", "화면별 상태 계산이 달라질 수 있었음", "목록·상세·검토 context가 서버의 같은 단계·남은 수·next_actions를 받습니다. 자료가 바뀐 계약을 과거 승인 상태로 표시하지 않습니다.")
+item("개선", "내 차례의 건수·정렬·버튼 통일", "2단계 담당 검토가 빠지거나 안내와 버튼이 어긋났음", "next_actions 역할 하나로 건수·순서·문구·행동 버튼·상세 결재 안내를 판단합니다. 담당 검토 완료 뒤 대표 차례가 되면 담당자에게 ‘보기’로 바뀝니다.")
+item("개선", "역할 업무와 개인 맡기기 구분", "내 차례와 개인에게 맡긴 일이 혼동될 수 있었음", "회사 담당자 역할이 처리할 계약과 나에게 개인적으로 맡겨진 일을 따로 표시합니다.", "역할별 할 일은 특정 개인을 결재자로 지정한 개인 결재함과 다릅니다.")
+item("신규", "회신 대기 중 사내 확인 표시", "대기 단계에 들어가면 직접 할 일이 숨을 수 있었음", "거래처에 요청한 항목은 대기에 두고 같은 서류의 판독 문제·사내 확인 항목은 지금 처리할 일로 남깁니다.")
+item("개선", "단계 완료·남음·해당 없음", "현재 단계 이전에 있다는 이유만으로 완료 표시", "실제로 완료한 단계만 ✓, 남은 일은 !, 요청 없이 지나간 보완은 해당 없음으로 구분합니다.")
+item("개선", "금액 표기 그대로 검색", "쉼표·원 표기가 있는 금액을 찾기 어려움", "2090000·2,090,000·2,090,000원처럼 숫자/쉼표/원/공백 입력은 금액으로 정규화합니다. 거래처·계약명 검색과 단계 필터를 함께 쓸 수 있습니다.")
+item("신규", "지난 계약 서버 검색·더 보기", "현재 불러온 목록 위주로 찾음", "계약명·거래처·앱 계약 ID, 진행/완료, 단계, 최초 등록일 기간을 서버에서 검색하고 페이지를 더 불러옵니다. API는 등록자·진행 중 맡은 사람 조건도 지원합니다.", "기간은 한국시간 최초 등록일 기준입니다. API 전용 필터까지 현재 화면에 모두 노출된 것은 아닙니다.")
+item("개선", "결재 완료와 업무 끝 구분", "대표 확인 뒤 완료처럼 보이기 쉬움", "현재 결재와 유효한 전체 지급 완료 기록까지 있어야 끝입니다. 끝난 계약은 할 일에서 빠지고 지난 계약 검색에 남습니다.")
+
+group("07 거래처 묶음 요청", "서류마다 요청 창을 반복하는 방식에서 계약당 한 번에 정리하는 방식으로 바뀌었습니다.", [
+    "backend/app/api/request_bundles.py", "backend/app/services/request_bundle_service.py", "docs/api/bundled_requests.md",
+    "frontend/src/components/review/BundleRequest.tsx", "frontend/src/components/review/bundleRequest.test.ts",
+    "backend/tests/test_request_bundles.py"])
+item("신규", "필요·받은·빠진 서류 전체 집계", "C안 시안은 문제별 카드 중심", "‘필요 6종·받은 3종·빠진 3종’처럼 계약 상황을 한곳에 보여 줍니다. 받은 파일 수와 받은 서류 종류 수를 구분합니다.")
+item("신규", "거래처에 요청할 것 체크 목록", "실제 요청 기능은 후속 범위, 이후에도 카드마다 요청 반복", "같은 계약의 외부 서류 누락·정정 요청을 한 목록에서 골라 요청합니다. 외부 누락은 기본 선택하고 상세 이유를 펼칠 수 있습니다.")
+item("신규", "불일치는 원문 확인 후 선택", "AI 오독과 서류 자체 오류가 섞일 수 있었음", "금액·번호 불일치는 ‘원문에서도 틀린 것을 확인’해야 거래처 요청 대상으로 선택합니다. 자료가 바뀌면 옛 확인 동의로 기록할 수 없습니다.")
+item("신규", "사내 작성·판독 문제 분리", "외부 요청과 사내 할 일이 함께 보일 수 있었음", "검수확인서 준비·계약 기준 확인·인식 실패는 회사 안에서 확인할 것으로 분리합니다. 같은 서류에 불일치와 판독 문제가 함께 있어도 판독 문제를 숨기지 않습니다.")
+item("신규", "여러 서류를 요청 문구 하나로", "요청마다 창·문구·기한 반복", "선택한 서류와 사유를 한 문구로 만들고 연락 방법·회신 기한·메모도 한 번 입력합니다. 자세히는 사유 전체, 짧게는 첫 사유+외 N건으로 표시합니다.")
+item("신규", "문구 복사와 요청 기록 구분", "C안은 요청 이후 흐름을 시안으로 제안", "사용자가 카톡·문자·이메일·전화 등 평소 방식으로 요청한 후 ‘요청했어요·N건 한 번에 기록하기’를 누릅니다. 앱은 요청 사실을 기록합니다.", "문구 복사는 발송이나 기록이 아닙니다. 사내 메신저·외부 자동 발송 기능은 없습니다.")
+item("신규", "요청 당시 대상·이유·자료 보존", "자유 메모만으로는 당시 문제를 복원하기 어려움", "요청 항목별 사유·검사·문서 버전·원본 SHA·추출값과 연락 방법·기한을 당시 snapshot으로 남깁니다.")
+item("신규", "중복 클릭·재전송의 중복 기록 방지", "여러 번 저장하면 요청이 중복될 수 있었음", "같은 키·내용 재시도는 기존 요청을 반환합니다. 내용이 바뀌면 새 키를 사용하고 이미 대기 중인 같은 항목은 다시 요청하지 못합니다.")
+item("신규", "재발행 뒤에도 같은 요청 대상을 찾기", "문서 ID가 바뀌면 요청의 고친 본 버튼이 무반응", "같은 논리 문서의 현재본으로 연결합니다. 같은 종류의 별도 ADD 문서와 구분합니다.")
+item("개선", "기존 요청 기록 유지", "이전 자유 메모·전체 답 받음 방식", "이전 기록은 이전 방식으로 표시하고 기존 답 받음 처리를 유지합니다. 옛 메모에서 새 항목별 수령 상태를 임의 추정하지 않습니다.")
+
+group("08 부분 회신·취소·다음 행동", "받은 서류와 아직 기다리는 서류를 따로 관리합니다.", [
+    "frontend/src/components/review/BundleRequest.tsx", "frontend/src/components/review/ContractStageView.tsx",
+    "backend/app/services/request_bundle_service.py", "backend/tests/test_request_bundles.py"])
+item("신규", "받은 항목만 회신 처리", "전체 요청의 답 받음만 기록하는 방식", "3개 중 1개만 받으면 그 항목만 체크해 기록합니다. ‘1건 받음·2건 기다림’으로 나머지 대기를 유지합니다.")
+item("신규", "항목 선택 취소·취소 사유", "묶음 안 일부 항목을 취소할 수 없음", "대기 중인 항목만 골라 이유를 남기고 취소합니다. 나머지는 계속 기다리고 모두 수령/취소되면 요청이 닫힙니다. 여전히 필요한 취소 항목은 다시 요청할 수 있습니다.")
+item("개선", "서류 도착 안내", "파일을 올리고 나서 무엇을 해야 할지 불명확", "빠진 종류가 올라오거나 요청한 논리 문서의 새 본이 생기면 ‘서류 올라옴→받았으면 체크’를 보여 줍니다.", "자동 체크하지 않습니다. 항목 수령 기록은 별도로 사람이 합니다.")
+item("개선", "회신과 검수·결재를 분리", "답 받음이면 끝난 것으로 오해 가능", "모두 받았어도 불일치·판독 문제가 남으면 확인·재요청이 필요합니다. 업로드나 수령 기록이 PASS 또는 대표 승인으로 바뀌지 않습니다.")
+item("개선", "회신 기한 지남 표시", "기한은 있었으나 날짜 경계가 달라질 수 있었음", "한국시간 오늘 날짜로 기한 초과를 판단합니다. 오늘 기한을 오전에 이미 지난 것으로 처리하지 않습니다.")
+
+group("09 사내 담당자에게 맡기기", "개인 업무 기록을 추가했습니다. 맡기기는 결재 권한을 주는 기능이 아닙니다.", [
+    "backend/app/api/assignments.py", "frontend/src/components/review/AssignmentPanel.tsx",
+    "frontend/src/components/review/MyAssignmentsStrip.tsx", "backend/tests/test_assignments.py"])
+item("신규", "업무 맡기기·내가 맡은 일", "C안에서는 사내 맡기기 흐름 시안", "현재 계약/서류에 업무 제목·맡긴 사람·맡은 사람·기한·메모를 기록합니다. 대시보드에서 개인에게 맡겨진 일을 볼 수 있습니다.")
+item("신규", "시작·완료·재배정·취소", "C안에는 상태별 맡기기 API 없음", "대기→진행→완료와 취소를 관리합니다. 재배정·내용/기한 변경에는 처리 메모와 현재 자료 기준을 확인합니다.")
+item("신규", "누가 업무를 바꿀 수 있는지 검사", "일반 계정 역할만 존재", "맡긴 사람/대표가 재배정·취소·내용을 바꾸고, 현재 맡은 사람/대표가 완료합니다. 완료·취소한 일을 다시 변경하려 하면 거절합니다.")
+item("개선", "자기 수정으로 막힌 완료 처리 보완", "배정 뒤 값을 고치면 오래된 기준으로 완료가 막힘", "현재본을 고친 뒤 업무 완료를 허용하고 배정·완료 당시 자료 기준을 기록합니다. 이전본의 업무 완료와 다른 사람의 충돌은 계속 막습니다.")
+item("신규", "기한 초과·자료 변경 표시", "개인 업무 상태 기록 없음", "진행 중 업무의 기한 초과와 배정 당시 자료 변경 여부를 보여 줍니다. 맡기기 완료만으로 검수나 대표 결재가 자동 완료되지 않습니다.")
+
+group("10 대표 승인·반려·재결재", "대표 최종 확인은 C안에도 있었습니다. 이후 결재 흐름·정책·화면 연결을 보강했습니다.", [
+    "backend/app/api/pilot.py", "backend/app/api/workflow.py", "backend/app/services/company_policy_service.py",
+    "backend/app/services/workflow_service.py", "frontend/src/components/review/ApprovalPanel.tsx",
+    "frontend/src/components/review/ContractStageView.tsx", "backend/tests/test_review_workflow_api.py",
+    "backend/tests/test_api.py"])
+item("개선", "대표 승인·반려 화면 연결", "C안 코드에 최종 확인/반려와 snapshot은 이미 있음", "현재 결재 단계에서 대표가 메모를 쓰고 최종 확인 또는 반려합니다. 반려는 이유와 함께 담당자의 재확인 단계로 돌아갑니다.", "대표 승인을 이번에 처음 만든 기능으로 세지 않습니다. 기존 기능의 흐름·화면 개선입니다.")
+item("신규", "회사별 1단계·2단계 결재", "대표 최종 확인 한 단계", "소기업은 담당자 검수 후 대표 최종 확인, 2단계 설정이면 담당 검토 결재→대표 최종 결재로 진행합니다.", "현재 최대 2단계·담당자/대표 역할입니다. 3~5명 지정 결재선은 아직 시안/후속 설계입니다.")
+item("신규", "단계 순서·다른 사람 결재 확인", "다단계 정책 없음", "2단계는 현재 자료의 첫 검토가 끝나야 대표 결재가 됩니다. 첫 검토와 최종 결재를 같은 사람이 진행하지 못하도록 서버에서 확인합니다.")
+item("기존", "필수 서류·원본 누락 때 승인 차단", "C안에도 이미 있음", "필수 문서나 보관 원본이 빠지면 최종 승인할 수 없습니다. 담당자에게 자료 보완을 요구합니다.")
+item("개선", "남은 항목 직접 검토·메모 조건", "C안에도 불일치/미확인 승인 시 동의+10자 조건", "남은 FAIL/REVIEW가 있으면 직접 검토 체크와 10자 이상 근거를 요구합니다. 국세청을 이 앱에서 조회하지 않았음을 분명히 확인하게 합니다.", "담당자가 직접 승인해 주는 자동 PASS나 기본으로 체크된 동의가 아닙니다.")
+item("기존", "당시 결재 근거 snapshot 보존", "C안에도 이미 있음", "결재자·시각·메모·revision·fingerprint와 당시 계약 기준·검사·서류 저장값을 보존합니다. 이후 값이 바뀌어도 옛 결재 근거를 현재값으로 덮지 않습니다.")
+item("개선", "자료 변경·재발행 뒤 재결재", "C안에도 기본 자료 변경 무효화 있음", "계약 기준·현재 서류·확인값 변경 뒤 이전 승인은 STALE로 표시됩니다. 재발행도 현재 검토와 이전 단계 결재를 무효화해 다시 확인·결재합니다.")
+item("신규", "대표 검토 요약·최근 사람 처리", "C안의 대표 화면은 기본 검수·확인 중심", "대표 화면에 계약 요점·남은 확인·현재본 검사·국세청 미조회·재결재 상태·최근 처리 기록을 모읍니다.", "새 결재서 디자인은 아직 시안입니다. 현재 화면의 배치와 담당 검토 메모 표시에는 추가 개선 여지가 있습니다.")
+item("개선", "대표에게 보낼 문장 복사", "결재로 넘기는 행동의 의미가 불명확", "문제가 해소된 결재 단계에서 대표에게 전달할 문장을 복사합니다. 대표 계정은 자기 결재 차례에서 처리합니다.", "문장 복사는 별도 상신·알림·자동 발송 API가 아닙니다.")
+item("개선", "결재 대상 바뀌면 이전 입력 동의 해제", "같은 화면에서 이전 자료의 체크/메모가 남을 수 있음", "계약 ID·수정 시각·revision·결재 상태가 바뀌면 결재 체크/메모를 초기화합니다. 저장 때 revision/fingerprint로 최신 자료인지 검사하고 오래된 요청은 409로 거절합니다.")
+
+group("11 지급 완료 기록·재확인", "⑤ 지급의 실제 API·화면이 추가되었습니다. 은행 송금 기능은 아닙니다.", [
+    "backend/app/api/payments.py", "backend/app/services/payment_service.py", "docs/api/payment_record.md",
+    "frontend/src/components/review/ContractStageView.tsx", "frontend/src/utils/date.ts",
+    "backend/tests/test_payment_records.py", "frontend/src/utils/date.test.ts"])
+item("신규", "계약 전체 지급 완료 사실 기록", "지급 버튼은 있었지만 API가 없어 준비 중 안내", "현재 대표 최종 결재가 있어야 사람이 지급일·이체/기타·메모를 기록합니다. 모든 회차를 지급한 계약 전체의 완료 사실입니다.", "실제 송금·은행 확인·개별 회차 지급·잔액 관리는 하지 않습니다.")
+item("신규", "한국 날짜·미래 지급일 차단", "지급 날짜 연결 기능 없음", "Asia/Seoul 기준으로 기본 날짜·최대 날짜를 정하고 서버가 실존 날짜와 미래일을 검사합니다. 분할 지급이면 모든 회차 완료 후 기록하라고 안내합니다.")
+item("신규", "이미 지급한 사실 유지·중복 차단", "지급 기록 구조 없음", "계약당 기존 지급 사실을 또 만들거나 덮어쓰지 않습니다. 동시 중복 요청도 중복 기록되지 않으며 최초 지급 사실을 보존합니다.")
+item("신규", "지급 후 자료 변경의 경고", "이전 지급 사실을 현재 결재와 구분할 수 없음", "서류/기준 변경 뒤 이전 지급 사실은 남기고 연결은 재확인 필요로 표시합니다. 첫 화면·상세에 ‘이미 지급·다시 지급하지 마세요’가 표시됩니다.")
+item("신규", "재결재 뒤 같은 지급으로 재확인", "재결재 후 새 지급을 기록할 우려", "현재 자료를 다시 결재한 뒤 체크+10자 이상 메모로 기존 지급 사실을 현재 결재에 연결합니다. 새 송금이나 새 지급 기록을 만들지 않습니다.")
+item("신규", "재확인 차단 이유", "지급 범위 검증 없음", "재결재 없음·원본 해시 불일치·수취업체/금액/금액 기준/세액/지급 방식 변경은 기존 전체 지급 사실의 재연결을 막고 이유를 알려 줍니다.")
+item("개선", "이전 지급 동의·입력 자동 초기화", "자료 수정·재결재 후 이전 체크와 메모 유지 오류", "자료·결재 상태·최신 결재 ID·지급 대상/상태가 달라지면 재확인 체크·메모·오류와 최초 지급 입력을 초기화합니다.")
+
+group("12 처리 이력·요약·검수 도우미", "판정만 남기는 데서, 무엇을 바꾸고 처리했는지를 다시 설명하는 기능으로 넓혔습니다.", [
+    "backend/app/services/activity_service.py", "frontend/src/components/review/ActivityTimeline.tsx",
+    "backend/app/services/contract_summary_service.py", "frontend/src/components/review/AssistantPreview.tsx",
+    "backend/app/services/review_assistant_service.py", "backend/tests/test_work_system.py",
+    "backend/tests/test_contract_summary.py", "backend/tests/test_review_assistant.py"])
+item("신규", "계약 처리 기록 화면", "C안에 감사 기록은 있으나 업무 타임라인 화면 없음", "등록·검사·요청·수령/취소·값 수정·재발행·담당 검토·대표 결재/반려·지급 기록을 최신순으로 보고 더 불러옵니다. 한국시간·처리자·사유·전후 값을 표시합니다.")
+item("개선", "기록된 당시 사실만 표시", "현재 상태로 과거 이력을 설명하면 왜곡될 수 있음", "검사와 재발행 당시 저장한 snapshot을 사용합니다. 옛 기록에 없는 값·시각·처리자를 현재값에서 추정해 채우지 않습니다.")
+item("개선", "가림 ON에도 사내 처리자 식별", "처리자 표시 이름까지 [가림]이 되어 누가 했는지 알 수 없음", "인증된 처리 이력의 당시 사내 표시 이름은 유지하고 메모·사유 속 민감값은 계속 가립니다. ZIP의 가림 정책과는 별개입니다.")
+item("신규", "계약 요약 문장·복사", "C안에서는 여유가 되면 할 기능", "코드가 계약명·거래처·기준금액·서류 종류 수·문제 수·결재 상태를 검증된 템플릿에 채웁니다. 같은 화면의 문제 카드 집계와 맞춰 복사할 수 있습니다.", "현재 요약은 LLM 문장 생성이 아닙니다. 수치와 문구는 코드가 만듭니다.")
+item("신규", "검수 도우미 할 일 초안", "C안에서는 후속 제안", "저장된 자료를 읽고 규칙을 메모리에서 재검사해 사내 확인·서류 요청·맡기기 초안을 준비합니다. 원문 열기나 맡기기 입력으로 이동할 수 있습니다.", "미리보기 자체는 DB/감사 로그 저장·자동 발송·외부 API·OCR/LLM 재실행을 하지 않습니다. 맡기기 저장은 별도 사용자 행동입니다.")
+item("신규", "저장 검사와 재검사 차이 안내", "도우미 미리보기 없음", "저장된 검사 결과와 도우미의 현재 재검사 결과가 다르면 차이를 표시하고 실제 ‘다시 검사’가 필요함을 안내합니다.")
+
+group("13 개인정보 가림·계약 ZIP", "가림 기능은 원래 있었습니다. 표시 누락과 파일·이력 내보내기 범위를 보강했습니다.", [
+    "backend/app/ai/masking.py", "backend/app/services/preview_masking_service.py",
+    "backend/app/services/contract_export_service.py", "frontend/src/utils/masking.ts",
+    "frontend/src/components/review/ContractStageView.tsx", "backend/tests/test_contract_export.py",
+    "backend/tests/test_request_bundle_export.py", "backend/tests/test_preview_masking.py"])
+item("기존", "가림 ON/OFF·원문 미리보기", "C안과 그 이전에도 있음", "권한 안에서 원문/가린 화면을 확인합니다. 개인정보는 텍스트·PDF/이미지 보기와 다운로드 정책으로 처리합니다.", "가림 ON은 모든 입력칸과 모든 문서에서 민감값 제거를 보증하는 모드가 아닙니다.")
+item("개선", "검사 기준값·실제값·설명 번호 가림", "설명 문장이나 불일치 비교값에 번호가 노출될 수 있었음", "사업자번호·주민번호를 하이픈 유무와 무관하게 가립니다. 쉼표 있는 금액은 번호로 오인해 가리지 않습니다.")
+item("개선", "PNG 상호 누락·날짜 오가림 보완", "이미지에서 상호가 남거나 발행일이 가려지는 오류", "공급자/공급받는자 상호·번호 표시 가림을 보완하고 금액·발행일의 의미가 유지되도록 수정했습니다.", "모든 실제 업무 서식에 대한 전수 가림 검증은 아닙니다.")
+item("개선", "가림 범위의 안내", "전부 보호되는 것으로 오해할 수 있었음", "원문 대조의 다운로드 이름을 ‘가린 원본 받기’로 맞췄습니다. 수정 입력·보낼 요청 문구에 실제 업무값이 남는 범위를 안내합니다.", "요청 문구에는 실제 거래처명이 필요할 수 있습니다. 원본 파일은 보관되며 백업은 가림 내보내기와 다릅니다.")
+item("신규", "계약 한 건 자료 묶음 ZIP", "C안에는 업무함 전체 백업만 있음", "현재본·이전본과 contract.json, validation_results.json, history.json, manifest.json, README.txt를 한 번에 받습니다. 요청 항목·맡기기·결재·지급/재확인 이력도 포함합니다.")
+item("신규", "ZIP 가림·메타데이터 가림", "개별 가림 다운로드만 존재", "가림 ON이면 서류와 JSON의 현재·이전 민감값을 가립니다. DOCX 등 가린 바이너리를 보장하지 못하는 형식은 가린 텍스트로 내보내며 형식 차이를 명시합니다.")
+item("신규", "ZIP manifest·버전·SHA 검증", "계약 단위 묶음 검증 없음", "manifest에 원본/내보낸 파일 해시·버전·현재본 여부를 넣습니다. 자료 변경·원본 누락/변조·가림 실패면 중단하며 원본으로 자동 대체하지 않습니다.", "원본 100개·총 250MB 한도. 사용자의 실제 브라우저 저장·압축 해제 최종 확인은 별도 대기입니다.")
+
+group("14 실행·설정·백업·복원", "이 운영 기반은 C안 때부터 있습니다. 이후 새 업무 이력까지 보존하도록 연결 점검했습니다.", [
+    "backend/launcher/cli.py", "backend/launcher/settings.py", "backend/launcher/server.py",
+    "backend/launcher/operations.py", "backend/app/services/backup_service.py", "frontend/src/components/PilotOperations.tsx",
+    "docs/operations/backup_restore.md", "docs/operations/workflow_rehearsal.md", "backend/tests/test_backup_restore.py"])
+item("기존", "C-Pilot.exe·관리 메뉴", "C안에서 통합 실행기 완료", "실행, 환경 준비, 새 업무함, 자료 폴더/포트/사내망 설정, 백업, 새 폴더 복원, 예약 작업을 관리 메뉴로 묶었습니다.", "Python·Node·앱 폴더까지 필요합니다. 모델을 포함한 독립 설치 패키지라는 뜻은 아닙니다.")
+item("기존", "서버 PC 로컬 DB·다른 PC 접속", "C안에서 외부 DB→시범 로컬 SQLite로 전환", "시범 운영의 계약·원문은 선택한 서버 PC 업무함에 보관합니다. 다른 직원은 브라우저와 자기 계정으로 접속합니다.", "서버 PC가 꺼지면 사용할 수 없습니다. HTTPS·방화벽 자동 구성은 없습니다.")
+item("신규", "회사별 필수 서류·역할명·결재 설정", "C안에는 기본 회사명/필수 서류 설정", "개인사업자/소기업/중기업·중견 프리셋, 필수 종류, 역할 표시명, 1/2단계 결재를 설정합니다. 대표만 저장하고 변경 뒤 재검사·재결재를 요구합니다.", "프리셋 이름은 법적 기업 규모 판정이 아닙니다.")
+item("기존", "백업 생성·대표 다운로드", "C안에 이미 있음", "DB snapshot·원문·추출 자료를 ZIP으로 백업합니다. 대표가 관리 화면에서 받을 수 있고 초기 비밀번호 안내 파일은 포함하지 않습니다.", "백업 ZIP 자체는 암호화하지 않습니다. 원본이 포함되므로 보관 장소·접근 권한을 따로 관리합니다.")
+item("개선", "새 폴더 복원·기존 업무함 보존", "C안에 복원 도구 있음", "서버를 멈춘 뒤 존재하지 않는 새 폴더에 복원하고 경로·파일 해시를 검사합니다. 성공 뒤 실행 경로를 바꾸며 실패하면 설정을 유지합니다. 로그인 세션은 만료됩니다.")
+item("개선", "재발행·요청·지급 이력 복원", "C안은 당시 테이블·자료 백업", "새 운영 테이블도 함께 백업합니다. 연결 리허설에서 당시 업무 테이블 10개·파일 36개 해시 일치와 재로그인·이전본 ZIP 재다운로드를 확인했고 지급 테이블은 후속 회귀검사로 확인했습니다.", "리허설은 합성 DEV 업무함입니다. 실제 회사 백업을 복원한 실적이라고 쓰지 않습니다.")
+item("기존", "자동 실행·일일 백업 예약", "C안에 이미 있음", "사용자가 등록하면 Windows 로그인 후 자동 실행, 기본 18:00 일일 백업 예약을 지원합니다.", "PC가 꺼져 있을 때 실행·부팅 전 서비스·장애 후 상시 재시작·자동 실패 알림까지 구현한 것은 아닙니다.")
+item("개선", "원본과 가린 사본의 복원 경로 분리", "옛 절대경로 복원 중 가린 TXT가 원본으로 대체될 수 있었음", "raw/masked/text 구역을 지켜 찾아 원본 유실을 명확히 표시합니다. 가림 사본을 원본으로 간주해 지급이나 다운로드를 통과시키지 않습니다.")
+
+group("15 실적 집계·평가·테스트 준비", "실제로 잰 숫자와 아직 안 잰 숫자를 구분합니다.", [
+    "backend/app/services/performance_service.py", "frontend/src/components/review/WorkStatsStrip.tsx",
+    "docs/eval/test/final/four_modes.md", "docs/eval/test2/final_four_modes.md",
+    "docs/operations/team_test_measurement.md", "docs/operations/team_test_materials.md",
+    "docs/operations/team_test_participant_guide.md", "docs/api/frontend_handoff.md"])
+item("신규", "실제 수정 칸·AI 채택 칸·요청 수", "기본 기록은 있으나 상세 실적 API 없음", "수정 저장 횟수와 전후 값이 달라진 칸 수를 따로 집계합니다. 같은 값 저장은 실제 변경 0칸. AI 채택 VALUE 수와 현재값이 같은 칸 수도 구분합니다.")
+item("개선", "경과시간과 실제 작업시간 구분", "첫 등록→첫 대표 확인이 작업시간처럼 해석될 수 있음", "기존 화면은 첫 서류 등록→첫 대표 확인(대기 포함), 추가 API는 계약 등록→현재 최종 대표 확인(대기 포함)을 구분합니다.", "사람의 실제 작업시간·시간 절감은 아직 측정하지 않았습니다.")
+item("개선", "예측 한 번 고정·정답 재채점 분리", "C안은 dev 결과와 test 평가 예정", "v3 test와 v4 test2 예측을 한 번 실행해 코드·환경·파일 해시와 보존합니다. 사람 확인 결과는 저장 예측을 재채점하며 모델/가드를 다시 실행하지 않습니다.")
+item("신규", "어려운 서식 dev2/test2·독립 확인 묶음", "C안의 첫 dev/test 자료", "다른 라벨·표·스캔 기울기·도장 가림·여러 쪽·두 단 서식 자료를 분리하고 결과를 보기 전 정답 초안·독립 판독·사람 확인 페이지를 준비했습니다.", "test2 평가 완료. dev2 독립 사람 확인은 완료로 단정하지 않습니다. 읽을 수 없는 값은 REVIEW/null로 남깁니다.")
+item("개선", "개발 수치와 최종 평가 수치 공개", "C안의 dev 78.34%→98.52%만 공유", "v3 test와 v4 test2 네 조건 결과를 따로 보고합니다. 가드의 정답 거절·가독성 한계·정답 출처·검출 미측정을 함께 기록합니다.", "서로 다른 자료의 77.74%와 95.59%를 동일 시험의 개선폭으로 발표하지 않습니다. 아래 평가 표 참고.")
+item("신규", "팀원 시간 과제·분리 업무함·안내문", "C안은 제출·데모 준비 예정", "누락/재발행 A·B 과제, 연습 ZIP과 진행자 정답표를 분리했습니다. 현행 묶음 요청·부분 회신 버튼 이름과 배포 해시를 맞추고 담당자 과제에서 대표 결재·지급을 제외했습니다.", "사람 측정 결과와 최종 측정 SHA는 사용자 ZIP 확인·참가자 환경 확인 뒤 기록합니다.")
+
+group("16 작은 UX·동시 작업 오류 수정", "버튼과 문장뿐 아니라 잘못 저장하거나 다른 화면을 덮는 동작도 수정했습니다.", [
+    "frontend/src/hooks/useDialogA11y.ts", "frontend/src/utils/korean.ts", "frontend/src/utils/date.ts",
+    "frontend/src/utils/latest.ts", "frontend/src/components/review/ContractStageView.tsx",
+    "frontend/src/components/review/DocumentReviewDialog.tsx", "frontend/src/components/UploadModal.tsx",
+    "frontend/src/components/review/BundleRequest.tsx", "docs/api/frontend_handoff.md"])
+item("개선", "Tab·Shift+Tab·Esc·포커스 복귀", "팝업 키보드 처리가 부족", "요청·원문 대조·서류 추가 창에서 Tab이 창 안을 돌고 Esc로 닫습니다. 카드에서 연 경우도 닫으면 원래 버튼에 포커스를 돌립니다.", "모든 앱 화면의 전체 접근성 적합성을 판정한 것은 아닙니다.")
+item("개선", "원문 창 안 폼의 Esc 순서", "창 전체가 먼저 닫히거나 포커스가 사라짐", "값 수정/재발행 폼을 열면 첫 입력에 포커스. Esc는 폼부터 닫고 폼 버튼으로 돌아가며 다음 Esc로 대조창을 닫습니다.")
+item("개선", "낮은 화면의 하단 버튼·스크롤", "원문 창 하단 버튼이나 업로드 창이 잘림", "원문 창의 행동 버튼을 보이는 위치에 두고 업로드 창은 최대 높이·본문 스크롤을 적용했습니다. 1280×720에서 창의 제목·닫기·하단 버튼을 확인했습니다.")
+item("개선", "조사와 낯선 표시명 수정", "‘통장사본 미제출가’, ‘견적서을’, ‘최종 결재을’", "받침에 맞춰 이/가·을/를 등을 고르고 서버의 이(가) 표기도 화면에서 정리합니다. ‘빠진 서류 N건 중 1번째’, ‘필요 N종·받은 N종’처럼 대상을 적습니다.")
+item("개선", "ⓘ 키보드·검색 포커스 표시", "범례는 마우스 올리기, 검색 포커스가 약함", "범례를 키보드로 열 수 있는 버튼으로 바꾸고 펼침 상태를 표시합니다. 검색창에는 포커스 테두리·링을 제공합니다.")
+item("개선", "기존 사이드바 접기·좁은 화면 대응", "C안에도 사이드바 메뉴는 있음", "실제 앱의 기존 사이드바를 접고 펼칠 수 있습니다. 1280px 미만은 자동으로 접어 표 공간을 확보하고 넓은 화면의 표시 선택은 로컬에 기억합니다.", "방금 만든 새 사이드바 시안의 디자인을 실제 앱에 적용했다는 뜻은 아닙니다.", ["frontend/src/pages/ContractDashboard.tsx", "frontend/src/components/Sidebar.tsx"])
+item("개선", "최신 조회만 반영·다른 계약 응답 폐기", "먼저 시작한 느린 조회가 최신 화면을 덮을 수 있음", "같은 계약에서도 가장 최근 조회의 성공/실패만 반영합니다. 계약 전환 시 목록·선택을 초기화하고 이전 계약의 늦은 응답을 버립니다.")
+item("개선", "두 탭 충돌 안내가 화면에 남음", "다른 탭이 마지막 회신을 닫으면 409 안내 패널도 사라짐", "회신 저장 결과·충돌 이유·재조회 결과를 계약 맨 위에 보관합니다. 보완→결재로 단계가 넘어가도 ‘저장하지 못했어요’ 안내가 남습니다.")
+item("개선", "오래된 선택·동의의 저장 차단", "새 자료 기준과 오래된 원문 확인 선택이 섞일 수 있음", "계약 revision/fingerprint와 요청 request_revision을 확인합니다. 자료가 바뀌면 다시 고르게 하고 최신 조회 실패 시 저장을 잠가 옛 상태로 처리하지 못합니다.")
+item("개선", "업로드 창의 React 훅 오류 수정", "새 키보드 처리 중 업로드 창을 열면 흰 화면 오류 발생", "조건부 반환보다 먼저 훅을 호출하고 열린 창에서만 활성화하도록 수정했습니다. 실제 컴포넌트 테스트에 초기화·실패 유지·늦은 완료 처리를 추가했습니다.")
+
+LIMITS = [
+    ("사이드바 새 디자인·비교 HTML", "시안", "별도 문서/가상 데이터의 비교 도구입니다. 이번 보고서나 시안이 실제 앱 frontend에 반영된 것은 아닙니다."),
+    ("3~5명 지정 결재·병렬/합의 결재", "후속", "현재 최대 2단계 역할 결재입니다. 지정인 N단계 결재선과 전원/한 명 승인 정책은 설계·서버 확장이 필요합니다."),
+    ("별도 상신·결재 요청 저장·알림", "후속", "현재 대표에게 보낼 문장 복사와 역할별 결재 차례가 있습니다. 독립 상신 저장·결재자 알림 기능은 없습니다."),
+    ("요청 항목↔수령한 수정본의 영구 연결", "보강 필요", "같은 논리 문서의 새 본 도착은 안내하지만, 이 요청의 회신본 ID/버전을 수령 기록에 영구 연결하는 원자적 기능은 없습니다."),
+    ("업로드 작업 상태·실패 사유·안전 재시도", "API만", "QUEUED/RUNNING/VALIDATING/FAILED/COMPLETED, 중복 게시 방지·작업 재시도 API와 테스트는 있습니다. 현재 일반 업로드 창은 이 작업 API의 전용 처리 화면으로 연결되지 않았습니다."),
+    ("담당 검토 메모·칸별 확인 시각의 새 표", "일부 데이터만", "검토 메모와 필드 확인자/시각은 API에 있습니다. 현재 대표 요약의 담당 검토 메모와 새 시안의 시각 열은 아직 화면 보강 대상입니다."),
+    ("자동 발송·사내 메신저·실제 송금", "범위 밖", "요청 문구/사실 기록, 맡기기, 지급 완료 사실 기록을 제공합니다. 메신저나 은행 송금 기능으로 설명하지 않습니다."),
+    ("국세청 진위 조회", "미연동", "시범 운영과 평가에서 disabled입니다. 실제 조회를 했다는 승인 문구나 성과를 사용하지 않습니다."),
+    ("2차 인증·SSO·HTTPS 자동 구성·자동 업데이트", "미구현", "판매/운영 환경에서 따로 검토할 범위입니다. 백업 암호화·모델 포함 설치도 자동 제공하지 않습니다."),
+    ("실제 작업시간 절감·실제 회사 전체 성능", "미측정", "대기 포함 경과시간·합성자료 평가와 구분합니다. 사람 작업시간 측정 및 실제 서식 검증이 필요합니다."),
+]
+
+HIGHLIGHTS = [
+    ("서류별 요청 → 계약별 묶음 요청", "필요/받은/빠진 서류를 모아서 선택하고 문구·기한·요청 기록을 한 번에 처리합니다."),
+    ("답 받음 → 받은 항목만 처리", "부분 회신·부분 취소를 지원하고 나머지 대기를 유지합니다."),
+    ("값 목록 → 원문 근거 대조", "출처·원문 인용·확인된 위치 상자를 보고 앱 오독과 서류 오류를 구분합니다."),
+    ("교체 → 현재본/이전본 관리", "이전본을 남기고 변경값 비교·현재본만 검사·재결재로 연결합니다."),
+    ("기본 대표 확인 → 정책에 맞는 결재", "1/2단계 차례·반려·재결재·대표 요약을 연결합니다. 대표 확인 자체는 기존 기능입니다."),
+    ("지급 준비 중 → 지급 사실 기록", "계약 전체 지급 완료와 자료 변경 후 같은 지급 재확인을 제공합니다."),
+    ("판정 결과 → 처리 이유를 다시 보기", "사람 수정·요청·수령·재발행·결재·지급 이력과 당시 근거를 남깁니다."),
+    ("화면별 계산 → 공통 상태·검색", "목록/상세의 상태·역할별 차례를 맞추고 완료 계약과 과거 자료를 찾습니다."),
+]
+
+C_TRANSITIONS = [
+    ("로그인·계정", "로그인·이메일 비밀번호 변경", "해시·세션·역할·시도 제한·계정 중지·Caps Lock 보강", "기반 유지. 계정 기능과 실제 동작을 이번 상세 목록에 빠짐없이 설명"),
+    ("실행·보관", "여러 배치·개발 실행 경로, 외부 DB 구성", "C-Pilot.exe·관리 메뉴·시범 로컬 DB·백업/복원", "기반 유지. 새 요청·버전·지급 이력 보존과 연결 리허설 추가"),
+    ("서류 검수", "분류/OCR·규칙 검사·미리보기·가림·사람 수정", "규칙 실패 칸의 로컬 LLM·가드·dev 평가", "원문 근거/좌표·칸별 확인·실제 AI 상태·고정 test/test2 평가"),
+    ("대표 확인", "당시 원형의 상세 구현 범위는 첨부에 미기재", "C안 코드에 대표 확인/반려·결재 snapshot 있음", "1/2단계 차례·재발행 후 재결재·대표 요약·지급 연결 보강"),
+    ("보완 이후 업무", "서류별 문제 알림 중심", "요청/회신/맡기기 흐름은 UI 제안", "묶음 요청·부분 수령·취소·개인 맡기기·처리 이력을 실제 연결"),
+    ("화면", "목록·통계·문서 상세 중심", "한 줄 결론·문제 카드·사용 흐름 시안 제안", "단계 흐름 실제 앱 적용, 여러 UX/충돌 수정. 새 사이드바는 별도 시안"),
+]
+
+
+def ref_data(path):
+    source = PROJECT / path
+    if not source.is_file():
+        raise ValueError(f"Missing source reference: {path}")
+    return {"path": path, "sha256": sha256(source.read_bytes()).hexdigest()}
+
+
+def render():
+    references = sorted({p for row in ROWS for p in row["references"]} | {
+        "backend/app/api/upload_jobs.py", "backend/app/services/upload_job_service.py", "backend/tests/test_upload_jobs.py",
+        "docs/operations/approval_screen_review_20261006.md", "docs/research/erp_redesign_a404409_review_20261006.md",
+        "docs/progress/history/09_guard_v3.md"})
+    source_refs = [ref_data(p) for p in references]
+    counts = dict(Counter(r["kind"] for r in ROWS))
+    data = {"title": "시범 C안 → 현재 앱 변경 현황", "as_of": "2026-10-06",
+            "application_commit": APP_COMMIT, "baseline_supporting_commit": BASELINE_COMMIT,
+            "baseline_note": "첨부 ZIP에는 날짜/커밋이 없으므로 공유문을 1차 기준으로 하고, 당시 team_update를 추가한 afc34b2 코드를 보조 대조했다. 동일 배포 바이너리라고 단정하지 않는다.",
+            "baseline_archive_sha256": sha256(OLD_ARCHIVE.read_bytes()).hexdigest(),
+            "verification": "소스·기존 테스트/검증 기록 대조. 이번 문서 작성에서 앱·DB·AI·평가를 실행하지 않았다.",
+            "counts": counts, "groups": GROUPS, "features": ROWS,
+            "boundaries": [{"title": t, "status": s, "description": d} for t, s, d in LIMITS],
+            "source_references": source_refs}
+    (HERE / "feature_inventory.json").write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    def esc(value):
+        return escape(str(value), quote=True)
+    def table(headers, rows):
+        return '<div class="table-wrap"><table><thead><tr>' + ''.join(f'<th scope="col">{esc(h)}</th>' for h in headers) + '</tr></thead><tbody>' + ''.join('<tr>' + ''.join(f'<td>{esc(c)}</td>' for c in row) + '</tr>' for row in rows) + '</tbody></table></div>'
+    sections = []
+    for g in GROUPS:
+        entries = [r for r in ROWS if r["group"] == g["title"]]
+        body = []
+        for r in entries:
+            css_kind = {"신규": "new", "개선": "improved", "기존": "existing"}[r["kind"]]
+            note = f'<p class="row-note">{esc(r["note"])}</p>' if r["note"] else ''
+            refs = '<details class="sources"><summary>코드·검증 근거</summary><ul>' + ''.join(f'<li><code>{esc(p)}</code></li>' for p in r['references']) + '</ul></details>'
+            body.append(f'<article class="feature" id="{r["id"]}" data-kind="{r["kind"]}"><div class="feature-head"><span class="tag {css_kind}">{r["kind"]}</span><h3>{esc(r["title"])}</h3><span class="id">{r["id"]}</span></div><div class="comparison"><div class="before"><b>C안 당시 / 보강 전</b><p>{esc(r["before"])}</p></div><div class="current"><b>현재 앱</b><p>{esc(r["current"])}</p>{note}</div></div>{refs}</article>')
+        sections.append(f'<details class="section" id="group-{len(sections)+1}"><summary><span>{esc(g["title"])}</span><span class="count">{len(entries)}항목</span></summary><p class="section-desc">{esc(g["description"])}</p><div class="features">{"".join(body)}</div></details>')
+    share_text = "안녕하세요. 앞서 공유한 시범 C안과 현재 실제 앱의 차이를 정리했습니다.\n\n로그인 보안·Caps Lock·로컬 AI·실행/백업은 C안 때 이미 만든 기능이고, 이후 원문 근거 대조, 칸별 사람 확인, 재발행/이전본 비교, 묶음 요청과 부분 회신, 사내 맡기기, 1/2단계 결재 흐름, 지급 완료 기록/재확인, 처리 이력과 검색을 실제 앱에 연결했습니다.\n\n대표 기능뿐 아니라 파일 취소/재시도, 여러 탭 충돌, 키보드/포커스, 가림 누락, 날짜 경계 등 작은 동작도 신규·개선·기존으로 나눠 적었습니다.\n\n새 사이드바 디자인은 아직 별도 시안입니다. 현재 앱은 최대 2단계 결재이며, 사내 메신저·자동 발송·실제 송금은 포함하지 않습니다. 사용자의 ZIP 실제 저장 확인과 팀원 시간 측정은 아직 완료로 기록하지 않았습니다.\n\n첨부 진행 공유 HTML은 인터넷 없이 열 수 있습니다."
+    styles = """
+:root{--ink:#17243a;--muted:#617087;--line:#dde4ee;--bg:#f4f6fa;--panel:#fff;--blue:#2457c6;font-family:'Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.7}*{box-sizing:border-box}body{margin:0}a{color:var(--blue)}button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid #5b8bf2;outline-offset:3px}.wrap{max-width:1120px;margin:0 auto;padding:40px 24px 70px}h1,h2,h3,p{margin:0}h1{font-size:clamp(27px,4vw,42px);line-height:1.3;letter-spacing:-.05em}h2{font-size:23px;letter-spacing:-.03em;margin-bottom:14px}h3{font-size:16px;line-height:1.5}.eyebrow{color:var(--blue);font-size:12px;font-weight:700;letter-spacing:.07em}.lead{max-width:900px;font-size:17px;line-height:1.85;margin-top:16px}.meta{color:var(--muted);font-size:12px;margin-top:16px;overflow-wrap:anywhere}.block{margin-top:32px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}.notice{background:#fff7e7;border-left:4px solid #e8a42d;padding:16px 20px;border-radius:8px;margin-top:20px}.notice p+p{margin-top:8px}.highlights{display:grid;grid-template-columns:1fr 1fr;gap:12px}.highlight{padding:18px;border:1px solid var(--line);border-radius:12px;background:#fff}.highlight h3{margin-bottom:6px}.highlight p,.section-desc{color:var(--muted);font-size:14px}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}table{width:100%;border-collapse:collapse;min-width:750px;text-align:left;font-size:14px}th,td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#eef2f8;font-weight:700}tr:last-child td{border-bottom:0}.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0}.controls input{flex:1;min-width:200px}.controls input,.controls select,button{padding:9px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:var(--ink)}button.primary{background:var(--blue);color:white;border-color:var(--blue)}.small{font-size:13px;color:var(--muted)}.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;margin-bottom:16px}.tag{display:inline-block;border-radius:5px;padding:2px 7px;font-size:11px;font-weight:700;white-space:nowrap}.new{background:#def3e8;color:#14633e}.improved{background:#e6edff;color:#264db2}.existing{background:#edf0f4;color:#59677c}.section{background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0;overflow:hidden}.section>summary{cursor:pointer;padding:16px 20px;font-weight:700;display:flex;gap:12px;align-items:center;list-style:none}.section>summary:before{content:'+';color:var(--blue);font-size:21px;font-weight:400;width:18px}.section[open]>summary:before{content:'−'}.section>summary .count{margin-left:auto;font-weight:400;font-size:12px;color:var(--muted)}.section-desc{padding:0 22px 14px}.feature{padding:20px 22px;border-top:1px solid #e9edf3;scroll-margin-top:18px}.feature-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.id{margin-left:auto;font-size:11px;color:#8b97a9;font-variant-numeric:tabular-nums}.comparison{display:grid;grid-template-columns:1fr 2fr;gap:20px;margin-top:12px;font-size:14px}.comparison b{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}.before{color:#6a7587;background:#f6f7fa;border-radius:8px;padding:10px 12px}.current{padding:10px 0}.row-note{margin-top:7px;color:#866120;font-size:13px}.sources{margin-top:10px;color:var(--muted);font-size:11px}.sources summary{cursor:pointer}.sources ul{padding-left:18px}.sources code{overflow-wrap:anywhere}.empty{padding:24px;text-align:center;color:var(--muted)}.toc{display:flex;flex-wrap:wrap;gap:8px}.toc a{font-size:12px;text-decoration:none;border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 9px}.checklist{padding-left:20px;margin:0}.checklist li{margin:9px 0}.share-text{width:100%;height:285px;resize:vertical;padding:14px;border:1px solid var(--line);border-radius:8px;margin-top:12px;line-height:1.7;font-size:14px}footer{margin-top:35px;color:var(--muted);font-size:12px}code{font-family:Consolas,monospace}.no-print{}[hidden]{display:none!important}@media(max-width:720px){.wrap{padding:26px 16px 48px}.highlights,.comparison{grid-template-columns:1fr}.comparison{gap:4px}.feature,.section>summary{padding:16px}.panel{padding:18px}.lead{font-size:16px}h2{font-size:20px}.controls button{flex:1}}@media print{:root{background:#fff}.wrap{max-width:none;padding:0;font-size:11px}.no-print,.sources{display:none!important}.section,.panel,.highlight{border-radius:0;break-inside:auto}.feature{break-inside:avoid;padding:12px}h1{font-size:28px}h2{font-size:18px}.comparison{grid-template-columns:1fr 2fr}table{min-width:0;font-size:11px}th,td{padding:8px}.block{margin-top:20px}a{color:inherit;text-decoration:none}.share-text{height:250px}}
+"""
+    js = """
+const groups=[...document.querySelectorAll('.section')], rows=[...document.querySelectorAll('.feature')];
+const search=document.getElementById('search'), kind=document.getElementById('kind');
+function filter(){const q=search.value.trim().toLocaleLowerCase();let n=0;for(const row of rows){const content=[...row.querySelectorAll('h3,.comparison')].map(x=>x.textContent).join(' ').toLocaleLowerCase();row.hidden=!!((kind.value&&row.dataset.kind!==kind.value)||(q&&!content.includes(q)));if(!row.hidden)n++;}for(const group of groups){const shown=[...group.querySelectorAll('.feature')].filter(x=>!x.hidden).length;group.hidden=!shown;group.querySelector('.count').textContent=shown+'항목';if(q||kind.value)group.open=true;}document.getElementById('results').textContent=n+' / '+rows.length+'항목 표시';document.getElementById('empty').hidden=!!n;}
+search.addEventListener('input',filter);kind.addEventListener('change',filter);
+document.getElementById('expand').onclick=()=>groups.forEach(g=>g.open=true);
+document.getElementById('collapse').onclick=()=>groups.forEach(g=>g.open=false);
+document.querySelectorAll('.toc a').forEach(a=>a.addEventListener('click',()=>{document.querySelector(a.getAttribute('href')).open=true;}));
+document.getElementById('copy').onclick=async()=>{const area=document.getElementById('share-text');try{await navigator.clipboard.writeText(area.value);document.getElementById('copy-result').textContent='공유 문안을 복사했습니다.';}catch{area.focus();area.select();document.getElementById('copy-result').textContent='문안을 선택했습니다. Ctrl+C로 복사하세요.';}};
+window.addEventListener('beforeprint',()=>{window.savedReportState={open:groups.map(x=>x.open),query:search.value,kind:kind.value};search.value='';kind.value='';filter();groups.forEach(g=>g.open=true);});
+window.addEventListener('afterprint',()=>{const state=window.savedReportState;if(!state)return;search.value=state.query;kind.value=state.kind;filter();groups.forEach((g,i)=>g.open=state.open[i]);});
+"""
+    eval_table = table(["자료·고정 버전", "규칙만", "LLM만", "규칙+LLM 가드 없음", "규칙+LLM 가드 있음"], [
+        ["dev / v3 · C안 공유 당시 개발 결과", "78.34%", "94.66%", "99.11%", "98.52%"],
+        ["test / v3 · 핵심 필드 평가", "75.67%", "83.09%", "94.66%", "77.74%"],
+        ["test2 / v4 · 204칸, 별도 6계약", "91.67%", "90.20%", "97.55%", "95.59%"],
+    ])
+    html = f'''<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>시범 C안 → 현재 앱 변경 현황 · 2026-10-06</title><style>{styles}</style></head><body><main class="wrap">
+<header id="top"><div class="eyebrow">3조 · 스마트 계약 증빙 검수 · 팀 공유용</div><h1>시범 C안 → 현재 앱<br>무엇이 달라졌나</h1><p class="lead">C안의 로그인·보안·로컬 AI 기반 위에, <b>원문 확인 → 묶음 요청 → 부분 회신 → 고친 본 → 재검수 → 대표 결재 → 지급 완료 기록</b>을 연결했습니다. 대표 기능과 작은 편의·실패 처리까지 <b>신규 / 개선 / 기존</b>으로 정리했습니다.</p><p class="meta">작성 기준 2026-10-06 · 실제 앱 코드 <code>{APP_COMMIT[:7]}</code> · 첨부 ‘팀공유_시범C안.zip’ 대조 · 앱 코드를 변경하지 않은 진행 보고서</p></header>
+<div class="notice"><p><b>새 사이드바 화면은 별도 시안입니다.</b> 여기의 ‘현재 앱’은 기존 실제 실행 앱을 뜻합니다. 새 시안의 3~5명 결재선·새 화면 배치를 구현 완료로 포함하지 않았습니다.</p><p>Caps Lock, 반복 로그인 제한, 비밀번호 해시, 대표 최종 확인은 C안에도 있었습니다. 이번에 모두 새로 만든 것으로 세지 않습니다.</p></div>
+<section class="block" aria-labelledby="highlights"><h2 id="highlights">가장 큰 변화 8가지</h2><div class="highlights">{''.join(f'<article class="highlight"><h3>{esc(t)}</h3><p>{esc(d)}</p></article>' for t,d in HIGHLIGHTS)}</div></section>
+<section class="block" aria-labelledby="baseline"><h2 id="baseline">기존 원형 → C안 → 현재 앱</h2><p class="small" style="margin-bottom:12px">첨부에는 C안 이전/당시 변경과 후속 UI 제안이 함께 있습니다. 세 시점을 분리했습니다. 첨부에 미기재된 원형 기능은 임의로 ‘없었음’이라고 단정하지 않았습니다.</p>{table(['축','C안 이전 원형 · 첨부 설명 기준','첨부 C안 당시','현재 실제 앱'],C_TRANSITIONS)}</section>
+<section class="block" aria-labelledby="inventory"><h2 id="inventory">세부 기능·작은 동작까지 전체 목록</h2><p class="small">총 {len(ROWS)}개 <b>세부 동작</b>입니다. 신규 {counts.get('신규',0)} · 개선 {counts.get('개선',0)} · 기존 {counts.get('기존',0)}. 서로 연결된 세부 동작을 나눠 적은 수이며 독립 제품 기능 개수가 아닙니다. ‘신규’는 C안 코드/공유 이후, ‘개선’은 기존 기능 보강, ‘기존’은 당시부터 있던 동작입니다.</p>
+<div class="controls no-print"><label class="sr-label" for="search">기능 찾기</label><input id="search" type="search" placeholder="Caps Lock, 대표, 취소, ZIP…"><label for="kind">구분</label><select id="kind"><option value="">전체</option><option>신규</option><option>개선</option><option>기존</option></select><button id="expand" type="button">모두 펼치기</button><button id="collapse" type="button">모두 접기</button></div><p class="small no-print" id="results" role="status" aria-live="polite">{len(ROWS)} / {len(ROWS)}항목 표시</p>
+<nav class="toc no-print" aria-label="기능 영역" style="margin-top:14px">{''.join(f'<a href="#group-{i+1}">{esc(g["title"])}</a>' for i,g in enumerate(GROUPS))}</nav>{''.join(sections)}<p id="empty" class="empty" hidden>일치하는 기능이 없습니다. 검색어나 구분을 바꿔 주세요.</p></section>
+<section class="block" aria-labelledby="evaluation"><h2 id="evaluation">AI 평가도 C안의 개발 수치와 구분</h2>{eval_table}<div class="notice"><p><b>각 행은 다른 자료의 결과입니다.</b> v3 test와 v4 test2를 동일 시험에서 77.74%→95.59% 개선했다고 표현하지 않습니다. C안의 98.52%는 개발 자료 수치입니다.</p><p>가드는 읽을 수 없는 금액을 확인 필요로 남긴 사례가 있지만 정답 제안도 거절했습니다. 잘못된 PASS는 각 평가에서 네 조건 모두 0건이어서 일반적인 안전성 우월성을 입증하지 못했습니다. test2에는 FAIL/MISSING 정답이 없어 누락·불일치 검출 성능은 미측정입니다.</p><p>test2 사람 원문 확인 81항목은 직접 라벨 확인 81개와 다릅니다. 필드 정확도 분모 204칸의 출처는 직접 라벨 39·원문 관찰 뒤 기준 적용 1·AI 일치 164입니다. 사람 전수 확인이나 실제 회사 전체 성능으로 설명하지 않습니다.</p></div></section>
+<section class="block" aria-labelledby="boundaries"><h2 id="boundaries">아직 실제 앱 기능이라고 쓰면 안 되는 것</h2>{table(['항목','현재 범위','정확한 설명'],LIMITS)}</section>
+<section class="block panel" aria-labelledby="verification"><h2 id="verification">검증된 것과 최종 확인 대기</h2><ul class="checklist"><li><b>기존 검증 기록:</b> C안 공유 당시 백엔드 209개·프런트 빌드 통과에서 현재 백엔드 전체 500개 통과, 프런트엔드 58개·빌드 통과로 검증 범위가 늘었습니다. 현재 앱 기준 {APP_COMMIT[:7]}. 프런트엔드에는 실제 화면 컴포넌트 검사도 포함합니다. 이후 사이드바 비교 작업은 문서 폴더만 변경했습니다.</li><li><b>기존 연결 확인:</b> 등록·원문 근거·칸별 사람 수정·재발행·재결재, 묶음/부분 회신·두 탭 충돌·역할별 차례·업로드 창 초기화 등은 기록된 기술/브라우저 검증 범위를 유지합니다.</li><li><b>사용자 확인 대기:</b> ZIP 버튼의 실제 저장·압축 해제 및 서류/JSON 가림 확인, 실제 참가자 업무함·계정·PC/브라우저 확인, 마지막 측정 SHA 기록.</li><li><b>아직 결과 없음:</b> 팀원 실제 작업시간·시간 절감, 실제 회사 문서 전수 검증. 이미 준비한 과제와 안내문을 완료된 측정 결과로 표현하지 않습니다.</li><li><b>이번 보고서 작업:</b> 소스·테스트 파일·이전 검증 기록을 대조했습니다. 앱/운영 DB를 수정하거나 AI·가드·보호 평가를 다시 실행하지 않았습니다.</li></ul></section>
+<section class="block panel" aria-labelledby="share"><h2 id="share">팀에 보낼 짧은 문안</h2><p class="small">이 문안과 진행 공유 HTML을 함께 보내면 됩니다. 파일을 더블클릭해 인터넷 없이 열 수 있습니다.</p><label for="share-text" class="small">공유 문안</label><textarea id="share-text" class="share-text" readonly>{esc(share_text)}</textarea><div class="controls no-print"><button id="copy" class="primary" type="button">문안 복사</button><span id="copy-result" class="small" role="status" aria-live="polite"></span></div></section>
+<footer><p>대조 기준: 첨부 1_진행공유.html 및 C안 공유 기록을 추가한 {BASELINE_COMMIT} 코드, 현재 앱 {APP_COMMIT[:7]}, API/운영/평가 문서와 기존 테스트. 첨부 ZIP은 날짜/커밋을 명시하지 않으므로 {BASELINE_COMMIT}와 동일 배포 바이너리라고 단정하지 않습니다.</p><p>원본 ZIP SHA-256: <code>{data['baseline_archive_sha256']}</code>. 상세 항목·소스 파일 해시는 함께 제공한 feature_inventory.json에 있습니다. 이 해시는 확인한 파일 버전 식별용이며 사람 전수 확인 증명이 아닙니다.</p></footer>
+</main><script>{js}</script></body></html>'''
+    (HERE / "index.html").write_text(html + "\n", encoding="utf-8")
+    package = HERE.parent / "팀공유_현재앱_변경현황_20261006.zip"
+    with zipfile.ZipFile(package, "w", zipfile.ZIP_DEFLATED) as archive:
+        archive.write(HERE / "index.html", "현재앱_변경현황.html")
+        archive.write(HERE / "feature_inventory.json", "feature_inventory.json")
+        archive.writestr("읽어주세요.txt", "현재앱_변경현황.html을 더블클릭하면 브라우저에서 열립니다. 인터넷·설치·로그인이 필요 없습니다.\n신규/개선/기존을 구분한 실제 앱 기능 보고서이며 새 UI 시안이 아닙니다.\n분야 제목을 누르면 상세 항목이 펼쳐집니다. 검색·구분 필터·모두 펼치기도 있습니다.\n인쇄하면 전체 항목이 펼쳐집니다.\nfeature_inventory.json은 항목과 소스 근거 목록입니다. 운영 자료·비밀번호·계정 정보는 포함하지 않습니다.\n")
+    print(json.dumps({"features": len(ROWS), "groups": len(GROUPS), "counts": counts,
+                      "source_files": len(source_refs), "package": str(package), "package_bytes": package.stat().st_size}, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    render()

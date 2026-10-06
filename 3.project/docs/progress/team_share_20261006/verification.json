@@ -1,0 +1,36 @@
+{
+  "status": "PASSED_REPORT_SCOPE",
+  "as_of": "2026-10-06",
+  "application_commit": "f27e8df5e356c1d5d85632f8620c12ae5979c122",
+  "features": 131,
+  "groups": 16,
+  "counts": {
+    "기존": 31,
+    "개선": 54,
+    "신규": 46
+  },
+  "source_file_hashes_verified": 103,
+  "html_ids_and_navigation": "passed",
+  "offline_external_asset_dependencies": 0,
+  "zip_integrity_and_content": "passed",
+  "zip_members": [
+    "현재앱_변경현황.html",
+    "feature_inventory.json",
+    "읽어주세요.txt"
+  ],
+  "zip_sha256": "546043e4721d0571867ad2e4198154ee477418a7c38d65105f2530d395b74ff3",
+  "browser_observations": {
+    "Caps Lock_search": "1 matching detail",
+    "login_limit_search": "1 matching detail with 8 attempts / next blocked and reset limits",
+    "new_filter": "46 matching details",
+    "no_match_search": "0 and empty message",
+    "expand_all": "16 sections",
+    "collapse_all": "0 open sections",
+    "default_viewport_horizontal_overflow": false,
+    "console_warnings_and_errors": 0
+  },
+  "application_changes": "none",
+  "new_application_test_runs": 0,
+  "ai_or_guard_evaluation_runs": 0,
+  "scope_note": "Report content/UI/packaging only. Prior app test results are cited rather than rerun. Clipboard OS readback, print dialog and full mobile/accessibility audits are not claimed."
+}

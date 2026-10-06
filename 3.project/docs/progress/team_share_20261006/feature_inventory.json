@@ -1,0 +1,3072 @@
+{
+  "title": "시범 C안 → 현재 앱 변경 현황",
+  "as_of": "2026-10-06",
+  "application_commit": "f27e8df5e356c1d5d85632f8620c12ae5979c122",
+  "baseline_supporting_commit": "afc34b2",
+  "baseline_note": "첨부 ZIP에는 날짜/커밋이 없으므로 공유문을 1차 기준으로 하고, 당시 team_update를 추가한 afc34b2 코드를 보조 대조했다. 동일 배포 바이너리라고 단정하지 않는다.",
+  "baseline_archive_sha256": "f8e6ab8a5d9defa320d21994803e368a4a7cd5dd2fc9805aacb0992fd950eedf",
+  "verification": "소스·기존 테스트/검증 기록 대조. 이번 문서 작성에서 앱·DB·AI·평가를 실행하지 않았다.",
+  "counts": {
+    "기존": 31,
+    "개선": 54,
+    "신규": 46
+  },
+  "groups": [
+    {
+      "title": "01 로그인·비밀번호·계정",
+      "description": "Caps Lock부터 퇴사 처리까지. 이 보안 기반은 C안 때 이미 구현된 부분입니다.",
+      "refs": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "title": "02 계약 등록·파일 올리기",
+      "description": "기존 등록 기능을 유지하면서, 추가와 교체를 구분하고 취소·실패·화면 이동을 보강했습니다.",
+      "refs": [
+        "backend/app/api/contracts.py",
+        "backend/app/api/auto_contract.py",
+        "backend/app/api/documents.py",
+        "backend/app/services/storage_service.py",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/uploadModal.component.test.tsx",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "title": "03 자동 검사·금액 기준",
+      "description": "기존 핵심 검사도 빠뜨리지 않았습니다. 자동 검사 결과와 사람의 확인은 별개입니다.",
+      "refs": [
+        "backend/app/validation/engine.py",
+        "backend/app/validation/financial.py",
+        "backend/app/schemas/contract.py",
+        "backend/tests/test_financial_extraction.py",
+        "backend/tests/test_rules.py"
+      ]
+    },
+    {
+      "title": "04 로컬 AI·근거 대조",
+      "description": "C안의 로컬 AI를 실제 근거 화면과 운영 상태에 연결했습니다.",
+      "refs": [
+        "backend/app/ai/local_llm.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/ai/grounding.py",
+        "backend/app/services/review_context_service.py",
+        "backend/app/services/evidence_geometry_service.py",
+        "backend/app/services/llm_status_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_evidence_geometry.py",
+        "backend/tests/test_performance_llm_status.py"
+      ]
+    },
+    {
+      "title": "05 사람 확인·수정·재발행",
+      "description": "앱이 잘못 읽은 값과 서류 자체가 틀린 경우를 구분합니다.",
+      "refs": [
+        "backend/app/api/documents.py",
+        "backend/app/services/field_confirmation_service.py",
+        "backend/app/services/document_version_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_field_confirmation_scope.py",
+        "backend/tests/test_document_versions.py"
+      ]
+    },
+    {
+      "title": "06 공통 상태·업무함·검색",
+      "description": "목록과 상세가 같은 상태·차례를 사용하도록 연결했습니다.",
+      "refs": [
+        "backend/app/services/work_state_service.py",
+        "backend/app/api/work_system.py",
+        "docs/api/work_system.md",
+        "frontend/src/components/review/StageDashboard.tsx",
+        "frontend/src/components/review/ContractSearch.tsx",
+        "frontend/src/utils/stage.ts",
+        "frontend/src/components/review/stageDashboard.component.test.tsx",
+        "backend/tests/test_work_system.py"
+      ]
+    },
+    {
+      "title": "07 거래처 묶음 요청",
+      "description": "서류마다 요청 창을 반복하는 방식에서 계약당 한 번에 정리하는 방식으로 바뀌었습니다.",
+      "refs": [
+        "backend/app/api/request_bundles.py",
+        "backend/app/services/request_bundle_service.py",
+        "docs/api/bundled_requests.md",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/bundleRequest.test.ts",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "title": "08 부분 회신·취소·다음 행동",
+      "description": "받은 서류와 아직 기다리는 서류를 따로 관리합니다.",
+      "refs": [
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/app/services/request_bundle_service.py",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "title": "09 사내 담당자에게 맡기기",
+      "description": "개인 업무 기록을 추가했습니다. 맡기기는 결재 권한을 주는 기능이 아닙니다.",
+      "refs": [
+        "backend/app/api/assignments.py",
+        "frontend/src/components/review/AssignmentPanel.tsx",
+        "frontend/src/components/review/MyAssignmentsStrip.tsx",
+        "backend/tests/test_assignments.py"
+      ]
+    },
+    {
+      "title": "10 대표 승인·반려·재결재",
+      "description": "대표 최종 확인은 C안에도 있었습니다. 이후 결재 흐름·정책·화면 연결을 보강했습니다.",
+      "refs": [
+        "backend/app/api/pilot.py",
+        "backend/app/api/workflow.py",
+        "backend/app/services/company_policy_service.py",
+        "backend/app/services/workflow_service.py",
+        "frontend/src/components/review/ApprovalPanel.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_review_workflow_api.py",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "title": "11 지급 완료 기록·재확인",
+      "description": "⑤ 지급의 실제 API·화면이 추가되었습니다. 은행 송금 기능은 아닙니다.",
+      "refs": [
+        "backend/app/api/payments.py",
+        "backend/app/services/payment_service.py",
+        "docs/api/payment_record.md",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/utils/date.ts",
+        "backend/tests/test_payment_records.py",
+        "frontend/src/utils/date.test.ts"
+      ]
+    },
+    {
+      "title": "12 처리 이력·요약·검수 도우미",
+      "description": "판정만 남기는 데서, 무엇을 바꾸고 처리했는지를 다시 설명하는 기능으로 넓혔습니다.",
+      "refs": [
+        "backend/app/services/activity_service.py",
+        "frontend/src/components/review/ActivityTimeline.tsx",
+        "backend/app/services/contract_summary_service.py",
+        "frontend/src/components/review/AssistantPreview.tsx",
+        "backend/app/services/review_assistant_service.py",
+        "backend/tests/test_work_system.py",
+        "backend/tests/test_contract_summary.py",
+        "backend/tests/test_review_assistant.py"
+      ]
+    },
+    {
+      "title": "13 개인정보 가림·계약 ZIP",
+      "description": "가림 기능은 원래 있었습니다. 표시 누락과 파일·이력 내보내기 범위를 보강했습니다.",
+      "refs": [
+        "backend/app/ai/masking.py",
+        "backend/app/services/preview_masking_service.py",
+        "backend/app/services/contract_export_service.py",
+        "frontend/src/utils/masking.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_contract_export.py",
+        "backend/tests/test_request_bundle_export.py",
+        "backend/tests/test_preview_masking.py"
+      ]
+    },
+    {
+      "title": "14 실행·설정·백업·복원",
+      "description": "이 운영 기반은 C안 때부터 있습니다. 이후 새 업무 이력까지 보존하도록 연결 점검했습니다.",
+      "refs": [
+        "backend/launcher/cli.py",
+        "backend/launcher/settings.py",
+        "backend/launcher/server.py",
+        "backend/launcher/operations.py",
+        "backend/app/services/backup_service.py",
+        "frontend/src/components/PilotOperations.tsx",
+        "docs/operations/backup_restore.md",
+        "docs/operations/workflow_rehearsal.md",
+        "backend/tests/test_backup_restore.py"
+      ]
+    },
+    {
+      "title": "15 실적 집계·평가·테스트 준비",
+      "description": "실제로 잰 숫자와 아직 안 잰 숫자를 구분합니다.",
+      "refs": [
+        "backend/app/services/performance_service.py",
+        "frontend/src/components/review/WorkStatsStrip.tsx",
+        "docs/eval/test/final/four_modes.md",
+        "docs/eval/test2/final_four_modes.md",
+        "docs/operations/team_test_measurement.md",
+        "docs/operations/team_test_materials.md",
+        "docs/operations/team_test_participant_guide.md",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "title": "16 작은 UX·동시 작업 오류 수정",
+      "description": "버튼과 문장뿐 아니라 잘못 저장하거나 다른 화면을 덮는 동작도 수정했습니다.",
+      "refs": [
+        "frontend/src/hooks/useDialogA11y.ts",
+        "frontend/src/utils/korean.ts",
+        "frontend/src/utils/date.ts",
+        "frontend/src/utils/latest.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "docs/api/frontend_handoff.md"
+      ]
+    }
+  ],
+  "features": [
+    {
+      "id": "F001",
+      "group": "01 로그인·비밀번호·계정",
+      "kind": "기존",
+      "title": "등록 계정 로그인",
+      "before": "C안에 이미 있음",
+      "current": "이메일·비밀번호로 로그인. 이메일 앞뒤 공백을 제거하고 서버에서 소문자로 비교합니다. 로그인 중 버튼을 비활성화하고 실패 이유를 보여 줍니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "id": "F002",
+      "group": "01 로그인·비밀번호·계정",
+      "kind": "기존",
+      "title": "Caps Lock 안내",
+      "before": "C안 공유에 이미 포함",
+      "current": "비밀번호 칸에서 키를 누르거나 뗄 때 Caps Lock 상태를 확인해 경고합니다. 칸을 벗어나면 경고를 숨깁니다.",
+      "note": "입력 편의 기능입니다. 추가 인증이나 보안 키가 아닙니다.",
+      "references": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "id": "F003",
+      "group": "01 로그인·비밀번호·계정",
+      "kind": "기존",
+      "title": "반복 로그인 제한",
+      "before": "C안에 이미 있음",
+      "current": "같은 IP·이메일 조합에서 최근 5분간 8회 시도한 뒤 다음 시도는 429로 제한합니다. ‘5분 후 다시 시도하세요’라고 안내합니다.",
+      "note": "8회 실패 뒤 9번째 시도가 막히는 경우가 대표적입니다. 성공 시 기록 초기화. 단일 서버 메모리 기준이라 서버 재시작 후 유지되는 영구 계정 잠금은 아닙니다.",
+      "references": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "id": "F004",
+      "group": "01 로그인·비밀번호·계정",
+      "kind": "기존",
+      "title": "비밀번호 해시 저장",
+      "before": "C안에서 보강 완료",
+      "current": "무작위 salt를 넣은 PBKDF2-SHA256 해시를 저장합니다. 같은 비밀번호도 서로 다른 저장값이 됩니다. 평문·옛 SHA256 기록으로는 로그인할 수 없습니다.",
+      "note": "앱 로그인 비밀번호를 원문으로 저장하지 않는다는 뜻이며 DB 전체 암호화를 뜻하지 않습니다.",
+      "references": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "id": "F005",
+      "group": "01 로그인·비밀번호·계정",
+      "kind": "기존",
+      "title": "첫 로그인 후 임시 비밀번호 변경",
+      "before": "C안에 이미 있음",
+      "current": "초기 계정과 대표가 비밀번호를 초기화한 계정은 새 비밀번호를 정해야 합니다. 변경 전 업무 저장 요청은 서버에서도 차단합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "id": "F006",
+      "group": "01 로그인·비밀번호·계정",
+      "kind": "기존",
+      "title": "비밀번호 변경의 세부 조건",
+      "before": "C안에 이미 있음",
+      "current": "현재 비밀번호 확인, 새 비밀번호 두 번 입력, 12~128자, 현재와 다른 비밀번호를 검사합니다. 입력 불일치·현재 비밀번호 오류를 알려 줍니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "id": "F007",
+      "group": "01 로그인·비밀번호·계정",
+      "kind": "기존",
+      "title": "세션 유지·만료·로그아웃",
+      "before": "C안에 이미 있음",
+      "current": "HttpOnly·SameSite 쿠키와 서버 세션을 사용합니다. 기본 만료는 8시간이며 설정 가능. 새로고침 때 세션을 확인하고, 만료 응답을 받으면 로그인 상태를 해제합니다. 로그아웃은 서버 세션도 삭제합니다.",
+      "note": "HTTPS용 Secure 쿠키는 운영 설정이 필요합니다. 현재 로컬 실행이 HTTPS 자동 구성까지 제공하는 것은 아닙니다.",
+      "references": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "id": "F008",
+      "group": "01 로그인·비밀번호·계정",
+      "kind": "기존",
+      "title": "비밀번호 변경 시 다른 로그인 해제",
+      "before": "C안에 이미 있음",
+      "current": "이 계정의 기존 세션을 모두 폐기하고 변경한 화면에 새 세션을 발급합니다. 다른 PC·탭의 옛 세션은 다음 요청에서 사용할 수 없습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "id": "F009",
+      "group": "01 로그인·비밀번호·계정",
+      "kind": "기존",
+      "title": "담당자·대표의 서버 권한",
+      "before": "C안에 이미 있음",
+      "current": "화면 버튼뿐 아니라 API에서 담당자의 자료 등록·수정, 대표의 최종 확인·계정 관리 권한을 확인합니다. 담당자가 대표 결재 API를 직접 호출해도 차단됩니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "id": "F010",
+      "group": "01 로그인·비밀번호·계정",
+      "kind": "기존",
+      "title": "직원 계정 추가·임시 비밀번호 초기화",
+      "before": "C안에 이미 있음",
+      "current": "대표가 이메일·표시 이름·담당자/대표 역할로 계정을 만들고 임시 비밀번호를 지정합니다. 중복 이메일·허용하지 않는 역할·짧은 비밀번호를 거절합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "id": "F011",
+      "group": "01 로그인·비밀번호·계정",
+      "kind": "기존",
+      "title": "계정 사용 중지·재개",
+      "before": "C안에 이미 있음",
+      "current": "대표가 계정을 중지하면 기존 세션을 폐기하고 새 로그인을 막습니다. 업무·감사 이력은 남습니다. 자기 계정을 직접 중지할 수는 없습니다.",
+      "note": "화면을 원격으로 즉시 닫는 기능은 아닙니다. 중지된 세션은 다음 서버 요청에서 차단되며 이미 내려받은 파일은 회수하지 못합니다.",
+      "references": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "id": "F012",
+      "group": "01 로그인·비밀번호·계정",
+      "kind": "기존",
+      "title": "사내망 비밀번호 복구 방식",
+      "before": "C안에서 변경 완료",
+      "current": "외부 이메일 인증코드 방식 대신 로그인 후 본인 변경 또는 대표의 임시 비밀번호 초기화를 사용합니다. 폐기된 이메일 초기화 endpoint는 410 안내를 반환합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/auth.py",
+        "backend/app/security.py",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/components/PilotPasswordChange.tsx",
+        "backend/app/api/pilot.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_security_regressions.py"
+      ]
+    },
+    {
+      "id": "F013",
+      "group": "02 계약 등록·파일 올리기",
+      "kind": "기존",
+      "title": "직접 계약 등록·수정·삭제",
+      "before": "C안에도 기본 계약 관리가 있음",
+      "current": "계약명·거래처·사업자번호·계약금액·금액 기준·세액·일괄/분할 지급 방식을 등록합니다. 계약 기준 수정과 서류 추출값 수정은 별개입니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/contracts.py",
+        "backend/app/api/auto_contract.py",
+        "backend/app/api/documents.py",
+        "backend/app/services/storage_service.py",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/uploadModal.component.test.tsx",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F014",
+      "group": "02 계약 등록·파일 올리기",
+      "kind": "기존",
+      "title": "서류로 계약 정보 초안 만들기",
+      "before": "C안에 파일 분석·묶음 등록이 있음",
+      "current": "파일에서 계약명·거래처·번호·금액을 읽어 등록 초안을 만듭니다. 여러 서류를 분석해 묶음 계약을 만들 수도 있습니다.",
+      "note": "파일에서 만든 초안이 곧 사용자가 확인한 계약 기준값이라는 뜻은 아닙니다.",
+      "references": [
+        "backend/app/api/contracts.py",
+        "backend/app/api/auto_contract.py",
+        "backend/app/api/documents.py",
+        "backend/app/services/storage_service.py",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/uploadModal.component.test.tsx",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F015",
+      "group": "02 계약 등록·파일 올리기",
+      "kind": "기존",
+      "title": "6종 서류 분류·다중 형식 읽기",
+      "before": "C안에 이미 있음",
+      "current": "계약서·견적서·사업자등록증·통장사본·세금계산서·검수확인서와 미분류를 구분합니다. PDF·이미지·DOC/DOCX·HWP/HWPX·XLS/XLSX·CSV·텍스트를 처리합니다.",
+      "note": "해당 형식 처리 코드가 있다는 뜻입니다. 모든 문서의 레이아웃·가독성을 동일하게 보장하지는 않습니다.",
+      "references": [
+        "backend/app/api/contracts.py",
+        "backend/app/api/auto_contract.py",
+        "backend/app/api/documents.py",
+        "backend/app/services/storage_service.py",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/uploadModal.component.test.tsx",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F016",
+      "group": "02 계약 등록·파일 올리기",
+      "kind": "기존",
+      "title": "파일 수·크기·실제 형식 검사",
+      "before": "C안 보안 기반에 이미 있음",
+      "current": "일반 업로드는 1~20개. 서버 파일당 기본 20MB이고 설정 가능하며 화면은 20MB 기준을 안내합니다. 빈 파일·지원하지 않는 확장자·PDF/패키지 문서의 잘못된 시작 형식을 거절합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/contracts.py",
+        "backend/app/api/auto_contract.py",
+        "backend/app/api/documents.py",
+        "backend/app/services/storage_service.py",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/uploadModal.component.test.tsx",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F017",
+      "group": "02 계약 등록·파일 올리기",
+      "kind": "기존",
+      "title": "원본 파일 보관·해시",
+      "before": "C안에 이미 있음",
+      "current": "파일명을 정리하고 UUID 경로에 원본을 보관합니다. 등록 SHA-256을 기록하며 가림 사본·추출 텍스트와 원본 경로를 구분합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/contracts.py",
+        "backend/app/api/auto_contract.py",
+        "backend/app/api/documents.py",
+        "backend/app/services/storage_service.py",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/uploadModal.component.test.tsx",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F018",
+      "group": "02 계약 등록·파일 올리기",
+      "kind": "개선",
+      "title": "‘새 서류 추가’와 ‘고친 본 올리기’ 구분",
+      "before": "업로드와 교체 의도가 화면에서 불명확",
+      "current": "새 서류는 ADD, 같은 서류의 정정본은 REISSUE로 명시합니다. 새 서류 창에도 고친 본은 별도 버튼을 쓰라는 안내가 있습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/contracts.py",
+        "backend/app/api/auto_contract.py",
+        "backend/app/api/documents.py",
+        "backend/app/services/storage_service.py",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/uploadModal.component.test.tsx",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F019",
+      "group": "02 계약 등록·파일 올리기",
+      "kind": "개선",
+      "title": "업로드 취소·다른 계약 이동 시 초기화",
+      "before": "닫은 창의 파일이나 종류가 다른 계약에 남을 수 있었음",
+      "current": "열기·닫기·Esc·계약 변경 때 파일·종류·오류·실제 파일 입력을 초기화합니다. 새 계약의 창에서 옛 파일이 전송되지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/contracts.py",
+        "backend/app/api/auto_contract.py",
+        "backend/app/api/documents.py",
+        "backend/app/services/storage_service.py",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/uploadModal.component.test.tsx",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F020",
+      "group": "02 계약 등록·파일 올리기",
+      "kind": "개선",
+      "title": "실패 파일 재시도·선택 모두 빼기",
+      "before": "실패와 취소가 같은 상태처럼 섞였음",
+      "current": "같은 창 안에서 업로드가 실패하면 파일을 남겨 다시 시도할 수 있습니다. 선택을 모두 뺄 수도 있고, 창을 닫고 다시 열면 새 상태로 시작합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/contracts.py",
+        "backend/app/api/auto_contract.py",
+        "backend/app/api/documents.py",
+        "backend/app/services/storage_service.py",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/uploadModal.component.test.tsx",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F021",
+      "group": "02 계약 등록·파일 올리기",
+      "kind": "개선",
+      "title": "늦은 업로드 완료가 화면을 덮지 않음",
+      "before": "A 계약 업로드 뒤 B로 옮겨도 A 화면으로 되돌아갈 수 있었음",
+      "current": "업로드를 시작한 창·계약 기준으로 완료를 확인합니다. 다른 계약의 창을 닫거나 현재 화면을 옛 계약으로 돌리지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/contracts.py",
+        "backend/app/api/auto_contract.py",
+        "backend/app/api/documents.py",
+        "backend/app/services/storage_service.py",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/uploadModal.component.test.tsx",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F022",
+      "group": "02 계약 등록·파일 올리기",
+      "kind": "개선",
+      "title": "인식 실패·원본 없음의 안내",
+      "before": "기본 인식 실패 표시가 있었음",
+      "current": "인식 실패·미분류·원본 유실은 ‘원문/추출값 확인’ 대상으로 표시합니다. 파일을 받았다는 사실만으로 자동 통과시키지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/contracts.py",
+        "backend/app/api/auto_contract.py",
+        "backend/app/api/documents.py",
+        "backend/app/services/storage_service.py",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/uploadModal.component.test.tsx",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F023",
+      "group": "03 자동 검사·금액 기준",
+      "kind": "기존",
+      "title": "필수 서류 누락 검사",
+      "before": "C안에 이미 있음",
+      "current": "필수 서류 종류 중 없는 것을 MISSING으로 표시합니다. 같은 종류 파일을 여러 개 올려도 받은 종류 수를 중복해서 세지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/validation/engine.py",
+        "backend/app/validation/financial.py",
+        "backend/app/schemas/contract.py",
+        "backend/tests/test_financial_extraction.py",
+        "backend/tests/test_rules.py"
+      ]
+    },
+    {
+      "id": "F024",
+      "group": "03 자동 검사·금액 기준",
+      "kind": "기존",
+      "title": "사업자번호 일치 검사",
+      "before": "C안에 이미 있음",
+      "current": "계약·견적·세금계산서·사업자등록증의 번호와 계약 기준번호를 비교합니다. 하이픈을 제거해 비교하고 유효한 10자리 값이 없으면 확인 필요로 남깁니다.",
+      "note": "",
+      "references": [
+        "backend/app/validation/engine.py",
+        "backend/app/validation/financial.py",
+        "backend/app/schemas/contract.py",
+        "backend/tests/test_financial_extraction.py",
+        "backend/tests/test_rules.py"
+      ]
+    },
+    {
+      "id": "F025",
+      "group": "03 자동 검사·금액 기준",
+      "kind": "기존",
+      "title": "부가세 포함 여부·세액 확인",
+      "before": "C안 안정화에서 이미 보강",
+      "current": "합계 기준인지 공급가액 기준인지 구분합니다. 공급가액 기준은 입력된 세액을 더해 비교하며, 기준이 불명확하면 확인 필요입니다.",
+      "note": "앱이 임의로 10% 세율을 적용해 합계를 만들어 확정하지 않습니다.",
+      "references": [
+        "backend/app/validation/engine.py",
+        "backend/app/validation/financial.py",
+        "backend/app/schemas/contract.py",
+        "backend/tests/test_financial_extraction.py",
+        "backend/tests/test_rules.py"
+      ]
+    },
+    {
+      "id": "F026",
+      "group": "03 자동 검사·금액 기준",
+      "kind": "기존",
+      "title": "견적서·세금계산서 금액 비교",
+      "before": "C안에 이미 있음",
+      "current": "서류 합계와 계약 기준금액을 비교합니다. 공급가액+세액과 서류 합계의 자체 계산도 확인합니다. 금액 미추출과 실제 불일치는 다르게 표시합니다.",
+      "note": "",
+      "references": [
+        "backend/app/validation/engine.py",
+        "backend/app/validation/financial.py",
+        "backend/app/schemas/contract.py",
+        "backend/tests/test_financial_extraction.py",
+        "backend/tests/test_rules.py"
+      ]
+    },
+    {
+      "id": "F027",
+      "group": "03 자동 검사·금액 기준",
+      "kind": "기존",
+      "title": "분할 청구 누적·중복 서류 검사",
+      "before": "C안의 금액 의미 보강에 포함",
+      "current": "분할 지급이면 부분 청구 여부와 세금계산서 누적 합계를 확인합니다. 같은 원본 해시의 중복 청구 자료는 확인 필요로 남깁니다.",
+      "note": "회차별 송금·잔액 관리 기능과는 다릅니다.",
+      "references": [
+        "backend/app/validation/engine.py",
+        "backend/app/validation/financial.py",
+        "backend/app/schemas/contract.py",
+        "backend/tests/test_financial_extraction.py",
+        "backend/tests/test_rules.py"
+      ]
+    },
+    {
+      "id": "F028",
+      "group": "03 자동 검사·금액 기준",
+      "kind": "개선",
+      "title": "‘이상 없음’의 과장 제거",
+      "before": "일부 화면이 적용 범위와 무관하게 이상 없음으로 표시",
+      "current": "‘자동 검사 N개 일치’·‘적용된 자동 검사 없음’으로 표시하고 일치한 검사 목록을 펼칠 수 있습니다.",
+      "note": "자동 검사가 일치했다고 원문 사람 확인이나 국세청 확인이 끝난 것은 아닙니다.",
+      "references": [
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/app/validation/engine.py"
+      ]
+    },
+    {
+      "id": "F029",
+      "group": "03 자동 검사·금액 기준",
+      "kind": "개선",
+      "title": "국세청 미조회와 해야 할 일 분리",
+      "before": "미연동 REVIEW가 문제 건수에 섞일 수 있었음",
+      "current": "국세청 disabled 안내는 별도로 남기고 일반 문제 건수·거래처 요청에서 제외합니다. 결재 확인 문구에는 이 앱에서 조회하지 않았음을 명시합니다.",
+      "note": "국세청 실제 조회·세금계산서 진위 검증은 현재 시범 운영에서 하지 않습니다.",
+      "references": [
+        "backend/app/validation/engine.py",
+        "backend/app/validation/financial.py",
+        "backend/app/schemas/contract.py",
+        "backend/tests/test_financial_extraction.py",
+        "backend/tests/test_rules.py"
+      ]
+    },
+    {
+      "id": "F030",
+      "group": "04 로컬 AI·근거 대조",
+      "kind": "기존",
+      "title": "규칙 실패·모순 칸만 로컬 AI 보완",
+      "before": "C안에 qwen3 보완 구현",
+      "current": "규칙이 못 읽거나 모순이 있는 핵심 필드에만 Ollama/qwen3 보완을 사용합니다. AI는 값을 제안하고 최종 검사 판정은 규칙이 합니다.",
+      "note": "LLM은 기본 꺼짐입니다. 로컬 모델·연결·설정이 준비되어야 동작합니다.",
+      "references": [
+        "backend/app/ai/local_llm.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/ai/grounding.py",
+        "backend/app/services/review_context_service.py",
+        "backend/app/services/evidence_geometry_service.py",
+        "backend/app/services/llm_status_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_evidence_geometry.py",
+        "backend/tests/test_performance_llm_status.py"
+      ]
+    },
+    {
+      "id": "F031",
+      "group": "04 로컬 AI·근거 대조",
+      "kind": "기존",
+      "title": "AI 근거 검증·거절 사유",
+      "before": "C안에 가드 v3 구현",
+      "current": "원문 인용·필드 라벨·공급자 구역·형식·계산·모호성을 확인합니다. 채택하지 않은 제안과 이유도 남겨 사람 확인으로 넘깁니다.",
+      "note": "",
+      "references": [
+        "backend/app/ai/local_llm.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/ai/grounding.py",
+        "backend/app/services/review_context_service.py",
+        "backend/app/services/evidence_geometry_service.py",
+        "backend/app/services/llm_status_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_evidence_geometry.py",
+        "backend/tests/test_performance_llm_status.py"
+      ]
+    },
+    {
+      "id": "F032",
+      "group": "04 로컬 AI·근거 대조",
+      "kind": "개선",
+      "title": "LLM 실패 때 기본 결과 보존",
+      "before": "C안에도 규칙 결과를 보존",
+      "current": "문서별 호출 여부·횟수·실패 사유를 기록하고 규칙 추출 결과를 유지합니다. AI 연결 실패와 사람이 확인할 칸을 구분해 보여 줍니다.",
+      "note": "",
+      "references": [
+        "backend/app/ai/local_llm.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/ai/grounding.py",
+        "backend/app/services/review_context_service.py",
+        "backend/app/services/evidence_geometry_service.py",
+        "backend/app/services/llm_status_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_evidence_geometry.py",
+        "backend/tests/test_performance_llm_status.py"
+      ]
+    },
+    {
+      "id": "F033",
+      "group": "04 로컬 AI·근거 대조",
+      "kind": "신규",
+      "title": "값별 출처·원문 근거 보기",
+      "before": "C안에서는 근거 화면을 후속 시안으로 제안",
+      "current": "규칙/AI/사람 확인 출처와 근거 인용을 제공합니다. 값 선택에서 관련 원문 위치로 이동하고 거절된 AI 근거도 확인할 수 있습니다.",
+      "note": "",
+      "references": [
+        "backend/app/ai/local_llm.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/ai/grounding.py",
+        "backend/app/services/review_context_service.py",
+        "backend/app/services/evidence_geometry_service.py",
+        "backend/app/services/llm_status_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_evidence_geometry.py",
+        "backend/tests/test_performance_llm_status.py"
+      ]
+    },
+    {
+      "id": "F034",
+      "group": "04 로컬 AI·근거 대조",
+      "kind": "신규",
+      "title": "PDF·이미지의 근거 상자",
+      "before": "C안에는 표시 좌표 기능이 없음",
+      "current": "PDF 글자 상자 또는 OCR 글자 상자로 확인된 위치만 원문 위에 표시합니다. 페이지·x·y·너비·높이는 이미지 기준 0~1 좌표입니다.",
+      "note": "좌표를 확인하지 못하거나 모호하면 bbox=null. 위치를 임의로 만들지 않습니다.",
+      "references": [
+        "backend/app/ai/local_llm.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/ai/grounding.py",
+        "backend/app/services/review_context_service.py",
+        "backend/app/services/evidence_geometry_service.py",
+        "backend/app/services/llm_status_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_evidence_geometry.py",
+        "backend/tests/test_performance_llm_status.py"
+      ]
+    },
+    {
+      "id": "F035",
+      "group": "04 로컬 AI·근거 대조",
+      "kind": "신규",
+      "title": "PDF 쪽 넘기기·DOCX 글자 강조",
+      "before": "C안에는 일반 미리보기는 있음",
+      "current": "여러 쪽 PDF를 넘겨 근거를 확인하고 DOCX는 문단·표에서 확인된 글자 근거를 강조합니다.",
+      "note": "DOCX 텍스트 근거와 실제 인쇄 페이지 위치는 다릅니다. 물리 페이지 좌표를 보장하지 않습니다.",
+      "references": [
+        "backend/app/ai/local_llm.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/ai/grounding.py",
+        "backend/app/services/review_context_service.py",
+        "backend/app/services/evidence_geometry_service.py",
+        "backend/app/services/llm_status_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_evidence_geometry.py",
+        "backend/tests/test_performance_llm_status.py"
+      ]
+    },
+    {
+      "id": "F036",
+      "group": "04 로컬 AI·근거 대조",
+      "kind": "개선",
+      "title": "금액·날짜 공통 블록의 근거 누락 보완",
+      "before": "공급받는자 아래 금액 블록을 통째로 제외할 수 있었음",
+      "current": "사업자 식별값은 공급자 구역을 따지고 금액·날짜는 실제 라벨·값 근거로 표시합니다. 값 추출 결과를 바꾸지 않고 표시 누락을 수정했습니다.",
+      "note": "",
+      "references": [
+        "backend/app/ai/local_llm.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/ai/grounding.py",
+        "backend/app/services/review_context_service.py",
+        "backend/app/services/evidence_geometry_service.py",
+        "backend/app/services/llm_status_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_evidence_geometry.py",
+        "backend/tests/test_performance_llm_status.py"
+      ]
+    },
+    {
+      "id": "F037",
+      "group": "04 로컬 AI·근거 대조",
+      "kind": "개선",
+      "title": "근거 여러 곳·근거 위치 없음 표시",
+      "before": "후보 여러 개라는 내부 표현이 사용됨",
+      "current": "같은 저장값을 지지하는 복수 근거는 ‘같은 값의 근거 N곳’으로 표시합니다. 근거를 못 찾으면 위치 없음으로 남깁니다.",
+      "note": "서로 다른 숫자 후보나 읽을 수 없는 값까지 ‘같은 값’으로 확정하는 것은 아닙니다.",
+      "references": [
+        "backend/app/ai/local_llm.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/ai/grounding.py",
+        "backend/app/services/review_context_service.py",
+        "backend/app/services/evidence_geometry_service.py",
+        "backend/app/services/llm_status_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_evidence_geometry.py",
+        "backend/tests/test_performance_llm_status.py"
+      ]
+    },
+    {
+      "id": "F038",
+      "group": "04 로컬 AI·근거 대조",
+      "kind": "신규",
+      "title": "실제 AI 상태·보완 칸 수",
+      "before": "C안 후 초기 화면의 연결 값은 항상 false였음",
+      "current": "설정상 ON/OFF, 로컬 서버 연결, 모델 설치, 추론 준비 여부를 나눕니다. 계약·문서별 호출·실패·실제로 채택한 VALUE 칸 수를 기록합니다.",
+      "note": "설정이 켜짐, 서버가 연결됨, 이 문서에서 AI를 사용함은 서로 다른 사실입니다.",
+      "references": [
+        "backend/app/ai/local_llm.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/ai/grounding.py",
+        "backend/app/services/review_context_service.py",
+        "backend/app/services/evidence_geometry_service.py",
+        "backend/app/services/llm_status_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_evidence_geometry.py",
+        "backend/tests/test_performance_llm_status.py"
+      ]
+    },
+    {
+      "id": "F039",
+      "group": "04 로컬 AI·근거 대조",
+      "kind": "개선",
+      "title": "원본 변경 뒤 오래된 근거 차단",
+      "before": "기본 해시·자료 변경 검사는 있었음",
+      "current": "현재 원본과 저장 SHA/revision 기준이 맞지 않으면 옛 위치·근거를 새 원본에 붙이지 않습니다. 사람 수정값에도 과거 AI 위치를 무조건 재사용하지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/ai/local_llm.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/ai/grounding.py",
+        "backend/app/services/review_context_service.py",
+        "backend/app/services/evidence_geometry_service.py",
+        "backend/app/services/llm_status_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_evidence_geometry.py",
+        "backend/tests/test_performance_llm_status.py"
+      ]
+    },
+    {
+      "id": "F040",
+      "group": "05 사람 확인·수정·재발행",
+      "kind": "개선",
+      "title": "기준값과 지금 저장된 값 대조",
+      "before": "값 목록은 있었지만 무엇을 고칠지 불명확",
+      "current": "불일치 검사에 계약 기준값과 지금 저장된 값을 나란히 보여 줍니다. 원문이 계약과 다르면 고친 서류를 받고, 앱이 오독했으면 읽은 값을 수정하도록 안내합니다.",
+      "note": "계약과 맞추려고 원문과 다른 값으로 덮는 기능으로 설명하지 않습니다.",
+      "references": [
+        "backend/app/api/documents.py",
+        "backend/app/services/field_confirmation_service.py",
+        "backend/app/services/document_version_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_field_confirmation_scope.py",
+        "backend/tests/test_document_versions.py"
+      ]
+    },
+    {
+      "id": "F041",
+      "group": "05 사람 확인·수정·재발행",
+      "kind": "개선",
+      "title": "읽은 값 수정·수정 사유",
+      "before": "C안에도 담당자 수정·감사 이력 있음",
+      "current": "문서 종류·금액 의미 등 추출값을 담당자가 고치고 사유를 남깁니다. 값 변경과 원문 파일 재발행은 서로 다른 행동입니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/documents.py",
+        "backend/app/services/field_confirmation_service.py",
+        "backend/app/services/document_version_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_field_confirmation_scope.py",
+        "backend/tests/test_document_versions.py"
+      ]
+    },
+    {
+      "id": "F042",
+      "group": "05 사람 확인·수정·재발행",
+      "kind": "신규",
+      "title": "값은 그대로, 원문과 맞음 확인",
+      "before": "같은 값에 대한 칸별 확인이 없었음",
+      "current": "값을 바꾸지 않고 특정 칸을 ‘원문과 맞음’으로 명시 확인할 수 있습니다. 실제로 바뀐 칸과 명시 체크한 칸만 사람 확인으로 기록합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/documents.py",
+        "backend/app/services/field_confirmation_service.py",
+        "backend/app/services/document_version_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_field_confirmation_scope.py",
+        "backend/tests/test_document_versions.py"
+      ]
+    },
+    {
+      "id": "F043",
+      "group": "05 사람 확인·수정·재발행",
+      "kind": "개선",
+      "title": "전체 칸을 사람 확인으로 바꾸던 오류 수정",
+      "before": "한 칸 저장해도 모든 값이 사람 확인처럼 표시될 수 있었음",
+      "current": "확인하지 않은 칸은 기존 규칙/AI 출처와 미확인 상태를 유지합니다. 확인한 값의 확인자·시각·값·방식은 API에 보존하고 화면에 사람 확인·처리자를 표시합니다.",
+      "note": "확인 시각까지 별도 표 열로 보여 주는 새 ERP 시안은 아직 반영 전입니다.",
+      "references": [
+        "backend/app/api/documents.py",
+        "backend/app/services/field_confirmation_service.py",
+        "backend/app/services/document_version_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_field_confirmation_scope.py",
+        "backend/tests/test_document_versions.py"
+      ]
+    },
+    {
+      "id": "F044",
+      "group": "05 사람 확인·수정·재발행",
+      "kind": "신규",
+      "title": "같은 서류의 고친 본·버전 이력",
+      "before": "C안에는 정정본 버전 체계가 없음",
+      "current": "REISSUE는 이전본을 보존하고 같은 논리 문서의 2번째·3번째 본으로 연결합니다. 등록자·등록일·사유·현재/이전본을 볼 수 있습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/documents.py",
+        "backend/app/services/field_confirmation_service.py",
+        "backend/app/services/document_version_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_field_confirmation_scope.py",
+        "backend/tests/test_document_versions.py"
+      ]
+    },
+    {
+      "id": "F045",
+      "group": "05 사람 확인·수정·재발행",
+      "kind": "신규",
+      "title": "현재본만 검사·이전본 읽기 전용",
+      "before": "업로드한 서류를 현재 자료로 함께 취급",
+      "current": "검수는 현재본만 사용합니다. 이전본의 원본·값은 열람하되 수정·재발행·이전본 업무 완료는 막습니다. 같은 종류의 별도 ADD 서류는 따로 유지합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/documents.py",
+        "backend/app/services/field_confirmation_service.py",
+        "backend/app/services/document_version_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_field_confirmation_scope.py",
+        "backend/tests/test_document_versions.py"
+      ]
+    },
+    {
+      "id": "F046",
+      "group": "05 사람 확인·수정·재발행",
+      "kind": "신규",
+      "title": "이전값→새값 버전 비교",
+      "before": "C안에는 버전 비교 없음",
+      "current": "같은 논리 문서의 이전본과 현재본 저장값을 비교합니다. 수정 저장 후 바로 재조회하고, 비교 실패는 ‘비교하지 못했어요’로 표시합니다.",
+      "note": "읽지 못한 새 값을 삭제·0원으로 단정하지 않습니다. 비교 기준은 저장된 추출값입니다.",
+      "references": [
+        "backend/app/api/documents.py",
+        "backend/app/services/field_confirmation_service.py",
+        "backend/app/services/document_version_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_field_confirmation_scope.py",
+        "backend/tests/test_document_versions.py"
+      ]
+    },
+    {
+      "id": "F047",
+      "group": "05 사람 확인·수정·재발행",
+      "kind": "개선",
+      "title": "재발행 실패·동시 수정 보호",
+      "before": "C안에는 재발행 전용 보호 없음",
+      "current": "대상 문서·현재 revision·변경 사유를 요구합니다. 분석 실패면 기존 현재본을 유지하고, 처리 중 자료가 바뀌면 새 본의 게시를 거절합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/documents.py",
+        "backend/app/services/field_confirmation_service.py",
+        "backend/app/services/document_version_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_field_confirmation_scope.py",
+        "backend/tests/test_document_versions.py"
+      ]
+    },
+    {
+      "id": "F048",
+      "group": "05 사람 확인·수정·재발행",
+      "kind": "개선",
+      "title": "재발행 입력창 취소·저장 초기화",
+      "before": "닫았던 폼의 파일이 재사용될 수 있었음",
+      "current": "닫기·Esc 때 파일·사유·오류를 비웁니다. 새 파일 선택 전에는 저장 행동을 제시하지 않고 고른 파일명을 버튼에 표시합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/documents.py",
+        "backend/app/services/field_confirmation_service.py",
+        "backend/app/services/document_version_service.py",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "backend/tests/test_field_confirmation_scope.py",
+        "backend/tests/test_document_versions.py"
+      ]
+    },
+    {
+      "id": "F049",
+      "group": "06 공통 상태·업무함·검색",
+      "kind": "개선",
+      "title": "통계 중심 목록→지금 처리할 계약",
+      "before": "C안은 계약 목록·통계 중심, 할 일 중심은 제안",
+      "current": "서류 받기→확인→보완→결재→지급→끝 단계로 계약을 모읍니다. 처음 화면의 건수·다음 행동·버튼이 현재 업무를 가리킵니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/work_state_service.py",
+        "backend/app/api/work_system.py",
+        "docs/api/work_system.md",
+        "frontend/src/components/review/StageDashboard.tsx",
+        "frontend/src/components/review/ContractSearch.tsx",
+        "frontend/src/utils/stage.ts",
+        "frontend/src/components/review/stageDashboard.component.test.tsx",
+        "backend/tests/test_work_system.py"
+      ]
+    },
+    {
+      "id": "F050",
+      "group": "06 공통 상태·업무함·검색",
+      "kind": "신규",
+      "title": "서버 공통 stage·work_state",
+      "before": "화면별 상태 계산이 달라질 수 있었음",
+      "current": "목록·상세·검토 context가 서버의 같은 단계·남은 수·next_actions를 받습니다. 자료가 바뀐 계약을 과거 승인 상태로 표시하지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/work_state_service.py",
+        "backend/app/api/work_system.py",
+        "docs/api/work_system.md",
+        "frontend/src/components/review/StageDashboard.tsx",
+        "frontend/src/components/review/ContractSearch.tsx",
+        "frontend/src/utils/stage.ts",
+        "frontend/src/components/review/stageDashboard.component.test.tsx",
+        "backend/tests/test_work_system.py"
+      ]
+    },
+    {
+      "id": "F051",
+      "group": "06 공통 상태·업무함·검색",
+      "kind": "개선",
+      "title": "내 차례의 건수·정렬·버튼 통일",
+      "before": "2단계 담당 검토가 빠지거나 안내와 버튼이 어긋났음",
+      "current": "next_actions 역할 하나로 건수·순서·문구·행동 버튼·상세 결재 안내를 판단합니다. 담당 검토 완료 뒤 대표 차례가 되면 담당자에게 ‘보기’로 바뀝니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/work_state_service.py",
+        "backend/app/api/work_system.py",
+        "docs/api/work_system.md",
+        "frontend/src/components/review/StageDashboard.tsx",
+        "frontend/src/components/review/ContractSearch.tsx",
+        "frontend/src/utils/stage.ts",
+        "frontend/src/components/review/stageDashboard.component.test.tsx",
+        "backend/tests/test_work_system.py"
+      ]
+    },
+    {
+      "id": "F052",
+      "group": "06 공통 상태·업무함·검색",
+      "kind": "개선",
+      "title": "역할 업무와 개인 맡기기 구분",
+      "before": "내 차례와 개인에게 맡긴 일이 혼동될 수 있었음",
+      "current": "회사 담당자 역할이 처리할 계약과 나에게 개인적으로 맡겨진 일을 따로 표시합니다.",
+      "note": "역할별 할 일은 특정 개인을 결재자로 지정한 개인 결재함과 다릅니다.",
+      "references": [
+        "backend/app/services/work_state_service.py",
+        "backend/app/api/work_system.py",
+        "docs/api/work_system.md",
+        "frontend/src/components/review/StageDashboard.tsx",
+        "frontend/src/components/review/ContractSearch.tsx",
+        "frontend/src/utils/stage.ts",
+        "frontend/src/components/review/stageDashboard.component.test.tsx",
+        "backend/tests/test_work_system.py"
+      ]
+    },
+    {
+      "id": "F053",
+      "group": "06 공통 상태·업무함·검색",
+      "kind": "신규",
+      "title": "회신 대기 중 사내 확인 표시",
+      "before": "대기 단계에 들어가면 직접 할 일이 숨을 수 있었음",
+      "current": "거래처에 요청한 항목은 대기에 두고 같은 서류의 판독 문제·사내 확인 항목은 지금 처리할 일로 남깁니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/work_state_service.py",
+        "backend/app/api/work_system.py",
+        "docs/api/work_system.md",
+        "frontend/src/components/review/StageDashboard.tsx",
+        "frontend/src/components/review/ContractSearch.tsx",
+        "frontend/src/utils/stage.ts",
+        "frontend/src/components/review/stageDashboard.component.test.tsx",
+        "backend/tests/test_work_system.py"
+      ]
+    },
+    {
+      "id": "F054",
+      "group": "06 공통 상태·업무함·검색",
+      "kind": "개선",
+      "title": "단계 완료·남음·해당 없음",
+      "before": "현재 단계 이전에 있다는 이유만으로 완료 표시",
+      "current": "실제로 완료한 단계만 ✓, 남은 일은 !, 요청 없이 지나간 보완은 해당 없음으로 구분합니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/work_state_service.py",
+        "backend/app/api/work_system.py",
+        "docs/api/work_system.md",
+        "frontend/src/components/review/StageDashboard.tsx",
+        "frontend/src/components/review/ContractSearch.tsx",
+        "frontend/src/utils/stage.ts",
+        "frontend/src/components/review/stageDashboard.component.test.tsx",
+        "backend/tests/test_work_system.py"
+      ]
+    },
+    {
+      "id": "F055",
+      "group": "06 공통 상태·업무함·검색",
+      "kind": "개선",
+      "title": "금액 표기 그대로 검색",
+      "before": "쉼표·원 표기가 있는 금액을 찾기 어려움",
+      "current": "2090000·2,090,000·2,090,000원처럼 숫자/쉼표/원/공백 입력은 금액으로 정규화합니다. 거래처·계약명 검색과 단계 필터를 함께 쓸 수 있습니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/work_state_service.py",
+        "backend/app/api/work_system.py",
+        "docs/api/work_system.md",
+        "frontend/src/components/review/StageDashboard.tsx",
+        "frontend/src/components/review/ContractSearch.tsx",
+        "frontend/src/utils/stage.ts",
+        "frontend/src/components/review/stageDashboard.component.test.tsx",
+        "backend/tests/test_work_system.py"
+      ]
+    },
+    {
+      "id": "F056",
+      "group": "06 공통 상태·업무함·검색",
+      "kind": "신규",
+      "title": "지난 계약 서버 검색·더 보기",
+      "before": "현재 불러온 목록 위주로 찾음",
+      "current": "계약명·거래처·앱 계약 ID, 진행/완료, 단계, 최초 등록일 기간을 서버에서 검색하고 페이지를 더 불러옵니다. API는 등록자·진행 중 맡은 사람 조건도 지원합니다.",
+      "note": "기간은 한국시간 최초 등록일 기준입니다. API 전용 필터까지 현재 화면에 모두 노출된 것은 아닙니다.",
+      "references": [
+        "backend/app/services/work_state_service.py",
+        "backend/app/api/work_system.py",
+        "docs/api/work_system.md",
+        "frontend/src/components/review/StageDashboard.tsx",
+        "frontend/src/components/review/ContractSearch.tsx",
+        "frontend/src/utils/stage.ts",
+        "frontend/src/components/review/stageDashboard.component.test.tsx",
+        "backend/tests/test_work_system.py"
+      ]
+    },
+    {
+      "id": "F057",
+      "group": "06 공통 상태·업무함·검색",
+      "kind": "개선",
+      "title": "결재 완료와 업무 끝 구분",
+      "before": "대표 확인 뒤 완료처럼 보이기 쉬움",
+      "current": "현재 결재와 유효한 전체 지급 완료 기록까지 있어야 끝입니다. 끝난 계약은 할 일에서 빠지고 지난 계약 검색에 남습니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/work_state_service.py",
+        "backend/app/api/work_system.py",
+        "docs/api/work_system.md",
+        "frontend/src/components/review/StageDashboard.tsx",
+        "frontend/src/components/review/ContractSearch.tsx",
+        "frontend/src/utils/stage.ts",
+        "frontend/src/components/review/stageDashboard.component.test.tsx",
+        "backend/tests/test_work_system.py"
+      ]
+    },
+    {
+      "id": "F058",
+      "group": "07 거래처 묶음 요청",
+      "kind": "신규",
+      "title": "필요·받은·빠진 서류 전체 집계",
+      "before": "C안 시안은 문제별 카드 중심",
+      "current": "‘필요 6종·받은 3종·빠진 3종’처럼 계약 상황을 한곳에 보여 줍니다. 받은 파일 수와 받은 서류 종류 수를 구분합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/request_bundles.py",
+        "backend/app/services/request_bundle_service.py",
+        "docs/api/bundled_requests.md",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/bundleRequest.test.ts",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F059",
+      "group": "07 거래처 묶음 요청",
+      "kind": "신규",
+      "title": "거래처에 요청할 것 체크 목록",
+      "before": "실제 요청 기능은 후속 범위, 이후에도 카드마다 요청 반복",
+      "current": "같은 계약의 외부 서류 누락·정정 요청을 한 목록에서 골라 요청합니다. 외부 누락은 기본 선택하고 상세 이유를 펼칠 수 있습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/request_bundles.py",
+        "backend/app/services/request_bundle_service.py",
+        "docs/api/bundled_requests.md",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/bundleRequest.test.ts",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F060",
+      "group": "07 거래처 묶음 요청",
+      "kind": "신규",
+      "title": "불일치는 원문 확인 후 선택",
+      "before": "AI 오독과 서류 자체 오류가 섞일 수 있었음",
+      "current": "금액·번호 불일치는 ‘원문에서도 틀린 것을 확인’해야 거래처 요청 대상으로 선택합니다. 자료가 바뀌면 옛 확인 동의로 기록할 수 없습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/request_bundles.py",
+        "backend/app/services/request_bundle_service.py",
+        "docs/api/bundled_requests.md",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/bundleRequest.test.ts",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F061",
+      "group": "07 거래처 묶음 요청",
+      "kind": "신규",
+      "title": "사내 작성·판독 문제 분리",
+      "before": "외부 요청과 사내 할 일이 함께 보일 수 있었음",
+      "current": "검수확인서 준비·계약 기준 확인·인식 실패는 회사 안에서 확인할 것으로 분리합니다. 같은 서류에 불일치와 판독 문제가 함께 있어도 판독 문제를 숨기지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/request_bundles.py",
+        "backend/app/services/request_bundle_service.py",
+        "docs/api/bundled_requests.md",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/bundleRequest.test.ts",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F062",
+      "group": "07 거래처 묶음 요청",
+      "kind": "신규",
+      "title": "여러 서류를 요청 문구 하나로",
+      "before": "요청마다 창·문구·기한 반복",
+      "current": "선택한 서류와 사유를 한 문구로 만들고 연락 방법·회신 기한·메모도 한 번 입력합니다. 자세히는 사유 전체, 짧게는 첫 사유+외 N건으로 표시합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/request_bundles.py",
+        "backend/app/services/request_bundle_service.py",
+        "docs/api/bundled_requests.md",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/bundleRequest.test.ts",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F063",
+      "group": "07 거래처 묶음 요청",
+      "kind": "신규",
+      "title": "문구 복사와 요청 기록 구분",
+      "before": "C안은 요청 이후 흐름을 시안으로 제안",
+      "current": "사용자가 카톡·문자·이메일·전화 등 평소 방식으로 요청한 후 ‘요청했어요·N건 한 번에 기록하기’를 누릅니다. 앱은 요청 사실을 기록합니다.",
+      "note": "문구 복사는 발송이나 기록이 아닙니다. 사내 메신저·외부 자동 발송 기능은 없습니다.",
+      "references": [
+        "backend/app/api/request_bundles.py",
+        "backend/app/services/request_bundle_service.py",
+        "docs/api/bundled_requests.md",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/bundleRequest.test.ts",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F064",
+      "group": "07 거래처 묶음 요청",
+      "kind": "신규",
+      "title": "요청 당시 대상·이유·자료 보존",
+      "before": "자유 메모만으로는 당시 문제를 복원하기 어려움",
+      "current": "요청 항목별 사유·검사·문서 버전·원본 SHA·추출값과 연락 방법·기한을 당시 snapshot으로 남깁니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/request_bundles.py",
+        "backend/app/services/request_bundle_service.py",
+        "docs/api/bundled_requests.md",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/bundleRequest.test.ts",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F065",
+      "group": "07 거래처 묶음 요청",
+      "kind": "신규",
+      "title": "중복 클릭·재전송의 중복 기록 방지",
+      "before": "여러 번 저장하면 요청이 중복될 수 있었음",
+      "current": "같은 키·내용 재시도는 기존 요청을 반환합니다. 내용이 바뀌면 새 키를 사용하고 이미 대기 중인 같은 항목은 다시 요청하지 못합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/request_bundles.py",
+        "backend/app/services/request_bundle_service.py",
+        "docs/api/bundled_requests.md",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/bundleRequest.test.ts",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F066",
+      "group": "07 거래처 묶음 요청",
+      "kind": "신규",
+      "title": "재발행 뒤에도 같은 요청 대상을 찾기",
+      "before": "문서 ID가 바뀌면 요청의 고친 본 버튼이 무반응",
+      "current": "같은 논리 문서의 현재본으로 연결합니다. 같은 종류의 별도 ADD 문서와 구분합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/request_bundles.py",
+        "backend/app/services/request_bundle_service.py",
+        "docs/api/bundled_requests.md",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/bundleRequest.test.ts",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F067",
+      "group": "07 거래처 묶음 요청",
+      "kind": "개선",
+      "title": "기존 요청 기록 유지",
+      "before": "이전 자유 메모·전체 답 받음 방식",
+      "current": "이전 기록은 이전 방식으로 표시하고 기존 답 받음 처리를 유지합니다. 옛 메모에서 새 항목별 수령 상태를 임의 추정하지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/request_bundles.py",
+        "backend/app/services/request_bundle_service.py",
+        "docs/api/bundled_requests.md",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/bundleRequest.test.ts",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F068",
+      "group": "08 부분 회신·취소·다음 행동",
+      "kind": "신규",
+      "title": "받은 항목만 회신 처리",
+      "before": "전체 요청의 답 받음만 기록하는 방식",
+      "current": "3개 중 1개만 받으면 그 항목만 체크해 기록합니다. ‘1건 받음·2건 기다림’으로 나머지 대기를 유지합니다.",
+      "note": "",
+      "references": [
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/app/services/request_bundle_service.py",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F069",
+      "group": "08 부분 회신·취소·다음 행동",
+      "kind": "신규",
+      "title": "항목 선택 취소·취소 사유",
+      "before": "묶음 안 일부 항목을 취소할 수 없음",
+      "current": "대기 중인 항목만 골라 이유를 남기고 취소합니다. 나머지는 계속 기다리고 모두 수령/취소되면 요청이 닫힙니다. 여전히 필요한 취소 항목은 다시 요청할 수 있습니다.",
+      "note": "",
+      "references": [
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/app/services/request_bundle_service.py",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F070",
+      "group": "08 부분 회신·취소·다음 행동",
+      "kind": "개선",
+      "title": "서류 도착 안내",
+      "before": "파일을 올리고 나서 무엇을 해야 할지 불명확",
+      "current": "빠진 종류가 올라오거나 요청한 논리 문서의 새 본이 생기면 ‘서류 올라옴→받았으면 체크’를 보여 줍니다.",
+      "note": "자동 체크하지 않습니다. 항목 수령 기록은 별도로 사람이 합니다.",
+      "references": [
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/app/services/request_bundle_service.py",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F071",
+      "group": "08 부분 회신·취소·다음 행동",
+      "kind": "개선",
+      "title": "회신과 검수·결재를 분리",
+      "before": "답 받음이면 끝난 것으로 오해 가능",
+      "current": "모두 받았어도 불일치·판독 문제가 남으면 확인·재요청이 필요합니다. 업로드나 수령 기록이 PASS 또는 대표 승인으로 바뀌지 않습니다.",
+      "note": "",
+      "references": [
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/app/services/request_bundle_service.py",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F072",
+      "group": "08 부분 회신·취소·다음 행동",
+      "kind": "개선",
+      "title": "회신 기한 지남 표시",
+      "before": "기한은 있었으나 날짜 경계가 달라질 수 있었음",
+      "current": "한국시간 오늘 날짜로 기한 초과를 판단합니다. 오늘 기한을 오전에 이미 지난 것으로 처리하지 않습니다.",
+      "note": "",
+      "references": [
+        "frontend/src/components/review/BundleRequest.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/app/services/request_bundle_service.py",
+        "backend/tests/test_request_bundles.py"
+      ]
+    },
+    {
+      "id": "F073",
+      "group": "09 사내 담당자에게 맡기기",
+      "kind": "신규",
+      "title": "업무 맡기기·내가 맡은 일",
+      "before": "C안에서는 사내 맡기기 흐름 시안",
+      "current": "현재 계약/서류에 업무 제목·맡긴 사람·맡은 사람·기한·메모를 기록합니다. 대시보드에서 개인에게 맡겨진 일을 볼 수 있습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/assignments.py",
+        "frontend/src/components/review/AssignmentPanel.tsx",
+        "frontend/src/components/review/MyAssignmentsStrip.tsx",
+        "backend/tests/test_assignments.py"
+      ]
+    },
+    {
+      "id": "F074",
+      "group": "09 사내 담당자에게 맡기기",
+      "kind": "신규",
+      "title": "시작·완료·재배정·취소",
+      "before": "C안에는 상태별 맡기기 API 없음",
+      "current": "대기→진행→완료와 취소를 관리합니다. 재배정·내용/기한 변경에는 처리 메모와 현재 자료 기준을 확인합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/assignments.py",
+        "frontend/src/components/review/AssignmentPanel.tsx",
+        "frontend/src/components/review/MyAssignmentsStrip.tsx",
+        "backend/tests/test_assignments.py"
+      ]
+    },
+    {
+      "id": "F075",
+      "group": "09 사내 담당자에게 맡기기",
+      "kind": "신규",
+      "title": "누가 업무를 바꿀 수 있는지 검사",
+      "before": "일반 계정 역할만 존재",
+      "current": "맡긴 사람/대표가 재배정·취소·내용을 바꾸고, 현재 맡은 사람/대표가 완료합니다. 완료·취소한 일을 다시 변경하려 하면 거절합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/assignments.py",
+        "frontend/src/components/review/AssignmentPanel.tsx",
+        "frontend/src/components/review/MyAssignmentsStrip.tsx",
+        "backend/tests/test_assignments.py"
+      ]
+    },
+    {
+      "id": "F076",
+      "group": "09 사내 담당자에게 맡기기",
+      "kind": "개선",
+      "title": "자기 수정으로 막힌 완료 처리 보완",
+      "before": "배정 뒤 값을 고치면 오래된 기준으로 완료가 막힘",
+      "current": "현재본을 고친 뒤 업무 완료를 허용하고 배정·완료 당시 자료 기준을 기록합니다. 이전본의 업무 완료와 다른 사람의 충돌은 계속 막습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/assignments.py",
+        "frontend/src/components/review/AssignmentPanel.tsx",
+        "frontend/src/components/review/MyAssignmentsStrip.tsx",
+        "backend/tests/test_assignments.py"
+      ]
+    },
+    {
+      "id": "F077",
+      "group": "09 사내 담당자에게 맡기기",
+      "kind": "신규",
+      "title": "기한 초과·자료 변경 표시",
+      "before": "개인 업무 상태 기록 없음",
+      "current": "진행 중 업무의 기한 초과와 배정 당시 자료 변경 여부를 보여 줍니다. 맡기기 완료만으로 검수나 대표 결재가 자동 완료되지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/assignments.py",
+        "frontend/src/components/review/AssignmentPanel.tsx",
+        "frontend/src/components/review/MyAssignmentsStrip.tsx",
+        "backend/tests/test_assignments.py"
+      ]
+    },
+    {
+      "id": "F078",
+      "group": "10 대표 승인·반려·재결재",
+      "kind": "개선",
+      "title": "대표 승인·반려 화면 연결",
+      "before": "C안 코드에 최종 확인/반려와 snapshot은 이미 있음",
+      "current": "현재 결재 단계에서 대표가 메모를 쓰고 최종 확인 또는 반려합니다. 반려는 이유와 함께 담당자의 재확인 단계로 돌아갑니다.",
+      "note": "대표 승인을 이번에 처음 만든 기능으로 세지 않습니다. 기존 기능의 흐름·화면 개선입니다.",
+      "references": [
+        "backend/app/api/pilot.py",
+        "backend/app/api/workflow.py",
+        "backend/app/services/company_policy_service.py",
+        "backend/app/services/workflow_service.py",
+        "frontend/src/components/review/ApprovalPanel.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_review_workflow_api.py",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F079",
+      "group": "10 대표 승인·반려·재결재",
+      "kind": "신규",
+      "title": "회사별 1단계·2단계 결재",
+      "before": "대표 최종 확인 한 단계",
+      "current": "소기업은 담당자 검수 후 대표 최종 확인, 2단계 설정이면 담당 검토 결재→대표 최종 결재로 진행합니다.",
+      "note": "현재 최대 2단계·담당자/대표 역할입니다. 3~5명 지정 결재선은 아직 시안/후속 설계입니다.",
+      "references": [
+        "backend/app/api/pilot.py",
+        "backend/app/api/workflow.py",
+        "backend/app/services/company_policy_service.py",
+        "backend/app/services/workflow_service.py",
+        "frontend/src/components/review/ApprovalPanel.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_review_workflow_api.py",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F080",
+      "group": "10 대표 승인·반려·재결재",
+      "kind": "신규",
+      "title": "단계 순서·다른 사람 결재 확인",
+      "before": "다단계 정책 없음",
+      "current": "2단계는 현재 자료의 첫 검토가 끝나야 대표 결재가 됩니다. 첫 검토와 최종 결재를 같은 사람이 진행하지 못하도록 서버에서 확인합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/pilot.py",
+        "backend/app/api/workflow.py",
+        "backend/app/services/company_policy_service.py",
+        "backend/app/services/workflow_service.py",
+        "frontend/src/components/review/ApprovalPanel.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_review_workflow_api.py",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F081",
+      "group": "10 대표 승인·반려·재결재",
+      "kind": "기존",
+      "title": "필수 서류·원본 누락 때 승인 차단",
+      "before": "C안에도 이미 있음",
+      "current": "필수 문서나 보관 원본이 빠지면 최종 승인할 수 없습니다. 담당자에게 자료 보완을 요구합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/pilot.py",
+        "backend/app/api/workflow.py",
+        "backend/app/services/company_policy_service.py",
+        "backend/app/services/workflow_service.py",
+        "frontend/src/components/review/ApprovalPanel.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_review_workflow_api.py",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F082",
+      "group": "10 대표 승인·반려·재결재",
+      "kind": "개선",
+      "title": "남은 항목 직접 검토·메모 조건",
+      "before": "C안에도 불일치/미확인 승인 시 동의+10자 조건",
+      "current": "남은 FAIL/REVIEW가 있으면 직접 검토 체크와 10자 이상 근거를 요구합니다. 국세청을 이 앱에서 조회하지 않았음을 분명히 확인하게 합니다.",
+      "note": "담당자가 직접 승인해 주는 자동 PASS나 기본으로 체크된 동의가 아닙니다.",
+      "references": [
+        "backend/app/api/pilot.py",
+        "backend/app/api/workflow.py",
+        "backend/app/services/company_policy_service.py",
+        "backend/app/services/workflow_service.py",
+        "frontend/src/components/review/ApprovalPanel.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_review_workflow_api.py",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F083",
+      "group": "10 대표 승인·반려·재결재",
+      "kind": "기존",
+      "title": "당시 결재 근거 snapshot 보존",
+      "before": "C안에도 이미 있음",
+      "current": "결재자·시각·메모·revision·fingerprint와 당시 계약 기준·검사·서류 저장값을 보존합니다. 이후 값이 바뀌어도 옛 결재 근거를 현재값으로 덮지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/pilot.py",
+        "backend/app/api/workflow.py",
+        "backend/app/services/company_policy_service.py",
+        "backend/app/services/workflow_service.py",
+        "frontend/src/components/review/ApprovalPanel.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_review_workflow_api.py",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F084",
+      "group": "10 대표 승인·반려·재결재",
+      "kind": "개선",
+      "title": "자료 변경·재발행 뒤 재결재",
+      "before": "C안에도 기본 자료 변경 무효화 있음",
+      "current": "계약 기준·현재 서류·확인값 변경 뒤 이전 승인은 STALE로 표시됩니다. 재발행도 현재 검토와 이전 단계 결재를 무효화해 다시 확인·결재합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/pilot.py",
+        "backend/app/api/workflow.py",
+        "backend/app/services/company_policy_service.py",
+        "backend/app/services/workflow_service.py",
+        "frontend/src/components/review/ApprovalPanel.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_review_workflow_api.py",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F085",
+      "group": "10 대표 승인·반려·재결재",
+      "kind": "신규",
+      "title": "대표 검토 요약·최근 사람 처리",
+      "before": "C안의 대표 화면은 기본 검수·확인 중심",
+      "current": "대표 화면에 계약 요점·남은 확인·현재본 검사·국세청 미조회·재결재 상태·최근 처리 기록을 모읍니다.",
+      "note": "새 결재서 디자인은 아직 시안입니다. 현재 화면의 배치와 담당 검토 메모 표시에는 추가 개선 여지가 있습니다.",
+      "references": [
+        "backend/app/api/pilot.py",
+        "backend/app/api/workflow.py",
+        "backend/app/services/company_policy_service.py",
+        "backend/app/services/workflow_service.py",
+        "frontend/src/components/review/ApprovalPanel.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_review_workflow_api.py",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F086",
+      "group": "10 대표 승인·반려·재결재",
+      "kind": "개선",
+      "title": "대표에게 보낼 문장 복사",
+      "before": "결재로 넘기는 행동의 의미가 불명확",
+      "current": "문제가 해소된 결재 단계에서 대표에게 전달할 문장을 복사합니다. 대표 계정은 자기 결재 차례에서 처리합니다.",
+      "note": "문장 복사는 별도 상신·알림·자동 발송 API가 아닙니다.",
+      "references": [
+        "backend/app/api/pilot.py",
+        "backend/app/api/workflow.py",
+        "backend/app/services/company_policy_service.py",
+        "backend/app/services/workflow_service.py",
+        "frontend/src/components/review/ApprovalPanel.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_review_workflow_api.py",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F087",
+      "group": "10 대표 승인·반려·재결재",
+      "kind": "개선",
+      "title": "결재 대상 바뀌면 이전 입력 동의 해제",
+      "before": "같은 화면에서 이전 자료의 체크/메모가 남을 수 있음",
+      "current": "계약 ID·수정 시각·revision·결재 상태가 바뀌면 결재 체크/메모를 초기화합니다. 저장 때 revision/fingerprint로 최신 자료인지 검사하고 오래된 요청은 409로 거절합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/pilot.py",
+        "backend/app/api/workflow.py",
+        "backend/app/services/company_policy_service.py",
+        "backend/app/services/workflow_service.py",
+        "frontend/src/components/review/ApprovalPanel.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_review_workflow_api.py",
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "F088",
+      "group": "11 지급 완료 기록·재확인",
+      "kind": "신규",
+      "title": "계약 전체 지급 완료 사실 기록",
+      "before": "지급 버튼은 있었지만 API가 없어 준비 중 안내",
+      "current": "현재 대표 최종 결재가 있어야 사람이 지급일·이체/기타·메모를 기록합니다. 모든 회차를 지급한 계약 전체의 완료 사실입니다.",
+      "note": "실제 송금·은행 확인·개별 회차 지급·잔액 관리는 하지 않습니다.",
+      "references": [
+        "backend/app/api/payments.py",
+        "backend/app/services/payment_service.py",
+        "docs/api/payment_record.md",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/utils/date.ts",
+        "backend/tests/test_payment_records.py",
+        "frontend/src/utils/date.test.ts"
+      ]
+    },
+    {
+      "id": "F089",
+      "group": "11 지급 완료 기록·재확인",
+      "kind": "신규",
+      "title": "한국 날짜·미래 지급일 차단",
+      "before": "지급 날짜 연결 기능 없음",
+      "current": "Asia/Seoul 기준으로 기본 날짜·최대 날짜를 정하고 서버가 실존 날짜와 미래일을 검사합니다. 분할 지급이면 모든 회차 완료 후 기록하라고 안내합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/payments.py",
+        "backend/app/services/payment_service.py",
+        "docs/api/payment_record.md",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/utils/date.ts",
+        "backend/tests/test_payment_records.py",
+        "frontend/src/utils/date.test.ts"
+      ]
+    },
+    {
+      "id": "F090",
+      "group": "11 지급 완료 기록·재확인",
+      "kind": "신규",
+      "title": "이미 지급한 사실 유지·중복 차단",
+      "before": "지급 기록 구조 없음",
+      "current": "계약당 기존 지급 사실을 또 만들거나 덮어쓰지 않습니다. 동시 중복 요청도 중복 기록되지 않으며 최초 지급 사실을 보존합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/payments.py",
+        "backend/app/services/payment_service.py",
+        "docs/api/payment_record.md",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/utils/date.ts",
+        "backend/tests/test_payment_records.py",
+        "frontend/src/utils/date.test.ts"
+      ]
+    },
+    {
+      "id": "F091",
+      "group": "11 지급 완료 기록·재확인",
+      "kind": "신규",
+      "title": "지급 후 자료 변경의 경고",
+      "before": "이전 지급 사실을 현재 결재와 구분할 수 없음",
+      "current": "서류/기준 변경 뒤 이전 지급 사실은 남기고 연결은 재확인 필요로 표시합니다. 첫 화면·상세에 ‘이미 지급·다시 지급하지 마세요’가 표시됩니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/payments.py",
+        "backend/app/services/payment_service.py",
+        "docs/api/payment_record.md",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/utils/date.ts",
+        "backend/tests/test_payment_records.py",
+        "frontend/src/utils/date.test.ts"
+      ]
+    },
+    {
+      "id": "F092",
+      "group": "11 지급 완료 기록·재확인",
+      "kind": "신규",
+      "title": "재결재 뒤 같은 지급으로 재확인",
+      "before": "재결재 후 새 지급을 기록할 우려",
+      "current": "현재 자료를 다시 결재한 뒤 체크+10자 이상 메모로 기존 지급 사실을 현재 결재에 연결합니다. 새 송금이나 새 지급 기록을 만들지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/payments.py",
+        "backend/app/services/payment_service.py",
+        "docs/api/payment_record.md",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/utils/date.ts",
+        "backend/tests/test_payment_records.py",
+        "frontend/src/utils/date.test.ts"
+      ]
+    },
+    {
+      "id": "F093",
+      "group": "11 지급 완료 기록·재확인",
+      "kind": "신규",
+      "title": "재확인 차단 이유",
+      "before": "지급 범위 검증 없음",
+      "current": "재결재 없음·원본 해시 불일치·수취업체/금액/금액 기준/세액/지급 방식 변경은 기존 전체 지급 사실의 재연결을 막고 이유를 알려 줍니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/payments.py",
+        "backend/app/services/payment_service.py",
+        "docs/api/payment_record.md",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/utils/date.ts",
+        "backend/tests/test_payment_records.py",
+        "frontend/src/utils/date.test.ts"
+      ]
+    },
+    {
+      "id": "F094",
+      "group": "11 지급 완료 기록·재확인",
+      "kind": "개선",
+      "title": "이전 지급 동의·입력 자동 초기화",
+      "before": "자료 수정·재결재 후 이전 체크와 메모 유지 오류",
+      "current": "자료·결재 상태·최신 결재 ID·지급 대상/상태가 달라지면 재확인 체크·메모·오류와 최초 지급 입력을 초기화합니다.",
+      "note": "",
+      "references": [
+        "backend/app/api/payments.py",
+        "backend/app/services/payment_service.py",
+        "docs/api/payment_record.md",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/utils/date.ts",
+        "backend/tests/test_payment_records.py",
+        "frontend/src/utils/date.test.ts"
+      ]
+    },
+    {
+      "id": "F095",
+      "group": "12 처리 이력·요약·검수 도우미",
+      "kind": "신규",
+      "title": "계약 처리 기록 화면",
+      "before": "C안에 감사 기록은 있으나 업무 타임라인 화면 없음",
+      "current": "등록·검사·요청·수령/취소·값 수정·재발행·담당 검토·대표 결재/반려·지급 기록을 최신순으로 보고 더 불러옵니다. 한국시간·처리자·사유·전후 값을 표시합니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/activity_service.py",
+        "frontend/src/components/review/ActivityTimeline.tsx",
+        "backend/app/services/contract_summary_service.py",
+        "frontend/src/components/review/AssistantPreview.tsx",
+        "backend/app/services/review_assistant_service.py",
+        "backend/tests/test_work_system.py",
+        "backend/tests/test_contract_summary.py",
+        "backend/tests/test_review_assistant.py"
+      ]
+    },
+    {
+      "id": "F096",
+      "group": "12 처리 이력·요약·검수 도우미",
+      "kind": "개선",
+      "title": "기록된 당시 사실만 표시",
+      "before": "현재 상태로 과거 이력을 설명하면 왜곡될 수 있음",
+      "current": "검사와 재발행 당시 저장한 snapshot을 사용합니다. 옛 기록에 없는 값·시각·처리자를 현재값에서 추정해 채우지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/activity_service.py",
+        "frontend/src/components/review/ActivityTimeline.tsx",
+        "backend/app/services/contract_summary_service.py",
+        "frontend/src/components/review/AssistantPreview.tsx",
+        "backend/app/services/review_assistant_service.py",
+        "backend/tests/test_work_system.py",
+        "backend/tests/test_contract_summary.py",
+        "backend/tests/test_review_assistant.py"
+      ]
+    },
+    {
+      "id": "F097",
+      "group": "12 처리 이력·요약·검수 도우미",
+      "kind": "개선",
+      "title": "가림 ON에도 사내 처리자 식별",
+      "before": "처리자 표시 이름까지 [가림]이 되어 누가 했는지 알 수 없음",
+      "current": "인증된 처리 이력의 당시 사내 표시 이름은 유지하고 메모·사유 속 민감값은 계속 가립니다. ZIP의 가림 정책과는 별개입니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/activity_service.py",
+        "frontend/src/components/review/ActivityTimeline.tsx",
+        "backend/app/services/contract_summary_service.py",
+        "frontend/src/components/review/AssistantPreview.tsx",
+        "backend/app/services/review_assistant_service.py",
+        "backend/tests/test_work_system.py",
+        "backend/tests/test_contract_summary.py",
+        "backend/tests/test_review_assistant.py"
+      ]
+    },
+    {
+      "id": "F098",
+      "group": "12 처리 이력·요약·검수 도우미",
+      "kind": "신규",
+      "title": "계약 요약 문장·복사",
+      "before": "C안에서는 여유가 되면 할 기능",
+      "current": "코드가 계약명·거래처·기준금액·서류 종류 수·문제 수·결재 상태를 검증된 템플릿에 채웁니다. 같은 화면의 문제 카드 집계와 맞춰 복사할 수 있습니다.",
+      "note": "현재 요약은 LLM 문장 생성이 아닙니다. 수치와 문구는 코드가 만듭니다.",
+      "references": [
+        "backend/app/services/activity_service.py",
+        "frontend/src/components/review/ActivityTimeline.tsx",
+        "backend/app/services/contract_summary_service.py",
+        "frontend/src/components/review/AssistantPreview.tsx",
+        "backend/app/services/review_assistant_service.py",
+        "backend/tests/test_work_system.py",
+        "backend/tests/test_contract_summary.py",
+        "backend/tests/test_review_assistant.py"
+      ]
+    },
+    {
+      "id": "F099",
+      "group": "12 처리 이력·요약·검수 도우미",
+      "kind": "신규",
+      "title": "검수 도우미 할 일 초안",
+      "before": "C안에서는 후속 제안",
+      "current": "저장된 자료를 읽고 규칙을 메모리에서 재검사해 사내 확인·서류 요청·맡기기 초안을 준비합니다. 원문 열기나 맡기기 입력으로 이동할 수 있습니다.",
+      "note": "미리보기 자체는 DB/감사 로그 저장·자동 발송·외부 API·OCR/LLM 재실행을 하지 않습니다. 맡기기 저장은 별도 사용자 행동입니다.",
+      "references": [
+        "backend/app/services/activity_service.py",
+        "frontend/src/components/review/ActivityTimeline.tsx",
+        "backend/app/services/contract_summary_service.py",
+        "frontend/src/components/review/AssistantPreview.tsx",
+        "backend/app/services/review_assistant_service.py",
+        "backend/tests/test_work_system.py",
+        "backend/tests/test_contract_summary.py",
+        "backend/tests/test_review_assistant.py"
+      ]
+    },
+    {
+      "id": "F100",
+      "group": "12 처리 이력·요약·검수 도우미",
+      "kind": "신규",
+      "title": "저장 검사와 재검사 차이 안내",
+      "before": "도우미 미리보기 없음",
+      "current": "저장된 검사 결과와 도우미의 현재 재검사 결과가 다르면 차이를 표시하고 실제 ‘다시 검사’가 필요함을 안내합니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/activity_service.py",
+        "frontend/src/components/review/ActivityTimeline.tsx",
+        "backend/app/services/contract_summary_service.py",
+        "frontend/src/components/review/AssistantPreview.tsx",
+        "backend/app/services/review_assistant_service.py",
+        "backend/tests/test_work_system.py",
+        "backend/tests/test_contract_summary.py",
+        "backend/tests/test_review_assistant.py"
+      ]
+    },
+    {
+      "id": "F101",
+      "group": "13 개인정보 가림·계약 ZIP",
+      "kind": "기존",
+      "title": "가림 ON/OFF·원문 미리보기",
+      "before": "C안과 그 이전에도 있음",
+      "current": "권한 안에서 원문/가린 화면을 확인합니다. 개인정보는 텍스트·PDF/이미지 보기와 다운로드 정책으로 처리합니다.",
+      "note": "가림 ON은 모든 입력칸과 모든 문서에서 민감값 제거를 보증하는 모드가 아닙니다.",
+      "references": [
+        "backend/app/ai/masking.py",
+        "backend/app/services/preview_masking_service.py",
+        "backend/app/services/contract_export_service.py",
+        "frontend/src/utils/masking.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_contract_export.py",
+        "backend/tests/test_request_bundle_export.py",
+        "backend/tests/test_preview_masking.py"
+      ]
+    },
+    {
+      "id": "F102",
+      "group": "13 개인정보 가림·계약 ZIP",
+      "kind": "개선",
+      "title": "검사 기준값·실제값·설명 번호 가림",
+      "before": "설명 문장이나 불일치 비교값에 번호가 노출될 수 있었음",
+      "current": "사업자번호·주민번호를 하이픈 유무와 무관하게 가립니다. 쉼표 있는 금액은 번호로 오인해 가리지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/ai/masking.py",
+        "backend/app/services/preview_masking_service.py",
+        "backend/app/services/contract_export_service.py",
+        "frontend/src/utils/masking.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_contract_export.py",
+        "backend/tests/test_request_bundle_export.py",
+        "backend/tests/test_preview_masking.py"
+      ]
+    },
+    {
+      "id": "F103",
+      "group": "13 개인정보 가림·계약 ZIP",
+      "kind": "개선",
+      "title": "PNG 상호 누락·날짜 오가림 보완",
+      "before": "이미지에서 상호가 남거나 발행일이 가려지는 오류",
+      "current": "공급자/공급받는자 상호·번호 표시 가림을 보완하고 금액·발행일의 의미가 유지되도록 수정했습니다.",
+      "note": "모든 실제 업무 서식에 대한 전수 가림 검증은 아닙니다.",
+      "references": [
+        "backend/app/ai/masking.py",
+        "backend/app/services/preview_masking_service.py",
+        "backend/app/services/contract_export_service.py",
+        "frontend/src/utils/masking.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_contract_export.py",
+        "backend/tests/test_request_bundle_export.py",
+        "backend/tests/test_preview_masking.py"
+      ]
+    },
+    {
+      "id": "F104",
+      "group": "13 개인정보 가림·계약 ZIP",
+      "kind": "개선",
+      "title": "가림 범위의 안내",
+      "before": "전부 보호되는 것으로 오해할 수 있었음",
+      "current": "원문 대조의 다운로드 이름을 ‘가린 원본 받기’로 맞췄습니다. 수정 입력·보낼 요청 문구에 실제 업무값이 남는 범위를 안내합니다.",
+      "note": "요청 문구에는 실제 거래처명이 필요할 수 있습니다. 원본 파일은 보관되며 백업은 가림 내보내기와 다릅니다.",
+      "references": [
+        "backend/app/ai/masking.py",
+        "backend/app/services/preview_masking_service.py",
+        "backend/app/services/contract_export_service.py",
+        "frontend/src/utils/masking.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_contract_export.py",
+        "backend/tests/test_request_bundle_export.py",
+        "backend/tests/test_preview_masking.py"
+      ]
+    },
+    {
+      "id": "F105",
+      "group": "13 개인정보 가림·계약 ZIP",
+      "kind": "신규",
+      "title": "계약 한 건 자료 묶음 ZIP",
+      "before": "C안에는 업무함 전체 백업만 있음",
+      "current": "현재본·이전본과 contract.json, validation_results.json, history.json, manifest.json, README.txt를 한 번에 받습니다. 요청 항목·맡기기·결재·지급/재확인 이력도 포함합니다.",
+      "note": "",
+      "references": [
+        "backend/app/ai/masking.py",
+        "backend/app/services/preview_masking_service.py",
+        "backend/app/services/contract_export_service.py",
+        "frontend/src/utils/masking.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_contract_export.py",
+        "backend/tests/test_request_bundle_export.py",
+        "backend/tests/test_preview_masking.py"
+      ]
+    },
+    {
+      "id": "F106",
+      "group": "13 개인정보 가림·계약 ZIP",
+      "kind": "신규",
+      "title": "ZIP 가림·메타데이터 가림",
+      "before": "개별 가림 다운로드만 존재",
+      "current": "가림 ON이면 서류와 JSON의 현재·이전 민감값을 가립니다. DOCX 등 가린 바이너리를 보장하지 못하는 형식은 가린 텍스트로 내보내며 형식 차이를 명시합니다.",
+      "note": "",
+      "references": [
+        "backend/app/ai/masking.py",
+        "backend/app/services/preview_masking_service.py",
+        "backend/app/services/contract_export_service.py",
+        "frontend/src/utils/masking.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_contract_export.py",
+        "backend/tests/test_request_bundle_export.py",
+        "backend/tests/test_preview_masking.py"
+      ]
+    },
+    {
+      "id": "F107",
+      "group": "13 개인정보 가림·계약 ZIP",
+      "kind": "신규",
+      "title": "ZIP manifest·버전·SHA 검증",
+      "before": "계약 단위 묶음 검증 없음",
+      "current": "manifest에 원본/내보낸 파일 해시·버전·현재본 여부를 넣습니다. 자료 변경·원본 누락/변조·가림 실패면 중단하며 원본으로 자동 대체하지 않습니다.",
+      "note": "원본 100개·총 250MB 한도. 사용자의 실제 브라우저 저장·압축 해제 최종 확인은 별도 대기입니다.",
+      "references": [
+        "backend/app/ai/masking.py",
+        "backend/app/services/preview_masking_service.py",
+        "backend/app/services/contract_export_service.py",
+        "frontend/src/utils/masking.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "backend/tests/test_contract_export.py",
+        "backend/tests/test_request_bundle_export.py",
+        "backend/tests/test_preview_masking.py"
+      ]
+    },
+    {
+      "id": "F108",
+      "group": "14 실행·설정·백업·복원",
+      "kind": "기존",
+      "title": "C-Pilot.exe·관리 메뉴",
+      "before": "C안에서 통합 실행기 완료",
+      "current": "실행, 환경 준비, 새 업무함, 자료 폴더/포트/사내망 설정, 백업, 새 폴더 복원, 예약 작업을 관리 메뉴로 묶었습니다.",
+      "note": "Python·Node·앱 폴더까지 필요합니다. 모델을 포함한 독립 설치 패키지라는 뜻은 아닙니다.",
+      "references": [
+        "backend/launcher/cli.py",
+        "backend/launcher/settings.py",
+        "backend/launcher/server.py",
+        "backend/launcher/operations.py",
+        "backend/app/services/backup_service.py",
+        "frontend/src/components/PilotOperations.tsx",
+        "docs/operations/backup_restore.md",
+        "docs/operations/workflow_rehearsal.md",
+        "backend/tests/test_backup_restore.py"
+      ]
+    },
+    {
+      "id": "F109",
+      "group": "14 실행·설정·백업·복원",
+      "kind": "기존",
+      "title": "서버 PC 로컬 DB·다른 PC 접속",
+      "before": "C안에서 외부 DB→시범 로컬 SQLite로 전환",
+      "current": "시범 운영의 계약·원문은 선택한 서버 PC 업무함에 보관합니다. 다른 직원은 브라우저와 자기 계정으로 접속합니다.",
+      "note": "서버 PC가 꺼지면 사용할 수 없습니다. HTTPS·방화벽 자동 구성은 없습니다.",
+      "references": [
+        "backend/launcher/cli.py",
+        "backend/launcher/settings.py",
+        "backend/launcher/server.py",
+        "backend/launcher/operations.py",
+        "backend/app/services/backup_service.py",
+        "frontend/src/components/PilotOperations.tsx",
+        "docs/operations/backup_restore.md",
+        "docs/operations/workflow_rehearsal.md",
+        "backend/tests/test_backup_restore.py"
+      ]
+    },
+    {
+      "id": "F110",
+      "group": "14 실행·설정·백업·복원",
+      "kind": "신규",
+      "title": "회사별 필수 서류·역할명·결재 설정",
+      "before": "C안에는 기본 회사명/필수 서류 설정",
+      "current": "개인사업자/소기업/중기업·중견 프리셋, 필수 종류, 역할 표시명, 1/2단계 결재를 설정합니다. 대표만 저장하고 변경 뒤 재검사·재결재를 요구합니다.",
+      "note": "프리셋 이름은 법적 기업 규모 판정이 아닙니다.",
+      "references": [
+        "backend/launcher/cli.py",
+        "backend/launcher/settings.py",
+        "backend/launcher/server.py",
+        "backend/launcher/operations.py",
+        "backend/app/services/backup_service.py",
+        "frontend/src/components/PilotOperations.tsx",
+        "docs/operations/backup_restore.md",
+        "docs/operations/workflow_rehearsal.md",
+        "backend/tests/test_backup_restore.py"
+      ]
+    },
+    {
+      "id": "F111",
+      "group": "14 실행·설정·백업·복원",
+      "kind": "기존",
+      "title": "백업 생성·대표 다운로드",
+      "before": "C안에 이미 있음",
+      "current": "DB snapshot·원문·추출 자료를 ZIP으로 백업합니다. 대표가 관리 화면에서 받을 수 있고 초기 비밀번호 안내 파일은 포함하지 않습니다.",
+      "note": "백업 ZIP 자체는 암호화하지 않습니다. 원본이 포함되므로 보관 장소·접근 권한을 따로 관리합니다.",
+      "references": [
+        "backend/launcher/cli.py",
+        "backend/launcher/settings.py",
+        "backend/launcher/server.py",
+        "backend/launcher/operations.py",
+        "backend/app/services/backup_service.py",
+        "frontend/src/components/PilotOperations.tsx",
+        "docs/operations/backup_restore.md",
+        "docs/operations/workflow_rehearsal.md",
+        "backend/tests/test_backup_restore.py"
+      ]
+    },
+    {
+      "id": "F112",
+      "group": "14 실행·설정·백업·복원",
+      "kind": "개선",
+      "title": "새 폴더 복원·기존 업무함 보존",
+      "before": "C안에 복원 도구 있음",
+      "current": "서버를 멈춘 뒤 존재하지 않는 새 폴더에 복원하고 경로·파일 해시를 검사합니다. 성공 뒤 실행 경로를 바꾸며 실패하면 설정을 유지합니다. 로그인 세션은 만료됩니다.",
+      "note": "",
+      "references": [
+        "backend/launcher/cli.py",
+        "backend/launcher/settings.py",
+        "backend/launcher/server.py",
+        "backend/launcher/operations.py",
+        "backend/app/services/backup_service.py",
+        "frontend/src/components/PilotOperations.tsx",
+        "docs/operations/backup_restore.md",
+        "docs/operations/workflow_rehearsal.md",
+        "backend/tests/test_backup_restore.py"
+      ]
+    },
+    {
+      "id": "F113",
+      "group": "14 실행·설정·백업·복원",
+      "kind": "개선",
+      "title": "재발행·요청·지급 이력 복원",
+      "before": "C안은 당시 테이블·자료 백업",
+      "current": "새 운영 테이블도 함께 백업합니다. 연결 리허설에서 당시 업무 테이블 10개·파일 36개 해시 일치와 재로그인·이전본 ZIP 재다운로드를 확인했고 지급 테이블은 후속 회귀검사로 확인했습니다.",
+      "note": "리허설은 합성 DEV 업무함입니다. 실제 회사 백업을 복원한 실적이라고 쓰지 않습니다.",
+      "references": [
+        "backend/launcher/cli.py",
+        "backend/launcher/settings.py",
+        "backend/launcher/server.py",
+        "backend/launcher/operations.py",
+        "backend/app/services/backup_service.py",
+        "frontend/src/components/PilotOperations.tsx",
+        "docs/operations/backup_restore.md",
+        "docs/operations/workflow_rehearsal.md",
+        "backend/tests/test_backup_restore.py"
+      ]
+    },
+    {
+      "id": "F114",
+      "group": "14 실행·설정·백업·복원",
+      "kind": "기존",
+      "title": "자동 실행·일일 백업 예약",
+      "before": "C안에 이미 있음",
+      "current": "사용자가 등록하면 Windows 로그인 후 자동 실행, 기본 18:00 일일 백업 예약을 지원합니다.",
+      "note": "PC가 꺼져 있을 때 실행·부팅 전 서비스·장애 후 상시 재시작·자동 실패 알림까지 구현한 것은 아닙니다.",
+      "references": [
+        "backend/launcher/cli.py",
+        "backend/launcher/settings.py",
+        "backend/launcher/server.py",
+        "backend/launcher/operations.py",
+        "backend/app/services/backup_service.py",
+        "frontend/src/components/PilotOperations.tsx",
+        "docs/operations/backup_restore.md",
+        "docs/operations/workflow_rehearsal.md",
+        "backend/tests/test_backup_restore.py"
+      ]
+    },
+    {
+      "id": "F115",
+      "group": "14 실행·설정·백업·복원",
+      "kind": "개선",
+      "title": "원본과 가린 사본의 복원 경로 분리",
+      "before": "옛 절대경로 복원 중 가린 TXT가 원본으로 대체될 수 있었음",
+      "current": "raw/masked/text 구역을 지켜 찾아 원본 유실을 명확히 표시합니다. 가림 사본을 원본으로 간주해 지급이나 다운로드를 통과시키지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/launcher/cli.py",
+        "backend/launcher/settings.py",
+        "backend/launcher/server.py",
+        "backend/launcher/operations.py",
+        "backend/app/services/backup_service.py",
+        "frontend/src/components/PilotOperations.tsx",
+        "docs/operations/backup_restore.md",
+        "docs/operations/workflow_rehearsal.md",
+        "backend/tests/test_backup_restore.py"
+      ]
+    },
+    {
+      "id": "F116",
+      "group": "15 실적 집계·평가·테스트 준비",
+      "kind": "신규",
+      "title": "실제 수정 칸·AI 채택 칸·요청 수",
+      "before": "기본 기록은 있으나 상세 실적 API 없음",
+      "current": "수정 저장 횟수와 전후 값이 달라진 칸 수를 따로 집계합니다. 같은 값 저장은 실제 변경 0칸. AI 채택 VALUE 수와 현재값이 같은 칸 수도 구분합니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/performance_service.py",
+        "frontend/src/components/review/WorkStatsStrip.tsx",
+        "docs/eval/test/final/four_modes.md",
+        "docs/eval/test2/final_four_modes.md",
+        "docs/operations/team_test_measurement.md",
+        "docs/operations/team_test_materials.md",
+        "docs/operations/team_test_participant_guide.md",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F117",
+      "group": "15 실적 집계·평가·테스트 준비",
+      "kind": "개선",
+      "title": "경과시간과 실제 작업시간 구분",
+      "before": "첫 등록→첫 대표 확인이 작업시간처럼 해석될 수 있음",
+      "current": "기존 화면은 첫 서류 등록→첫 대표 확인(대기 포함), 추가 API는 계약 등록→현재 최종 대표 확인(대기 포함)을 구분합니다.",
+      "note": "사람의 실제 작업시간·시간 절감은 아직 측정하지 않았습니다.",
+      "references": [
+        "backend/app/services/performance_service.py",
+        "frontend/src/components/review/WorkStatsStrip.tsx",
+        "docs/eval/test/final/four_modes.md",
+        "docs/eval/test2/final_four_modes.md",
+        "docs/operations/team_test_measurement.md",
+        "docs/operations/team_test_materials.md",
+        "docs/operations/team_test_participant_guide.md",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F118",
+      "group": "15 실적 집계·평가·테스트 준비",
+      "kind": "개선",
+      "title": "예측 한 번 고정·정답 재채점 분리",
+      "before": "C안은 dev 결과와 test 평가 예정",
+      "current": "v3 test와 v4 test2 예측을 한 번 실행해 코드·환경·파일 해시와 보존합니다. 사람 확인 결과는 저장 예측을 재채점하며 모델/가드를 다시 실행하지 않습니다.",
+      "note": "",
+      "references": [
+        "backend/app/services/performance_service.py",
+        "frontend/src/components/review/WorkStatsStrip.tsx",
+        "docs/eval/test/final/four_modes.md",
+        "docs/eval/test2/final_four_modes.md",
+        "docs/operations/team_test_measurement.md",
+        "docs/operations/team_test_materials.md",
+        "docs/operations/team_test_participant_guide.md",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F119",
+      "group": "15 실적 집계·평가·테스트 준비",
+      "kind": "신규",
+      "title": "어려운 서식 dev2/test2·독립 확인 묶음",
+      "before": "C안의 첫 dev/test 자료",
+      "current": "다른 라벨·표·스캔 기울기·도장 가림·여러 쪽·두 단 서식 자료를 분리하고 결과를 보기 전 정답 초안·독립 판독·사람 확인 페이지를 준비했습니다.",
+      "note": "test2 평가 완료. dev2 독립 사람 확인은 완료로 단정하지 않습니다. 읽을 수 없는 값은 REVIEW/null로 남깁니다.",
+      "references": [
+        "backend/app/services/performance_service.py",
+        "frontend/src/components/review/WorkStatsStrip.tsx",
+        "docs/eval/test/final/four_modes.md",
+        "docs/eval/test2/final_four_modes.md",
+        "docs/operations/team_test_measurement.md",
+        "docs/operations/team_test_materials.md",
+        "docs/operations/team_test_participant_guide.md",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F120",
+      "group": "15 실적 집계·평가·테스트 준비",
+      "kind": "개선",
+      "title": "개발 수치와 최종 평가 수치 공개",
+      "before": "C안의 dev 78.34%→98.52%만 공유",
+      "current": "v3 test와 v4 test2 네 조건 결과를 따로 보고합니다. 가드의 정답 거절·가독성 한계·정답 출처·검출 미측정을 함께 기록합니다.",
+      "note": "서로 다른 자료의 77.74%와 95.59%를 동일 시험의 개선폭으로 발표하지 않습니다. 아래 평가 표 참고.",
+      "references": [
+        "backend/app/services/performance_service.py",
+        "frontend/src/components/review/WorkStatsStrip.tsx",
+        "docs/eval/test/final/four_modes.md",
+        "docs/eval/test2/final_four_modes.md",
+        "docs/operations/team_test_measurement.md",
+        "docs/operations/team_test_materials.md",
+        "docs/operations/team_test_participant_guide.md",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F121",
+      "group": "15 실적 집계·평가·테스트 준비",
+      "kind": "신규",
+      "title": "팀원 시간 과제·분리 업무함·안내문",
+      "before": "C안은 제출·데모 준비 예정",
+      "current": "누락/재발행 A·B 과제, 연습 ZIP과 진행자 정답표를 분리했습니다. 현행 묶음 요청·부분 회신 버튼 이름과 배포 해시를 맞추고 담당자 과제에서 대표 결재·지급을 제외했습니다.",
+      "note": "사람 측정 결과와 최종 측정 SHA는 사용자 ZIP 확인·참가자 환경 확인 뒤 기록합니다.",
+      "references": [
+        "backend/app/services/performance_service.py",
+        "frontend/src/components/review/WorkStatsStrip.tsx",
+        "docs/eval/test/final/four_modes.md",
+        "docs/eval/test2/final_four_modes.md",
+        "docs/operations/team_test_measurement.md",
+        "docs/operations/team_test_materials.md",
+        "docs/operations/team_test_participant_guide.md",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F122",
+      "group": "16 작은 UX·동시 작업 오류 수정",
+      "kind": "개선",
+      "title": "Tab·Shift+Tab·Esc·포커스 복귀",
+      "before": "팝업 키보드 처리가 부족",
+      "current": "요청·원문 대조·서류 추가 창에서 Tab이 창 안을 돌고 Esc로 닫습니다. 카드에서 연 경우도 닫으면 원래 버튼에 포커스를 돌립니다.",
+      "note": "모든 앱 화면의 전체 접근성 적합성을 판정한 것은 아닙니다.",
+      "references": [
+        "frontend/src/hooks/useDialogA11y.ts",
+        "frontend/src/utils/korean.ts",
+        "frontend/src/utils/date.ts",
+        "frontend/src/utils/latest.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F123",
+      "group": "16 작은 UX·동시 작업 오류 수정",
+      "kind": "개선",
+      "title": "원문 창 안 폼의 Esc 순서",
+      "before": "창 전체가 먼저 닫히거나 포커스가 사라짐",
+      "current": "값 수정/재발행 폼을 열면 첫 입력에 포커스. Esc는 폼부터 닫고 폼 버튼으로 돌아가며 다음 Esc로 대조창을 닫습니다.",
+      "note": "",
+      "references": [
+        "frontend/src/hooks/useDialogA11y.ts",
+        "frontend/src/utils/korean.ts",
+        "frontend/src/utils/date.ts",
+        "frontend/src/utils/latest.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F124",
+      "group": "16 작은 UX·동시 작업 오류 수정",
+      "kind": "개선",
+      "title": "낮은 화면의 하단 버튼·스크롤",
+      "before": "원문 창 하단 버튼이나 업로드 창이 잘림",
+      "current": "원문 창의 행동 버튼을 보이는 위치에 두고 업로드 창은 최대 높이·본문 스크롤을 적용했습니다. 1280×720에서 창의 제목·닫기·하단 버튼을 확인했습니다.",
+      "note": "",
+      "references": [
+        "frontend/src/hooks/useDialogA11y.ts",
+        "frontend/src/utils/korean.ts",
+        "frontend/src/utils/date.ts",
+        "frontend/src/utils/latest.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F125",
+      "group": "16 작은 UX·동시 작업 오류 수정",
+      "kind": "개선",
+      "title": "조사와 낯선 표시명 수정",
+      "before": "‘통장사본 미제출가’, ‘견적서을’, ‘최종 결재을’",
+      "current": "받침에 맞춰 이/가·을/를 등을 고르고 서버의 이(가) 표기도 화면에서 정리합니다. ‘빠진 서류 N건 중 1번째’, ‘필요 N종·받은 N종’처럼 대상을 적습니다.",
+      "note": "",
+      "references": [
+        "frontend/src/hooks/useDialogA11y.ts",
+        "frontend/src/utils/korean.ts",
+        "frontend/src/utils/date.ts",
+        "frontend/src/utils/latest.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F126",
+      "group": "16 작은 UX·동시 작업 오류 수정",
+      "kind": "개선",
+      "title": "ⓘ 키보드·검색 포커스 표시",
+      "before": "범례는 마우스 올리기, 검색 포커스가 약함",
+      "current": "범례를 키보드로 열 수 있는 버튼으로 바꾸고 펼침 상태를 표시합니다. 검색창에는 포커스 테두리·링을 제공합니다.",
+      "note": "",
+      "references": [
+        "frontend/src/hooks/useDialogA11y.ts",
+        "frontend/src/utils/korean.ts",
+        "frontend/src/utils/date.ts",
+        "frontend/src/utils/latest.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F127",
+      "group": "16 작은 UX·동시 작업 오류 수정",
+      "kind": "개선",
+      "title": "기존 사이드바 접기·좁은 화면 대응",
+      "before": "C안에도 사이드바 메뉴는 있음",
+      "current": "실제 앱의 기존 사이드바를 접고 펼칠 수 있습니다. 1280px 미만은 자동으로 접어 표 공간을 확보하고 넓은 화면의 표시 선택은 로컬에 기억합니다.",
+      "note": "방금 만든 새 사이드바 시안의 디자인을 실제 앱에 적용했다는 뜻은 아닙니다.",
+      "references": [
+        "frontend/src/pages/ContractDashboard.tsx",
+        "frontend/src/components/Sidebar.tsx"
+      ]
+    },
+    {
+      "id": "F128",
+      "group": "16 작은 UX·동시 작업 오류 수정",
+      "kind": "개선",
+      "title": "최신 조회만 반영·다른 계약 응답 폐기",
+      "before": "먼저 시작한 느린 조회가 최신 화면을 덮을 수 있음",
+      "current": "같은 계약에서도 가장 최근 조회의 성공/실패만 반영합니다. 계약 전환 시 목록·선택을 초기화하고 이전 계약의 늦은 응답을 버립니다.",
+      "note": "",
+      "references": [
+        "frontend/src/hooks/useDialogA11y.ts",
+        "frontend/src/utils/korean.ts",
+        "frontend/src/utils/date.ts",
+        "frontend/src/utils/latest.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F129",
+      "group": "16 작은 UX·동시 작업 오류 수정",
+      "kind": "개선",
+      "title": "두 탭 충돌 안내가 화면에 남음",
+      "before": "다른 탭이 마지막 회신을 닫으면 409 안내 패널도 사라짐",
+      "current": "회신 저장 결과·충돌 이유·재조회 결과를 계약 맨 위에 보관합니다. 보완→결재로 단계가 넘어가도 ‘저장하지 못했어요’ 안내가 남습니다.",
+      "note": "",
+      "references": [
+        "frontend/src/hooks/useDialogA11y.ts",
+        "frontend/src/utils/korean.ts",
+        "frontend/src/utils/date.ts",
+        "frontend/src/utils/latest.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F130",
+      "group": "16 작은 UX·동시 작업 오류 수정",
+      "kind": "개선",
+      "title": "오래된 선택·동의의 저장 차단",
+      "before": "새 자료 기준과 오래된 원문 확인 선택이 섞일 수 있음",
+      "current": "계약 revision/fingerprint와 요청 request_revision을 확인합니다. 자료가 바뀌면 다시 고르게 하고 최신 조회 실패 시 저장을 잠가 옛 상태로 처리하지 못합니다.",
+      "note": "",
+      "references": [
+        "frontend/src/hooks/useDialogA11y.ts",
+        "frontend/src/utils/korean.ts",
+        "frontend/src/utils/date.ts",
+        "frontend/src/utils/latest.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "docs/api/frontend_handoff.md"
+      ]
+    },
+    {
+      "id": "F131",
+      "group": "16 작은 UX·동시 작업 오류 수정",
+      "kind": "개선",
+      "title": "업로드 창의 React 훅 오류 수정",
+      "before": "새 키보드 처리 중 업로드 창을 열면 흰 화면 오류 발생",
+      "current": "조건부 반환보다 먼저 훅을 호출하고 열린 창에서만 활성화하도록 수정했습니다. 실제 컴포넌트 테스트에 초기화·실패 유지·늦은 완료 처리를 추가했습니다.",
+      "note": "",
+      "references": [
+        "frontend/src/hooks/useDialogA11y.ts",
+        "frontend/src/utils/korean.ts",
+        "frontend/src/utils/date.ts",
+        "frontend/src/utils/latest.ts",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentReviewDialog.tsx",
+        "frontend/src/components/UploadModal.tsx",
+        "frontend/src/components/review/BundleRequest.tsx",
+        "docs/api/frontend_handoff.md"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "title": "사이드바 새 디자인·비교 HTML",
+      "status": "시안",
+      "description": "별도 문서/가상 데이터의 비교 도구입니다. 이번 보고서나 시안이 실제 앱 frontend에 반영된 것은 아닙니다."
+    },
+    {
+      "title": "3~5명 지정 결재·병렬/합의 결재",
+      "status": "후속",
+      "description": "현재 최대 2단계 역할 결재입니다. 지정인 N단계 결재선과 전원/한 명 승인 정책은 설계·서버 확장이 필요합니다."
+    },
+    {
+      "title": "별도 상신·결재 요청 저장·알림",
+      "status": "후속",
+      "description": "현재 대표에게 보낼 문장 복사와 역할별 결재 차례가 있습니다. 독립 상신 저장·결재자 알림 기능은 없습니다."
+    },
+    {
+      "title": "요청 항목↔수령한 수정본의 영구 연결",
+      "status": "보강 필요",
+      "description": "같은 논리 문서의 새 본 도착은 안내하지만, 이 요청의 회신본 ID/버전을 수령 기록에 영구 연결하는 원자적 기능은 없습니다."
+    },
+    {
+      "title": "업로드 작업 상태·실패 사유·안전 재시도",
+      "status": "API만",
+      "description": "QUEUED/RUNNING/VALIDATING/FAILED/COMPLETED, 중복 게시 방지·작업 재시도 API와 테스트는 있습니다. 현재 일반 업로드 창은 이 작업 API의 전용 처리 화면으로 연결되지 않았습니다."
+    },
+    {
+      "title": "담당 검토 메모·칸별 확인 시각의 새 표",
+      "status": "일부 데이터만",
+      "description": "검토 메모와 필드 확인자/시각은 API에 있습니다. 현재 대표 요약의 담당 검토 메모와 새 시안의 시각 열은 아직 화면 보강 대상입니다."
+    },
+    {
+      "title": "자동 발송·사내 메신저·실제 송금",
+      "status": "범위 밖",
+      "description": "요청 문구/사실 기록, 맡기기, 지급 완료 사실 기록을 제공합니다. 메신저나 은행 송금 기능으로 설명하지 않습니다."
+    },
+    {
+      "title": "국세청 진위 조회",
+      "status": "미연동",
+      "description": "시범 운영과 평가에서 disabled입니다. 실제 조회를 했다는 승인 문구나 성과를 사용하지 않습니다."
+    },
+    {
+      "title": "2차 인증·SSO·HTTPS 자동 구성·자동 업데이트",
+      "status": "미구현",
+      "description": "판매/운영 환경에서 따로 검토할 범위입니다. 백업 암호화·모델 포함 설치도 자동 제공하지 않습니다."
+    },
+    {
+      "title": "실제 작업시간 절감·실제 회사 전체 성능",
+      "status": "미측정",
+      "description": "대기 포함 경과시간·합성자료 평가와 구분합니다. 사람 작업시간 측정 및 실제 서식 검증이 필요합니다."
+    }
+  ],
+  "source_references": [
+    {
+      "path": "backend/app/ai/grounding.py",
+      "sha256": "b94137a16b39ddd5e6ee67f8e2dfdaa2e797ded729683047e9de90222e4614cb"
+    },
+    {
+      "path": "backend/app/ai/llm_supplement.py",
+      "sha256": "321ea2465268d92e372abc3b980994170600ca2c75b2cb47fcfdce7ce1e0c064"
+    },
+    {
+      "path": "backend/app/ai/local_llm.py",
+      "sha256": "4a5e44b743663a4da3c9f9000dc026b02498a2ab372059850d2a1ba8c2c65419"
+    },
+    {
+      "path": "backend/app/ai/masking.py",
+      "sha256": "5ded58e30283f303f20dd78ac7b380533e8d524678e47307fc13859f942ff110"
+    },
+    {
+      "path": "backend/app/api/assignments.py",
+      "sha256": "6cf70044e9dbd221336a8a7f88b50cc234bed6d19ecfdff7af7fee97fcd37a8e"
+    },
+    {
+      "path": "backend/app/api/auth.py",
+      "sha256": "ead84939d595972989efe3477c692c03195cc4b1407fbf7046411b164caf9f63"
+    },
+    {
+      "path": "backend/app/api/auto_contract.py",
+      "sha256": "e50a77881794ee2ca3a5297969645638a1b5e9f1001322d308d99c13ed774d85"
+    },
+    {
+      "path": "backend/app/api/contracts.py",
+      "sha256": "13d2e0f1a0a60ca96b2616b12097cdd44c8f20f852a8c77bae4f7c7a94b60bef"
+    },
+    {
+      "path": "backend/app/api/documents.py",
+      "sha256": "ecdd6ceb76c95628e5921bd0139ba8ed6a431912a6359c776f4b1a9c260da192"
+    },
+    {
+      "path": "backend/app/api/payments.py",
+      "sha256": "5f7b92a3985260edb666256ba0aa397136201b6120b7ab685f7e0aa8e41b50d6"
+    },
+    {
+      "path": "backend/app/api/pilot.py",
+      "sha256": "43547c8920849d6eafb4b1a98f82ca288bf726be722a97006f530f422dc0b44c"
+    },
+    {
+      "path": "backend/app/api/request_bundles.py",
+      "sha256": "b0da07109f26a29cfe2123adeeb495d47b68a7716c4b21543ff5164e75fe9dd0"
+    },
+    {
+      "path": "backend/app/api/upload_jobs.py",
+      "sha256": "cadf94f7ec689a734ed47c25783f8a14c75556218a88a9ae0e5ee370a84bce34"
+    },
+    {
+      "path": "backend/app/api/work_system.py",
+      "sha256": "84895570f705c38e327386e7bfd639985f7d6282a8ee75d8fb3db3191feb5449"
+    },
+    {
+      "path": "backend/app/api/workflow.py",
+      "sha256": "140daf94e64bffcba629bd6b300dcb6d2448fb64a1985b670d69267d23699ed4"
+    },
+    {
+      "path": "backend/app/schemas/contract.py",
+      "sha256": "7a9d608f613418dd5dd3675a66a0f248a305831519bff20ba9edffe3a31da38a"
+    },
+    {
+      "path": "backend/app/security.py",
+      "sha256": "d67cea4ef461ddf37699789113ead570e34b1dcf035b752338f3cdb723895f63"
+    },
+    {
+      "path": "backend/app/services/activity_service.py",
+      "sha256": "55ab3194eedbbba7b65eb0ce246ffbc8537cff25bbdd82b82efa3ce511620054"
+    },
+    {
+      "path": "backend/app/services/backup_service.py",
+      "sha256": "ecc02f8454b9371b26aa7d91e9805533c86d65af01cab582b071b3115d2170d1"
+    },
+    {
+      "path": "backend/app/services/company_policy_service.py",
+      "sha256": "a7b1efb4c032d65d07dcf053fa97539d1dab5756fb1219f11311210c02848352"
+    },
+    {
+      "path": "backend/app/services/contract_export_service.py",
+      "sha256": "9a393071b15606e5cc1dc867ddbac119df380532e5a80e0aad33647946bc72c2"
+    },
+    {
+      "path": "backend/app/services/contract_summary_service.py",
+      "sha256": "023edba5de1c7b39f7a5741254e8e4b589e8fbaea4b8b655e83d18eab40fe049"
+    },
+    {
+      "path": "backend/app/services/document_version_service.py",
+      "sha256": "7cd16d372d5dbc3832f82dd5b3a33cfff8db206a74b7c942266e04a66035668a"
+    },
+    {
+      "path": "backend/app/services/evidence_geometry_service.py",
+      "sha256": "3f9e878f346d1397ae8137bbec3436fea9b4080b555e9e4914aa2c9ca73429ef"
+    },
+    {
+      "path": "backend/app/services/field_confirmation_service.py",
+      "sha256": "b82c122e1e1530e97ae19d42ef1283c2346bfc74652106afdf0076182f3f8f70"
+    },
+    {
+      "path": "backend/app/services/llm_status_service.py",
+      "sha256": "a13f470297f04b9a304d68521d04a1e028a6c4088d6fb13d4b565d85d4f59436"
+    },
+    {
+      "path": "backend/app/services/payment_service.py",
+      "sha256": "968afc9ff78a4f1780a12142f73a919f9c6f98c6ed8a25dde67578d0a39ebd1f"
+    },
+    {
+      "path": "backend/app/services/performance_service.py",
+      "sha256": "c590b6fb389261df763b745e3c7aba82d637a1283087efdae2bd57a9cb34e55b"
+    },
+    {
+      "path": "backend/app/services/preview_masking_service.py",
+      "sha256": "53cb5b2c578403daffa070f51b1a9c8bd62f21d2f7288d1b307e839a96fc88b9"
+    },
+    {
+      "path": "backend/app/services/request_bundle_service.py",
+      "sha256": "702b4df5c325cfea220e65bc89f00862bb4d4f6de62659a7af57a65e0ab2e094"
+    },
+    {
+      "path": "backend/app/services/review_assistant_service.py",
+      "sha256": "e1d8a78126bdfb8fc319b719c7dac3df480640fec5062984be15031ec71adaa6"
+    },
+    {
+      "path": "backend/app/services/review_context_service.py",
+      "sha256": "3eb51a1ec7671e1806e106b0edd40e657010ca35949d696cbc8a21be87c89709"
+    },
+    {
+      "path": "backend/app/services/storage_service.py",
+      "sha256": "0f9f43e2c12485c3efa9fbc0b3564eb85772059a141a0b254da14ac8f83d859d"
+    },
+    {
+      "path": "backend/app/services/upload_job_service.py",
+      "sha256": "d3c14af382516d042a57cc30715c70e2cfac81df7cf6f79de7d627e7460e197c"
+    },
+    {
+      "path": "backend/app/services/work_state_service.py",
+      "sha256": "9cdf73543e2dda0231e71ff7a8db3c96294004e5130a5fbb8df59de9c782d6a9"
+    },
+    {
+      "path": "backend/app/services/workflow_service.py",
+      "sha256": "d81ecd45e4d01160820544ab24c416903504d75bc7795590092c9f3eca84edd6"
+    },
+    {
+      "path": "backend/app/validation/engine.py",
+      "sha256": "98a943450c6e956eae204d85e9de01cd9915e03c841dbb6035df379ff4a84075"
+    },
+    {
+      "path": "backend/app/validation/financial.py",
+      "sha256": "d7dd1b2dcc56d5c00299d80916b284b79a046061c379dd9ae656d5ace8bed597"
+    },
+    {
+      "path": "backend/launcher/cli.py",
+      "sha256": "d91696e0a998feb2b9f8b1b79b1c64731705231b59d9bb6ef4aef29fd6aa98ec"
+    },
+    {
+      "path": "backend/launcher/operations.py",
+      "sha256": "e48f6bd03cd78c90942ffe5b076056dfe45c6c8b634a6284613d411a56fcaab6"
+    },
+    {
+      "path": "backend/launcher/server.py",
+      "sha256": "a28dcf079dafc2fb8ab46ff09777540bb903dbafa1e580897ba4111370941185"
+    },
+    {
+      "path": "backend/launcher/settings.py",
+      "sha256": "b1597be3488f9d8dd9fcd12fab34a305d93c0ef75693eb22971e9989d36df203"
+    },
+    {
+      "path": "backend/tests/test_api.py",
+      "sha256": "b1d521e8c644954d8d118e76a38ab0523e5b25bf5e5af57b8949f2d395145c27"
+    },
+    {
+      "path": "backend/tests/test_assignments.py",
+      "sha256": "17075e9e9d28d3adc539f25a67e9e034886df526395274221cf2bdb037cfb372"
+    },
+    {
+      "path": "backend/tests/test_backup_restore.py",
+      "sha256": "4482c339e60410b43645bde035277cf51ff340ed5d0cbd0d9df848c53dfc4e02"
+    },
+    {
+      "path": "backend/tests/test_contract_export.py",
+      "sha256": "e90f78f41f3dc3ebbfec6ea70cffbab7f8f07a88d42c443e5f4296ae43afe7f4"
+    },
+    {
+      "path": "backend/tests/test_contract_summary.py",
+      "sha256": "0f87e1a3480ba5abfa13de832f540c3b55e7cef7d951e83e00d7cf4b17ab4a50"
+    },
+    {
+      "path": "backend/tests/test_document_versions.py",
+      "sha256": "4b01eaa1df223e0eeb51d212ebfe14d0cef5f2a704fd65fbf15c437feefa24aa"
+    },
+    {
+      "path": "backend/tests/test_evidence_geometry.py",
+      "sha256": "61bbd5a848d7e321ae5deaa9f7c384a4d721284254c7b72622260f6103cf8934"
+    },
+    {
+      "path": "backend/tests/test_field_confirmation_scope.py",
+      "sha256": "26ac7fc6e0068613eb89e0c11b5d1e143c3102fc61add81a996b329e2da88f9d"
+    },
+    {
+      "path": "backend/tests/test_financial_extraction.py",
+      "sha256": "041f259a521ac5db14718270a70579f37acf0c7cadc134cc75686922ed17fc0a"
+    },
+    {
+      "path": "backend/tests/test_payment_records.py",
+      "sha256": "1b8fd818ee8954f89cc0d1d8b4741b3e958ae1e5e00d3a212aedec878c7261c2"
+    },
+    {
+      "path": "backend/tests/test_performance_llm_status.py",
+      "sha256": "f5939938bac91ee1d1eb3fb7d5199e50c078290864c1cf638d8a18ad9d73bae1"
+    },
+    {
+      "path": "backend/tests/test_preview_masking.py",
+      "sha256": "d311671ecd8adda8a3de5ce94c99f9b5ef210e97a2d2819d1eb9e974c5fe57c8"
+    },
+    {
+      "path": "backend/tests/test_request_bundle_export.py",
+      "sha256": "04ed6ad7496b4a8a6bf1474b190d4330416339495a4c9a112213ed5dea173ba8"
+    },
+    {
+      "path": "backend/tests/test_request_bundles.py",
+      "sha256": "1aacbb289742873b6f6722d03f0a2cef07a723c59a3ade9b33edc12d09a51580"
+    },
+    {
+      "path": "backend/tests/test_review_assistant.py",
+      "sha256": "1e46be9f0134c90f1aefa59557e5c75d2d3e61a7b1b46b0813fed3271a05ab40"
+    },
+    {
+      "path": "backend/tests/test_review_workflow_api.py",
+      "sha256": "af0968fc67561f341caa1f3d308f85e00ba1900a5c39e9af5565b1355f46c655"
+    },
+    {
+      "path": "backend/tests/test_rules.py",
+      "sha256": "f5d41285e416b0bdbdfac813bff57fbc3c43b031324e3e21ecc65b7a56456e91"
+    },
+    {
+      "path": "backend/tests/test_security_regressions.py",
+      "sha256": "f9db043d5ad35e32a03999ab09d197628701ab5631229302501d94f12afbff01"
+    },
+    {
+      "path": "backend/tests/test_upload_jobs.py",
+      "sha256": "ca112cc672f8164db146aef6e73194e63785e89d14c1c243c09c2b6509b9f0a7"
+    },
+    {
+      "path": "backend/tests/test_work_system.py",
+      "sha256": "7253e36a4e928f6446398a0a803e47e656e74bc215665edbdc112573ef711efb"
+    },
+    {
+      "path": "docs/api/bundled_requests.md",
+      "sha256": "f6a72d43f4bffd5cd4e80cfd25731919c74cae6abd66d999db21e902e9ada6c6"
+    },
+    {
+      "path": "docs/api/frontend_handoff.md",
+      "sha256": "2bc16ac447e5beb86b98191ce4348cb2bb37bccce670ac14ad7eb620bbab790d"
+    },
+    {
+      "path": "docs/api/payment_record.md",
+      "sha256": "4a1f648ea1676fc022123fc3cdb25c34e5fb8d7d040f8e556abafb42e514c383"
+    },
+    {
+      "path": "docs/api/work_system.md",
+      "sha256": "f207151bf40c01d724d51022612b3084930dc4f9a2ebb8a6602505aba32e0a31"
+    },
+    {
+      "path": "docs/eval/test/final/four_modes.md",
+      "sha256": "5f71f93b8cfd98cbd3a571471d3f3604f113bacede06798f3c86d098cb716c35"
+    },
+    {
+      "path": "docs/eval/test2/final_four_modes.md",
+      "sha256": "eef057fb662d60f6df30ac3c66267cfc7587ccac770f57d42e122d359391c79b"
+    },
+    {
+      "path": "docs/operations/approval_screen_review_20261006.md",
+      "sha256": "2c50feab9f49b2230b0cb2522b3980849d450ed0ddf3e8b205a9b60ea955d464"
+    },
+    {
+      "path": "docs/operations/backup_restore.md",
+      "sha256": "d5a5d234c126f9ddf2f867b5828ac40a85d904c641eefb9b28da3c7e978e459b"
+    },
+    {
+      "path": "docs/operations/team_test_materials.md",
+      "sha256": "9ff3396b85c37c826ff07b76fc8308e6039113fab4db208f59bdb000eda4c17e"
+    },
+    {
+      "path": "docs/operations/team_test_measurement.md",
+      "sha256": "36b3ad14bc87c692f64a6d26a2b1196cdd8b363777c00def97f3c39a74081c9c"
+    },
+    {
+      "path": "docs/operations/team_test_participant_guide.md",
+      "sha256": "0b742e722cb7966ba298496a74511e43b1c6968f3ad019cfe35626699e98b31e"
+    },
+    {
+      "path": "docs/operations/workflow_rehearsal.md",
+      "sha256": "5a6e864055579892826d58ac902afc4156d8a35ab2229245ec07f03ce74de1fe"
+    },
+    {
+      "path": "docs/progress/history/09_guard_v3.md",
+      "sha256": "f4d50bbc3c009a4714ee9ff2e57db0c7f077b7065e1fc975d8f4d93120bfc993"
+    },
+    {
+      "path": "docs/research/erp_redesign_a404409_review_20261006.md",
+      "sha256": "5c0523271a407e4f1daf4280d86b62e55f38139a46087b6169bf97a0230ad788"
+    },
+    {
+      "path": "frontend/src/components/PilotOperations.tsx",
+      "sha256": "70c92364da04c3e0f639ac4928d3c3cb0dcf6929755fd1e95db8cd1676a067f3"
+    },
+    {
+      "path": "frontend/src/components/PilotPasswordChange.tsx",
+      "sha256": "67dc8c1e6ba0db2f7865b68485d5ae33949b8e8055674bbc5b8b8561e1d70ec0"
+    },
+    {
+      "path": "frontend/src/components/Sidebar.tsx",
+      "sha256": "3a642920a4ef6c27b108a78cb054132ba07f3cae8e3c0cfa5c63872635616451"
+    },
+    {
+      "path": "frontend/src/components/UploadModal.tsx",
+      "sha256": "6e6e92f1403a4edae8db3b2be1c2c6b1a07d77f9bd17eb5f22ac6897d672f12b"
+    },
+    {
+      "path": "frontend/src/components/review/ActivityTimeline.tsx",
+      "sha256": "2cd33bc0bfb644fdef6193770df75bc36da5497dddcc4880c7f1688dde6b218f"
+    },
+    {
+      "path": "frontend/src/components/review/ApprovalPanel.tsx",
+      "sha256": "89339acf360c887d9052ad4d3f4360d25e0079b28832afac11323d8499ea10ba"
+    },
+    {
+      "path": "frontend/src/components/review/AssignmentPanel.tsx",
+      "sha256": "fbc75e4a4be03a957acff54509951cf68c6cf5b4a69ff3b80a36750fa162c3e4"
+    },
+    {
+      "path": "frontend/src/components/review/AssistantPreview.tsx",
+      "sha256": "10c47d84a7923dd3e87876aee605bbf1c03740c5253c7c7e926beb4662105925"
+    },
+    {
+      "path": "frontend/src/components/review/BundleRequest.tsx",
+      "sha256": "b4c1fb7473df0a51f049342db89c049a96c6e1ed459406e9da2c1c9ca9ae9367"
+    },
+    {
+      "path": "frontend/src/components/review/ContractSearch.tsx",
+      "sha256": "31d53d1c654976c22f380d0ea813259baca6d5900fe23c3c5825e1ba89117ff2"
+    },
+    {
+      "path": "frontend/src/components/review/ContractStageView.tsx",
+      "sha256": "00751a9080a0c8f027377c022f6999f0adfa9930ad26cad4749be666cc50750a"
+    },
+    {
+      "path": "frontend/src/components/review/DocumentReviewDialog.tsx",
+      "sha256": "e1e25f0fb070a008995c620c866a1fa878a1217f38af43c19629e3ee9880bd33"
+    },
+    {
+      "path": "frontend/src/components/review/MyAssignmentsStrip.tsx",
+      "sha256": "792a451189c6e17bb858f56a50d3a4048c6e411636ffc06969f4892945d16e87"
+    },
+    {
+      "path": "frontend/src/components/review/StageDashboard.tsx",
+      "sha256": "3f726b3ecf98751f8b66e7c94e131d24fa930156d8daf4feb53a5bc3cdc9fa89"
+    },
+    {
+      "path": "frontend/src/components/review/WorkStatsStrip.tsx",
+      "sha256": "3d2fd8bcf2a443762d6ba0851035964e1630981386f492273b3876334e5f3a8c"
+    },
+    {
+      "path": "frontend/src/components/review/bundleRequest.test.ts",
+      "sha256": "ddc25ee0424b521d1f3195bea7dce6f95aeda6e833611a7fb27364e4996ea792"
+    },
+    {
+      "path": "frontend/src/components/review/stageDashboard.component.test.tsx",
+      "sha256": "15c26f4f79f0fd992323d6e6e6f6f89e58918460806ecf1a409e664a703ce1e7"
+    },
+    {
+      "path": "frontend/src/components/uploadModal.component.test.tsx",
+      "sha256": "14f3ad34de67b8e5bba450bd7b2d3a48abe0e2ee5cd2ae904da4f90c2fbd42f0"
+    },
+    {
+      "path": "frontend/src/hooks/useDialogA11y.ts",
+      "sha256": "72bc04893d190192d1ee914e92bd87f257827e45812e358106108da08e0aa793"
+    },
+    {
+      "path": "frontend/src/pages/ContractDashboard.tsx",
+      "sha256": "e490da677fbc92dd851954bb6155a70dd3d833996f49ef7f27ff66391d33f80b"
+    },
+    {
+      "path": "frontend/src/pages/LoginPage.tsx",
+      "sha256": "e418608e746ed1ea5c5184bf1c7b4eb0abe416c51144713993fcfca0f0c992e6"
+    },
+    {
+      "path": "frontend/src/utils/date.test.ts",
+      "sha256": "c7ab7a7891a1e7004c29d56a5489e12879c5bc205f94d86f376a4b83753a5949"
+    },
+    {
+      "path": "frontend/src/utils/date.ts",
+      "sha256": "4f3e3b039cf436a1b91c58babc706b5e1fb624f0c8ba75aa8d9c9183d417c356"
+    },
+    {
+      "path": "frontend/src/utils/korean.ts",
+      "sha256": "452bfbb16ac438c726e10f6972ac31871427d43bb0712c22388ec958d1ca0a26"
+    },
+    {
+      "path": "frontend/src/utils/latest.ts",
+      "sha256": "261aa7b990482a10010ed73032340e89ce60cce46ad9126e112d991afdd90996"
+    },
+    {
+      "path": "frontend/src/utils/masking.ts",
+      "sha256": "46f099237f86fc61a363733004a5104bd9c1248a55cbe1b24b50e952dec86683"
+    },
+    {
+      "path": "frontend/src/utils/stage.ts",
+      "sha256": "e39fa4f3650589c088d9ecc009593dc4082d8059e3280a1bf570e342bcb9382e"
+    }
+  ]
+}
