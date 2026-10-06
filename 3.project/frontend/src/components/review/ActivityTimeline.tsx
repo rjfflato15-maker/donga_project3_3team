@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { requestJson } from '../../api/client';
 import { createLatestGuard } from '../../utils/latest';
+import { History } from 'lucide-react';
 import { fixParticles } from '../../utils/korean';
 
 export interface ActivityItem {
@@ -99,7 +100,7 @@ export function summarize(item: ActivityItem): string[] {
 
 /** 한국 시간 표시 */
 export const kst = (iso: string) => {
-  const t = new Date(iso);
+  const t = new Date(/[zZ]$|[+-]\d{2}:?\d{2}$/.test(iso) ? iso : `${iso}Z`);
   if (isNaN(t.getTime())) return iso;
   return new Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }).format(t);
 };
@@ -143,19 +144,19 @@ export const ActivityTimeline: React.FC<Props> = ({ contractId, revision, finger
       if (guard.isLatest(t)) setError(e instanceof Error ? e.message : '처리 기록을 불러오지 못했어요.');
     } finally { if (guard.isLatest(t)) setLoading(false); }
   };
-  useEffect(() => { setItems([]); setNext(null); void load(null); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [contractId, revision, fingerprint, masked]);
+  useEffect(() => { setItems([]); setNext(null); void load(null); return () => guard.invalidate(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [contractId, revision, fingerprint, masked]);
 
   return (
-    <section className={compact ? 'space-y-2' : 'space-y-3 rounded-2xl border border-slate-200 bg-white p-5'} aria-label={title}>
-      {!compact && <h2 className="font-bold text-slate-900">{title}</h2>}
+    <section className={compact ? 'cp-history cp-history-compact' : 'cp-history cp-surface'} aria-label={title}>
+      {!compact && <h2 className="cp-section-title">{title}</h2>}
       {error && <p role="alert" className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700">처리 기록을 불러오지 못했어요: {error}</p>}
       {!error && !loading && items.length === 0 && <p className="text-sm text-slate-500">기록된 처리가 없어요.</p>}
-      <ol className="space-y-2">
+      <ol className="cp-history-list">
         {items.filter((i) => !(compact && i.type === 'RULE_VALIDATION')).map((i) => {
           const lines = i.details_available ? summarize(i) : ['상세 기록을 읽을 수 없어요'];
           return (
-            <li key={i.event_id} className="border-l-2 border-slate-200 pl-3 text-sm">
-              <div className="flex flex-wrap items-baseline gap-x-2">
+            <li key={i.event_id} className="cp-history-entry">
+              <History size={17} /><div className="flex flex-wrap items-baseline gap-x-2">
                 <b className="text-slate-900">{i.title}</b>
                 <span className="text-xs text-slate-500">{kst(i.occurred_at)}{i.actor_name ? ` · ${i.actor_name}` : ''}</span>
               </div>

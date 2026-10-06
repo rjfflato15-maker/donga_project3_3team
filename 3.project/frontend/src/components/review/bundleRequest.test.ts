@@ -42,6 +42,13 @@ describe('요청 항목의 현재 서류', () => {
     expect(currentDocumentFor({ issue_key: 'document:13', document_id: 13 }, docs)).toBe(13);
     expect(currentDocumentFor({ issue_key: 'document:99', document_id: 99 }, docs)).toBeNull();
   });
+  it('누락 요청에 도착한 한 개의 현재 본을 열고, 여러 개이면 임의로 고르지 않는다', () => {
+    const item = {issue_key:'missing:estimate',document_id:null,document_type:'estimate' as const};
+    const one = [{document_id:20,document_type:'estimate' as const,version:{logical_document_id:20,is_current:true}}];
+    expect(currentDocumentFor(item,one)).toBe(20);
+    expect(currentDocumentFor(item,[...one,{...one[0],document_id:21}])).toBeNull();
+    expect(currentDocumentFor(item,[{...one[0],version:{logical_document_id:20,is_current:false}}])).toBeNull();
+  });
 });
 
 describe('원문 확인 동의의 기준', () => {

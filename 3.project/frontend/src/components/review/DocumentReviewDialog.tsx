@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { FIELD_ORDER, fieldsForDocument } from '../../utils/documentFields';
 import { josa } from '../../utils/korean';
 import { maskForDisplay } from './ContractStageView';
 import { useDialogA11y } from '../../hooks/useDialogA11y';
@@ -6,7 +7,9 @@ import { AnalysisFields, DocumentResponse, ValidationCheck } from '../../types';
 import { api, requestJson, downloadProtected } from '../../api/client';
 import { DOCUMENT_TYPE_KO, plainMessage, ruleLabel, isUnverifiedBusinessStatus, showsValues } from '../../utils/reviewSummary';
 import { maskBusinessNumber, maskAccountNumber, maskVendorName } from '../../utils/masking';
-import { X, Pencil, Download, ChevronLeft, ChevronRight, Loader2, Save, Upload } from 'lucide-react';
+import { Check, X, Pencil, Download, ChevronLeft, ChevronRight, Loader2, Save, Upload } from 'lucide-react';
+import { kst } from './ActivityTimeline';
+import { Badge } from '../ui/Surface';
 
 interface BBox { page: number; x: number; y: number; width: number; height: number }
 interface Anchor { page: number | null; line: number | null; quote: string; location_kind?: string; page_layout_verified?: boolean; bbox?: BBox | null; bboxes?: BBox[] }
@@ -33,20 +36,6 @@ interface Props {
   initialMode?: 'view' | 'reissue';
 }
 
-const FIELD_ORDER: { key: string; label: string; types?: string[] }[] = [
-  { key: 'company_name', label: '상호' },
-  { key: 'business_registration_no', label: '사업자등록번호' },
-  { key: 'bank_name', label: '은행', types: ['bank_account'] },
-  { key: 'account_number', label: '계좌번호', types: ['bank_account'] },
-  { key: 'supply_amount', label: '공급가액' },
-  { key: 'tax_amount', label: '세액' },
-  { key: 'total_amount', label: '합계금액' },
-  { key: 'amount_scope', label: '청구 범위', types: ['tax_invoice', 'estimate', 'contract'] },
-  { key: 'issue_date', label: '발행일' },
-];
-
-const NO_AMOUNT = new Set(['business_registration', 'bank_account']);
-
 const REASON_KO: Record<string, string> = {
   PAGE_UNVERIFIED: '원문 위치를 확인하지 못함',
   EVIDENCE_NOT_FOUND: '원문에서 근거를 찾지 못함',
@@ -68,11 +57,19 @@ function display(key: string, value: FieldProvenance['value'], masked: boolean):
 }
 
 const AMOUNT_KEYS = new Set(['supply_amount', 'tax_amount', 'total_amount']);
+const fieldChecks = (key: string, checks: ValidationCheck[]) => checks.filter((c) =>
+  c.rule_id === 'BUSINESS_NO_MATCH' && key === 'business_registration_no' ||
+  c.rule_id === 'AMOUNT_COMPONENTS' && AMOUNT_KEYS.has(key) ||
+  c.rule_id.startsWith('AMOUNT_MATCH_') && key === (c.message.includes('공급가액 기준') ? 'supply_amount' : 'total_amount') ||
+  c.rule_id === 'PAYMENT_SCOPE' && key === 'amount_scope');
 
 export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, isMaskingEnabled, canEdit, onClose, onChanged, initialMode = 'view' }) => {
   const dialogRef = React.useRef<HTMLDivElement>(null);
   const escRef = React.useRef<() => void>(onClose);
   useDialogA11y(dialogRef, () => escRef.current());
+  const editable = canEdit && doc.version?.is_current !== false;
+  const [sourcePane, setSourcePane] = useState<'original' | 'fields'>(initialMode === 'reissue' ? 'fields' : 'original');
+  const [textError,setTextError] = useState('');
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState<AnalysisFields>(doc.analysis.fields);
   const [note, setNote] = useState('');
@@ -194,10 +191,10 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
     const controller = new AbortController();
     setProv(null); setProvError('');
     requestJson<Provenance>(`/api/documents/${doc.document_id}/provenance`, { signal: controller.signal })
-      .then(setProv)
+      .then((p) => { if (!controller.signal.aborted) setProv(p); })
       .catch((e) => { if (!controller.signal.aborted) setProvError(e.message); });
     return () => controller.abort();
-  }, [doc.document_id, revision]);
+  }, [doc.document_id, revision, cmpKey]);
 
   useEffect(() => {
     setPage(0); setPages(1);
@@ -221,15 +218,15 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
   }, [doc.document_id, doc.file_available, visual, page, isMaskingEnabled, revision]);
 
   useEffect(() => {
-    setText('');
+    setText(''); setTextError('');
     if (!doc.file_available || visual) return;
     const controller = new AbortController();
     requestJson<{ text: string }>(`/api/documents/${doc.document_id}/text-preview?masked=${isMaskingEnabled}`, { signal: controller.signal })
-      .then((v) => setText(v.text)).catch((e) => { if (!controller.signal.aborted) setText(e.message); });
+      .then((v) => setText(v.text)).catch((e) => { if (!controller.signal.aborted) setTextError(e.message); });
     return () => controller.abort();
   }, [doc.document_id, doc.file_available, visual, isMaskingEnabled]);
 
-  const rows = FIELD_ORDER.filter((f) => (!f.types || f.types.includes(doc.document_type)) && !(NO_AMOUNT.has(doc.document_type) && /amount|scope/.test(f.key)));
+  const rows = fieldsForDocument(doc.document_type);
   const anchor: Anchor | undefined = selected ? prov?.fields[selected]?.evidence?.[0] : undefined;
   // 좌표는 백엔드가 원본 해시까지 확인한 경우에만 온다. 없으면 쪽·줄 안내만 한다.
   const validBox = (b?: BBox | null): b is BBox => !!b && (b.page ?? 1) === page + 1 && [b.x, b.y, b.width, b.height].every((v) => typeof v === 'number' && v >= 0 && v <= 1);
@@ -239,6 +236,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
     setSelected(key);
     const a = prov?.fields[key]?.evidence?.[0];
     if (a?.page && isPdf) setPage(a.page - 1);
+    if (window.innerWidth <= 700) setSourcePane('original');
   };
 
   const quoteShown = anchor && !isMaskingEnabled ? anchor.quote : '';
@@ -250,12 +248,12 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
   }, [text, anchor, isMaskingEnabled]);
 
   return (
-    <div ref={dialogRef} className="fixed inset-0 z-50 bg-slate-900/50 flex items-center justify-center p-2 sm:p-4" role="dialog" aria-modal="true" aria-labelledby="doc-review-title">
-      <div className="flex max-h-full w-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
-        <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-5 py-3">
-          <h2 id="doc-review-title" className="font-bold text-slate-900">{DOCUMENT_TYPE_KO[doc.document_type]}</h2>
+    <div ref={dialogRef} className="cp-modal-shade" role="dialog" aria-modal="true" aria-labelledby="doc-review-title">
+      <div className="cp-modal cp-source-modal">
+        <div className="cp-modal-heading flex flex-wrap items-center gap-2">
+          <h2 id="doc-review-title" className="font-bold text-slate-900">{DOCUMENT_TYPE_KO[doc.document_type]} 원문 대조</h2>
           <span className="truncate text-xs text-slate-500">{doc.original_file_name}</span>
-          {versionNo > 1 && <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold text-sky-700">{doc.version?.is_current === false ? `이전 본 · ${versionNo}번째` : `현재 본 · ${versionNo}번째`}</span>}
+          {<span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold text-sky-700">{doc.version?.is_current === false ? `이전 본 · ${versionNo}번째` : `현재 본 · ${versionNo}번째`}</span>}
           {problems.length > 0 ? (
             <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-rose-700">확인할 것 {problems.length}</span>
           ) : passed.length > 0 ? (
@@ -274,12 +272,13 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
           </div>
         </div>
 
-        <div className="grid min-h-0 flex-1 overflow-auto lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+        <div className="cp-source-mobile-tabs" role="tablist" aria-label="원문 대조 보기"><button role="tab" aria-selected={sourcePane === 'original'} onClick={() => setSourcePane('original')}>원문</button><button role="tab" aria-selected={sourcePane === 'fields'} onClick={() => setSourcePane('fields')}>읽은 값·근거</button></div>
+        <div className={`cp-source-grid cp-pane-${sourcePane}`}>
           {/* 원문 */}
-          <div className="min-w-0 bg-slate-500/90 p-4">
-            <div className="mb-2 flex items-center gap-2 text-xs text-white/85">
+          <div className="cp-paper-area">
+            <div className="cp-source-toolbar">
               <span>원문{isPdf && pages > 1 ? ` ${page + 1} / ${pages}쪽` : ''}</span>
-              {isMaskingEnabled && <span className="text-[11px] font-normal text-white/75" title="글자를 자동으로 찾아 가립니다. 일부 상호가 남거나 다른 칸이 가려질 수 있습니다.">자동 가림 · 빠진 곳이 있을 수 있음</span>}
+              {isMaskingEnabled && <span className="cp-muted text-[11px]" title="글자를 자동으로 찾아 가립니다. 일부 상호가 남거나 다른 칸이 가려질 수 있습니다.">자동 가림 · 빠진 곳이 있을 수 있음</span>}
               {isPdf && pages > 1 && (
                 <span className="ml-auto flex gap-1">
                   <button disabled={page === 0} onClick={() => setPage((p) => p - 1)} className="rounded bg-white/15 p-1 disabled:opacity-40" aria-label="이전 쪽"><ChevronLeft className="h-4 w-4" /></button>
@@ -310,7 +309,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
             ) : (
               <div className="rounded-lg bg-white p-5 text-sm leading-7 text-slate-800 whitespace-pre-wrap break-words">
                 <div className="mb-3 rounded bg-amber-50 px-2 py-1 text-xs text-amber-800">Word 등 글자 문서는 파일 속 글자를 보여 줍니다. 쪽 배치는 실제 문서와 다를 수 있습니다.</div>
-                {highlightedText ? (<>{highlightedText[0]}<mark className="rounded bg-amber-200 px-0.5">{highlightedText[1]}</mark>{highlightedText[2]}</>) : text || '글자를 불러오는 중…'}
+                {textError ? <p role="alert">{textError}</p> : highlightedText ? (<>{highlightedText[0]}<mark className="rounded bg-amber-200 px-0.5">{highlightedText[1]}</mark>{highlightedText[2]}</>) : text || '글자를 불러오는 중…'}
               </div>
             )}
             {anchor && (
@@ -321,18 +320,18 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
           </div>
 
           {/* 읽은 값 */}
-          <div className="min-w-0 space-y-3 p-5">
+          <div className="cp-source-fields space-y-3">
             {cmpError && versionNo > 1 && <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">이전 본과 비교하지 못했어요. 창을 닫았다가 다시 열어 주세요.</div>}
             {cmp && (
               <div className="rounded-xl border border-sky-200 bg-sky-50 p-3 text-sm">
                 <div className="font-semibold text-sky-900">무엇이 바뀌었나 · 버전 {cmp.previous_version} → {cmp.new_version}</div>
                 {cmp.changes.length === 0 ? <div className="text-sky-800">읽은 값은 이전 버전과 같습니다.</div> : (
                   <ul className="mt-1 space-y-1">
-                    {cmp.changes.map((c) => {
-                      const label = FIELD_ORDER.find((f) => f.key === c.field)?.label ?? c.field;
+                    {cmp.changes.filter((c) => c.field !== 'amount' || !cmp.changes.some((t) => t.field === 'total_amount' && t.previous_value === c.previous_value && t.new_value === c.new_value)).map((c) => {
+                      const label = FIELD_ORDER.find((f) => f.key === c.field)?.label ?? (c.field === 'amount' ? '금액' : c.field);
                       const fmt = (v: unknown) => display(c.field, v as FieldProvenance['value'], isMaskingEnabled);
                       const unread = !fmt(c.new_value);
-                      return <li key={c.field} className="tabular-nums"><span className="text-slate-500">{label}</span> <span className="text-rose-600 line-through">{fmt(c.previous_value) || '없음'}</span> → {unread
+                      return <li key={c.field} className="tabular-nums"><strong>{label}</strong> <span className="text-rose-600 line-through">{fmt(c.previous_value) || '없음'}</span> → {unread
                         ? <b className="text-amber-700">새 본에서 못 읽음 · 원문 확인 필요</b>
                         : <b className="text-emerald-700">{fmt(c.new_value)}</b>}</li>;
                     })}
@@ -361,10 +360,9 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                 </ul>
                 {problems.some((c) => showsValues(c.rule_id) && (c.expected || c.actual)) && (
                   <div className="mt-2 rounded-lg bg-white px-3 py-2 text-xs text-slate-700">
-                    <b>원문을 보고 고를 것</b>
-                    <div>· 원문도 저장된 값과 같다 → 서류 내용 문제예요. 거래처에 고친 본을 받아 <b>‘고친 본 올리기’</b>.</div>
-                    <div>· 원문과 다르게 저장돼 있다(잘못 읽음) → <b>‘앱이 읽은 값 수정’</b>으로 원문 값을 넣어요. 계약 기준에 맞춰 바꾸는 게 아니에요.</div>
-                    <div className="text-slate-500">원문 값으로 고쳐도 계약과 다르면 불일치는 그대로 남아요.</div>
+                    <div>원문도 계약과 다름 → 거래처에 정정 요청 · <b>고친 본 올리기</b></div>
+                    <div>앱이 원문을 잘못 읽음 → <b>읽은 값 수정</b></div>
+                    <div className="text-slate-500">계약에 맞추지 않고 원문 값으로 수정합니다.</div>
                   </div>
                 )}
               </div>
@@ -470,31 +468,38 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
               </div>
             )}
             {prov && !editing && !reissueOpen && (
-              <ul className="space-y-2">
+              <ul className="cp-field-list">
                 {rows.map(({ key, label }) => {
                   const f = prov.fields[key];
                   if (!f) return null;
                   const shown = display(key, f.value, isMaskingEnabled);
                   const ai = f.ai_decision;
                   const rejected = ai && ai.proposal && !ai.applied;
+                  const applicable = fieldChecks(key,docChecks);
+                  const result = applicable.some((c) => c.status === 'FAIL') ? '불일치' : applicable.some((c) => c.status !== 'PASS') ? '확인 필요' : applicable.length ? '일치' : null;
+                  const basisCheck = applicable.find((c) => showsValues(c.rule_id) && c.expected);
+                  const location = f.evidence[0];
                   return (
                     <li key={key}>
                       <button
                         onClick={() => pick(key)}
-                        className={`w-full rounded-xl border p-3 text-left text-sm transition ${selected === key ? 'border-indigo-400 ring-2 ring-indigo-200' : 'border-slate-200 hover:border-indigo-300'}`}
+                        className={`cp-field ${selected === key ? 'cp-field-selected' : ''}`}
                       >
                         <div className="flex items-center gap-2">
-                          <span className="text-slate-500">{label}</span>
+                          <strong>{label}</strong>
+                          {f.source === 'RULE' && <small className="ml-auto">규칙</small>}
                           {f.source === 'AI_SUPPLEMENT' && <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[11px] font-semibold text-violet-700">AI 보완</span>}
                           {f.source === 'HUMAN_CONFIRMATION' && <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">사람 확인{f.human_confirmation ? ` · ${f.human_confirmation.actor_name}` : ''}</span>}
                           <span className="ml-auto text-xs text-slate-400">
                             {f.evidence_status === 'AVAILABLE' ? '근거 있음' : f.evidence_status === 'AMBIGUOUS' ? `같은 값의 근거 ${f.evidence?.length > 1 ? `${f.evidence.length}곳` : '여러 곳'}` : shown ? '근거 위치 없음' : ''}
                           </span>
                         </div>
-                        <div className={`font-semibold tabular-nums ${shown ? 'text-slate-900' : 'text-amber-700'}`}>{shown || '못 읽음 · 원문 확인 필요'}</div>
+                        <div className={`font-semibold tabular-nums flex items-center gap-3 ${shown ? 'text-slate-900' : 'text-amber-700'}`}>{shown || '못 읽음 · 원문 확인 필요'}{result && <Badge tone={result === '일치' ? 'green' : result === '불일치' ? 'red' : 'amber'}>{result}</Badge>}</div>
+                        {(basisCheck || location) && <small>{basisCheck ? `검사 기준 ${maskForDisplay(basisCheck.expected!,isMaskingEnabled)}` : ''}{basisCheck && location ? ' · ' : ''}{location ? `${location.page ? `${location.page}쪽` : '본문'}${location.line ? ` ${location.line}줄` : ''} ↗` : ''}</small>}
+                        {f.human_confirmation && <small className="cp-confirmed"><Check size={12}/>원문과 같음 · {f.human_confirmation.actor_name} · {kst(f.human_confirmation.at)}</small>}
                         {rejected && (
                           <div className="mt-1 rounded-lg bg-violet-50 px-2 py-1 text-xs text-violet-800">
-                            AI 제안 "{String(ai!.proposal!.value ?? '')}"은 채택하지 않음
+                            AI 제안 "{display(key, ai!.proposal!.value as FieldProvenance['value'], isMaskingEnabled)}"은 채택하지 않음
                             {ai!.reasons?.length ? ` · ${ai!.reasons.map((r) => REASON_KO[r] ?? r).join(', ')}` : ''}
                           </div>
                         )}
@@ -504,7 +509,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                 })}
               </ul>
             )}
-            {canEdit && !editing && reissueOpen && doc.version?.is_current !== false && (
+            {editable && !editing && reissueOpen && doc.version?.is_current !== false && (
               <div ref={reissueRef} className="rounded-xl border-2 border-sky-300 bg-sky-50/40 p-3 text-sm space-y-2">
                 <div className="flex items-center gap-2">
                   <b className="text-sky-900">고친 본 올리기</b>
@@ -523,11 +528,16 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                 {reissueError && <p role="alert" className="text-xs text-rose-600">{reissueError}</p>}
               </div>
             )}
-            {canEdit && !editing && !reissueOpen && (
-              <div className="sticky bottom-0 -mx-5 -mb-5 flex flex-wrap gap-2 border-t border-slate-100 bg-white px-5 py-3">
+            {editable && !editing && !reissueOpen && (
+              <div className="cp-source-actions">
+                <button className="cp-button" disabled={!selected || saving || !doc.file_available || visual && !imageUrl || !visual && (!text || !!textError) || prov?.fields[selected]?.value == null || prov?.fields[selected]?.value === '' || prov?.fields[selected]?.value === 'UNKNOWN'} onClick={async () => {
+                  if (!selected) return;
+                  setSaving(true);setSaveError('');
+                  try {await api.correctFields(doc.document_id, doc.analysis.fields, doc.document_type, revision, `원문과 같은 ${FIELD_ORDER.find((f) => f.key === selected)?.label ?? selected} 확인`, [selected]);await onChanged();setCmpKey((k) => k+1);} catch(e) {setSaveError(e instanceof Error ? e.message : '확인 저장 실패');} finally {setSaving(false);}
+                }}><Check size={14}/>원문과 같음</button>
                 <button ref={editBtnRef} onClick={() => setEditing(true)} className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
                   title="원문과 다르게 읽었거나 못 읽은 값을 원문 값으로 고칩니다. 계약 기준에 맞추는 기능이 아니에요">
-                  <Pencil className="h-4 w-4" /> 앱이 읽은 값 수정
+                  <Pencil className="h-4 w-4" /> 읽은 값 수정
                 </button>
                 {doc.version?.is_current !== false && (
                   <button ref={reissueBtnRef} onClick={openReissue} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-indigo-300"
@@ -535,6 +545,7 @@ export const DocumentReviewDialog: React.FC<Props> = ({ doc, checks, revision, i
                     <Upload className="h-4 w-4" /> 고친 본 올리기
                   </button>
                 )}
+                {saveError && <p role="alert" className="text-xs text-rose-600">{saveError}</p>}
               </div>
             )}
           </div>

@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ContractDetail, DocumentType } from '../../types';
 import { requestJson } from '../../api/client';
 import { ContactMethod, CONTACT_KO, CONTACT_VIA, ResubmissionRequest } from '../../api/followUp';
-import { DOCUMENT_TYPE_KO } from '../../utils/reviewSummary';
+import { Badge } from '../ui/Surface';
+import { isUnverifiedBusinessStatus, DOCUMENT_TYPE_KO } from '../../utils/reviewSummary';
 import { fixParticles, josa } from '../../utils/korean';
 import { seoulToday } from '../../utils/date';
 import { useDialogA11y } from '../../hooks/useDialogA11y';
@@ -58,7 +59,11 @@ export interface Basis { contractId: number; revision: number; fingerprint: stri
 export const sameBasis = (a: Basis, b: Basis) => a.contractId === b.contractId && a.revision === b.revision && a.fingerprint === b.fingerprint;
 
 /** 요청 항목의 현재 서류: 재발행으로 ID가 바뀌어도 같은 논리 문서(issue_key 'document:{논리 ID}')의 현재 본을 찾는다 */
-export function currentDocumentFor(item: { issue_key: string; document_id: number | null }, docs: { document_id: number; version?: { logical_document_id: number; is_current: boolean } | null }[]): number | null {
+export function currentDocumentFor(item: { issue_key: string; document_id: number | null; document_type?: DocumentType | null }, docs: { document_id: number; document_type?: DocumentType; version?: { logical_document_id: number; is_current: boolean } | null }[]): number | null {
+  if (item.issue_key.startsWith('missing:') && item.document_type) {
+    const matches = docs.filter((d) => d.document_type === item.document_type && d.version?.is_current !== false);
+    return matches.length === 1 ? matches[0].document_id : null;
+  }
   const m = /^document:(\d+)$/.exec(item.issue_key);
   if (m) {
     const logical = Number(m[1]);
@@ -70,7 +75,7 @@ export function currentDocumentFor(item: { issue_key: string; document_id: numbe
 
 /** 요청 뒤에 그 서류가 올라왔는지: 빠진 서류는 그 종류가 생겼는지, 서류 보완은 같은 논리 문서의 현재 본이 바뀌었는지 */
 export function itemArrived(i: { issue_key: string; document_id: number | null; document_type: DocumentType | null }, docs: { document_id: number; document_type: DocumentType; version?: { logical_document_id: number; is_current: boolean } | null }[]): boolean {
-  if (i.issue_key.startsWith('missing:')) return docs.some((d) => d.document_type === i.document_type);
+  if (i.issue_key.startsWith('missing:')) return docs.some((d) => d.document_type === i.document_type && d.version?.is_current !== false);
   const cur = currentDocumentFor(i, docs);
   return cur != null && i.document_id != null && cur !== i.document_id;
 }
@@ -135,7 +140,7 @@ export const RequestChecklist: React.FC<ChecklistProps> = ({ ctx, isMaskingEnabl
                 {c.requires_original_review && on && (
                   <label className={`mt-1 flex items-center gap-2 pl-6 text-xs ${needReview ? 'text-amber-800' : 'text-slate-600'}`}>
                     <input type="checkbox" checked={reviewed.has(c.issue_key)} onChange={() => setReviewed((s) => toggle(s, c.issue_key))} className="h-3.5 w-3.5 accent-emerald-600" />
-                    원문을 보고, 원문에서도 틀린 것을 확인했어요 (앱이 잘못 읽은 거면 거래처가 아니라 ‘값 고치기’)
+                    원문도 계약 기준과 다름을 확인
                   </label>
                 )}
               </li>
@@ -229,60 +234,25 @@ export const BundleRequestDialog: React.FC<DialogProps> = ({ contract, basis, la
     catch { setCopied('복사하지 못했어요. 글을 선택해 Ctrl+C로 복사하세요.'); }
   };
 
-  return (
-    <div ref={ref} className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4" role="dialog" aria-modal="true" aria-labelledby="bundle-title">
-      <div className="max-h-full w-full max-w-xl overflow-auto rounded-2xl bg-white shadow-xl">
-        <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-4">
-          <h2 id="bundle-title" className="font-bold text-slate-900">거래처에 한 번에 요청 · {items.length}건</h2>
-          <button onClick={onClose} className="ml-auto rounded-lg p-1 text-slate-400 hover:bg-slate-100" aria-label="닫기"><X className="h-5 w-5" /></button>
-        </div>
-        <div className="space-y-3 px-5 py-4 text-sm">
-          <div className="text-slate-600">{maskVendorName(contract.vendor_name, isMaskingEnabled)}에게 보낼 문구예요. {items.map(docName).join(' · ')}</div>
-          <div className="inline-flex rounded-lg border border-slate-200 p-0.5 text-xs" role="tablist">
-            <button role="tab" aria-selected={!long} onClick={() => setLong(false)} className={`rounded-md px-3 py-1.5 font-semibold ${!long ? 'bg-indigo-600 text-white' : 'text-slate-600'}`}>짧게 (카톡·문자)</button>
-            <button role="tab" aria-selected={long} onClick={() => setLong(true)} className={`rounded-md px-3 py-1.5 font-semibold ${long ? 'bg-indigo-600 text-white' : 'text-slate-600'}`}>자세히 (이메일)</button>
-          </div>
-          <label htmlFor="bundle-text" className="sr-only">요청 문구</label>
-          <textarea id="bundle-text" value={text} onChange={(e) => setText(e.target.value)} className="h-40 w-full rounded-xl border border-slate-200 bg-white p-3 leading-relaxed text-slate-800" />
-          <div className="flex flex-wrap items-center gap-2">
-            <button onClick={() => void copy()} className="rounded-lg border border-slate-200 px-3 py-1.5 font-semibold text-slate-700 hover:border-indigo-300">문구 복사</button>
-            <span className="text-xs text-slate-500">{copied}</span>
-          </div>
-          {isMaskingEnabled && <p className="text-xs text-amber-700">거래처에 보낼 문구라 가림이 켜져 있어도 실제 거래처 이름이 들어가요. 복사만으로는 기록되지 않아요.</p>}
-
-          <div className="space-y-2 rounded-xl bg-slate-50 p-3">
-            <div className="font-semibold text-slate-800">보냈다면 한 번에 기록하기</div>
-            <div className="flex flex-wrap gap-2">
-              <label className="grid gap-1 text-xs text-slate-600">어떻게 요청했나요?
-                <select value={method} onChange={(e) => setMethod(e.target.value as ContactMethod)} className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800">
-                  {(Object.keys(CONTACT_KO) as ContactMethod[]).map((m) => <option key={m} value={m}>{CONTACT_KO[m]}</option>)}
-                </select></label>
-              <label className="grid gap-1 text-xs text-slate-600">회신 기한 (선택)
-                <input type="date" value={due} min={seoulToday()} onChange={(e) => setDue(e.target.value)} className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800" /></label>
-            </div>
-            <label className="grid gap-1 text-xs text-slate-600">기록 메모
-              <input value={memo} onChange={(e) => setMemo(e.target.value)} className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-800" /></label>
-            {memoTooLong && <p className="text-xs text-rose-600">메모는 2,000자까지예요. 줄여 주세요.</p>}
-            {changed && (
-              <p role="alert" className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-900">
-                고른 뒤 계약 자료가 바뀌었어요. 이 선택과 원문 확인으로는 기록할 수 없어요. 창을 닫고 최신 목록에서 다시 골라 주세요.
-                <button onClick={() => { void onStale().then(onClose); }} className="ml-2 font-semibold underline">닫고 다시 고르기</button>
-              </p>
-            )}
-            <button onClick={() => void record()} disabled={busy || stale || changed || !memo.trim() || memoTooLong}
-              className="rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-700 disabled:opacity-40">{busy ? '기록 중…' : `요청했어요 · ${items.length}건 한 번에 기록하기`}</button>
-            <p className="text-[11px] text-slate-500">요청 1건에 서류 {items.length}개가 묶여 기록돼요. 이 계약은 ‘③ 보완’으로 넘어가요. 앱은 메시지를 보내지 않아요.</p>
-          </div>
-          {error && (
-            <div role="alert" className="rounded-lg bg-rose-50 px-3 py-2 text-xs text-rose-700">
-              {error}
-              {stale && <button onClick={() => { void onStale().then(onClose); }} className="ml-2 font-semibold underline">새로 불러오기</button>}
-            </div>
-          )}
-        </div>
+  return <div ref={ref} className="cp-modal-shade" role="dialog" aria-modal="true" aria-labelledby="bundle-title">
+    <section className="cp-modal cp-request-modal">
+      <div className="cp-modal-heading"><div><small>계약 #{contract.contract_id}</small><h2 id="bundle-title">거래처 요청 작성</h2></div><button className="cp-icon" aria-label="닫기" onClick={onClose}><X size={20}/></button></div>
+      <div className="cp-modal-body">
+        <div className="cp-request-form"><div><small>거래처</small><strong>{maskVendorName(contract.vendor_name,isMaskingEnabled)}</strong></div><label>연락 방법<select value={method} onChange={(e) => setMethod(e.target.value as ContactMethod)}>{(Object.keys(CONTACT_KO) as ContactMethod[]).map((m) => <option key={m} value={m}>{CONTACT_KO[m]}</option>)}</select></label><label>회신 기한 (선택)<input data-autofocus type="date" value={due} min={seoulToday()} onChange={(e) => setDue(e.target.value)}/></label></div>
+        <div className="cp-request-items"><h3>요청할 서류 <small>{items.length}건</small></h3>{items.map((item) => <div key={item.issue_key}><strong>{docName(item)}</strong><small>{mask(fixParticles(item.reason),isMaskingEnabled)}</small></div>)}</div>
+        <div className="flex items-center justify-between mb-2"><label className="cp-field-label" htmlFor="bundle-text">보낼 문구</label><div className="cp-mini-tabs" role="tablist" aria-label="요청 문구 길이"><button role="tab" aria-selected={!long} onClick={() => setLong(false)}>짧게</button><button role="tab" aria-selected={long} onClick={() => setLong(true)}>자세히</button></div></div>
+        <textarea id="bundle-text" value={text} onChange={(e) => setText(e.target.value)} rows={7} />
+        <small className="cp-help">메일·전화 등으로 요청한 뒤 기록합니다. 앱은 메시지를 발송하지 않습니다.</small>
+        {isMaskingEnabled && <p className="cp-help">보낼 문구에는 실제 거래처 이름이 들어갑니다.</p>}
+        <label className="cp-record-memo">기록 메모<input value={memo} maxLength={2000} onChange={(e) => setMemo(e.target.value)}/></label>
+        {memoTooLong && <p role="alert" className="cp-alert">메모는 2,000자까지입니다.</p>}
+        {copied && <p role="status" className="cp-help">{copied}</p>}
+        {changed && <p role="alert" className="cp-alert">고른 뒤 계약 자료가 바뀌었습니다. 최신 목록에서 다시 고르세요.<button className="cp-text-button" onClick={() => {void onStale().then(onClose);}}>닫고 다시 고르기</button></p>}
+        {error && <p role="alert" className="cp-alert">{error}{stale && <button className="cp-text-button" onClick={() => {void onStale().then(onClose);}}>최신 자료 불러오기</button>}</p>}
       </div>
-    </div>
-  );
+      <div className="cp-modal-footer"><button className="cp-button" onClick={onClose}>취소</button><div><button className="cp-button" onClick={() => void copy()}>문구 복사</button><button className="cp-button cp-primary" disabled={busy || stale || changed || !memo.trim() || memoTooLong} onClick={() => void record()}>{busy ? '기록 중…' : `보낸 뒤 ${items.length}건 기록`}</button></div></div>
+    </section>
+  </div>;
 };
 
 /* ---------- 받은 항목만 체크 ---------- */
@@ -325,53 +295,16 @@ export const BundleReplyPanel: React.FC<ReplyProps> = ({ contract, request, canE
     }
     try { await onSaved(saved, error); } finally { setBusy(false); }
   };
-  return (
-    <div className="space-y-2 rounded-xl bg-white px-3 py-3 text-sm">
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <span className="font-semibold text-slate-800">{request.requested_on.slice(5).replace('-', '/')} {CONTACT_VIA[request.contact_method]} 요청</span>
-        {request.due_on && <span className={late ? 'font-bold text-rose-600' : 'text-slate-500'}>기한 {request.due_on.slice(5).replace('-', '/')}{late ? ' 지남' : ''}</span>}
-        <span className="ml-auto text-xs font-semibold text-slate-600">{b.counts.total}건 요청 · {b.counts.received}건 받음 · {b.counts.waiting}건 기다림{b.counts.cancelled ? ` · ${b.counts.cancelled}건 취소` : ''}</span>
-      </div>
-      <ul className="space-y-1">
-        {b.items.map((i) => (
-          <li key={i.item_id} className="flex flex-wrap items-center gap-2">
-            {i.status === 'WAITING_RESPONSE' && canEdit ? (
-              <label className="flex flex-1 cursor-pointer items-center gap-2">
-                <input type="checkbox" checked={got.has(i.item_id)} onChange={() => setGot((s) => { const n = new Set(s); if (n.has(i.item_id)) n.delete(i.item_id); else n.add(i.item_id); return n; })} className="h-4 w-4 accent-sky-600" />
-                <span className="font-medium text-slate-800">{docName(i)}</span>
-
-              </label>
-            ) : (
-              <span className={`flex-1 ${i.status === 'RECEIVED' ? 'text-emerald-700' : i.status === 'CANCELLED' ? 'text-slate-400 line-through' : 'text-slate-700'}`}>
-                {i.status === 'RECEIVED' ? '✓ ' : ''}{docName(i)}{i.status === 'RECEIVED' ? ' 받음' : i.status === 'CANCELLED' ? ' 취소' : ' 기다림'}
-                {i.resolution_note ? <span className="ml-1 text-xs text-slate-500">· {mask(fixParticles(i.resolution_note), isMaskingEnabled)}</span> : null}
-              </span>
-            )}
-            {i.status === 'WAITING_RESPONSE' && arrived(i) && (
-              <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-[11px] font-semibold text-emerald-700">서류 올라옴 → 받았으면 체크</span>
-            )}
-            {i.status === 'WAITING_RESPONSE' && canEdit && !arrived(i) && (
-              i.document_id != null
-                ? <button onClick={() => onOpenItem(i, 'reissue')} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 hover:border-indigo-300"><Upload className="h-3.5 w-3.5" />고친 본 올리기</button>
-                : i.document_type && <button onClick={() => onUploadType(i.document_type!)} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 hover:border-indigo-300"><Upload className="h-3.5 w-3.5" />파일 올리기</button>
-            )}
-          </li>
-        ))}
-      </ul>
-      {canEdit && waitingItems.length > 0 && (
-        <div className="space-y-2 border-t border-slate-100 pt-2">
-          <div className="text-xs text-slate-500">위에서 받은 항목(또는 잘못 요청해 취소할 항목)을 고르고 메모를 남기세요.</div>
-          <div className="flex flex-wrap items-center gap-2">
-            <input value={note} onChange={(e) => setNote(e.target.value)} maxLength={2000} aria-label="받은 내용 또는 취소 이유" placeholder="받은 내용 또는 취소 이유"
-              className="min-w-0 flex-1 rounded-lg border border-slate-300 px-2 py-1 text-sm" />
-            <button onClick={() => void save('RECEIVED')} disabled={busy || locked || got.size === 0 || !note.trim()}
-              className="rounded-lg bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-40">{busy ? '기록 중…' : `받은 ${got.size}건 기록`}</button>
-            <button onClick={() => void save('CANCELLED')} disabled={busy || locked || got.size === 0 || !note.trim()}
-              className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-600 disabled:opacity-40">선택 {got.size}건 요청 취소</button>
-          </div>
-        </div>
-      )}
-      <p className="text-[11px] text-slate-500">받았다고 기록해도 검사 통과는 아니에요. 올린 서류로 다시 검사한 결과를 확인하세요.</p>
-    </div>
-  );
+  return <article className="cp-request-record">
+    <div className="cp-request-header"><div><strong>요청 #{request.request_id}</strong><Badge tone={b.counts.waiting ? 'amber' : b.counts.cancelled === b.counts.total ? 'gray' : 'green'}>{b.counts.waiting ? b.counts.received ? `부분 회신 ${b.counts.received}/${b.counts.total}` : '회신 대기' : b.counts.cancelled === b.counts.total ? '취소' : '처리 완료'}</Badge>{b.counts.cancelled > 0 && <Badge>취소 {b.counts.cancelled}</Badge>}</div><small>{CONTACT_VIA[request.contact_method]} · {request.requested_on}{request.due_on ? ` · 기한 ${request.due_on}${late ? ' 지남' : ''}` : ''}</small></div>
+    <div className="cp-table-scroll"><table className="cp-data-table cp-reply-table"><thead><tr><th>선택</th><th>요청 항목</th><th>회신</th><th>자동 검사</th><th /></tr></thead><tbody>{b.items.map((item) => {
+      const logicalId = currentDocumentFor(item,contract.documents);
+      const doc = logicalId != null ? contract.documents.find((d) => d.document_id === logicalId) : undefined;
+      const checks = doc ? contract.checks.filter((c) => c.field === String(doc.document_id) && !isUnverifiedBusinessStatus(c)) : [];
+      const checkLabel = !doc || !checks.length ? '—' : checks.some((c) => c.status === 'FAIL') ? '불일치' : checks.some((c) => c.status !== 'PASS') ? '확인 필요' : '일치';
+      return <tr key={item.item_id}><td>{item.status === 'WAITING_RESPONSE' && canEdit && <input type="checkbox" aria-label={`${docName(item)} 선택`} checked={got.has(item.item_id)} onChange={() => setGot((s) => { const n=new Set(s);if(n.has(item.item_id))n.delete(item.item_id);else n.add(item.item_id);return n; })}/>}</td><td><strong>{docName(item)}</strong><small className="cp-sub">{mask(fixParticles(item.reason),isMaskingEnabled)}</small>{arrived(item) && item.status === 'WAITING_RESPONSE' && <small className="cp-sub text-emerald-700">서류 도착 · 받은 항목만 체크</small>}{item.resolution_note && <small className="cp-sub">{mask(fixParticles(item.resolution_note),isMaskingEnabled)}</small>}</td><td><Badge tone={item.status === 'RECEIVED' ? 'green' : item.status === 'CANCELLED' ? 'gray' : 'amber'}>{item.status === 'RECEIVED' ? '받음' : item.status === 'CANCELLED' ? '취소' : '대기'}</Badge></td><td><Badge tone={checkLabel === '일치' ? 'green' : checkLabel === '불일치' ? 'red' : 'gray'}>{checkLabel}</Badge></td><td><div className="cp-row-actions">{doc && <button className="cp-text-button" onClick={() => onOpenItem(item,'view')}><Eye size={14}/>원문 대조</button>}{item.status === 'WAITING_RESPONSE' && canEdit && (item.document_id != null && !arrived(item) ? <button className="cp-text-button" onClick={() => onOpenItem(item,'reissue')}><Upload size={14}/>고친 본 올리기</button> : !doc && <button className="cp-text-button" onClick={() => onUploadType(item.document_type ?? undefined)}><Upload size={14}/>파일 올리기</button>)}</div></td></tr>;
+    })}</tbody></table></div>
+    <div className="cp-panel-footer"><span>{b.counts.total}건 요청 · {b.counts.received}건 받음 · {b.counts.waiting}건 기다림{b.counts.cancelled ? ` · ${b.counts.cancelled}건 취소` : ''}</span></div>
+    {canEdit && waitingItems.length > 0 && <div className="cp-reply-actions"><label>받은 내용 또는 취소 이유<input value={note} maxLength={2000} onChange={(e) => setNote(e.target.value)} placeholder="받은 내용 또는 취소 이유"/></label><div><button className="cp-button" disabled={busy || locked || !got.size || !note.trim()} onClick={() => void save('CANCELLED')}>선택 {got.size}건 요청 취소</button><button className="cp-button cp-primary" disabled={busy || locked || !got.size || !note.trim()} onClick={() => void save('RECEIVED')}>{busy ? '기록 중…' : `받은 ${got.size}건 기록`}</button></div></div>}
+  </article>;
 };
