@@ -6,6 +6,8 @@ export interface ReviewTask {
   id:string; field:string; label:string; document?:DocumentResponse; missingType?:DocumentType;
   reason:string; checks:ValidationCheck[]; expected:string|null; value:unknown;
   deferral?:FieldDeferral; kind:'field'|'source'|'missing'|'basis';
+  /** 검사에서 걸린 문제가 아니라, 계약 기준과 같은 값을 상신 전에 원문과 한 번 더 대조하는 항목 */
+  routine?:boolean;
 }
 export type ReviewRequestStates=Record<string,'draft'|'waiting'>;
 export function pendingReviewTasks(tasks:ReviewTask[],context:ReviewContext|null|undefined,requests:ReviewRequestStates){
@@ -65,7 +67,12 @@ export function buildReviewTasks(documents:DocumentResponse[],checks:ValidationC
   }
   for(const blocker of blockers){
     const doc=docs.find(d=>d.document_id===blocker.document_id);
-    if(doc&&blocker.code==='HUMAN_REVIEW_REQUIRED'&&blocker.field&&!context?.documents.find(p=>p.document_id===doc.document_id)?.fields[blocker.field]?.human_confirmation)add(doc,blocker.field,undefined,blocker.reason,true);
+    if(doc&&blocker.code==='HUMAN_REVIEW_REQUIRED'&&blocker.field&&!context?.documents.find(p=>p.document_id===doc.document_id)?.fields[blocker.field]?.human_confirmation){
+      const id=`${doc.document_id}:${blocker.field}`,existing=out.has(id);
+      add(doc,blocker.field,undefined,'원문과 같은지 한 번 더 확인',true);
+      const task=out.get(id);if(task&&!existing)task.routine=true;
+    }
   }
-  return [...out.values()];
+  // 실제 문제(누락·불일치·보류 등)를 먼저, 단순 값 대조는 뒤로 둔다.
+  return [...out.values()].sort((a,b)=>Number(!!a.routine)-Number(!!b.routine));
 }

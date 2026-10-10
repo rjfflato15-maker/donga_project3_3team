@@ -712,3 +712,18 @@ html:has(.cf-app.story-app),body:has(.cf-app.story-app){overflow:clip}
 .submission-flow.single-approval li:before{content:none}
 
 .focus-value .focus-current-basis{font-size:13px;color:#344f75;font-weight:600;padding-top:7px;border-top:1px solid #dbe4ef}
+/* 값 대조: 문제와 분리된 단순 대조 항목을 서류별로 한 번에 처리 */
+.cf-app.story-app .flow-routine-group{margin-top:10px;border-top:1px dashed #d6e0ee;padding-top:8px}
+.cf-app.story-app .flow-routine-head{display:flex;flex-direction:column;gap:2px;padding:6px 14px 8px}
+.cf-app.story-app .flow-routine-head strong{font-size:12px;color:#40597f}.cf-app.story-app .flow-routine-head small{font-size:11px;color:#7d8ea8;line-height:1.5}
+.cf-app.story-app .flow-routine-item strong{color:#4f6688;font-weight:600}
+.cf-app.story-app .flow-group-note{padding:12px 14px;font-size:12px;color:#5d7a68;margin:0}
+.cf-app.story-app .flow-batch{padding:14px 16px;background:#f6f9fd;border-bottom:1px solid #dfe8f5}
+.cf-app.story-app .flow-batch h3{font-size:14px;color:#2f4a73;margin:0 0 4px}
+.cf-app.story-app .flow-batch>p{font-size:12px;color:#5c6f8c;line-height:1.6;margin:0 0 10px}
+.cf-app.story-app .flow-batch ul{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:4px}
+.cf-app.story-app .flow-batch li{display:grid;grid-template-columns:110px 1fr auto;align-items:center;gap:10px;padding:8px 10px;background:#fff;border:1px solid #e1e8f3;border-radius:5px}
+.cf-app.story-app .flow-batch li strong{font-size:14px;color:#22385c;font-variant-numeric:tabular-nums;word-break:break-all}
+.cf-app.story-app .flow-batch li>.text-button:first-child{justify-self:start;font-size:12px}
+.cf-app.story-app .flow-batch-diff{font-size:11px;color:#8a5a12}
+.cf-app.story-app .flow-batch .check-label{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:#33507c;margin:4px 0 10px}

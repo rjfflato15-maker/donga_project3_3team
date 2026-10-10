@@ -80,7 +80,7 @@ it('마지막 미해결 항목에서는 같은 항목을 다시 열지 않고 �
  const image=await screen.findByRole('img');fireEvent.load(image);
  await screen.findByRole('button',{name:'청구 범위 상세 보기'});
  expect(screen.queryByRole('button',{name:'확인 계속하기'})).toBeNull();
- expect(screen.getAllByText('확인 남음 1건').length).toBeGreaterThan(0);
+ expect(screen.getAllByText('문제 1건 · 값 대조 0건').length).toBeGreaterThan(0);
  const listButtons=screen.getAllByRole('button',{name:'서류 목록'});
  fireEvent.click(listButtons[listButtons.length-1]);
  expect(close).toHaveBeenCalledOnce();expect(open).not.toHaveBeenCalled();

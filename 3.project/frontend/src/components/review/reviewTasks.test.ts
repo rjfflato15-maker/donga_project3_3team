@@ -36,3 +36,12 @@ it('회신 대기와 초안에 담긴 미제출만 제외하고 새 미제출과
   expect(pendingReviewTasks(tasks,null,{'missing:bank_account':'waiting'}).map(task=>task.id)).toEqual(['missing:tax_invoice','4:total_amount']);
   expect(pendingReviewTasks(tasks,null,{'missing:bank_account':'draft','missing:tax_invoice':'waiting','4':'draft'}).map(task=>task.id)).toEqual(['4:total_amount']);
 });
+it('상신 전 값 대조는 문제와 구분해 뒤로 보내고, 같은 칸의 실제 문제는 문제로 남긴다',()=>{
+  const blockers=[
+    {code:'HUMAN_REVIEW_REQUIRED',reason:'대조 필요',document_id:4,field:'company_name'},
+    {code:'HUMAN_REVIEW_REQUIRED',reason:'대조 필요',document_id:4,field:'total_amount'},
+  ] as never;
+  const tasks=buildReviewTasks([{...doc,analysis:{fields:{...doc.analysis.fields,company_name:'가상'},warnings:[]}} as DocumentResponse],
+    [{field:'4',rule_id:'AMOUNT_COMPONENTS',status:'FAIL',message:'계산 불일치'}],null,blockers);
+  expect(tasks.map(t=>[t.field,!!t.routine])).toEqual([['total_amount',false],['company_name',true]]);
+});

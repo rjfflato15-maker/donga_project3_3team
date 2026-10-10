@@ -234,6 +234,42 @@ def confirm_field(document_id: int, req: FieldConfirmation, db: Session = Depend
         return {'field': req.field, 'revision': policy_for(db, doc.contract_id)['revision'], 'confirmed_at': proof['at']}
 
 
+class FieldsConfirmation(BaseModel):
+    fields: List[str] = Field(min_length=1, max_length=20)
+    revision: int = Field(ge=1)
+
+
+@router.post('/api/documents/{document_id}/confirm-fields')
+def confirm_fields(document_id: int, req: FieldsConfirmation, db: Session = Depends(get_db),
+                   actor: Actor = Depends(require_operator)):
+    """One explicit press attests to exactly the listed values the person saw beside the original."""
+    from ..services.field_confirmation_service import current_confirmations
+    from ..services.submission_service import FIELD_LABELS
+    with STORAGE_LOCK:
+        doc = db.get(Document, document_id)
+        if not doc or not doc.extract:
+            raise HTTPException(404, '추출 결과를 찾을 수 없습니다.')
+        require_current(doc)
+        if req.revision != policy_for(db, doc.contract_id)['revision']:
+            raise HTTPException(409, '자료가 변경되었습니다. 현재 원문을 다시 확인하세요.')
+        if len(set(req.fields)) != len(req.fields):
+            raise HTTPException(422, '같은 항목이 중복되었습니다.')
+        stored = json.loads(doc.extract.raw_fields or '{}')
+        values = AnalysisFields(**stored).model_dump()
+        done = current_confirmations(db, document_id, stored)
+        for field in req.fields:
+            if field not in values or values[field] in (None, '', 'UNKNOWN'):
+                raise HTTPException(422, '읽은 값이 있는 항목만 원문 확인할 수 있습니다.')
+            if field in done:
+                raise HTTPException(409, '이미 원문 확인한 항목이 있습니다. 최신 기록을 불러오세요.')
+        if not resolve_path(doc.storage_path):
+            raise HTTPException(409, '원본 파일이 없어 원문 확인할 수 없습니다.')
+        names = ', '.join(FIELD_LABELS.get(field, field) for field in req.fields)
+        apply_correction(document_id, Correction(fields=AnalysisFields(), document_type=doc.document_type,
+            revision=req.revision, note=f'원문과 같은 값 확인: {names}', confirmed_fields=list(req.fields)), db, actor)
+        return {'fields': req.fields, 'revision': policy_for(db, doc.contract_id)['revision']}
+
+
 @router.post('/api/documents/{document_id}/undo-field-confirmation')
 def undo_field_confirmation(document_id: int, req: UndoFieldConfirmation, db: Session = Depends(get_db),
                             actor: Actor = Depends(require_operator)):

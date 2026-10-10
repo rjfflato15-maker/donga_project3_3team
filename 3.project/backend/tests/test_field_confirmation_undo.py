@@ -113,3 +113,19 @@ def test_confirmation_requires_operator_and_current_source(operator_client, sepa
         doc.storage_path = 'missing-test-source.txt'
         db.commit()
     assert confirm(operator_client, did, revision).status_code == 409
+
+
+def test_batch_confirmation_records_only_listed_fields_once(operator_client):
+    cid, did, revision = setup_doc(operator_client)
+    url = f'/api/documents/{did}/confirm-fields'
+    assert operator_client.post(url, json={'revision': revision - 1, 'fields': ['total_amount']}).status_code == 409
+    assert operator_client.post(url, json={'revision': revision, 'fields': ['total_amount', 'total_amount']}).status_code == 422
+    assert operator_client.post(url, json={'revision': revision, 'fields': []}).status_code == 422
+    saved = operator_client.post(url, json={'revision': revision, 'fields': ['supply_amount', 'total_amount']})
+    assert saved.status_code == 200, saved.text
+    assert saved.json()['revision'] == revision + 1
+    fields = operator_client.get(f'/api/documents/{did}/provenance').json()['fields']
+    assert fields['supply_amount']['human_confirmation'] and fields['total_amount']['human_confirmation']
+    assert fields['tax_amount']['human_confirmation'] is None
+    again = operator_client.post(url, json={'revision': revision + 1, 'fields': ['total_amount']})
+    assert again.status_code == 409
