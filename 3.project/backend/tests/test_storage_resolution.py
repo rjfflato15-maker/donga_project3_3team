@@ -60,7 +60,8 @@ def test_missing_txt_original_invalidates_approval_and_cannot_download_masked_co
     response = operator_client.post(f'/api/contracts/{cid}/documents', files=text_files()[:1])
     assert response.status_code == 200, response.text
     did = response.json()[0]['document_id']
-    detail = operator_client.get(f'/api/contracts/{cid}').json()
+    from submission_helpers import submit_ready
+    detail = submit_ready(operator_client, cid)
     review = {'decision': 'CONFIRMED', 'note': '원문 확인 및 국세청 미조회 범위를 확인한 저장소 회귀 테스트',
               'revision': detail['workflow']['revision'], 'fingerprint': detail['workflow']['fingerprint'],
               'acknowledge_unverified': True}
@@ -86,5 +87,5 @@ def test_missing_txt_original_invalidates_approval_and_cannot_download_masked_co
         response = operator_client.get(f'/api/documents/{did}/{endpoint}', params={'masked': False})
         assert response.status_code == 404, (endpoint, response.text)
     assert representative.post(f'/api/contracts/{cid}/reviews', json=review).status_code == 409
-    review.update(revision=missing['workflow']['revision'], fingerprint=missing['workflow']['fingerprint'])
+    review.update(revision=missing['workflow']['revision'], fingerprint=missing['workflow']['fingerprint'],review_cycle=missing['workflow']['reviews'][0]['review_id'])
     assert representative.post(f'/api/contracts/{cid}/reviews', json=review).status_code == 400

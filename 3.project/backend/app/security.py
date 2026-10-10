@@ -88,7 +88,7 @@ def get_current_user(request: Request, db: Session = Depends(get_db)) -> Actor:
     return actor
 
 
-def authorize_company_request(request: Request, actor: Actor = Depends(get_current_user)):
+def authorize_company_request(request: Request, actor: Actor = Depends(get_current_user), db: Session = Depends(get_db)):
     if actor.must_change_password:
         raise HTTPException(403, "먼저 초기 비밀번호를 변경하세요.")
     if actor.role not in {"operator", "representative", "admin"}:
@@ -98,6 +98,16 @@ def authorize_company_request(request: Request, actor: Actor = Depends(get_curre
         allowed = path.endswith("/reviews") or path.endswith("/validate") or path.endswith("/simulate") or path.startswith("/api/pilot/")
         if not allowed:
             raise HTTPException(403, "대표 계정은 자료를 조회하고 최종 확인합니다. 자료 등록·수정은 담당자에게 요청하세요.")
+    from .db.models import ContractExclusion, Document
+    path = request.url.path
+    match = re.match(r'/api/(?:pilot/)?contracts/(\d+)(?:/|$)', path)
+    cid = int(match[1]) if match else None
+    document_match = re.match(r'/api/documents/(\d+)(?:/|$)', path)
+    if document_match:
+        document = db.get(Document, int(document_match[1]))
+        cid = document.contract_id if document else None
+    if cid and db.get(ContractExclusion, cid) and not path.endswith('/restore'):
+        raise HTTPException(404, '제외한 계약입니다. 계약 찾기에서 복원하세요.')
     return actor
 
 

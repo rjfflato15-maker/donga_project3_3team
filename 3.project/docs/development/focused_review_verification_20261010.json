@@ -1,0 +1,205 @@
+{
+  "checked_on": "2026-10-10",
+  "git_head": "54a88413c3f694f2da181436eefa323006243b67",
+  "basis": "current working tree; previous changes retained; frontend-only follow-up; no commit made",
+  "authorization_policy": "Operator preparation/review/request is mandatory; representative alone is the official approver under one-stage policy. Existing configured two-stage policy records operator first and representative second. Representative preparation bypass was not added.",
+  "frontend": {
+    "files": 39,
+    "passed": 187,
+    "failed": 0,
+    "typecheck": "passed",
+    "vite_build": "passed",
+    "js_asset": "index-BtMzKG0Z.js",
+    "css_asset": "index-aqGy6Gcq.css",
+    "existing_warning": "JS chunk over 500 kB"
+  },
+  "backend": {
+    "changes": 0,
+    "targeted_existing_tests": 46,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 31.979,
+    "cases": [
+      "submission flow",
+      "field deferrals",
+      "request bundles"
+    ],
+    "prior_full_suite": {
+      "passed": 944,
+      "date": "2026-10-10 earlier 14:50 delivery",
+      "rerun_in_this_followup": false
+    }
+  },
+  "browser": {
+    "engine": "actual Chrome headless, isolated context",
+    "server": "localhost:8189",
+    "database": "new disposable synthetic database",
+    "real_api": true,
+    "llm_inference": false,
+    "nts_external_query": false,
+    "viewports": [
+      [
+        1440,
+        1000
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "assertions_passed": 24,
+    "assertions": [
+      {
+        "name": "이전·다음은 확인을 저장하지 않음",
+        "passed": true
+      },
+      {
+        "name": "나갔다가 이어가기에서 위치 복귀",
+        "passed": true
+      },
+      {
+        "name": "새로고침 후 서버 미완료 유지",
+        "passed": true
+      },
+      {
+        "name": "담당자 준비 상신은 대표1단계 공식결재를 만들지 않음",
+        "passed": true
+      },
+      {
+        "name": "대표만 최종 승인 입력 제공",
+        "passed": true
+      },
+      {
+        "name": "대표 최종 승인 저장",
+        "passed": true
+      },
+      {
+        "name": "오독 정정은 읽은 값과 확인만 변경",
+        "passed": true
+      },
+      {
+        "name": "완료 항목 재진입·수정은 최신 서버 revision 사용",
+        "passed": true
+      },
+      {
+        "name": "계약 기준 수정은 문서 추출값을 바꾸지 않음",
+        "passed": true
+      },
+      {
+        "name": "보류는 서버에 유지되며 결재 진행을 막음",
+        "passed": true
+      },
+      {
+        "name": "보류 재진입·해제",
+        "passed": true
+      },
+      {
+        "name": "모바일 가로 넘침 없음",
+        "passed": true
+      },
+      {
+        "name": "부분 회신은 나머지 회신 대기를 유지",
+        "passed": true
+      },
+      {
+        "name": "받은 서류에서 확인 재개 가능",
+        "passed": true
+      },
+      {
+        "name": "전체 회신 후에도 원문 확인은 자동 완료되지 않음",
+        "passed": true
+      },
+      {
+        "name": "회신 후 재확인·결재 요청 저장",
+        "passed": true
+      },
+      {
+        "name": "판독 실패는 상신 입력 자체를 제공하지 않음",
+        "passed": true
+      },
+      {
+        "name": "설정2단계에서만 담당 상신이 공식1차 결재를 기록",
+        "passed": true
+      },
+      {
+        "name": "2단계 대표 최종 결재 완료",
+        "passed": true
+      },
+      {
+        "name": "문제없음 판단은 자동 불일치를 PASS로 바꾸지 않음",
+        "passed": true
+      },
+      {
+        "name": "문제없음 근거는 서버에서 재조회해 표시",
+        "passed": true
+      },
+      {
+        "name": "변경 전 대표 승인 완료",
+        "passed": true
+      },
+      {
+        "name": "현재 수정본은 과거 승인과 브라우저 위치보다 우선",
+        "passed": true
+      },
+      {
+        "name": "이전 본에는 판단 저장 버튼을 제공하지 않음",
+        "passed": true
+      }
+    ],
+    "page_errors": 0,
+    "unexpected_console_errors": 0,
+    "known_console_errors": "401 session checks at sign-in/sign-out",
+    "harness_retry": "Nested details selector was narrowed; readonly tail repeated successfully after other application assertions passed."
+  },
+  "independent_screen_review": {
+    "reviewer": "separate AI agent with screenshot-only context",
+    "initial_findings": 4,
+    "fixed_and_rechecked": 4,
+    "remaining_must_fix": 0,
+    "findings": [
+      "single-stage numbering confused preparation with official approval",
+      "focused footer label suggested an implicit save",
+      "registered contract baseline was hidden",
+      "deferred item state and resume action were unclear"
+    ],
+    "human_novice_usability_test": false
+  },
+  "screenshots": {
+    "new_current_build": 20,
+    "prior_delivery_screenshots_reused": 0,
+    "contents": "synthetic examples only"
+  },
+  "limitations": [
+    "No human novice usability or task-time study",
+    "No new real-document OCR/LLM/VLM accuracy measurement",
+    "No external NTS query or external message delivery",
+    "No load or concurrent-user test",
+    "No new installer/EXE or clean-PC installation test",
+    "ZIP excludes three research tests that depend on raw evaluation data; prior full-suite count is not a ZIP test guarantee"
+  ],
+  "source_sha256": {
+    "frontend/src/components/review-workspace.css": "5cd1791a9bb8d5327aecdf27a77e5f0d42159d635fb72af9cf11975a2e84eebb",
+    "frontend/src/components/review/ApprovalPanel.tsx": "b6a19fdfecf7ed7f5a822a6ccd12c6465310267de92d96b7992246b8d93748ae",
+    "frontend/src/components/review/BundleRequest.tsx": "930451fcca1572c06aed9bae44e7452d7f373a32bfc3fe45ac5c87876f74255c",
+    "frontend/src/components/review/CompanyPolicySection.tsx": "6e9045aeec7008653b60f5f5a7f9613c43617373a5b0a36583d68a696c1f401d",
+    "frontend/src/components/review/ContractStageView.tsx": "0f08d5383dc0ea3b9e0817eb35c316a94c0417fe94ee7c4795cb6ccc99d3f433",
+    "frontend/src/components/review/DocumentWorkspace.tsx": "68e9ac218c10c1c379ba4e134f2b07e48919b99822e6807097a20841bfff7829",
+    "frontend/src/components/review/requestPage.component.test.tsx": "a147a27937ff2e411c24390b8b54e63c932f6aace110a2687ada1199e1096daa",
+    "frontend/src/components/review/ReviewOverviewPanel.tsx": "af20716a915e23acb7b25ac6f7311455b4e65c6d0820caaaecb1ae39ec0a73a2",
+    "frontend/src/components/review/submissionPanel.component.test.tsx": "8472c38b678fd750a973dd8a5147e7c12be0c6c12ab3ca3492f4f94c35e0ff91",
+    "frontend/src/components/review/SubmissionPanel.tsx": "6f04148df559a08da24a36fa83fe4e213229bed66eae4791cfd60d87e0875257",
+    "frontend/src/components/review/FocusedItemActions.tsx": "3684e9c030140ac80d13fb1a6140487a106fe4d502e3fc1b12d3af5828338e16",
+    "frontend/src/components/review/focusedReview.component.test.tsx": "79a5214ae84c7dc82db0f3f5735789e1a833664993e2758436e60328abdb0127",
+    "frontend/src/components/review/focusNavigation.test.ts": "c911d62b9560888008c8da103977a0cc7a50635ba53cefd473b7350d1dd93fc7",
+    "frontend/src/components/review/focusNavigation.ts": "40b78d2063cd7e5c13a8f53c0a68fb4cf72f2e4a9bdb32da9ccb0efd637be4da"
+  },
+  "data_scope": "Synthetic QA DB only. No customer review, approval, payment, upload, deletion or migration executed in this follow-up.",
+  "packaging_followup": {
+    "changes": [
+      "Generated root README/.gitignore are marked generated, without incorrect app-source attribution",
+      "Verified dependency snapshot rewrite is recorded in changes_in_copy"
+    ],
+    "app_behavior_changed": false
+  }
+}

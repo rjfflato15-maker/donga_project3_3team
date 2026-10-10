@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Assignment, assignmentApi, ASSIGNMENT_STATUS_KO } from './AssignmentPanel';
+import { assignmentApi } from '../../features/assignments/api';
+import { Assignment, ASSIGNMENT_STATUS_KO } from '../../features/assignments/model';
 import { useAuth } from '../../context/AuthContext';
 
 interface Props {

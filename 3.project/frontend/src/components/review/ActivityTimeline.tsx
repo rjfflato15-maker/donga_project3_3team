@@ -59,6 +59,12 @@ export function summarize(item: ActivityItem): string[] {
   const note = typeof d.note === 'string' && d.note ? fixParticles(d.note) : '';
   const lines: string[] = [];
   switch (item.type) {
+    case 'VLM_REREAD_COMPLETED':
+      lines.push(`현재 ${d.page}쪽의 후보값 생성 · 자동 저장 없음`);
+      break;
+    case 'SETTLEMENT_EXPORT_REQUEST':
+      lines.push(d.masked ? '개인정보 가림본' : '실제값 포함');
+      break;
     case 'EXTRACT_CORRECTED':
       lines.push(...fieldChanges(d.before, d.after));
       if (Array.isArray(d.confirmed_fields) && d.confirmed_fields.length) lines.push(`원문과 맞음 확인: ${(d.confirmed_fields as string[]).map((k) => FIELD_KO[k] ?? k).join(', ')}`);
@@ -149,6 +155,7 @@ export const ActivityTimeline: React.FC<Props> = ({ contractId, revision, finger
 
   return <Surface title={compact?undefined:title}>
     {error&&<p className="story-alert" role="alert">처리 기록 조회 실패: {error}</p>}
+    {loading&&<p role="status">처리 기록을 불러오는 중…</p>}
     {!error&&!loading&&!items.length&&<div className="empty">기록된 처리가 없습니다.</div>}
     <div className="history">{items.filter(i=>!(compact&&i.type==='RULE_VALIDATION')).map(i=><article key={i.event_id}><History size={17}/><div><div><strong>{i.title}</strong><small>{kst(i.occurred_at)}{i.actor_name?` · ${i.actor_name}`:''}</small></div>{(i.details_available?summarize(i):['상세 기록을 읽을 수 없습니다.']).map((line,key)=><p key={key}>{line}</p>)}</div></article>)}</div>
     {next!=null&&<div className="panel-footer"><button className="text-button" disabled={loading} onClick={()=>void load(next)}>이전 기록 더 보기</button></div>}

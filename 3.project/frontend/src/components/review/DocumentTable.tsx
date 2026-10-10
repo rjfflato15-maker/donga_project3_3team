@@ -6,27 +6,34 @@ import { requestJson } from '../../api/client';
 import { isUnverifiedBusinessStatus } from '../../utils/reviewSummary';
 import { fieldsForDocument } from '../../utils/documentFields';
 import { Surface, Badge } from '../ui/Surface';
+import {ReviewTask} from './reviewTasks';
 type ConfirmationFields = Record<string, { value: unknown; human_confirmation?: unknown }>;
 export function confirmationCount(fields: ConfirmationFields) {
   const values = Object.values(fields).filter((f) => f.value != null && f.value !== '' && f.value !== 'UNKNOWN');
   return { total: values.length, confirmed: values.filter((f) => f.human_confirmation).length };
 }
-export const DocumentTable: React.FC<{ contract: ContractDetail; canEdit: boolean; onOpen: (d:DocumentResponse) => void; onUpload:(type?:DocumentType) => void }> = ({ contract, canEdit, onOpen, onUpload }) => {
+export const DocumentTable: React.FC<{ contract: ContractDetail; canEdit: boolean; onOpen: (d:DocumentResponse) => void; onUpload:(type?:DocumentType) => void; tasks?:ReviewTask[];tasksReady?:boolean;queuedDocumentIds?:Set<number>;waitingDocumentIds?:Set<number>;waitingMissingTypes?:Set<DocumentType>;queuedMissingTypes?:Set<DocumentType>;onMissing?:(type:DocumentType)=>void }> = ({ contract, canEdit, onOpen, onUpload,tasks,tasksReady=true,queuedDocumentIds,waitingDocumentIds,waitingMissingTypes,queuedMissingTypes,onMissing }) => {
   const [confirmation, setConfirmation] = useState<Record<number, ReturnType<typeof confirmationCount>>>({});
   const [failures, setFailures] = useState<Set<number>>(new Set());
   useEffect(() => {
+    if(tasks)return;
     const abort = new AbortController(); setConfirmation({});setFailures(new Set());
     void Promise.allSettled(contract.documents.map(async (doc) => {
       try {
-      const p = await requestJson<{ fields: ConfirmationFields }>(`/api/documents/${doc.document_id}/provenance`, { signal: abort.signal });
+      const p = await requestJson<{ fields: ConfirmationFields }>(`/api/documents/${doc.document_id}/provenance?include_evidence=false`, { signal: abort.signal });
       if (!abort.signal.aborted) setConfirmation((old) => ({ ...old, [doc.document_id]: confirmationCount(Object.fromEntries(fieldsForDocument(doc.document_type).filter((f) => p.fields[f.key]).map((f) => [f.key,p.fields[f.key]]))) }));
       } catch { if (!abort.signal.aborted) setFailures((old) => new Set(old).add(doc.document_id)); }
     }));
     return () => abort.abort();
-  }, [contract.contract_id, contract.workflow?.revision]);
+  }, [contract.contract_id, contract.workflow?.revision,!!tasks]);
   const docs = contract.documents.filter((d) => d.version?.is_current !== false);
   const visibleDocs = [...docs].sort((a,b)=>contract.required_document_types.indexOf(a.document_type)-contract.required_document_types.indexOf(b.document_type));
   const missing = contract.required_document_types.filter((t) => !docs.some((d) => d.document_type === t));
+  if(tasks)return <Surface title="서류 목록" sub={`필요 ${contract.required_document_types.length}종 · 받은 ${contract.required_document_types.length-missing.length}종`} className="flow-documents-card"><div className="flow-document-list">{[...contract.required_document_types.flatMap<{doc:DocumentResponse|null;type:DocumentType}>(type=>{const same=visibleDocs.filter(d=>d.document_type===type);return same.length?same.map(doc=>({doc,type})):[{doc:null,type}];}),...visibleDocs.filter(d=>!contract.required_document_types.includes(d.document_type)).map(doc=>({doc,type:doc.document_type}))].map(({doc,type},index)=>{
+    const waitingMissing=!doc&&waitingMissingTypes?.has(type),queuedMissing=!doc&&queuedMissingTypes?.has(type);
+    const count=tasks.filter(task=>doc?task.document?.document_id===doc.document_id:task.missingType===type).length;
+    return <button key={doc?.document_id??`missing-${type}-${index}`} className="flow-document-row" disabled={!doc&&!canEdit} onClick={()=>doc?onOpen(doc):onMissing?onMissing(type):onUpload(type)}><FileText size={17}/><strong>{DOCUMENT_TYPE_KO[type]}</strong><small>{doc?`${doc.version?.version_number??1}차본`:'미제출'}</small><span className={waitingMissing||queuedMissing?'flow-wait':count?'flow-warn':queuedDocumentIds?.has(doc?.document_id??-1)||waitingDocumentIds?.has(doc?.document_id??-1)?'flow-wait':'flow-ok'}>{waitingMissing?'회신 대기':queuedMissing?'요청에 담음':!doc?'미제출':count?`확인 ${count}개`:queuedDocumentIds?.has(doc.document_id)?'요청에 담음':waitingDocumentIds?.has(doc.document_id)?'회신 대기':tasksReady?'추가 확인 없음':'조회 중'}</span><ArrowUpRight size={14}/></button>;
+  })}</div></Surface>;
   return <Surface title="서류 목록" sub={`필요 ${contract.required_document_types.length}종 · 받은 ${contract.required_document_types.length - missing.length}종`} action={canEdit && <button className="button" onClick={() => onUpload()}><Plus size={15} />서류 추가</button>}>
     <div className="table-wrap"><table className="documents"><thead><tr><th>서류</th><th>현재 본</th><th>검사</th><th>원문 확인</th><th /></tr></thead><tbody>
       {[...contract.required_document_types.flatMap<{doc:DocumentResponse|null;type:DocumentType}>(type=>{const same=visibleDocs.filter(d=>d.document_type===type);return same.length?same.map(d=>({doc:d,type})): [{doc:null,type}];}),...visibleDocs.filter(d=>!contract.required_document_types.includes(d.document_type)).map(doc=>({doc,type:doc.document_type}))].map(({doc:d,type},index)=>{

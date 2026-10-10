@@ -5,11 +5,16 @@ from datetime import datetime, timedelta
 from uuid import uuid4
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
-from ..db.models import DocumentUploadJob, Contract, Document, UserProfile
+from ..db.models import DocumentUploadJob, Contract, ContractExclusion, Document, UserProfile
 from ..security import Actor
 from .storage_service import STORAGE_LOCK, store_original, resolve_path, clean_name
 from .workflow_service import policy_for
 from .pipeline_service import PipelineService
+
+
+def require_visible_contract(db, contract_id):
+    if not db.get(Contract, contract_id) or db.get(ContractExclusion, contract_id):
+        raise HTTPException(404, '계약을 찾을 수 없습니다. 제외한 계약은 먼저 복원하세요.')
 
 
 def response(row,db):
@@ -28,6 +33,7 @@ def enqueue(db,cid,name,content,key,payload,actor):
     requested={'file_name':filename,'source_sha256':digest,**payload}
     receipt=hashlib.sha256(json.dumps(requested,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
     with STORAGE_LOCK:
+        require_visible_contract(db,cid)
         existing=db.query(DocumentUploadJob).filter_by(contract_id=cid,idempotency_key=key).first()
         if existing:
             if existing.request_sha256!=receipt or existing.actor_id!=actor.user_id:
@@ -38,6 +44,8 @@ def enqueue(db,cid,name,content,key,payload,actor):
     db.rollback()
     source_key,_,sha=store_original(cid,filename,content)
     with STORAGE_LOCK:
+        db.expire_all()
+        require_visible_contract(db,cid)
         row=DocumentUploadJob(job_id=str(uuid4()),contract_id=cid,idempotency_key=key,request_sha256=receipt,
                               source_path=source_key,source_sha256=sha,file_name=filename,actor_id=actor.user_id,
                               payload_json=json.dumps(payload,ensure_ascii=False))
@@ -53,6 +61,7 @@ def enqueue(db,cid,name,content,key,payload,actor):
 
 
 def retry(db,row,job_revision,contract_revision,actor):
+    require_visible_contract(db,row.contract_id)
     if row.actor_id!=actor.user_id:raise HTTPException(403,'처음 등록을 요청한 담당자가 재시도할 수 있습니다.')
     if row.job_revision!=job_revision:raise HTTPException(409,'작업 상태가 변경되었습니다. 다시 불러오세요.')
     if row.status=='COMPLETED':raise HTTPException(409,'이미 완료한 작업입니다. 결과 문서를 확인하세요.')
@@ -88,6 +97,7 @@ def run_upload_job(job_id):
             args=json.loads(row.payload_json)
             cid,name,source,sha,uid,did=row.contract_id,row.file_name,row.source_path,row.source_sha256,row.actor_id,row.document_id
         try:
+            require_visible_contract(db,cid)
             profile=db.get(UserProfile,uid)
             if not profile or not profile.active or profile.must_change_password or profile.role not in {'operator','admin'}:
                 raise HTTPException(403,'자료 등록 권한이 변경되었습니다.')
@@ -108,6 +118,7 @@ def run_upload_job(job_id):
                 pipeline.revalidate_contract(db,cid)
             with STORAGE_LOCK:
                 db.expire_all();row=db.get(DocumentUploadJob,job_id)
+                require_visible_contract(db,cid)
                 if row and row.lease_token==token:
                     row.status='COMPLETED';row.stage='COMPLETED';row.job_revision+=1
                     row.error_code=None;row.error_message=None;row.lease_token=None;row.lease_expires_at=None;row.updated_at=datetime.utcnow()

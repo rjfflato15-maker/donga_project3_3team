@@ -14,8 +14,8 @@ interface Policy {
 }
 
 const TYPE_INFO: Record<CompanyType, { title: string; who: string; flow: string }> = {
-  SOLE_PROPRIETOR: { title: '개인사업자', who: '혼자 또는 소수가 직접 처리', flow: '사업주가 확인하면 끝' },
-  SMALL_BUSINESS: { title: '소기업', who: '담당자 1명 + 대표 (시범 C업체)', flow: '담당자 검수 → 대표 최종 확인' },
+  SOLE_PROPRIETOR: { title: '개인사업자', who: '소수 인원이 자료 준비와 확인', flow: '담당자 준비·결재 요청 → 대표 공식 결재 1단계' },
+  SMALL_BUSINESS: { title: '소기업', who: '담당자 1명 + 대표 (시범 C업체)', flow: '담당자 준비·결재 요청 → 대표 공식 결재 1단계' },
   MID_SIZED: { title: '중기업·중견', who: '담당자 여러 명, 결재 단계가 있음', flow: '담당자 검토 → 대표 최종 결재 (2단계)' },
 };
 

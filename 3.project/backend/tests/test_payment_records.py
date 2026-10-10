@@ -30,13 +30,17 @@ def approved_contract(operator_client, separate_client, *, payment_mode='FULL'):
 
 
 def approve(operator_client, representative, cid, body):
+    from submission_helpers import complete_source_review
+    current = complete_source_review(operator_client, cid)
+    body.update(revision=current['workflow']['revision'], fingerprint=current['workflow']['fingerprint'], review_cycle=current['workflow']['reviews'][0]['review_id'] if current['workflow']['reviews'] else 0)
     assert operator_client.post(f'/api/pilot/contracts/{cid}/approvals', json={**body, 'step': 1}).status_code == 200
     final = representative.post(f'/api/contracts/{cid}/reviews', json=body)
     assert final.status_code == 200, final.text
 
 
 def payment_body(current_revision, **extra):
-    return {'paid_on': '2026-01-02', 'method': 'TRANSFER', 'note': '가상 계약의 전체 지급 완료 기록', 'revision': current_revision, **extra}
+    return {'paid_on': '2026-01-02', 'method': 'TRANSFER', 'note': '가상 계약의 전체 지급 완료 기록',
+            'revision': current_revision, 'idempotency_key': 'test-payment-request', 'payment_revision': 0, **extra}
 
 
 @pytest.mark.parametrize('role', ['operator', 'representative'])
@@ -76,7 +80,8 @@ def test_payment_requires_current_final_review_and_latest_revision(operator_clie
     assert operator_client.post(path, json=payment_body(review['revision'])).status_code == 409
     assert representative.post(f'/api/contracts/{cid}/reviews', json=review).status_code == 200
     assert operator_client.post(path, json=payment_body(review['revision'] + 1)).status_code == 409
-    assert representative.post(f'/api/contracts/{cid}/reviews', json={**review, 'decision': 'RETURNED'}).status_code == 200
+    latest = operator_client.get(f'/api/contracts/{cid}').json()
+    assert representative.post(f'/api/contracts/{cid}/reviews', json={**review, 'review_cycle':latest['workflow']['reviews'][0]['review_id'], 'decision': 'RETURNED'}).status_code == 200
     assert operator_client.post(path, json=payment_body(review['revision'])).status_code == 409
 
 
@@ -146,6 +151,7 @@ def test_reissue_preserves_history_reopens_work_then_reconfirms_same_payment(ope
     assert operator_client.post(endpoint, json={**body, 'acknowledge_same_payment': 1}).status_code == 422
     assert operator_client.post(endpoint, json={**body, 'note': '짧음'}).status_code == 422
     assert operator_client.post(endpoint, json={**body, 'revision': body['revision']-1}).status_code == 409
+    body['revision'] = review['revision']
     assert operator_client.post(f'{path}/9999/reconfirm', json=body).status_code == 404
     confirmed = operator_client.post(endpoint, json=body)
     assert confirmed.status_code == 200 and confirmed.json()['paid_on'] == original['paid_on']
@@ -157,7 +163,7 @@ def test_reissue_preserves_history_reopens_work_then_reconfirms_same_payment(ope
         assert db.query(AuditEvent).filter_by(action='PAYMENT_RECONFIRMED').count() == 1
     assert operator_client.delete(f'/api/contracts/{cid}').status_code == 204
     with db_factory() as db:
-        assert db.query(ContractPayment).count() == db.query(PaymentConfirmation).count() == 0
+        assert db.query(ContractPayment).count() == 1 and db.query(PaymentConfirmation).count() == 2
 
 
 def test_changed_total_cannot_reuse_whole_payment_fact(operator_client, separate_client):

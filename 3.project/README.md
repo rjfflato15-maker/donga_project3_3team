@@ -1,18 +1,40 @@
-# 계약 증빙 자동검수
+# C-Pilot 계약 증빙 검수
 
-계약 대금 지급 전에 증빙서류의 누락과 불일치를 확인하는 C업체 시범 앱이다.
+> 상태: 현재 기준
+> 확인일: 2026-10-09
+> 기준: 2026-10-09 구조 정리 소스 사본. 현재 소스와 과거 설치·평가 기록의 검증 범위를 구분한다.
 
-**평소에는 C-Pilot.exe만 실행한다.** Git 소스를 처음 받았다면 **start_pilot.bat**으로 EXE를 만든다. 새 PC는 Python 3.12·Node.js를 준비하고 관리 메뉴 **3 환경 준비 → 4 업무함 준비 → 1 실행** 순서로 진행한다. 실행 창에서 **M**을 입력하면 설정·백업·복원 메뉴가 열린다.
+관련 소스: [main.py](backend/app/main.py) · [package.json](package.json)
 
-EXE는 앱 폴더와 준비된 Python 환경이 필요한 실행 입구다. EXE만 다른 PC로 옮겨 사용하는 단독 설치형 배포는 아직 아니다. 기본은 현재 PC 접속·외부 조회와 LLM 비활성이다.
+공식 주제: **콘텐츠 자동 분류·색인 시스템** · **3조** · 팀장 **이우현**
 
-| 찾는 내용 | 시작 문서 |
+계약 대금 지급 전에 서류 누락·불일치와 원문을 확인하고 보완 요청·결재·지급 사실을 기록하는 로컬 시범 앱이다. 기본 필수 서류는 계약서·견적서·사업자등록증·통장사본·세금계산서·검수확인서이며 회사 설정에서 관리한다.
+
+| 목적 | 시작 |
 | --- | --- |
-| 설치·설정·계정·백업 | [운영 문서 목록](docs/operations/run_guide.md) |
-| 무엇이 완료됐고 남았는지 | [진행 요약](docs/progress/development_report.md) |
-| 어느 소스를 수정할지 | [소스 역할 표](docs/architecture/module_map.md) |
-| 수정 후 확인·업데이트 절차 | [개발자 작업 안내](docs/development/maintenance.md) |
-| LLM 설정·성능 평가 | [LLM·평가 문서 목록](docs/eval/local_llm_runbook.md) |
-| 나머지 설계·참고 문서 | [전체 문서 목록](docs/README.md) |
+| 개발 환경 실행 | [개발 환경과 실행 명령](docs/development/getting_started.md) |
+| 화면·기능별 수정 위치 | [소스 책임 지도](docs/architecture/module_map.md) |
+| 기능 수정·검증 | [유지보수 작업표](docs/development/maintenance_cheat_sheet.md) |
+| 사용자 실행·계정·백업 | [운영 안내](docs/operations/run_guide.md) |
+| 구현 상태·제한·남은 작업 | [현재 상태](docs/progress/current_status.md) |
+| 제출·발표 작성 | [설명 문서 구성](docs/submission/explanation_outline.md) |
+| 제출용 소스 ZIP | [포함·제외·검증 기준](docs/submission/source_package.md) |
 
-고객 업무 자료·계정 안내·설정·백업은 Git에 올리지 않는다. 개발자는 기존 tools/dev/start_dev.bat 또는 npm run dev를 사용한다. 화면 변경은 계획과 이미지 시안을 승인받은 뒤 적용한다.
+소스 실행에는 앱 폴더와 개발 환경이 필요하다. `start_pilot.bat`으로 실행기를 만들며 개발용 실행기 EXE만 다른 PC에 복사하는 방식은 지원하지 않는다. 이전 제출본의 고객용 Setup 빌드와 동일 PC 격리 설치·업데이트·제거 시험은 기록돼 있다. 이번 배포는 소스 전용이며 설치 EXE 재빌드는 범위에 포함하지 않는다. 향후 설치형으로 배포할 때는 변경된 소스로 Setup을 다시 빌드하고 확인해야 한다. 새 PC 설치·실제 AI 모델 준비·설치 마법사 화면·제품 서명 검증은 별도 확인 대상이다.
+
+준비한 PC에서는 `C-Pilot.exe`를 더블클릭하면 CMD 창 없이 브라우저가 열린다. 관리 메뉴는 필요한 때만 별도로 호출한다. 최초 설치·빈 업무함 생성·종료 방법은 [운영 안내](docs/operations/run_guide.md)를 따른다. 실제 환경 파일 대신 [설정 예시](backend/.env.example)를 제공하며 로컬 pilot 실행에는 외부 DB 계정이나 API Key가 필요 없다.
+
+텍스트 보완은 Qwen3, 이미지 재판독은 별도 Qwen2.5-VL 모델을 사용한다. 이미지 재판독 후보는 사람이 원문과 비교한 항목만 저장한다. 일반 정산 XLSX는 제공하지만 특정 ERP 업로드 양식의 호환은 검증하지 않았다.
+
+고객 DB·문서·계정 안내·환경 설정·백업은 코드와 분리한다. 개발·확인은 별도 임시 업무함으로 진행한다.
+
+[전체 문서](docs/README.md) · [현재 구현 상태](docs/progress/current_status.md)
+
+## 이번 OCR·근거 가드 보완
+
+Windows 로컬 OCR 엔진과 로컬 모델은 바꾸지 않았다. 혼합 PDF의 페이지별 판독, 근거 누락 방어, 이미지 좌표 일관성을 보완했다. 실제 Windows OCR·모델을 새로 실행한 정확도/속도 향상은 아직 검증하지 않았다. 저장된 과거 OCR 텍스트·모델 응답을 사용한 비교와 실제 재실행은 구분한다.
+
+- [검사 실행 안내](docs/testing/ai_benchmark_guide.md)
+- [이번 비교 결과](docs/testing/ai_benchmark_results_20261009.md)
+
+PDF 자동 처리에는 보수적인 50페이지 제한이 적용된다. 일부 페이지를 판독하지 못하면 정상 처리 완료로 취급하지 않으며, 파일을 나누거나 판독 환경을 확인한 뒤 다시 시도해야 한다. 완전히 빈 페이지로 확인된 구분 페이지는 읽을 내용이 있는 문서에서 제외해 판단한다. OCR이 빈 결과를 냈다는 이유만으로 빈 페이지로 간주하지 않는다.

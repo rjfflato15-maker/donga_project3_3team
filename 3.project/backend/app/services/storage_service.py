@@ -19,7 +19,8 @@ def clean_name(name: str) -> str:
     name = "".join(c for c in name if c >= " " and c not in '<>:"/\\|?*').strip().strip(".")
     if not name:
         raise HTTPException(400, "파일 이름을 확인하세요.")
-    return name[:240]
+    suffix = Path(name).suffix
+    return name if len(name) <= 240 else name[:240 - len(suffix)] + suffix
 
 
 def validate_upload(name: str, data: bytes):
@@ -30,8 +31,13 @@ def validate_upload(name: str, data: bytes):
         raise HTTPException(413, f"파일당 최대 {MAX_UPLOAD_BYTES // 1048576}MB까지 가능하며 빈 파일은 등록할 수 없습니다.")
     if ext == ".pdf" and not data.startswith(b"%PDF-"):
         raise HTTPException(400, "PDF 파일의 실제 형식이 올바르지 않습니다.")
-    if ext in {".docx", ".xlsx", ".hwpx"} and not data.startswith(b"PK"):
+    if ext in {".doc", ".xls", ".hwp"} and not data.startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1"):
         raise HTTPException(400, "문서 파일의 실제 형식이 올바르지 않습니다.")
+    from ..ai.input_safety import check_container, UnsafeDocument
+    try:
+        check_container(data, ext)
+    except UnsafeDocument as error:
+        raise HTTPException(400, str(error)) from error
 
 
 def read_upload(file: UploadFile) -> bytes:

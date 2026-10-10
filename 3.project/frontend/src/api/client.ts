@@ -1,6 +1,13 @@
 import { ContractDetail, ContractListItem, DocumentResponse, PipelineSimulationResponse,
   ValidationReportResponse, AutoContractSynthesisResponse, AnalysisFields, DocumentType, PilotInfo, AuditEntry } from '../types';
 
+export class HttpError extends Error {
+  constructor(message: string, public readonly status: number) {
+    super(message);
+    this.name = 'HttpError';
+  }
+}
+
 export async function requestJson<T>(path: string, init: RequestInit = {}): Promise<T> {
   const res = await fetch(path, { credentials: 'same-origin', ...init });
   if (!res.ok) {
@@ -10,7 +17,7 @@ export async function requestJson<T>(path: string, init: RequestInit = {}): Prom
       const body = await res.json();
       message = typeof body.detail === 'string' ? body.detail : (Array.isArray(body.detail) ? body.detail.map((e: { msg: string }) => e.msg).join(', ') : message);
     } catch { /* Use the readable fallback for non-JSON failures. */ }
-    throw new Error(message);
+    throw new HttpError(message, res.status);
   }
   return res.status === 204 ? undefined as T : res.json();
 }
@@ -26,7 +33,7 @@ const uploadBody = (files: File[], target?: string) => {
 };
 
 export const api = {
-  listContracts: () => requestJson<ContractListItem[]>('/api/contracts'),
+  listContracts: (signal?: AbortSignal) => requestJson<ContractListItem[]>('/api/contracts', { signal }),
   getContract: (id: number) => requestJson<ContractDetail>('/api/contracts/' + id),
   createContract: (data: { title: string; vendor_name: string; business_number: string; contract_amount: number; amount_basis?: string; tax_amount?: number | null; payment_mode?: string }) =>
     requestJson<ContractDetail>('/api/contracts', json('POST', data)),
@@ -60,9 +67,10 @@ export const api = {
   triggerValidation: (id: number) => requestJson<ValidationReportResponse>('/api/contracts/' + id + '/validate', { method: 'POST' }),
   simulatePipeline: (id: number) => requestJson<PipelineSimulationResponse>('/api/pipeline/' + id + '/simulate', { method: 'POST' }),
   autoParseBatchDocuments: (files: File[]) => requestJson<AutoContractSynthesisResponse>('/api/contracts/auto-parse-batch', { method: 'POST', body: uploadBody(files) }),
-  autoCreateBatchContract: (data: { title: string; vendor_name: string; business_number: string; contract_amount: number }, files: File[]) => {
+  autoCreateBatchContract: (data: { title: string; vendor_name: string; business_number: string; contract_amount: number; amount_basis?: string; tax_amount?: number | null; payment_mode?: string }, files: File[], options?: {documentTypes: DocumentType[]; requestKey: string}) => {
     const body = uploadBody(files);
-    Object.entries(data).forEach(([key, value]) => body.append(key, String(value)));
+    Object.entries(data).forEach(([key, value]) => {if(value!=null)body.append(key, String(value));});
+    if(options){body.append('document_types',JSON.stringify(options.documentTypes));body.append('idempotency_key',options.requestKey);}
     return requestJson<ContractDetail>('/api/contracts/auto-create-batch', { method: 'POST', body });
   },
   pilotInfo: () => requestJson<PilotInfo>('/api/pilot/info'),
@@ -72,7 +80,7 @@ export const api = {
   savePilotSettings: (company_name: string, required_document_types: DocumentType[]) =>
     requestJson<PilotInfo>('/api/pilot/settings', json('PUT', { company_name, required_document_types })),
   audit: (id?: number) => requestJson<AuditEntry[]>('/api/pilot/audit' + (id ? '?contract_id=' + id : '')),
-  review: (id: number, data: { decision: string; note: string; revision: number; fingerprint: string; acknowledge_unverified: boolean }) =>
+  review: (id: number, data: { decision: string; note: string; revision: number; fingerprint: string; acknowledge_unverified: boolean; review_cycle?:number; submission_event_id?:number }) =>
     requestJson<ContractDetail>('/api/contracts/' + id + '/reviews', json('POST', data)),
   reviewSnapshot: (id: number) => requestJson<{ snapshot: { checks: { status: string; message: string }[] }; note: string }>('/api/pilot/reviews/' + id),
   users: () => requestJson<{ user_id: number; email: string; display_name: string; role: string; active: boolean; must_change_password: boolean }[]>('/api/pilot/users'),

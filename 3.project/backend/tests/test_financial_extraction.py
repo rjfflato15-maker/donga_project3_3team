@@ -44,10 +44,10 @@ def test_whole_document_is_not_partial_just_because_it_mentions_payment_schedule
     assert fields.amount_scope == "FULL"
 
 
-def test_invoice_explicit_remainder_claim_remains_partial():
+def test_remainder_word_alone_cannot_prove_partial_claim():
     fields = extract_financial_fields("전자세금계산서\n잔금 정산 청구분\n합계금액: 26,950,000원\n", DocumentType.TAX_INVOICE)
     assert fields["total_amount"] == 26950000
-    assert fields["amount_scope"] == "PARTIAL"
+    assert fields["amount_scope"] == "UNKNOWN"
 
 
 def test_supply_only_never_invents_ten_percent_tax():

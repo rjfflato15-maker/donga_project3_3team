@@ -13,7 +13,8 @@ from ..services.workflow_service import audit, touch_contract, policy_for, finge
 from ..services.company_policy_service import CompanyPolicy, company_policy, presets, approval_state, first_signoff, current_cycle
 from ..services.review_context_service import document_provenance, review_context, request_response
 from ..services.contract_service import ContractService
-from .pilot import ReviewRequest, submit_review
+from ..schemas.review import ReviewRequest
+from ..services import contract_review_service
 router = APIRouter(tags=['Review workflow'])
 
 def require_contract(db, cid):
@@ -23,19 +24,20 @@ def require_contract(db, cid):
     return row
 
 @router.get('/api/contracts/{contract_id}/review-context')
-def get_context(contract_id: int, db: Session=Depends(get_db)):
-    result = review_context(db, contract_id)
+def get_context(contract_id: int, include_evidence: bool=True, evidence_document_id: int | None=None,
+                db: Session=Depends(get_db)):
+    result = review_context(db, contract_id, include_evidence, evidence_document_id)
     if result is None:
         raise HTTPException(404, '계약을 찾을 수 없습니다.')
     return result
 
 @router.get('/api/documents/{document_id}/provenance')
-def get_provenance(document_id: int, db: Session=Depends(get_db)):
+def get_provenance(document_id: int, include_evidence: bool=True, db: Session=Depends(get_db)):
     from ..db.models import Document
     doc = db.get(Document, document_id)
     if not doc:
         raise HTTPException(404, '문서를 찾을 수 없습니다.')
-    return document_provenance(db, doc)
+    return document_provenance(db, doc, include_evidence)
 
 class RequestCreate(BaseModel):
     contact_method: Literal['KAKAO', 'SMS', 'EMAIL', 'PHONE', 'OTHER']
@@ -116,6 +118,12 @@ def set_policy(req: CompanyPolicy, db: Session=Depends(get_db), actor: Actor=Dep
         pipeline.revalidate_contract(db, cid)
     return get_policy(db)
 
+from ..services.submission_service import SubmissionRequest, submit_contract, require_current_submission
+
+@router.post('/api/pilot/contracts/{contract_id}/submission')
+def submit_for_approval(contract_id: int, req: SubmissionRequest, db: Session=Depends(get_db), actor: Actor=Depends(get_current_user)):
+    return submit_contract(contract_id, req, db, actor)
+
 class SignoffRequest(ReviewRequest):
     step: int = Field(ge=1, le=2, strict=True)
 
@@ -124,7 +132,7 @@ def get_approvals(contract_id: int, db: Session=Depends(get_db)):
     detail = ContractService().get_contract_detail(db, contract_id)
     if not detail:
         raise HTTPException(404, '계약을 찾을 수 없습니다.')
-    return approval_state(db, contract_id, detail.workflow['revision'], detail.workflow['fingerprint'])
+    return {**approval_state(db, contract_id, detail.workflow['revision'], detail.workflow['fingerprint']), 'submission': detail.workflow['submission']}
 
 @router.post('/api/pilot/contracts/{contract_id}/approvals')
 def signoff(contract_id: int, req: SignoffRequest, db: Session=Depends(get_db), actor: Actor=Depends(get_current_user)):
@@ -138,11 +146,27 @@ def signoff(contract_id: int, req: SignoffRequest, db: Session=Depends(get_db), 
     if actor.role not in {steps[req.step - 1].role, 'admin'}:
         raise HTTPException(403, '현재 단계의 결재 권한이 없습니다.')
     if req.step == len(steps):
-        return submit_review(contract_id, ReviewRequest(**req.model_dump(exclude={'step'})), db, actor)
+        return contract_review_service.submit_review(contract_id, ReviewRequest(**req.model_dump(exclude={'step'})), db, actor)
     service = ContractService()
     detail = service.get_contract_detail(db, contract_id)
     if not detail:
         raise HTTPException(404, '계약을 찾을 수 없습니다.')
+    if steps[req.step - 1].role == 'operator':
+        gate = detail.workflow['submission']['gate']
+        if (req.review_cycle is None and current_cycle(db, contract_id)) or (req.review_cycle is not None and req.review_cycle != current_cycle(db, contract_id)):
+            raise HTTPException(409, '반려·결재 이후에는 최신 검토 차수를 확인하고 재상신하세요.')
+        submission = SubmissionRequest(review_cycle=req.review_cycle or 0, revision=req.revision, fingerprint=req.fingerprint,
+            idempotency_key=f'legacy-signoff-{req.revision}-{req.fingerprint}-{current_cycle(db, contract_id)}',
+            note=req.note, exception_reason=req.note if gate['exception_items'] else '',
+            acknowledge_exception=req.acknowledge_unverified if gate['exception_items'] else False,
+            exception_items=[i['key'] for i in gate['exception_items']] if req.acknowledge_unverified else [])
+        if detail.workflow['submission']['current']:
+            raise HTTPException(409, '현재 단계는 이미 검토 완료·상신되었습니다.')
+        submit_contract(contract_id, submission, db, actor)
+        return get_approvals(contract_id, db)
+    require_current_submission(db, contract_id, detail.workflow)
+    if detail.workflow['submission']['gate']['blockers']:
+        raise HTTPException(400, '필수 검토나 기술적 검사 실패를 먼저 해결하세요.')
     if any((not d.file_available for d in detail.documents)) or detail.summary.missing_count:
         raise HTTPException(400, '누락 서류와 원본을 먼저 보완하세요.')
     if (detail.summary.fail_count or detail.summary.review_count) and (not req.acknowledge_unverified or len(req.note.strip()) < 10):

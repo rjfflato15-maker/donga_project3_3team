@@ -11,10 +11,16 @@ from .pipeline_service import PipelineService
 from .readonly_review_service import require_unchanged
 
 TITLES = {
+    'CONTRACT_SUBMITTED': '담당자 검토 완료·결재 상신',
+    'CONTRACT_EXCLUDED': '계약 제외', 'CONTRACT_RESTORED': '제외한 계약 복원',
+    'PAYMENT_CORRECTED': '지급 기록 정정', 'PAYMENT_VOIDED': '잘못된 지급 기록 취소',
+    'RESUBMISSION_BUNDLE_ITEMS_CORRECTED': '회신 기록 정정',
     'CONTRACT_CREATED': '계약 등록', 'CONTRACT_UPDATED': '계약 기준 수정',
     'DOCUMENT_UPLOAD': '서류 등록', 'DOCUMENT_REISSUED': '고친 본 등록',
     'DOCUMENT_DELETE': '현재 서류 삭제', 'ORIGINAL_RESTORED': '원본 복구',
     'EXTRACT_CORRECTED': '원문 확인·읽은 값 수정', 'RULE_VALIDATION': '자동 검사 결과 기록',
+    'FIELD_CONFIRMATION_UNDONE': '원문 확인 되돌리기',
+    'FIELD_DEFERRED': '항목 판단 보류', 'FIELD_DEFERRAL_CLEARED': '항목 보류 해제',
     'RESUBMISSION_REQUEST_RECORDED': '거래처 요청 기록',
     'RESUBMISSION_REQUEST_RESOLVED': '거래처 회신·취소 기록',
     'RESUBMISSION_BUNDLE_RECORDED': '묶음 요청 기록',
@@ -24,6 +30,8 @@ TITLES = {
     'REPRESENTATIVE_RETURNED': '대표 반려',
     'PAYMENT_RECORDED': '전체 지급 사실 기록', 'PAYMENT_RECONFIRMED': '기존 지급 재확인',
     'ASSIGNMENT_CREATED': '사내 담당자에게 맡김', 'ASSIGNMENT_CHANGED': '맡기기 변경',
+    'SETTLEMENT_EXPORT_REQUEST': '정산 엑셀 다운로드',
+    'VLM_REREAD_COMPLETED': 'VLM 재판독 후보 생성',
 }
 
 

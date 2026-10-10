@@ -1,0 +1,62 @@
+{
+  "checked_at": "2026-10-08T18:46:18.454416+09:00",
+  "git_head": "54a8841",
+  "basis": "Working tree source submission copy; not HEAD-only export",
+  "backend": {
+    "tests": 531,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 115.46,
+    "warnings": 6510,
+    "excluded_test_files": [
+      "backend/tests/test_team_test_materials.py",
+      "backend/tests/test_neutral_test2_review.py",
+      "backend/tests/test_test2_result_analysis.py"
+    ],
+    "follow_up": "Backend source unchanged; full suite result retained"
+  },
+  "frontend": {
+    "test_files": 27,
+    "passed": 121,
+    "build": "TypeScript and Vite passed",
+    "warning": "Existing JavaScript chunk exceeds 500 KB",
+    "follow_up": "Reran after replacing personal reset-form email default and placeholder"
+  },
+  "documentation": {
+    "maintained_documents": 49,
+    "lint_errors": 0,
+    "lint_tool_tests_passed": 7
+  },
+  "email_privacy": {
+    "policy_tests_passed": 4,
+    "unapproved_literals": "ZIP builder aborts on any undeclared email",
+    "fixture_copies": "Replace synthetic sample emails with example.com"
+  },
+  "launcher": {
+    "compiled_from_extracted_csharp_source": true,
+    "compiled_source_exe_start": true,
+    "health_frontend_assets_200": true,
+    "same_server_reused": true,
+    "only_test_server_stopped": true
+  },
+  "tested_source_match": {
+    "file_count": 300,
+    "aggregate_sha256": "98bfd9f6aa13e1d88f429c295ee37b36deff04c7cc68c38d47481578b2484766",
+    "method": "Path plus SHA-256 of sorted tested runtime, frontend, unit tests, evaluation helpers and build configuration"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "node": "v24.15.0",
+    "platform": "Windows x64",
+    "dependency_install": "Reused existing virtualenv and node_modules outside ZIP"
+  },
+  "not_verified": [
+    "Fresh dependency install on a clean PC",
+    "Customer Setup install/update/uninstall",
+    "Live AI inference in this run",
+    "External NTS or mail delivery",
+    "Arbitrary personal-data absence beyond documented copy review and scan rules"
+  ],
+  "package_checks": "ZIP-specific source hashes, exclusions, secret scan scope and copied document links are in submission_manifest.json"
+}

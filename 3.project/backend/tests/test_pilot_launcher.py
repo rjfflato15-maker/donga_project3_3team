@@ -13,7 +13,7 @@ from backend.launcher.environment import LauncherError
 @pytest.fixture
 def settings(tmp_path):
     return {"storage_root": str(tmp_path / "data"), "port": 18765, "intranet": False,
-            "backup_directory": str(tmp_path / "backups")}
+            "backup_directory": str(tmp_path / "backups"), 'llm_enabled': False, 'vlm_enabled': True}
 
 
 def state_for(settings):

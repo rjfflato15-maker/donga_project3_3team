@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
-import { StageDashboard, DashboardItem } from './StageDashboard';
+import { StageDashboard } from './StageDashboard';
+import { DashboardItem } from '../../features/contracts/dashboardModel';
 
 afterEach(cleanup);
 

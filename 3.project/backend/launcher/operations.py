@@ -4,12 +4,15 @@ from pathlib import Path
 import shutil
 import sys
 
-from .environment import PROJECT, LauncherError, check_runtime, pilot_environment, python_path, run_checked
+from .environment import PROJECT, LauncherError, check_runtime, pilot_environment, python_path, run_checked, is_packaged
 from .server import require_stopped
 from .settings import save_settings, validate_pending
 
 
 def prepare_environment():
+    if is_packaged():
+        check_runtime()
+        return
     node = shutil.which("node")
     if not node:
         raise LauncherError("최초 환경 준비에는 Node.js 설치가 필요합니다. 설치 후 다시 실행하세요.")

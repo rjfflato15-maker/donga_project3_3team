@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import sys
 
-from .environment import PROJECT, LauncherError, run_checked
+from .environment import PROJECT, LauncherError, run_checked, is_packaged
 from .operations import backup, initialize, prepare_environment, restore
 from .server import require_stopped, start, status, stop
 from .settings import DEFAULT_SETTINGS, launch_lock, load_settings, save_settings, validate_pending
@@ -15,6 +15,7 @@ def manage_menu(settings_path, state_path):
         settings = load_settings(settings_path)
         print("\n계약 검수 관리: 1 실행  2 상태 점검  3 최초 환경 준비  4 업무함 준비")
         print("5 실행 설정  6 지금 백업  7 새 폴더에 복원  8 자동 실행·백업  9 서버 종료  0 닫기")
+        print('10 로컬 AI 준비 (인터넷 다운로드)')
         choice = input("번호: ").strip()
         if choice == "0":
             return 0
@@ -29,7 +30,8 @@ def manage_menu(settings_path, state_path):
                         print(label + ": " + ("준비됨" if details[key] else "준비 필요"))
                     print("서버: " + ("접속 가능" if details["server_ready"] else "응답 점검 필요" if details["server_running"] else "꺼짐"))
                     print(f"현재 PC 접속: http://127.0.0.1:{settings['port']}/")
-                    print("다른 사내 PC 접속: " + ("허용" if settings["intranet"] else "꺼짐") + " / AI 보완: 꺼짐")
+                    print("다른 사내 PC 접속: " + ("허용" if settings["intranet"] else "꺼짐")
+                          + ' / 텍스트 AI: ' + ('켜짐' if details['llm_enabled'] else '꺼짐'))
                     print("계정·회사·필수서류 설정은 로그인 후 앱의 '업무 설정 · 계정'에서 관리합니다.")
                     print("서버 로그: " + str(settings_path.parent / "server.log"))
                 elif choice == "3":
@@ -78,13 +80,18 @@ def manage_menu(settings_path, state_path):
                     if input("모든 접속이 종료됩니다. 진행하려면 '종료': ").strip() == "종료":
                         result = stop(state_path)
                         print("서버를 종료했습니다." if result == "stopped" else "실행 중인 서버가 없습니다.")
+                elif choice == '10':
+                    if input('Ollama와 Qwen 모델 약 12GB를 준비합니다. 진행하려면 준비: ').strip() == '준비':
+                        from .ai_setup import prepare_ai
+                        require_stopped(state_path)
+                        prepare_ai(settings, settings_path)
         except (LauncherError, ValueError, OSError) as exc:
             print(str(exc) if isinstance(exc, LauncherError) else "입력값을 확인하세요.")
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="C업체 계약 검수 통합 실행기")
-    parser.add_argument("action", nargs="?", default="start", choices=("start", "manage", "status", "setup", "init", "backup", "stop"))
+    parser.add_argument("action", nargs="?", default="start", choices=("start", "manage", "status", "setup", "setup-ai", "init", "backup", "stop"))
     parser.add_argument("--settings-file", type=Path, default=DEFAULT_SETTINGS)
     parser.add_argument("--empty", action="store_true")
     parser.add_argument("--no-browser", action="store_true")
@@ -97,12 +104,23 @@ def main(argv=None):
         settings = load_settings(path)
         with launch_lock(path.parent):
             if args.action == "start":
+                if is_packaged() and not (Path(settings['storage_root']) / 'pilot.db').exists():
+                    initialize(settings, state_path, empty=True)
+                    save_settings(path, settings)
+                    print('첫 로그인 계정 안내: ' + str(Path(settings['storage_root']) / 'initial-accounts.txt'))
+                    if not args.no_browser:
+                        import os
+                        os.startfile(str(Path(settings['storage_root']) / 'initial-accounts.txt'))
                 print(start(settings, state_path, open_browser=not args.no_browser))
             elif args.action == "status":
                 print(json.dumps(status(settings, state_path), ensure_ascii=False, indent=2))
             elif args.action == "setup":
                 require_stopped(state_path)
                 prepare_environment()
+            elif args.action == 'setup-ai':
+                require_stopped(state_path)
+                from .ai_setup import prepare_ai
+                prepare_ai(settings, path)
             elif args.action == "init":
                 initialize(settings, state_path, empty=args.empty)
             elif args.action == "backup":

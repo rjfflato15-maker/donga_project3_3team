@@ -1,0 +1,24 @@
+.cf-app.story-app .flow-change-summary{padding:12px 14px;background:#f9fbff;border-bottom:1px solid #dfe8f5;min-width:0}
+.cf-app.story-app .flow-change-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+.cf-app.story-app .flow-change-heading>div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.cf-app.story-app .flow-change-heading strong{font-size:11px;color:#4c6997;font-weight:600}
+.cf-app.story-app .flow-change-heading small,.cf-app.story-app .flow-change-heading .text-button{font-size:9px;color:#8294af;line-height:1.5}
+.cf-app.story-app .flow-change-heading .text-button{flex-shrink:0}
+.cf-app.story-app .flow-change-item{display:flex;align-items:center;gap:9px;width:100%;padding:8px 9px;margin:4px 0;border:1px solid #e0e8f4;border-radius:5px;background:#fff;text-align:left;color:#5b759b;font-size:11px;line-height:1.5}
+.cf-app.story-app .flow-change-item:hover,.cf-app.story-app .flow-change-item[aria-pressed=true]{background:#eef4fe;border-color:#b7cbed}
+.cf-app.story-app .flow-change-item:focus-visible{outline:2px solid #5c7db5;outline-offset:2px}
+.cf-app.story-app .flow-change-item:disabled{opacity:.6;cursor:default}
+.cf-app.story-app .flow-change-field{display:flex;flex-direction:column;flex:0 0 65px;font-weight:600}
+.cf-app.story-app .flow-change-field small{font-size:8px;font-weight:400;color:#9b7d3d}
+.cf-app.story-app .flow-change-values{display:flex;align-items:center;justify-content:flex-end;flex:1;gap:7px;min-width:0;flex-wrap:wrap;overflow-wrap:anywhere}
+.cf-app.story-app .flow-change-before{color:#8e9db2}
+.cf-app.story-app .flow-change-values strong{color:#456796;font-weight:600}
+.cf-app.story-app .flow-change-item>svg,.cf-app.story-app .flow-change-values>svg{flex-shrink:0}
+.cf-app.story-app .flow-change-foot{display:flex;flex-wrap:wrap;gap:7px 14px;margin-top:8px;font-size:9px;color:#8294af;line-height:1.6}
+.cf-app.story-app .flow-change-foot p{margin:5px 0;overflow-wrap:anywhere}
+.cf-app.story-app .flow-change-foot details[open]{flex-basis:100%}
+.cf-app.story-app .flow-change-foot summary,.cf-app.story-app .flow-change-more summary{cursor:pointer}
+.cf-app.story-app .flow-change-more summary{padding:6px 0;color:#7389a8;font-size:9px}
+.cf-app.story-app .flow-change-state{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:10px;color:#8294af;margin:6px 0;line-height:1.6}
+.cf-app.story-app .flow-change-state[role=alert]{color:#9b7831}
+@media(max-width:760px){.cf-app.story-app .flow-change-summary{padding:11px 9px}.cf-app.story-app .flow-change-item{font-size:10px;padding:8px 7px;gap:5px}.cf-app.story-app .flow-change-field{flex-basis:54px}.cf-app.story-app .flow-change-values{gap:4px}.cf-app.story-app .flow-change-heading{align-items:flex-start}.cf-app.story-app .flow-change-heading .text-button{font-size:8px}}

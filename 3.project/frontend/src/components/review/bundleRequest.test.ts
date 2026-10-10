@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildText, currentDocumentFor, sameBasis, BundleCandidate } from './BundleRequest';
+import { buildText, currentDocumentFor, sameBasis, BundleCandidate } from '../../features/requests/model';
 import { splitInternalIssues } from './ContractStageView';
 import { IssueGroup } from '../../utils/reviewSummary';
 
@@ -81,7 +81,7 @@ describe('회사 안에서 확인할 것', () => {
   });
 });
 
-import { itemArrived } from './BundleRequest';
+import { itemArrived } from '../../features/requests/model';
 
 describe('요청한 서류가 올라왔는지', () => {
   const docs = [

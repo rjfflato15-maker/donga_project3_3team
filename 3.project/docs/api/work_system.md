@@ -1,6 +1,10 @@
 # 공통 상태·처리 이력·검색 API
 
-2026-10-05 제품 기반 보강. 기존 추출/가드/평가 스키마와 권한을 유지하고 운영 응답만 확장한다. frontend 담당자는 기존 UX 4건과 함께 연결한다.
+> 상태: 현재 기준
+> 확인일: 2026-10-10
+> 기준: HEAD `54a8841` + 미커밋 작업 트리. 작업 트리 기준. 설치 검증 범위는 고객 패키지 안내 참조.
+
+현재 API와 화면은 연결되어 있다. 공통 상태·처리 이력·검색·정산 XLSX·수동 VLM 응답을 설명한다. 화면 연결 규칙은 [현재 연결 안내](frontend_integration.md)를 읽는다.
 
 ## 공통 상태
 
@@ -8,7 +12,7 @@
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "stage": "WAITING",
   "stage_label": "보완",
   "revision": 4,
@@ -34,7 +38,7 @@
 }
 ```
 
-`stage`는 기존 5단계+끝과 호환한다. 현재 지급 연결이 유효하고 현재 결재가 CONFIRMED이면 DONE, 결재 CONFIRMED이면 PAYMENT, 회신 대기가 있으면 WAITING, 외부 누락이 있으면 RECEIVING, 미확인/판독/반려이면 CHECK, 그 밖은 APPROVAL이다. 검수확인서 누락은 사내 확인으로 취급한다. STALE이더라도 새 현재값 자동 검사가 끝나고 남은 항목이 없으면 APPROVAL이며 **이전 결재가 유효해졌다는 뜻은 아니다**.
+`stage`는 기존 6개 단계와 호환한다. 현재 지급·결재가 유효하면 DONE, 현재 결재가 CONFIRMED이면 PAYMENT, 현재 담당자 상신이 있으면 APPROVAL, 회신 대기가 있으면 WAITING, 외부 누락이 있으면 RECEIVING, 그 외 필수 검토·재상신은 CHECK이다. 자동 검사 통과만으로 APPROVAL로 넘기지 않는다. work_state에 submission_status와 review_blockers를 더하며, 검토가 끝난 CHECK는 검토 완료·상신으로 표시한다. 반려나 수정본 이후에는 최신 차수의 상신이 필요하다.
 
 `next_actions`는 현재 역할이 할 수 있는 행동이다. 2단계 결재의 실제 next step이 담당자면 operator, 대표면 representative다. 회사 전체 역할의 업무이며 특정 개인에게 맡겨진 업무로 표현하지 않는다. 개인에게 맡긴 업무는 기존 assignment API/검색 assignee 필터를 사용한다.
 
@@ -118,6 +122,27 @@ items는 기존 목록 객체+공통 상태다. 계약명·거래처·앱 계약
 completion은 ALL/OPEN/DONE, stage는 공통 6값이다. DONE은 대표 결재만 끝난 상태가 아니라 유효한 전체 지급 완료 기록까지 있는 상태다. `registered_by_user_id`는 계약 등록자, `assignee_id`는 OPEN/IN_PROGRESS 맡기기가 있는 사람이다. 담당자가 바뀌었다고 등록자까지 바꾸지 않는다. 기간은 **계약 최초 등록일의 한국 날짜**이며 양 끝 날짜를 포함한다. 완료일·회신일 검색이라고 표시하지 않는다. limit은 1~200, offset은 0 이상. 최신 앱 계약 ID 순으로 반환한다.
 
 검색은 현재 회사의 기존 접근 권한 범위다. 새로운 개인별 결재 권한이나 외부 공유 기능을 만들지 않는다. 현재 버전은 시범 업무함 크기에 맞춰 SQL로 먼저 이름/기간/담당 범위를 좁히고 현재 규칙 결과의 상태를 계산한다. 검색을 위해 추출·OCR·LLM·검사 저장을 재실행하지 않는다.
+
+## 정산 엑셀 다운로드
+
+`GET /api/contracts/{id}/settlement-export?masked=true&revision=현재버전`
+
+기존 로그인 권한으로 계약 한 건의 현재 자료를 XLSX로 받는다. masked 기본값은 true이며 개인정보 가림 설정과 동일하다. revision이 다르거나 생성 중 자료·결재 상태가 바뀌면 409로 응답한다. 응답은 `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`, UTF-8 파일명, `Cache-Control: no-store`를 사용한다.
+
+시트는 정산 내역·서류별 값·필드 확인·자동 검사·안내다. 대표 확인 상태와 자동 검사 상태를 구분하고 현재 자료에 유효한 최종 확인일만 표시한다. 여러 세금계산서·통장사본 중 하나를 임의로 고르거나 합산하지 않는다. 서류별 값에서 각 현재 문서를 확인할 수 있다. 이전 본은 ZIP 다운로드를 사용한다. 번호는 앞자리 0을 보존하는 텍스트로 저장하며 사용자 입력을 Excel 수식으로 실행하지 않는다.
+
+다운로드 성공 시 `SETTLEMENT_EXPORT_REQUEST`에 계약 ID·revision·가림 여부·현재 서류 수를 기록한다. 검사·추출·결재·지급 상태는 변경하지 않는다. 특정 ERP 전표 형식 변환이나 업로드는 이 API 범위에 포함되지 않는다.
+
+## 이미지 재판독 후보와 사람 확인
+
+- `GET /api/vlm/status`: 현재 로컬 VLM의 준비 상태. 모델 다운로드나 추론을 실행하지 않는다.
+- `POST /api/documents/{id}/vlm-reread?masked=true`: `{revision,page,fields}`로 현재 페이지를 재판독한다. PDF·이미지의 현재 본만 지원한다. 원본 SHA와 계약 기준을 검사하며 모델 호출 중 DB 쓰기 잠금을 유지하지 않는다.
+- `GET /api/documents/{id}/vlm-reread?revision=현재버전&masked=true`: 현재 기준에 맞는 최근 후보. 재추론하지 않는다. 후보에는 `run_id`, `page`, 모델명·digest, `candidates[]`, `evidence_verified=false`, `automatically_applied=false`가 포함된다.
+- `POST /api/documents/{id}/vlm-confirm`: `{run_id,revision,fields,note,acknowledge_original:true}`로 원문에서 직접 확인한 항목만 저장한다. 생성된 후보는 AuditEvent에 저장하며 클라이언트가 보낸 후보값을 그대로 믿지 않는다. 다른 서류·이전 기준의 후보, 형식을 확인하지 못한 값, 동의 없는 요청은 거부한다.
+
+두 POST는 기존 담당자/관리자 권한을 사용한다. 후보 생성은 검사·결재·저장값을 바꾸지 않는다. 원문 확인 후 저장할 때 기존 필드 수정 경로를 사용하고 자료 revision을 올려 기존 결재와 지급 연결을 재확인하게 한다. 후보 단계의 민감값도 가림 처리한다. PDF의 현재 쪽만 렌더링하며 VLM이 주장한 문구·위치를 기존 OCR의 검증된 근거로 자동 등록하지 않는다.
+
+청구 범위는 모델이 읽은 문구에 전액·잔금·부분 청구 등의 명시가 있어야 후보로 선택할 수 있다. 합계금액만 보고 전액 청구로 추정한 답변은 제외한다. 이 문구 검사도 이미지 원문을 독립적으로 검증한 근거는 아니다. 응답 출력 한도 초과·타임아웃·형식 오류 시 기존 저장값은 유지한다.
 
 ## 오류·기준 변경 규칙
 

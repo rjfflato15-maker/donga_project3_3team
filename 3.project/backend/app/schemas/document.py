@@ -3,6 +3,9 @@ from pydantic import BaseModel, ConfigDict
 from .common import DocumentType, ProcessingStatus, MaskStatus
 
 
+INCOMPLETE_EXTRACTION_WARNING = "PDF 전체 내용을 확인하지 못했습니다. 원본을 확인하고 다시 판독하거나 추출값을 직접 보완하세요."
+
+
 class AnalysisFields(BaseModel):
     title: Optional[str] = None
     company_name: Optional[str] = None
@@ -22,6 +25,14 @@ class AnalysisFields(BaseModel):
     model_config = ConfigDict(from_attributes=True, allow_inf_nan=False)
 
 
+class Correction(BaseModel):
+    fields: AnalysisFields
+    document_type: DocumentType
+    revision: int
+    note: str
+    confirmed_fields: Optional[List[str]] = None
+
+
 class MaskInfo(BaseModel):
     status: MaskStatus = MaskStatus.NOT_STARTED
     masked_count: int = 0
@@ -32,6 +43,7 @@ class DocumentAnalysis(BaseModel):
     fields: AnalysisFields = AnalysisFields()
     warnings: List[str] = []
     ai_review: Optional[Dict[str, Any]] = None
+    extraction_metadata: Optional[Dict[str, Any]] = None
 
 
 class DocumentAnalysisResponse(BaseModel):
@@ -41,6 +53,7 @@ class DocumentAnalysisResponse(BaseModel):
     fields: AnalysisFields
     warnings: List[str] = []
     ai_review: Optional[Dict[str, Any]] = None
+    extraction_metadata: Optional[Dict[str, Any]] = None
 
 
 class DocumentResponse(BaseModel):

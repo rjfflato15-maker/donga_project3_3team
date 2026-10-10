@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-09",
+  "problem": "Old running backend lacked field-confirmation API; last pending task reopened itself.",
+  "live_app": {
+    "url": "http://127.0.0.1:8000/",
+    "prior_start_date": "2026-10-07",
+    "old_api_paths": 71,
+    "server_restarted": true,
+    "confirmation_api": "POST registered",
+    "undo_api": "POST registered",
+    "deferral_api": "POST registered",
+    "settings_preserved": true,
+    "database_backed_up": true,
+    "original_rows_lost": 0
+  },
+  "changes": [
+    "DocumentWorkspace: exclude the selected task from next-task navigation; return to document list when no other task remains.",
+    "Two regression cases: last unresolved task returns to list; other unresolved task opens without changing values."
+  ],
+  "tests": {
+    "frontend_files": 34,
+    "frontend_passed": 166,
+    "targeted_passed": 17,
+    "typescript_vite_build": "PASS"
+  },
+  "browser_qa": {
+    "url": "http://127.0.0.1:8185/",
+    "data": "Copy of existing synthetic QA company; customer data not modified by verification.",
+    "viewport": "1240x764",
+    "flow": [
+      "Open tax invoice",
+      "View total matching original",
+      "Click 원문과 같음",
+      "Observe 원문 확인됨",
+      "Click 확인 계속하기",
+      "Observe contract business-number task opened"
+    ],
+    "console_errors": 0,
+    "console_warnings": 0,
+    "blank_page": false,
+    "framework_error_overlay": false,
+    "last_task_browser_scenario": "NOT_RUN; covered by regression test"
+  },
+  "live_model_inference": "NOT_RUN",
+  "installer_rebuilt": false
+}

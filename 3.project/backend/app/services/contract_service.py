@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from ..db.models import (
     User,
     Contract,
+    ContractExclusion,
     Document,
     DocumentMasking,
     DocumentExtract,
@@ -28,6 +29,7 @@ from ..schemas.document import (
     DocumentAnalysis,
     AnalysisFields,
     MaskInfo,
+    INCOMPLETE_EXTRACTION_WARNING,
 )
 from ..schemas.validation import (
     ValidationCheck,
@@ -46,6 +48,8 @@ from .review_summary_service import (
 )
 from .payment_service import OperationalContractDetailResponse as ContractDetailResponse, payment_state
 from .work_state_service import build_work_state, operational_documents, pending_keys_by_contract
+from .field_deferral_service import unsettled_checks
+from .submission_service import review_gate, submission_state
 
 
 def get_document_response(doc: Document) -> DocumentResponse:
@@ -66,7 +70,12 @@ def get_document_response(doc: Document) -> DocumentResponse:
             fields = AnalysisFields(company_name=doc.extract.extracted_vendor_name,
                                     business_registration_no=doc.extract.extracted_vendor_reg_no,
                                     amount=doc.extract.extracted_amount, issue_date=doc.extract.extracted_date)
-    warnings = []
+    warnings = [message for message in stored_fields.get('registration_type_warnings', []) if isinstance(message, str)]
+    extraction_metadata = stored_fields.get("extraction_metadata")
+    extraction_metadata = extraction_metadata if isinstance(extraction_metadata, dict) else None
+    if extraction_metadata and extraction_metadata.get("evidence_complete") is False:
+        if INCOMPLETE_EXTRACTION_WARNING not in warnings:
+            warnings.append(INCOMPLETE_EXTRACTION_WARNING)
     if source is None:
         warnings.append("공용 서버에 원본이 없습니다. 원본을 다시 등록하세요.")
     if doc.processing_status == "FAILED":
@@ -77,7 +86,8 @@ def get_document_response(doc: Document) -> DocumentResponse:
         confidence=doc.class_confidence or 0.0,
         processing_status=ProcessingStatus(doc.processing_status) if doc.processing_status in [s.value for s in ProcessingStatus] else ProcessingStatus.REVIEW,
         mask_status=MaskStatus(doc.masking.masking_status) if doc.masking and doc.masking.masking_status in [m.value for m in MaskStatus] else MaskStatus.NOT_STARTED,
-        analysis=DocumentAnalysis(fields=fields, warnings=warnings, ai_review=ai_review), raw_text=raw_text, masked_text=masked_text,
+        analysis=DocumentAnalysis(fields=fields, warnings=warnings, ai_review=ai_review,
+                                  extraction_metadata=extraction_metadata), raw_text=raw_text, masked_text=masked_text,
         business_status="미연동" if NTS_MODE == "disabled" else (
             "데모 데이터 · 실제 조회 아님" if NTS_MODE == "demo" else (
                 doc.verification.business_status if doc.verification else "미확인")),
@@ -98,7 +108,9 @@ class ContractService:
         pending_by_contract = pending_keys_by_contract(db)
         state=llm_status()
         result = []
-        for contract in (query if query is not None else db.query(Contract)).order_by(Contract.contract_id.desc()).all():
+        query = query if query is not None else db.query(Contract)
+        query = query.filter(~Contract.contract_id.in_(db.query(ContractExclusion.contract_id)))
+        for contract in query.order_by(Contract.contract_id.desc()).all():
             submitted = {d.document_type for d in active_documents(contract)}
             count = sum(t.value in submitted for t in required)
             inputs = self.pipeline_service.validation_inputs(db, contract)
@@ -114,9 +126,11 @@ class ContractService:
             )
             waiting_count, earliest_due_on = waiting_by_contract.get(contract.contract_id, (0, None))
             ai_pending = pending_ai_count(d["fields"].get("ai_review") for d in inputs)
-            issue_counts = display_issue_counts(current_checks)
+            open_checks = unsettled_checks(db, active_documents(contract), current_checks)
+            issue_counts = display_issue_counts(open_checks)
+            workflow['submission'] = submission_state(db, contract.contract_id, workflow, review_gate(db, contract, current_checks))
             payment = payment_state(db, contract.contract_id, workflow['revision'], workflow['fingerprint'])
-            work = build_work_state(current_checks, operational_documents(contract), workflow, approval,
+            work = build_work_state(open_checks, operational_documents(contract), workflow, approval,
                                     waiting_count, payment, ai_pending,
                                     pending_by_contract.get(contract.contract_id, ()))
             result.append(ContractDashboardListItem(
@@ -140,7 +154,7 @@ class ContractService:
     def get_contract_detail(self, db: Session, contract_id: int) -> Optional[ContractDetailResponse]:
         from .workflow_service import required_types, policy_for, review_state, fingerprint_for
         contract = db.get(Contract, contract_id)
-        if not contract:
+        if not contract or db.get(ContractExclusion, contract_id):
             return None
         docs = self.pipeline_service.validation_inputs(db, contract)
         required = required_types(db)
@@ -149,16 +163,20 @@ class ContractService:
             docs, required_document_types=required, amount_policy=policy_for(db, contract_id))
         status = "REVIEW" if any(c.status != ValidationStatus.PASS for c in checks) else "PASS"
         workflow = review_state(db, contract_id, fingerprint_for(db, contract, docs))
+        responses = [get_document_response(d) for d in active_documents(contract)]
+        gate = review_gate(db, contract, checks, responses)
+        workflow['submission'] = submission_state(db, contract_id, workflow, gate)
         approval = approval_state(db, contract_id, workflow['revision'], workflow['fingerprint'], include_history=False)
         waiting_count = waiting_request_stats(db).get(contract_id, (0, None))[0]
         payment = payment_state(db, contract_id, workflow['revision'], workflow['fingerprint'])
-        work = build_work_state(checks, operational_documents(contract), workflow, approval, waiting_count,
+        work = build_work_state(unsettled_checks(db, active_documents(contract), checks), operational_documents(contract),
+                                workflow, approval, waiting_count,
                                 payment, pending_ai_count(d['fields'].get('ai_review') for d in docs),
                                 pending_keys_by_contract(db).get(contract_id, ()))
         return ContractDetailResponse(
             contract_id=contract.contract_id, title=contract.title, vendor_name=contract.vendor_name,
             business_number=contract.business_number, contract_amount=contract.contract_amount, review_status=status,
-            required_document_types=required, documents=[get_document_response(d) for d in active_documents(contract)],
+            required_document_types=required, documents=responses,
             summary=summary, checks=checks, created_at=contract.created_at, updated_at=contract.updated_at,
             workflow=workflow,
             payment=payment, stage=work['stage'], work_state=work,
@@ -222,19 +240,16 @@ class ContractService:
         self.pipeline_service.revalidate_contract(db, contract_id)
         return self.get_contract_detail(db, contract_id)
 
-    def delete_contract(self, db: Session, contract_id: int) -> bool:
+    def delete_contract(self, db: Session, contract_id: int, actor_name='시스템') -> bool:
         from ..db.models import ContractWorkflow, DocumentFileInfo
         from .storage_service import STORAGE_LOCK
         with STORAGE_LOCK:
             contract = db.get(Contract, contract_id)
             if not contract:
                 return False
-            for doc in contract.documents:
-                db.query(DocumentFileInfo).filter(DocumentFileInfo.document_id == doc.document_id).delete()
-            db.query(ContractWorkflow).filter(ContractWorkflow.contract_id == contract_id).delete()
-            db.delete(contract)
+            if not db.get(ContractExclusion, contract_id):
+                db.add(ContractExclusion(contract_id=contract_id, actor_name=actor_name))
             db.commit()
-            # Original bytes are retained in server backups/storage pending an agreed retention policy.
             return True
 
     def seed_demo_contract(self, db: Session) -> Contract:

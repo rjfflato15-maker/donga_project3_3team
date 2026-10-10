@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 import requests
 
 CORE_FIELDS = ("company_name", "business_registration_no", "supply_amount", "tax_amount", "total_amount", "issue_date", "amount_scope")
-PROMPT_VERSION = "grounded-fields-v3"
+PROMPT_VERSION = "grounded-fields-v3-claim-context-20261010"
 
 
 @dataclass(frozen=True)
@@ -70,7 +70,9 @@ def build_prompt(pages, fields, document_type):
             "없는 필드는 ABSENT, 숫자의 뜻이나 당사자를 정할 수 없으면 REVIEW입니다. ABSENT와 REVIEW의 value/page/line은 null, quote는 빈 문자열입니다. "
             "참고값 A/B처럼 의미 라벨이 없는 숫자는 REVIEW입니다. "
             "amount_scope의 VALUE는 FULL 또는 PARTIAL만 허용합니다. 전액/전체 계약, 금액이 명시된 계약서·견적서·검수확인서는 FULL, "
-            "선금/잔금/부분청구/분할은 PARTIAL입니다. 범위가 불명확하면 REVIEW이며 없는 문서 필드는 ABSENT입니다. "
+            "부분·분할 청구가 명시되거나 이번 청구가 계약의 100% 미만 비율이라고 명시될 때만 PARTIAL입니다. "
+            "선금·중도금·잔금이라는 단어만으로 PARTIAL을 정하지 마세요. 지급 완료·외상미수금은 청구 범위와 다릅니다. "
+            "계약 조건과 다른 문서 금액의 비교는 별도 규칙이 수행합니다. 범위가 불명확하면 REVIEW이며 없는 문서 필드는 ABSENT입니다. "
             "범위의 quote에는 FULL/PARTIAL을 쓰지 말고 '전액 청구', '계약서', '선금' 등 원문의 근거 줄을 복사하세요.\n"
             '독립 예시: [page=1, line=2] 합계금액: 550원 → {"state":"VALUE","value":"550","page":1,"line":2,"quote":"합계금액: 550원"}\n'
             "JSON 스키마 외의 키나 설명을 쓰지 마세요.\n"

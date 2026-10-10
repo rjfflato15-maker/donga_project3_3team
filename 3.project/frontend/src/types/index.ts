@@ -104,6 +104,8 @@ export interface ValidationReportResponse {
 }
 
 export interface ContractDetail {
+  stage?: string | null;
+  work_state?: { counts?: { waiting_requests?: number } };
   contract_id: number;
   title: string;
   vendor_name: string;
@@ -119,13 +121,15 @@ export interface ContractDetail {
   workflow?: Workflow;
   llm?: ContractLlm | null;
   payment?: ContractPayment | null;
+  registration?: {request_key:string;complete:boolean;failed_files:{index:number|null;file_name:string|null;message:string}[]} | null;
 }
 
 /** 계약 전체 지급 완료 사실(송금 아님). paid_on은 현재 결재에 연결된 경우에만 채워진다 */
 export interface ContractPayment {
   payment_id: number;
   scope: 'WHOLE_CONTRACT';
-  status: 'RECORDED' | 'RECONFIRMATION_REQUIRED';
+  status: 'RECORDED' | 'RECONFIRMATION_REQUIRED' | 'VOIDED';
+  correction_revision?: number;
   paid_on: string | null;
   recorded_paid_on: string;
   method: 'TRANSFER' | 'OTHER';
@@ -212,6 +216,7 @@ export interface AutoContractSynthesisResponse {
 }
 
 export interface Workflow {
+  submission?: SubmissionState;
   revision: number;
   amount_basis: 'TOTAL' | 'SUPPLY' | 'UNKNOWN';
   tax_amount: number | null;
@@ -219,6 +224,19 @@ export interface Workflow {
   approval_status: string;
   fingerprint: string;
   reviews: { review_id: number; revision: number; actor_name: string; decision: string; note: string; created_at: string }[];
+}
+
+export interface ReviewBlocker {
+  code: string; document_id: number | null; document_type: DocumentType | null;
+  field: string | null; label: string; reason: string; action: string; owner: string;
+}
+export interface SubmissionState {
+  status: 'NOT_SUBMITTED' | 'SUBMITTED' | 'RETURNED' | 'STALE' | 'APPROVED';
+  current: boolean; event_id: number | null; actor_name: string | null;
+  submitted_at: string | null; note: string | null; exception_reason: string | null;
+  exception_items: string[]; next_owner: string; legacy_completed_approval: boolean;
+  gate: { blockers: ReviewBlocker[]; exception_items: {key:string;rule_id:string;document_id:number|null;reason:string;status:string}[];
+    can_submit: boolean; can_submit_exception: boolean; completion: string; fingerprint: string } | null;
 }
 
 export interface PilotInfo {

@@ -6,6 +6,7 @@ from typing import List, Dict, Any, Tuple
 from sqlalchemy.orm import Session
 from ..db.models import (
     Contract,
+    ContractExclusion,
     Document,
     DocumentMasking,
     DocumentExtract,
@@ -44,7 +45,8 @@ class PipelineService:
                                 target_document_type: str = "", existing_document_id=None,
                                 restoration_revision=None, replaces_document_id=None,
                                 expected_contract_revision=None, change_note="", actor=None,
-                                upload_job_id=None, upload_job_lease=None, require_readable=False) -> Document:
+                                upload_job_id=None, upload_job_lease=None, require_readable=False, force_document_type=False,
+                                retry_failed_registration=False) -> Document:
         from fastapi import HTTPException
         from .storage_service import STORAGE_LOCK, store_original, store_text, clean_name, resolve_path
         from .workflow_service import touch_contract, policy_for
@@ -59,6 +61,8 @@ class PipelineService:
         contract = db.get(Contract, contract_id)
         if not contract:
             raise ValueError("계약을 찾을 수 없습니다.")
+        if db.get(ContractExclusion, contract_id):
+            raise HTTPException(404, "제외한 계약입니다. 먼저 복원하세요.")
         expected_revision = None
         if expected_contract_revision is not None and policy_for(db, contract_id)['revision'] != expected_contract_revision:
             raise HTTPException(409,"계약 자료가 변경되었습니다. 새로고침 후 등록하세요.")
@@ -69,9 +73,14 @@ class PipelineService:
             require_current(previous)
             if expected_contract_revision is None or not change_note.strip():
                 raise HTTPException(400,"재발행에는 revision과 변경 사유가 필요합니다.")
-            if target_document_type and target_document_type != previous.document_type:
+            if retry_failed_registration:
+                info = db.get(DocumentFileInfo, previous.document_id)
+                if (previous.processing_status != 'FAILED' or not info
+                        or info.sha256 != hashlib.sha256(file_bytes).hexdigest()):
+                    raise HTTPException(409, "판독 실패한 최초 등록 원본만 재시도할 수 있습니다.")
+            if target_document_type and target_document_type != previous.document_type and not retry_failed_registration:
                 raise HTTPException(400,"재발행 문서는 이전 문서와 같은 종류로 등록하세요.")
-            target_document_type = previous.document_type
+            target_document_type = target_document_type or previous.document_type
         if existing_document_id is not None:
             existing = db.get(Document, existing_document_id)
             if not existing or existing.contract_id != contract_id:
@@ -92,10 +101,12 @@ class PipelineService:
         llm_enabled = os.getenv('APP_LLM_ENABLED','false').lower() == 'true'
         failed = False
         try:
+            options = {'force_document_type': True} if force_document_type else {}
             analysis, raw_text, masked_text = analyze_document(str(raw_path), file_name=file_name,
-                                                               target_document_type=target_document_type)
+                                                               target_document_type=target_document_type, **options)
             body_text = raw_text.partition("\n")[2] if raw_text.startswith("[파일명:") else raw_text
-            failed = not bool(body_text.strip())
+            failed = (not bool(body_text.strip())
+                      or (analysis.extraction_metadata or {}).get("evidence_complete") is False)
         except Exception:
             failed = True
             raw_text, masked_text = "", ""
@@ -104,7 +115,7 @@ class PipelineService:
         masked_key = store_text(raw_key, raw_text, masked_text)
         if (replaces_document_id is not None or require_readable) and failed:
             raise HTTPException(422,"재발행본을 읽지 못했습니다. 이전 버전은 유지됩니다. 파일을 확인하세요." if replaces_document_id is not None else "문서 내용을 읽지 못했습니다. 문서를 게시하지 않았습니다. 파일을 확인하세요.")
-        if replaces_document_id is not None and analysis.document_type.value != target_document_type:
+        if replaces_document_id is not None and not retry_failed_registration and analysis.document_type.value != target_document_type:
             raise HTTPException(422,"재발행본의 문서 종류를 확인하지 못했습니다. 이전 버전은 유지됩니다.")
         b_no = analysis.fields.business_registration_no or business_number
         verification_status = self.nts_client.check_business_status(b_no).get("status", "확인 불가")
@@ -117,6 +128,8 @@ class PipelineService:
             contract = db.get(Contract, contract_id)
             if not contract:
                 raise ValueError("계약을 찾을 수 없습니다.")
+            if db.get(ContractExclusion, contract_id):
+                raise HTTPException(404, "분석 중 계약이 제외되었습니다. 복원 후 다시 시도하세요.")
             job=None
             if upload_job_id is not None:
                 from ..db.models import DocumentUploadJob, UserProfile
@@ -170,8 +183,12 @@ class PipelineService:
             extract.extracted_status = "FAILED" if failed else "COMPLETED"
             extract.confidence = analysis.confidence
             stored_fields = analysis.fields.model_dump()
+            if force_document_type:
+                stored_fields['registration_type_warnings'] = analysis.warnings
             if analysis.ai_review is not None:
                 stored_fields["ai_review"] = analysis.ai_review
+            if analysis.extraction_metadata is not None:
+                stored_fields["extraction_metadata"] = analysis.extraction_metadata
             review = analysis.ai_review or {}
             attempts = review.get('attempts')
             stored_fields['llm_execution'] = {
@@ -271,6 +288,8 @@ class PipelineService:
             contract = db.get(Contract, contract_id)
             if not contract:
                 return False
+            if db.get(ContractExclusion, contract_id):
+                raise HTTPException(404, "제외한 계약입니다. 먼저 복원하세요.")
             docs_data = self.validation_inputs(db, contract)
             required = required_types(db)
             policy = policy_for(db, contract_id)
@@ -290,6 +309,8 @@ class PipelineService:
                 contract = db.get(Contract, contract_id)
                 if not contract:
                     return False
+                if db.get(ContractExclusion, contract_id):
+                    raise HTTPException(404, "검사 중 계약이 제외되었습니다. 복원 후 다시 시도하세요.")
                 current_inputs = self.validation_inputs(db, contract)
                 if fingerprint_for(db, contract, current_inputs) != fingerprint:
                     db.rollback()

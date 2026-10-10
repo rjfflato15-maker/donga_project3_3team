@@ -1,20 +1,28 @@
-# 운영 문서 목록
+# 사용·운영 문서 목록
 
-평소에는 프로젝트 폴더의 **C-Pilot.exe**를 실행한다. 처음 Git 소스를 받은 PC는 **start_pilot.bat**으로 EXE를 만든다. 관리 메뉴는 실행 창에서 **M**이다.
+> 상태: 현재 기준
+> 확인일: 2026-10-09
+> 기준: 2026-10-09 구조 정리 소스 사본. 현재 소스와 과거 설치·평가 기록의 검증 범위를 구분한다.
 
-| 할 일 | 읽을 문서 | 담당 역할 |
-| --- | --- | --- |
-| 새 PC 준비·첫 계정 확인 | [처음 설치](installation.md) | 설치 담당 |
-| 실행·종료·설정 변경 | [실행과 설정](startup_settings.md) | 운영 담당 |
-| 계정 등록·퇴사·로그인 보안 | [계정과 보안](accounts_security.md) | 대표·계정 관리자 |
-| 다른 PC 접속·서버 교체 | [사내망 접속](network.md) | 사내 IT |
-| 백업·복원·예약 작업 | [백업과 복원](backup_restore.md) | 자료 관리자 |
-| 업데이트·장애 대응 | [유지보수](maintenance.md) | 지원 담당 |
-| 판매용 배포·지원 조건 | [배포와 판매](distribution.md) | 제품 책임자 |
-| 실제 업무와 분리한 시연 | [시연 전용 업무함](demo_inbox.md) | 시연 담당 |
-| 팀원 브라우저 접속 테스트 | [화요일 접속 안내](team_test_network.md) | 서버 PC 담당·팀원 |
-| 시간 비교 자료·과제 초기화 | [자료 준비 안내](team_test_materials.md) · [측정 기준](team_test_measurement.md) | 테스트 진행자 |
-| UI 병합·재시작·측정 빌드 고정 | [병합 점검표](team_test_merge_checklist.md) | 통합 담당·확인자 |
-| 업무 연결·백업 복원 리허설 | [확인 결과](workflow_rehearsal.md) · [5분 시연 대본](demo_rehearsal_script.md) | 시연·통합 담당 |
+관련 소스: [cli.py](../../backend/launcher/cli.py)
 
-역할은 작업 책임 구분이며 새 앱 권한을 추가한 것이 아니다. [전체 문서 목록](../README.md) · [개발자 작업 안내](../development/maintenance.md)
+소스 폴더에서 사용할 때는 [최초 준비](installation.md) 후 C-Pilot.exe를 실행한다. 평소 실행에서는 CMD 창이나 Enter 대기 없이 브라우저가 열리며, 시작 실패 시 오류 안내 창이 뜬다. 관리 메뉴는 필요한 경우에만 `C-Pilot.exe manage`로 연다. 개발용 실행기 EXE 단독 복사는 지원하지 않는다. 이번 소스 전용 배포에는 설치 EXE가 없다.
+
+| 할 일 | 문서 |
+| --- | --- |
+| 설치·빈 업무함·첫 계정 | [처음 설치](installation.md) |
+| 실행·종료·설정·재시작 | [실행과 설정](startup_settings.md) |
+| 문서 등록부터 결재·지급까지 | [업무 사용 흐름](workflow.md) |
+| 정산 엑셀·증빙 ZIP | [자료 전달](accounting_export.md) |
+| AI 활성화·모델·재판독 | [설정](../ai/runtime_settings.md) · [분석 흐름](../ai/pipeline.md) |
+| 계정·비밀번호·퇴사 | [계정 안내](accounts_security.md) |
+| 다른 PC 브라우저 접속 | [사내망](network.md) |
+| 백업·복원 | [자료 복구](backup_restore.md) |
+| 업데이트·장애 대응 | [운영 유지보수](maintenance.md) |
+| 고객용 설치·판매 범위 | [Setup 소스와 검증 범위](customer_package.md) · [판매 검토](distribution.md) |
+| 실제 자료와 분리한 시연 | [시연 업무함](demo_inbox.md) · [기존 시연 대본](demo_rehearsal_script.md) |
+
+시연·측정 안내는 작성 당시 자료와 빌드를 사용한다. 화면 공유 자료와 실제 앱, 실시간 모델과 고정 응답 재생, 기계 처리시간과 사람 작업시간을 구분한다. 새 XLSX·VLM 기능의 완료 상태는 현재 상태에서 확인한다.
+
+
+[전체 문서](../README.md) · [현재 구현 상태](../progress/current_status.md)

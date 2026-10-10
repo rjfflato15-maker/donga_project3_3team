@@ -19,7 +19,9 @@ def simulate_pipeline_endpoint(contract_id: int, db: Session = Depends(get_db)):
     """
     try:
         return pipeline_service.simulate_pipeline(db, contract_id)
+    except HTTPException:
+        raise
     except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="계약을 찾을 수 없거나 저장된 자료를 읽지 못했습니다.") from e
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="처리 결과를 불러오지 못했습니다. 잠시 후 다시 시도하세요.") from e

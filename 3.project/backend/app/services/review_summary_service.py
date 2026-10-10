@@ -84,6 +84,13 @@ def issue_card_groups(checks, documents, *, nts_mode='disabled'):
 def build_action_summary(issue_counts, workflow, approval, waiting_count, ai_pending_count):
     """Keep list and review-context wording consistent for the same snapshot."""
     parts = []
+    submission = workflow.get("submission")
+    if submission and workflow["approval_status"] != "CONFIRMED":
+        if submission.get("current"):
+            prefix = f"{approval['next_step']}단계 결재 대기" if len(approval.get('steps') or []) > 1 else "대표 결재 대기"
+            return prefix + " · 담당자 상신 완료" + (f" · 예외 검토 {len(submission.get('exception_items') or [])}건" if submission.get('exception_items') else "")
+        else:
+            parts.append("담당자 재검토·재상신 필요" if submission.get("status") in {"STALE", "RETURNED"} else "담당자 원문 검토·상신 필요")
     state = workflow["approval_status"]
     if state == "CONFIRMED":
         parts.append("최종 확인 완료")

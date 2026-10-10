@@ -67,6 +67,13 @@ describe('작은 도우미', () => {
     expect(isReadingCheck(check('BUSINESS_NO_MATCH', 'REVIEW', '5'))).toBe(true);
     expect(isReadingCheck(check('BUSINESS_NO_MATCH', 'FAIL', '5'))).toBe(false);
   });
+  it('예금주를 못 읽은 것은 읽기 문제, 거래처와 다른 예금주는 서류 내용 확인이다', () => {
+    const holder = (actual: string) => ({ ...check('ACCOUNT_HOLDER_MATCH', 'REVIEW', '4'), expected: '주식회사 새봄기획', actual });
+    expect(isReadingCheck(holder('미추출'))).toBe(true);
+    expect(isReadingCheck(holder('홍길동'))).toBe(false);
+    const o = buildReviewOverview(contract([holder('홍길동')], [doc(4, 'bank_account')]));
+    expect(o.issues[0]).toMatchObject({ kind: 'vendor', status: 'REVIEW', title: '통장사본' });
+  });
 });
 
 describe('회사 내부 서류', () => {

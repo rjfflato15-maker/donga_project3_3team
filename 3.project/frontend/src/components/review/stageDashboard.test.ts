@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { matchesQuery, stageOfItem, DashboardItem } from './StageDashboard';
+import { matchesQuery, stageOfItem, DashboardItem } from '../../features/contracts/dashboardModel';
 
 const item = (over: Partial<DashboardItem>): DashboardItem => ({
   contract_id: 1, title: '업무지원 시스템 구축', vendor_name: '가상 새봄기획', business_number: '', contract_amount: 2090000,

@@ -172,3 +172,46 @@ def test_missing_original_and_disabled_nts_never_pass():
     checks = validate_amounts([doc], {"amount_basis": "TOTAL", "payment_mode": "FULL"})
     assert any(check.rule_id == "ORIGINAL_FILE" and check.status == ValidationStatus.REVIEW for check in checks)
     assert any(check.rule_id == "BUSINESS_STATUS" and check.status == ValidationStatus.REVIEW for check in checks)
+
+
+def holder_checks(holder, vendor="주식회사 새봄기획", document_type="bank_account"):
+    fields = {} if holder is None else {"company_name": holder}
+    checks = RuleEngine().validate_contract_evidence(
+        contract_id=1, contract_title="예금주 대조", expected_vendor_name=vendor,
+        expected_biz_no="123-45-67890", contract_amount=3410000,
+        documents_data=[{"document_id": 7, "document_type": document_type, "fields": fields}],
+        required_document_types=[], amount_policy={"amount_basis": "TOTAL", "payment_mode": "FULL"},
+    )[1]
+    return [check for check in checks if check.rule_id == "ACCOUNT_HOLDER_MATCH"]
+
+
+@pytest.mark.parametrize("holder", ["주식회사 새봄기획", "(주)새봄기획", "새봄기획㈜", "새봄 기획 주식회사"])
+def test_account_holder_matches_ignoring_entity_marks(holder):
+    [check] = holder_checks(holder)
+    assert check.status == ValidationStatus.PASS
+    assert check.field == "7"
+
+
+@pytest.mark.parametrize("holder", ["홍길동", "새봄기획물산", "새봄"])
+def test_different_account_holder_is_review_not_pass(holder):
+    # 개인사업자 대표자 명의일 수 있어 FAIL이 아니라 사람 확인으로 둔다.
+    [check] = holder_checks(holder)
+    assert check.status == ValidationStatus.REVIEW
+    assert (check.expected, check.actual) == ("주식회사 새봄기획", holder)
+    assert "다릅니다" in check.message
+
+
+@pytest.mark.parametrize("holder", [None, "", "  ", "(주)"])
+def test_unread_account_holder_is_source_review(holder):
+    [check] = holder_checks(holder)
+    assert check.status == ValidationStatus.REVIEW
+    assert check.actual == "미추출"
+
+
+def test_missing_vendor_basis_never_passes_holder():
+    [check] = holder_checks("새봄기획", vendor="")
+    assert check.status == ValidationStatus.REVIEW
+
+
+def test_account_holder_rule_only_for_bank_accounts():
+    assert holder_checks("다른회사", document_type="contract") == []

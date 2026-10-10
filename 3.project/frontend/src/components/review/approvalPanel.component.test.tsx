@@ -3,9 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ApprovalPanel, ApprovalState } from './ApprovalPanel';
 import { ContractDetail } from '../../types';
-import { requestJson } from '../../api/client';
-import { BundledRequest } from './BundleRequest';
-vi.mock('../../api/client', () => ({ requestJson: vi.fn() }));
+import { api, requestJson } from '../../api/client';
+import { BundledRequest } from '../../features/requests/model';
+vi.mock('../../api/client', () => ({ api:{review:vi.fn()}, requestJson: vi.fn() }));
 let role = 'representative';
 vi.mock('../../context/AuthContext', () => ({ useAuth: () => ({ user:{ role } }) }));
 const single:ApprovalState = {steps:[{role:'representative',label:'최종 확인'}],completed_steps:0,next_step:1,status:'PENDING',history:[]};
@@ -13,6 +13,11 @@ const fixture = (unverified=false):ContractDetail => ({ contract_id:1,title:'가
 beforeEach(() => {role='representative';vi.mocked(requestJson).mockImplementation(async (url) => url.includes('/activity') ? {items:[]} : single);});
 afterEach(() => {cleanup();vi.resetAllMocks();});
 describe('새 결재 화면의 실제 활성 조건', () => {
+  it('반려 의견이 있으면 결재 이력에 의견이 없다는 문구를 함께 표시하지 않는다',async()=>{
+    const contract=fixture();contract.workflow={...contract.workflow!,approval_status:'RETURNED',reviews:[{review_id:1,decision:'RETURNED',note:'기준 금액 확인 요청',revision:1,actor_name:'대표',created_at:'2026-10-08T00:00:00Z'}]};
+    render(<ApprovalPanel contract={contract} onChanged={async()=>{}}/>);
+    expect(await screen.findByText('기준 금액 확인 요청')).toBeTruthy();expect(screen.queryByText('아직 결정된 의견이 없습니다.')).toBeNull();
+  });
   it('결재 요약의 수령 기록은 받은 항목만 표시하고 자동 검사로 바꾸지 않는다', async () => {
     const request={request_id:3,bundle:{items:[{item_id:1,issue_key:'missing:bank_account',document_id:null,document_type:'bank_account',title:'통장사본',status:'RECEIVED'},{item_id:2,issue_key:'missing:tax_invoice',document_id:null,document_type:'tax_invoice',title:'세금계산서',status:'CANCELLED'}]}} as BundledRequest;
     render(<ApprovalPanel contract={fixture()} onChanged={async()=>{}} requests={[request]}/>);
@@ -20,11 +25,11 @@ describe('새 결재 화면의 실제 활성 조건', () => {
     expect(screen.getByText('자동 검사와 별도')).toBeTruthy();
     expect(screen.queryByText('세금계산서')).toBeNull();
   });
-  it('일반 승인에는 의견 1자, 반려는 최종 단계에서만 가능', async () => {
+  it('일반 승인에는 의견 3자, 반려는 최종 단계에서만 가능', async () => {
     render(<ApprovalPanel contract={fixture()} onChanged={async () => {}} />);
     const note=await screen.findByLabelText(/결재 의견/);
     expect((screen.getByRole('button',{name:'승인'}) as HTMLButtonElement).disabled).toBe(true);
-    fireEvent.change(note,{target:{value:'확인'}});
+    fireEvent.change(note,{target:{value:'원문 확인'}});
     expect((screen.getByRole('button',{name:'승인'}) as HTMLButtonElement).disabled).toBe(false);
     expect(screen.getByRole('button',{name:'반려'})).toBeTruthy();
   });
@@ -48,8 +53,19 @@ describe('새 결재 화면의 실제 활성 조건', () => {
     render(<ApprovalPanel contract={fixture(true)} onChanged={async () => {}} />);
     fireEvent.change(await screen.findByLabelText(/결재 의견/),{target:{value:'현재 원문 자료를 충분히 확인했습니다'}});fireEvent.click(screen.getByRole('checkbox'));fireEvent.click(screen.getByRole('button',{name:'승인'}));
     await screen.findByText(/저장하지 못했습니다/);
-    await waitFor(() => expect((screen.getByLabelText(/결재 의견/) as HTMLTextAreaElement).value).toBe(''));
+    await waitFor(() => expect((screen.getByLabelText(/결재 의견/) as HTMLTextAreaElement).value).toBe('현재 원문 자료를 충분히 확인했습니다'));
     expect((screen.getByRole('checkbox') as HTMLInputElement).checked).toBe(false);
     expect((screen.getByRole('button',{name:'승인'}) as HTMLButtonElement).disabled).toBe(true);
+  });
+  it('대표 반려는 reviews API로 보내고 실패한 의견은 다시 조회한 뒤에도 보존한다', async () => {
+    vi.mocked(api.review).mockRejectedValue(new Error('반려 기록 실패'));
+    render(<ApprovalPanel contract={fixture()} onChanged={async()=>{}}/>);
+    fireEvent.change(await screen.findByLabelText(/결재 의견/),{target:{value:'금액 기준을 다시 확인해 주세요'}});
+    fireEvent.click(screen.getByRole('button',{name:'반려'}));
+    await screen.findByText(/반려 기록 실패/);
+    await waitFor(()=>expect(screen.getByRole('button',{name:'반려'})).toHaveProperty('disabled',false));
+    expect(api.review).toHaveBeenCalledWith(1,{review_cycle:0,submission_event_id:undefined,decision:'RETURNED',note:'금액 기준을 다시 확인해 주세요',revision:1,fingerprint:'basis1',acknowledge_unverified:false});
+    expect(vi.mocked(requestJson).mock.calls.some(([,options])=>options?.method==='POST')).toBe(false);
+    expect(screen.getByLabelText(/결재 의견/)).toHaveProperty('value','금액 기준을 다시 확인해 주세요');
   });
 });

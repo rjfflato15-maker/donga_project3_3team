@@ -60,6 +60,37 @@ class Contract(Base):
     payment_records = relationship("ContractPayment", cascade="all, delete-orphan")
 
 
+class ContractExclusion(Base):
+    """Reversible removal from the inbox; the contract and its evidence stay intact."""
+    __tablename__ = 'pilot_contract_exclusions'
+    contract_id = Column(Integer, ForeignKey('contracts.contract_id', ondelete='CASCADE'), primary_key=True)
+    actor_name = Column(String(80), nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class RegistrationAttempt(Base):
+    __tablename__ = 'pilot_registration_attempts'
+    attempt_id = Column(Integer, primary_key=True, autoincrement=True)
+    actor_id = Column(Integer, nullable=False)
+    request_key = Column(String(100), nullable=False)
+    payload_sha256 = Column(String(64), nullable=False)
+    contract_id = Column(Integer, ForeignKey('contracts.contract_id', ondelete='CASCADE'), nullable=False)
+    receipts_json = Column(Text, nullable=False, default='{}')
+    __table_args__ = (UniqueConstraint('actor_id', 'request_key', name='uq_registration_attempt'),)
+
+
+class PaymentCorrection(Base):
+    """Append-only correction of an original payment fact, including an erroneous record."""
+    __tablename__ = 'pilot_payment_corrections'
+    correction_id = Column(Integer, primary_key=True, autoincrement=True)
+    payment_id = Column(Integer, ForeignKey('pilot_contract_payments.payment_id', ondelete='CASCADE'), nullable=False, index=True)
+    action = Column(String(20), nullable=False)
+    snapshot_json = Column(Text, nullable=False)
+    reason = Column(Text, nullable=False)
+    actor_name = Column(String(80), nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
 class Document(Base):
     __tablename__ = "documents"
 

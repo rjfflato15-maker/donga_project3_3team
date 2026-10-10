@@ -267,9 +267,12 @@ def test_missing_scope_anchor_is_derived_only_from_unique_labeled_evidence():
     result = guard_proposal("amount_scope", proposal("FULL", "", None, None), page(text), "estimate")
     assert result["accepted"] and result["anchor"]["quote"] == "견적서"
     assert "CODE_ANCHORED_SCOPE" in result["warnings"]
-    for text in ("견적서\n참고값 A: 100원\n참고값 B: 110원", "견적서\n합계금액: 110원\n잔금"):
+    for text in ("견적서\n참고값 A: 100원\n참고값 B: 110원",):
         result = guard_proposal("amount_scope", proposal("FULL", "", None, None), page(text), "estimate")
         assert not result["accepted"]
+    # A payment stage word does not change the aggregate estimate's scope.
+    text = "견적서\n합계금액: 110원\n잔금"
+    assert guard_proposal("amount_scope", proposal("FULL", "", None, None), page(text), "estimate")["accepted"]
 
 
 def test_original_incorrect_scope_patterns_and_absent_reference_values_stay_rejected():

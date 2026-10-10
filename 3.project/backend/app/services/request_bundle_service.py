@@ -279,3 +279,46 @@ def resolve_items(db, contract_id, request_id, req, actor):
         except Exception:
             db.rollback()
             raise
+
+
+def correct_items(db, contract_id, request_id, req, actor):
+    db.rollback()
+    with STORAGE_LOCK:
+        db.expire_all()
+        live_guard(db, contract_id, req.revision, req.fingerprint)
+        row = db.get(ResubmissionRequest, request_id)
+        if not row or row.contract_id != contract_id or row.bundle is None:
+            raise HTTPException(404, '이 계약의 묶음 요청 기록을 찾을 수 없습니다.')
+        bundle = row.bundle
+        if bundle.request_revision != req.request_revision:
+            raise HTTPException(409, '다른 사용자가 회신 기록을 변경했습니다. 다시 불러오세요.')
+        items = {item.item_id: item for item in bundle.items}
+        before = []
+        for change in req.items:
+            item = items.get(change.item_id)
+            if not item:
+                raise HTTPException(404, '이 요청에 속한 항목을 찾을 수 없습니다.')
+            if item.status == 'WAITING_RESPONSE':
+                raise HTTPException(409, '대기 중인 항목은 수령·취소 기록을 사용하세요.')
+            if change.status == 'WAITING_RESPONSE':
+                duplicate = db.query(RequestBundleItem).join(RequestBundle).filter(
+                    RequestBundle.contract_id == contract_id, RequestBundleItem.issue_key == item.issue_key,
+                    RequestBundleItem.status == 'WAITING_RESPONSE', RequestBundleItem.item_id != item.item_id).first()
+                if duplicate:
+                    raise HTTPException(409, '같은 항목의 새 요청이 이미 대기 중입니다. 새 요청 내역을 확인하세요.')
+            before.append({'item_id': item.item_id, 'status': item.status,
+                           'note': item.resolution_note, 'resolved_at': str(item.resolved_at)})
+        for change in req.items:
+            item = items[change.item_id]
+            item.status, item.resolution_note = change.status, change.note
+            item.resolved_at = None if change.status == 'WAITING_RESPONSE' else datetime.now(timezone.utc).replace(tzinfo=None)
+        bundle.request_revision += 1
+        row.status = 'WAITING_RESPONSE' if any(i.status == 'WAITING_RESPONSE' for i in bundle.items) else (
+            'RECEIVED' if any(i.status == 'RECEIVED' for i in bundle.items) else 'CANCELLED')
+        row.resolved_at = None if row.status == 'WAITING_RESPONSE' else datetime.now(timezone.utc).replace(tzinfo=None)
+        row.resolution_note = '\n'.join(f'{i.title}: {i.resolution_note or ""}' for i in bundle.items)
+        db.add(audit_row(actor, 'RESUBMISSION_BUNDLE_ITEMS_CORRECTED', contract_id,
+            {'request_id': request_id, 'before': before, 'items': [i.model_dump() for i in req.items],
+             'request_revision': bundle.request_revision}))
+        db.commit()
+        return request_response(row)

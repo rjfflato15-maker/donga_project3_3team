@@ -19,6 +19,9 @@ from ..security import Actor, get_current_user
 from ..services.workflow_service import audit
 from ..services.storage_service import read_upload, clean_name
 from ..config import IS_PILOT
+from ..db.models import Contract, ContractExclusion
+from pydantic import BaseModel, Field
+from ..services.storage_service import STORAGE_LOCK
 
 router = APIRouter(prefix="/api/contracts", tags=["Contracts"])
 contract_service = ContractService()
@@ -60,8 +63,8 @@ def parse_contract_file(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to parse contract file: {str(e)}",
-        )
+            detail="계약 파일을 읽지 못했습니다. 파일 형식과 내용을 확인한 뒤 다시 시도하세요.",
+        ) from e
     finally:
         if os.path.exists(temp_path):
             try:
@@ -84,6 +87,34 @@ def create_contract(req: ContractCreate, db: Session = Depends(get_db), actor: A
     audit(db, actor, "CONTRACT_CREATED", contract.contract_id, details={"title": req.title})
     detail = contract_service.get_contract_detail(db, contract.contract_id)
     return detail
+
+
+@router.get('/excluded')
+def excluded_contracts(db: Session = Depends(get_db)):
+    return [{'contract_id': contract.contract_id, 'title': contract.title,
+             'vendor_name': contract.vendor_name, 'excluded_at': excluded.created_at,
+             'excluded_by': excluded.actor_name}
+            for contract, excluded in db.query(Contract, ContractExclusion).join(
+                ContractExclusion, Contract.contract_id == ContractExclusion.contract_id).order_by(
+                    ContractExclusion.created_at.desc()).all()]
+
+
+class RestoreContract(BaseModel):
+    note: str = Field(min_length=3, max_length=500)
+
+
+@router.post('/{contract_id}/restore', response_model=ContractDetailResponse)
+def restore_contract(contract_id: int, req: RestoreContract, db: Session = Depends(get_db),
+                     actor: Actor = Depends(get_current_user)):
+    with STORAGE_LOCK:
+        excluded = db.get(ContractExclusion, contract_id)
+        if not db.get(Contract, contract_id):
+            raise HTTPException(404, '계약을 찾을 수 없습니다.')
+        if excluded:
+            db.delete(excluded)
+            audit(db, actor, 'CONTRACT_RESTORED', contract_id, details={'note': req.note.strip()})
+            db.commit()
+    return contract_service.get_contract_detail(db, contract_id)
 
 
 @router.get("/{contract_id}", response_model=ContractDetailResponse)
@@ -113,14 +144,14 @@ def update_contract(contract_id: int, req: ContractUpdate, db: Session = Depends
 
 @router.delete("/{contract_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_contract(contract_id: int, db: Session = Depends(get_db), actor: Actor = Depends(get_current_user)):
-    """Delete a contract and clean up all associated documents and validation records"""
-    success = contract_service.delete_contract(db, contract_id)
+    """Exclude from the inbox without deleting documents, reviews or payment facts."""
+    success = contract_service.delete_contract(db, contract_id, actor.display_name)
     if not success:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Contract with ID {contract_id} not found",
         )
-    audit(db, actor, "CONTRACT_DELETED", contract_id)
+    audit(db, actor, "CONTRACT_EXCLUDED", contract_id)
     return None
 
 

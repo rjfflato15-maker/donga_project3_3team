@@ -1,0 +1,92 @@
+{
+  "trees": [
+    "backend/app",
+    "backend/launcher",
+    "backend/scripts",
+    "backend/templates",
+    "backend/tests",
+    "frontend/src",
+    "tools/dev",
+    "tools/ops",
+    "tools/launcher",
+    "tools/docs",
+    "tools/installer",
+    "tools/docker",
+    "tools/submission"
+  ],
+  "root_files": [
+    "README.md",
+    ".gitignore",
+    ".dockerignore",
+    "package.json",
+    "package-lock.json",
+    "start_pilot.bat"
+  ],
+  "frontend_files": [
+    "index.html",
+    "package.json",
+    "package-lock.json",
+    "vite.config.ts",
+    "tsconfig.json",
+    "tailwind.config.js",
+    "postcss.config.js"
+  ],
+  "backend_files": [
+    "requirements.txt",
+    "requirements-verified.txt",
+    "pytest.ini",
+    ".env.example"
+  ],
+  "report_files": [
+    "docs/eval/dev/guard_v3/four_modes.md",
+    "docs/eval/test/final/four_modes.md",
+    "docs/eval/test2/final_four_modes.md",
+    "docs/development/verification_environment.json",
+    "docs/development/source_submission_verification_20261008.json",
+    "design-qa.md",
+    "eval/LABELING_GUIDE.md",
+    "eval/human_review_page/build_review_page.py",
+    "eval/human_review_page/review_page_template.html",
+    "eval/requirements-tools.txt",
+    "docs/development/recovery_release_verification_20261009.json",
+    "docs/development/source_update_verification_20261009.json",
+    "docs/development/runtime_confirmation_verification_20261009.json",
+    "docs/development/query_performance_verification_20261009.json",
+    "docs/development/billing_semantics_verification_20261010.json",
+    "docs/development/review_submission_verification_20261010.json",
+    "docs/development/focused_review_verification_20261010.json"
+  ],
+  "skip_directories": [
+    ".git",
+    ".venv",
+    "node_modules",
+    "__pycache__",
+    ".pytest_cache",
+    ".vite"
+  ],
+  "excluded_tests": [
+    "backend/tests/test_team_test_materials.py",
+    "backend/tests/test_neutral_test2_review.py",
+    "backend/tests/test_test2_result_analysis.py"
+  ],
+  "email_policy": {
+    "example_domains": [
+      "example.com",
+      "example.net",
+      "example.org",
+      "company.local",
+      "team.local",
+      "tests.local"
+    ],
+    "service_examples": []
+  },
+  "excluded_categories": [
+    "actual .env and backend/env",
+    "customer storage, DBs, accounts, logs and backups",
+    "local runtimes and downloaded libraries",
+    "model weights and caches",
+    "temporary files and prior shared ZIPs",
+    "raw evaluation and human-review datasets",
+    "old HTML prototypes and research originals"
+  ]
+}

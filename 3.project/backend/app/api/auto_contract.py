@@ -19,6 +19,9 @@ from ..services.pipeline_service import PipelineService
 from ..services.storage_service import read_upload, clean_name
 from ..services.workflow_service import audit
 from ..security import Actor, get_current_user
+from ..services.payment_service import OperationalContractDetailResponse as ContractDetailResponse
+from ..services.registration_service import register_batch
+import json
 
 router = APIRouter(prefix="/api/contracts", tags=["AutoContract"])
 contract_service = ContractService()
@@ -223,6 +226,11 @@ def auto_create_batch_contract(
     business_number: str = Form(...),
     contract_amount: float = Form(...),
     files: List[UploadFile] = File(...),
+    document_types: str = Form('[]'),
+    idempotency_key: str = Form('', max_length=100),
+    amount_basis: str = Form('UNKNOWN'),
+    tax_amount: Optional[float] = Form(None),
+    payment_mode: str = Form('FULL'),
     db: Session = Depends(get_db),
     actor: Actor = Depends(get_current_user),
 ):
@@ -232,30 +240,22 @@ def auto_create_batch_contract(
     """
     if not 1 <= len(files) <= 20:
         raise HTTPException(400, "한 번에 1~20개 파일을 등록하세요.")
+    try:
+        hints = json.loads(document_types)
+    except ValueError:
+        raise HTTPException(422, '서류 종류 목록을 확인하세요.')
+    if not hints:
+        hints = [''] * len(files)
+    if not isinstance(hints, list) or len(hints) != len(files) or any(
+            hint not in ['', *[kind.value for kind in DocumentType]] for hint in hints):
+        raise HTTPException(422, '파일별 서류 종류를 확인하세요.')
     contents = [(file, read_upload(file)) for file in files]
-
-    # 1. Create Contract
     contract_data = ContractCreate(
         title=title,
         vendor_name=vendor_name,
         business_number=business_number,
         contract_amount=contract_amount,
+        amount_basis=amount_basis, tax_amount=tax_amount, payment_mode=payment_mode,
     )
-    contract = contract_service.create_contract(db, contract_data, user_id=actor.user_id)
-
-    # 2. Upload and process all evidence documents
-    for file, content in contents:
-        try:
-            pipeline_service.process_document_upload(
-                db=db,
-                contract_id=contract.contract_id,
-                file_name=file.filename,
-                file_bytes=content,
-            )
-        except Exception as e:
-            raise HTTPException(500, "계약은 등록되었으나 일부 파일 처리에 실패했습니다. 계약 상세에서 보완하세요.") from e
-
-    audit(db, actor, "AUTO_CONTRACT_CREATED", contract.contract_id, details={"document_count": len(files)})
-    # 3. Return full contract detail with evidence validation
-    detail = contract_service.get_contract_detail(db, contract.contract_id)
-    return detail
+    return register_batch(db, actor, contract_data, contents, hints, idempotency_key,
+                          contract_service, pipeline_service)

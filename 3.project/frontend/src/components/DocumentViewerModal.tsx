@@ -63,8 +63,12 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
   const [previewError, setPreviewError] = useState('');
-  const [previewUrl, setPreviewUrl] = useState('');
-  const [liveText, setLiveText] = useState('');
+  const [preview, setPreview] = useState({ key: '', url: '' });
+  const [liveText, setLiveText] = useState({ key: '', text: '' });
+  const previewKey = `${document?.document_id}:${currentPage}:${isMasked}:${pdfViewMode}`;
+  // Never paint a previous document or an unmasked response under the ON label,
+  // even during the render before the next effect clears/reloads the source.
+  const previewUrl = preview.key === previewKey ? preview.url : '';
   const [downloadError, setDownloadError] = useState('');
   const [downloading, setDownloading] = useState(false);
 
@@ -110,22 +114,22 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
   }, [document?.document_id, isPdf]);
 
   useEffect(() => {
-    setPreviewError(''); setPreviewUrl(''); setImageLoaded(false); setLiveText('');
-    if (!document || document.file_available === false || activeTab !== 'preview') return;
+    setPreviewError(''); setPreview({ key: '', url: '' }); setImageLoaded(false); setLiveText({ key: '', text: '' });
+    if (!document || document.file_available === false) return;
     const controller = new AbortController();
     let active = true; let objectUrl = '';
     const timeout = window.setTimeout(() => controller.abort(), 30_000);
-    const path = isPdf || isImage ? (isPdf && pdfViewMode === 'embedded' ? `/api/documents/${document.document_id}/file?masked=${isMasked}` : `/api/documents/${document.document_id}/preview-image?page=${currentPage}&masked=${isMasked}`) : '';
+    const path = activeTab === 'preview' && (isPdf || isImage) ? (isPdf && pdfViewMode === 'embedded' ? `/api/documents/${document.document_id}/file?masked=${isMasked}` : `/api/documents/${document.document_id}/preview-image?page=${currentPage}&masked=${isMasked}`) : '';
     const operation = path ? fetch(path, { credentials: 'same-origin', signal: controller.signal }).then(async response => {
       if (!response.ok) {
         if (response.status === 401) window.dispatchEvent(new Event('session-expired'));
         const body = await response.json().catch(() => ({})); throw new Error(body.detail || '미리보기를 생성하지 못했습니다.');
       }
       return response.blob();
-    }).then(blob => { if (active) { objectUrl = URL.createObjectURL(blob); setPreviewUrl(objectUrl); setImageLoaded(true); } }) : requestJson<{ text: string }>(`/api/documents/${document.document_id}/text-preview?masked=${isMasked}`, { signal: controller.signal }).then(value => { if (active) setLiveText(value.text); });
+    }).then(blob => { if (active) { objectUrl = URL.createObjectURL(blob); setPreview({ key: previewKey, url: objectUrl }); setImageLoaded(true); } }) : requestJson<{ text: string }>(`/api/documents/${document.document_id}/text-preview?masked=${isMasked}`, { signal: controller.signal }).then(value => { if (active) setLiveText({ key: previewKey, text: value.text }); });
     operation.catch(reason => { if (active) { setPreviewError(controller.signal.aborted ? '미리보기 생성이 30초를 넘었습니다. 다시 열거나 원본을 내려받아 확인하세요.' : reason.message); setImageLoaded(true); } }).finally(() => window.clearTimeout(timeout));
     return () => { active = false; controller.abort(); window.clearTimeout(timeout); if (objectUrl) URL.revokeObjectURL(objectUrl); };
-  }, [document, activeTab, currentPage, isMasked, isPdf, isImage, pdfViewMode]);
+  }, [document, activeTab, currentPage, isMasked, isPdf, isImage, pdfViewMode, previewKey]);
 
   const download = async (masked: boolean) => {
     if (!document) return;
@@ -142,13 +146,12 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
   const previewImageUrl = previewUrl;
 
   const getDisplayContent = () => {
-    if (!document) return '';
+    if (!document || liveText.key !== previewKey) return '';
     if (isMasked) {
-      const baseText = liveText || document.masked_text || '';
-      return maskAllSensitiveInfo(baseText);
+      return maskAllSensitiveInfo(liveText.text);
     }
     // When masking is OFF, show full raw unmasked original text
-    return liveText;
+    return liveText.text;
   };
 
   const handleCopyText = (text: string) => {
@@ -528,7 +531,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
           </div>
           {downloadError && <p role="alert" className="mb-3 rounded-xl bg-rose-50 p-3 text-xs text-rose-800">{downloadError}</p>}
           {document.file_available === false && <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs leading-6 text-amber-900"><strong>공용 서버에 원본이 없습니다.</strong> 등록 정보와 추출값만 남아 있습니다. 담당자가 원본을 다시 등록하면 팀원이 같은 파일을 미리 보고 내려받을 수 있습니다.{onManage && <button className="ml-2 font-bold underline" onClick={onManage}>원본 다시 등록</button>}</div>}
-          {previewError && activeTab === 'preview' && <p role="alert" className="mb-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-xs text-rose-800">{previewError} 마스킹 실패 시 원본을 자동으로 대신 표시하지 않습니다.</p>}
+          {previewError && <p role="alert" className="mb-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-xs text-rose-800">{previewError} 마스킹 실패 시 원본을 자동으로 대신 표시하지 않습니다.</p>}
           {activeTab === 'fields' ? (
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

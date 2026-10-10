@@ -1,0 +1,705 @@
+{
+  "schema_version": 1,
+  "workspace_root_is_parent": true,
+  "entrypoints": [
+    "README.md",
+    "docs/README.md",
+    "../README.md"
+  ],
+  "documents": [
+    {
+      "path": "README.md",
+      "status": "current",
+      "group": "portal",
+      "canonical_for": [
+        "project_entry"
+      ],
+      "sources": [
+        "backend/app/main.py",
+        "package.json"
+      ]
+    },
+    {
+      "path": "docs/README.md",
+      "status": "current",
+      "group": "portal",
+      "canonical_for": [
+        "documentation_entry"
+      ],
+      "sources": []
+    },
+    {
+      "path": "docs/development/getting_started.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "developer_bootstrap"
+      ],
+      "sources": [
+        "backend/manage_pilot.py",
+        "backend/app/config.py",
+        "frontend/vite.config.ts",
+        "tools/dev/node/setup.js"
+      ]
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "status": "current",
+      "group": "architecture",
+      "canonical_for": [
+        "system_architecture"
+      ],
+      "sources": [
+        "backend/app/main.py",
+        "backend/app/ai/__init__.py",
+        "backend/app/services/pipeline_service.py",
+        "backend/app/services/vlm_reread_service.py"
+      ]
+    },
+    {
+      "path": "docs/architecture/module_map.md",
+      "status": "current",
+      "group": "architecture",
+      "canonical_for": [
+        "module_responsibilities"
+      ],
+      "sources": [
+        "backend/app/api/__init__.py",
+        "backend/app/db/models.py",
+        "frontend/src/pages/ContractDashboard.tsx",
+        "frontend/src/features/contracts/dashboardModel.ts",
+        "frontend/src/features/requests/model.ts",
+        "frontend/src/features/assignments/api.ts",
+        "backend/app/schemas/review.py",
+        "backend/app/services/contract_review_service.py",
+        "backend/app/services/document_correction_service.py",
+        "backend/tests/test_service_boundaries.py"
+      ]
+    },
+    {
+      "path": "docs/development/maintenance.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "developer_change_process"
+      ],
+      "sources": [
+        "backend/app/services/workflow_service.py",
+        "frontend/src/hooks/useAutoRefresh.ts"
+      ]
+    },
+    {
+      "path": "docs/development/maintenance_cheat_sheet.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "maintenance_task_index"
+      ],
+      "sources": []
+    },
+    {
+      "path": "docs/ai/pipeline.md",
+      "status": "current",
+      "group": "ai",
+      "canonical_for": [
+        "document_ai_flow"
+      ],
+      "sources": [
+        "backend/app/ai/__init__.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/ai/grounding.py",
+        "backend/app/ai/local_vlm.py",
+        "backend/app/services/vlm_reread_service.py",
+        "backend/app/api/documents.py"
+      ]
+    },
+    {
+      "path": "docs/ai/runtime_settings.md",
+      "status": "current",
+      "group": "ai",
+      "canonical_for": [
+        "runtime_configuration"
+      ],
+      "sources": [
+        "backend/app/config.py",
+        "backend/app/ai/local_llm.py",
+        "backend/app/ai/local_vlm.py",
+        "backend/launcher/environment.py",
+        "backend/launcher/settings.py"
+      ]
+    },
+    {
+      "path": "docs/validation/current_rules.md",
+      "status": "current",
+      "group": "validation",
+      "canonical_for": [
+        "validation_policy"
+      ],
+      "sources": [
+        "backend/app/validation/engine.py",
+        "backend/app/validation/financial.py",
+        "backend/app/schemas/common.py",
+        "backend/app/services/workflow_service.py"
+      ]
+    },
+    {
+      "path": "docs/archive_index.md",
+      "status": "current",
+      "group": "archive",
+      "canonical_for": [
+        "archive_navigation"
+      ],
+      "sources": []
+    },
+    {
+      "path": "docs/development/test_and_verification.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "test_commands"
+      ],
+      "sources": [
+        "package.json",
+        "frontend/package.json",
+        "backend/tests/conftest.py",
+        "tools/docs/lint_docs.py"
+      ]
+    },
+    {
+      "path": "docs/development/verification_latest.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "latest_verification"
+      ],
+      "sources": []
+    },
+    {
+      "path": "docs/development/documentation.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "documentation_process"
+      ],
+      "sources": [
+        "tools/docs/lint_docs.py",
+        "tools/docs/test_lint_docs.py"
+      ]
+    },
+    {
+      "path": "docs/development/recipes/change_ui.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "recipe_change_ui"
+      ],
+      "sources": [
+        "frontend/src/pages/ContractDashboard.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentWorkspace.tsx",
+        "frontend/src/compare-ui.css",
+        "frontend/src/index.css",
+        "frontend/src/main.tsx",
+        "frontend/src/sidebar-ui.css",
+        "frontend/src/compare-runtime.css",
+        "frontend/src/components/review-workspace.css",
+        "frontend/package.json"
+      ]
+    },
+    {
+      "path": "docs/development/recipes/change_api.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "recipe_change_api"
+      ],
+      "sources": [
+        "backend/app/api/__init__.py",
+        "backend/app/api/documents.py",
+        "backend/app/schemas/document.py",
+        "frontend/src/api/client.ts",
+        "frontend/src/types/index.ts",
+        "backend/app/schemas/review.py",
+        "backend/app/services/document_correction_service.py",
+        "backend/app/services/contract_review_service.py",
+        "frontend/src/features/requests/api.ts"
+      ]
+    },
+    {
+      "path": "docs/development/recipes/add_field.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "recipe_add_field"
+      ],
+      "sources": [
+        "backend/app/schemas/document.py",
+        "backend/app/ai/extractor.py",
+        "backend/app/services/review_context_service.py",
+        "frontend/src/utils/documentFields.ts",
+        "backend/app/services/settlement_export_service.py"
+      ]
+    },
+    {
+      "path": "docs/development/recipes/change_rule.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "recipe_change_rule"
+      ],
+      "sources": [
+        "backend/app/validation/engine.py",
+        "backend/app/validation/financial.py",
+        "backend/app/validation/metrics.py",
+        "backend/app/services/workflow_service.py"
+      ]
+    },
+    {
+      "path": "docs/development/recipes/add_document_type.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "recipe_add_document_type"
+      ],
+      "sources": [
+        "backend/app/schemas/common.py",
+        "backend/app/ai/classifier.py",
+        "backend/app/ai/extractor.py",
+        "backend/app/services/company_policy_service.py",
+        "backend/app/validation/engine.py",
+        "frontend/src/types/index.ts",
+        "frontend/src/utils/documentLabels.ts"
+      ]
+    },
+    {
+      "path": "docs/development/recipes/recovery.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "recipe_recovery"
+      ],
+      "sources": [
+        "backend/manage_pilot.py",
+        "backend/launcher/operations.py",
+        "backend/launcher/server.py"
+      ]
+    },
+    {
+      "path": "docs/operations/run_guide.md",
+      "status": "current",
+      "group": "operations",
+      "canonical_for": [
+        "operations_entry"
+      ],
+      "sources": [
+        "backend/launcher/cli.py"
+      ]
+    },
+    {
+      "path": "docs/operations/installation.md",
+      "status": "current",
+      "group": "operations",
+      "canonical_for": [
+        "source_installation"
+      ],
+      "sources": [
+        "start_pilot.bat",
+        "tools/launcher/build_launcher.ps1",
+        "backend/launcher/operations.py",
+        "backend/launcher/settings.py"
+      ]
+    },
+    {
+      "path": "docs/operations/startup_settings.md",
+      "status": "current",
+      "group": "operations",
+      "canonical_for": [
+        "launcher_operation"
+      ],
+      "sources": [
+        "backend/launcher/cli.py",
+        "backend/launcher/settings.py",
+        "backend/launcher/server.py"
+      ]
+    },
+    {
+      "path": "docs/operations/workflow.md",
+      "status": "current",
+      "group": "operations",
+      "canonical_for": [
+        "user_workflow"
+      ],
+      "sources": [
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentWorkspace.tsx",
+        "frontend/src/hooks/useAutoRefresh.ts",
+        "backend/app/services/workflow_service.py"
+      ]
+    },
+    {
+      "path": "docs/operations/accounting_export.md",
+      "status": "current",
+      "group": "operations",
+      "canonical_for": [
+        "accounting_export_usage"
+      ],
+      "sources": [
+        "backend/app/api/contract_exports.py",
+        "backend/app/services/settlement_export_service.py",
+        "backend/app/services/contract_export_service.py"
+      ]
+    },
+    {
+      "path": "docs/operations/customer_package.md",
+      "status": "current",
+      "group": "operations",
+      "canonical_for": [
+        "installer_status"
+      ],
+      "sources": [
+        "tools/installer/build_package.py",
+        "tools/installer/build_setup.ps1",
+        "tools/installer/C-Pilot.iss",
+        "backend/launcher/ai_setup.py"
+      ]
+    },
+    {
+      "path": "docs/api/README.md",
+      "status": "current",
+      "group": "api",
+      "canonical_for": [
+        "api_navigation"
+      ],
+      "sources": [
+        "backend/app/api/__init__.py",
+        "frontend/src/api/client.ts"
+      ]
+    },
+    {
+      "path": "docs/api/frontend_integration.md",
+      "status": "current",
+      "group": "api",
+      "canonical_for": [
+        "frontend_api_contract"
+      ],
+      "sources": [
+        "frontend/src/pages/ContractDashboard.tsx",
+        "frontend/src/components/review/ContractStageView.tsx",
+        "frontend/src/components/review/DocumentWorkspace.tsx",
+        "frontend/src/hooks/useAutoRefresh.ts",
+        "backend/app/api/documents.py",
+        "frontend/src/hooks/useVlmReread.ts",
+        "frontend/src/components/review/ReviewFieldTable.tsx",
+        "frontend/src/features/requests/api.ts",
+        "frontend/src/features/requests/model.ts",
+        "backend/app/services/document_correction_service.py",
+        "backend/app/services/contract_review_service.py"
+      ]
+    },
+    {
+      "path": "docs/progress/current_status.md",
+      "status": "current",
+      "group": "progress",
+      "canonical_for": [
+        "current_product_status"
+      ],
+      "sources": [
+        "backend/app/api/contract_exports.py",
+        "backend/app/api/vlm_reread.py",
+        "frontend/src/hooks/useAutoRefresh.ts",
+        "tools/installer/C-Pilot.iss"
+      ]
+    },
+    {
+      "path": "docs/submission/explanation_outline.md",
+      "status": "draft",
+      "group": "submission",
+      "canonical_for": [
+        "submission_outline"
+      ],
+      "sources": []
+    },
+    {
+      "path": "docs/submission/evaluation_results.md",
+      "status": "current",
+      "group": "submission",
+      "canonical_for": [
+        "evaluation_summary"
+      ],
+      "sources": [
+        "docs/eval/dev/guard_v3/four_modes.md",
+        "docs/eval/test/final/four_modes.md",
+        "docs/eval/test2/final_four_modes.md"
+      ]
+    },
+    {
+      "path": "docs/submission/presentation_outline.md",
+      "status": "draft",
+      "group": "submission",
+      "canonical_for": [
+        "presentation_outline"
+      ],
+      "sources": []
+    },
+    {
+      "path": "docs/development/distribution_boundary.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "distribution_boundary"
+      ],
+      "sources": [
+        "tools/installer/build_package.py",
+        ".gitignore"
+      ]
+    },
+    {
+      "path": "tools/README.md",
+      "status": "current",
+      "group": "tools",
+      "canonical_for": [
+        "tools_navigation"
+      ],
+      "sources": [
+        "tools/docs/lint_docs.py",
+        "package.json"
+      ]
+    },
+    {
+      "path": "docs/development/workspace_layout.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "workspace_layout"
+      ],
+      "sources": [
+        "../.gitignore",
+        ".gitignore"
+      ]
+    },
+    {
+      "path": "../README.md",
+      "status": "current",
+      "group": "portal",
+      "canonical_for": [
+        "workspace_entry"
+      ],
+      "sources": [
+        "../.gitignore"
+      ]
+    },
+    {
+      "path": "docs/operations/accounts_security.md",
+      "status": "current",
+      "group": "operations",
+      "sources": [
+        "backend/app/security.py",
+        "backend/app/api/auth.py"
+      ],
+      "canonical_for": [
+        "account_operation"
+      ]
+    },
+    {
+      "path": "docs/operations/network.md",
+      "status": "current",
+      "group": "operations",
+      "sources": [
+        "backend/launcher/environment.py",
+        "backend/app/config.py"
+      ],
+      "canonical_for": [
+        "intranet_operation"
+      ]
+    },
+    {
+      "path": "docs/operations/backup_restore.md",
+      "status": "current",
+      "group": "operations",
+      "sources": [
+        "backend/manage_pilot.py",
+        "backend/launcher/operations.py"
+      ],
+      "canonical_for": [
+        "backup_restore_operation"
+      ]
+    },
+    {
+      "path": "docs/operations/maintenance.md",
+      "status": "current",
+      "group": "operations",
+      "sources": [
+        "backend/manage_pilot.py",
+        "backend/launcher/server.py"
+      ],
+      "canonical_for": [
+        "customer_update"
+      ]
+    },
+    {
+      "path": "docs/api/work_system.md",
+      "status": "current",
+      "group": "api",
+      "sources": [
+        "backend/app/api/workflow.py",
+        "backend/app/api/contract_exports.py",
+        "backend/app/api/vlm_reread.py"
+      ],
+      "canonical_for": [
+        "work_system_api"
+      ]
+    },
+    {
+      "path": "docs/api/bundled_requests.md",
+      "status": "current",
+      "group": "api",
+      "sources": [
+        "backend/app/api/request_bundles.py",
+        "backend/app/services/request_bundle_service.py"
+      ],
+      "canonical_for": [
+        "bundle_request_api"
+      ]
+    },
+    {
+      "path": "docs/api/payment_record.md",
+      "status": "current",
+      "group": "api",
+      "sources": [
+        "backend/app/api/payments.py",
+        "backend/app/services/payment_service.py"
+      ],
+      "canonical_for": [
+        "payment_api"
+      ]
+    },
+    {
+      "path": "docs/development/folder_guide.md",
+      "status": "current",
+      "group": "development",
+      "canonical_for": [
+        "retention_policy"
+      ],
+      "sources": [
+        ".gitignore",
+        "../.gitignore"
+      ]
+    },
+    {
+      "path": "docs/operations/distribution.md",
+      "status": "current",
+      "group": "operations",
+      "canonical_for": [
+        "distribution_review"
+      ],
+      "sources": [
+        "backend/requirements.txt",
+        "tools/installer/build_package.py"
+      ]
+    },
+    {
+      "path": "docs/submission/app_overview_research_brief.md",
+      "status": "draft",
+      "group": "submission",
+      "canonical_for": [
+        "app_overview_and_competitor_research_brief"
+      ],
+      "sources": [
+        "backend/app/validation/engine.py",
+        "backend/app/ai/llm_supplement.py",
+        "backend/app/services/vlm_reread_service.py",
+        "backend/app/services/company_policy_service.py"
+      ]
+    },
+    {
+      "path": "docs/architecture/erd.md",
+      "status": "current",
+      "group": "architecture",
+      "canonical_for": [
+        "current_database_schema"
+      ],
+      "sources": [
+        "backend/app/db/models.py"
+      ]
+    },
+    {
+      "path": "docs/ux/current_review_flow.md",
+      "status": "current",
+      "group": "ux",
+      "canonical_for": [
+        "current_review_user_flow"
+      ],
+      "sources": [
+        "frontend/src/components/review/DocumentWorkspace.tsx",
+        "frontend/src/components/review/DocumentChangeSummary.tsx",
+        "frontend/src/components/review/ReviewOverviewPanel.tsx"
+      ]
+    },
+    {
+      "path": "docs/submission/source_package.md",
+      "status": "current",
+      "group": "submission",
+      "canonical_for": [
+        "source_submission_scope"
+      ],
+      "sources": [
+        "tools/submission/build_source_zip.py",
+        "tools/submission/source_policy.json",
+        "backend/.env.example"
+      ]
+    }
+  ],
+  "preserved_paths": [
+    "docs/eval/",
+    "docs/progress/history/",
+    "eval/",
+    "sample-data/",
+    "docs/research/",
+    "docs/ux/"
+  ],
+  "code_contracts": [
+    {
+      "name": "업무함 기본 10초",
+      "source": "frontend/src/hooks/useAutoRefresh.ts",
+      "pattern": "AUTO_REFRESH_INTERVAL_MS\\s*=\\s*10_000",
+      "document": "docs/api/frontend_integration.md"
+    },
+    {
+      "name": "직접 실행 LLM 기본 비활성",
+      "source": "backend/app/ai/__init__.py",
+      "pattern": "getenv\\(\"APP_LLM_ENABLED\", \"false\"\\)",
+      "document": "docs/ai/runtime_settings.md"
+    },
+    {
+      "name": "직접 실행 VLM 기본 모델",
+      "source": "backend/app/ai/local_vlm.py",
+      "pattern": "APP_VLM_MODEL', 'qwen2\\.5vl:7b'",
+      "document": "docs/ai/runtime_settings.md"
+    },
+    {
+      "name": "직접 실행 VLM 기본 90초",
+      "source": "backend/app/ai/local_vlm.py",
+      "pattern": "APP_VLM_TIMEOUT', '90'",
+      "document": "docs/ai/runtime_settings.md"
+    },
+    {
+      "name": "정산 엑셀 API",
+      "source": "backend/app/api/contract_exports.py",
+      "pattern": "settlement-export",
+      "document": "docs/operations/accounting_export.md"
+    },
+    {
+      "name": "VLM 후보 자동 반영 없음",
+      "source": "backend/app/services/vlm_reread_service.py",
+      "pattern": "automatically_applied=False",
+      "document": "docs/ai/pipeline.md"
+    },
+    {
+      "name": "자료 버전이 있는 필드 정정",
+      "source": "backend/app/services/document_correction_service.py",
+      "pattern": "confirmed_fields",
+      "document": "docs/api/frontend_integration.md"
+    }
+  ],
+  "erd_document": "docs/architecture/erd.md"
+}

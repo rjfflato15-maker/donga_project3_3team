@@ -4,14 +4,16 @@ import json
 import os
 from pathlib import Path
 
-from .environment import PROJECT, LauncherError
+from .environment import PROJECT, LauncherError, is_packaged, user_data_directory
 
-DEFAULT_SETTINGS = PROJECT / "storage/launcher/settings.json"
+DEFAULT_SETTINGS = (user_data_directory() / 'launcher/settings.json' if is_packaged()
+                    else PROJECT / "storage/launcher/settings.json")
 
 
 def load_settings(path):
-    defaults = {"storage_root": str(PROJECT / "storage/pilot"), "port": 8000, "intranet": False,
-                "backup_directory": str(PROJECT / "storage/backups")}
+    root = user_data_directory() if is_packaged() else PROJECT / 'storage'
+    defaults = {"storage_root": str(root / "pilot"), "port": 8000, "intranet": False,
+                "backup_directory": str(root / "backups"), 'llm_enabled': False, 'vlm_enabled': True}
     if path.exists():
         try:
             saved = json.loads(path.read_text(encoding="utf-8"))
@@ -22,6 +24,8 @@ def load_settings(path):
         defaults.update(saved)
     if type(defaults["port"]) is not int or not 1024 <= defaults["port"] <= 65535 or type(defaults["intranet"]) is not bool:
         raise LauncherError("접속 포트는 1024~65535, 사내망 사용은 true/false로 지정하세요.")
+    if any(type(defaults[key]) is not bool for key in ('llm_enabled', 'vlm_enabled')):
+        raise LauncherError('AI 사용 설정은 true/false로 지정하세요.')
     for key in ("storage_root", "backup_directory"):
         if not isinstance(defaults[key], str) or not defaults[key].strip():
             raise LauncherError("자료·백업 폴더를 확인하세요.")

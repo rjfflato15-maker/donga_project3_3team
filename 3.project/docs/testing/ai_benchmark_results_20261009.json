@@ -1,0 +1,452 @@
+{
+  "schema_version": "cpilot-ai-benchmark-summary-v1",
+  "created_at": "2026-10-09T06:06:07.294069+00:00",
+  "conclusion": "No measured accuracy improvement on cached held-out inputs; no end-to-end speedup measured.",
+  "heldout_reuse": "Exploratory guard replay after implementation freeze; not a new independent final evaluation.",
+  "real_ocr_execution": false,
+  "real_model_execution": false,
+  "new_contract_validation_for_replayed_fields": false,
+  "splits": {
+    "test": {
+      "documents": 59,
+      "guard_policy": "v3",
+      "inputs_identical": true,
+      "field_predictions_identical": true,
+      "full_decisions_identical": true,
+      "guard_outcomes_identical": true,
+      "baseline_field_metrics": {
+        "correct": 262,
+        "scored": 337,
+        "accuracy": 0.7774480712166172,
+        "absent": 76,
+        "false_extraction_on_absent": 0
+      },
+      "current_field_metrics": {
+        "correct": 262,
+        "scored": 337,
+        "accuracy": 0.7774480712166172,
+        "absent": 76,
+        "false_extraction_on_absent": 0
+      },
+      "current_guard_outcomes": {
+        "rejected_gold_mismatching": 11,
+        "rejected_human_referral_count": 111,
+        "rejected_gold_matching": 100,
+        "accepted_gold_mismatching": 9,
+        "requested_field_count": 130,
+        "human_referral_field_count": 111,
+        "accepted_gold_matching": 10,
+        "accepted_value_count": 10,
+        "accepted_value_correct": 10,
+        "accepted_value_precision": 1.0,
+        "human_referral_field_rate": 0.8538461538461538,
+        "guard_auto_validated_field_rate": 0.1461538461538462,
+        "document_count": 59,
+        "called_document_count": 30,
+        "human_referral_document_count": 24,
+        "human_referral_document_rate": 0.4067796610169492,
+        "no_additional_review_document_rate": 0.5932203389830508,
+        "guard_auto_validated_called_document_count": 6,
+        "guard_auto_validated_called_document_rate": 0.2,
+        "human_referral_document_ids": [
+          "20101",
+          "20104",
+          "20203",
+          "20302",
+          "20305",
+          "20401",
+          "20404",
+          "20503",
+          "20506",
+          "20602",
+          "20605",
+          "20607",
+          "20701",
+          "20702",
+          "20703",
+          "20704",
+          "20705",
+          "20706",
+          "20803",
+          "20806",
+          "20902",
+          "20905",
+          "21001",
+          "21004"
+        ],
+        "definition": "Referral means unresolved requested field (rejected, REVIEW or failed/missing response). Auto validation is machine grounding, not final human confirmation; all AI proposals remain human_confirmed=false. Rejected correctness is an offline gold audit."
+      },
+      "changed_decisions_from_archive": [],
+      "baseline_guard_call_seconds": {
+        "samples": 1180,
+        "mean": 0.0001366047347315636,
+        "p50": 7.145549989218125e-05,
+        "p95": 0.00044264299958740594
+      },
+      "current_guard_call_seconds": {
+        "samples": 1180,
+        "mean": 0.0001733032457827826,
+        "p50": 7.868600005167536e-05,
+        "p95": 0.0005706119991373271
+      },
+      "timing_definition": "Local apply_proposals only, includes empty-target calls and first-call costs; no import/OCR/model/contract-check time. No hardware speedup claim.",
+      "source_unchanged_during_both_runs": true,
+      "frozen_inputs_reverified": true,
+      "official_metrics_exactly_reproduced": true,
+      "official_reproduced_metrics": {
+        "rule": {
+          "field_accuracy": 0.7566765578635015,
+          "field_counts": {
+            "all": 413,
+            "provided": 273,
+            "scored": 337,
+            "correct": 255,
+            "present": 333,
+            "present_correct": 251,
+            "absent": 76,
+            "ambiguous": 4,
+            "ambiguous_correct": 4
+          },
+          "check_state_accuracy": 0.8170731707317073,
+          "wrong_pass_counts": {
+            "unsafe_expected": 17,
+            "wrong_pass": 0,
+            "predicted_pass": 50
+          }
+        },
+        "llm": {
+          "field_accuracy": 0.8308605341246291,
+          "field_counts": {
+            "all": 413,
+            "provided": 283,
+            "scored": 337,
+            "correct": 280,
+            "present": 333,
+            "present_correct": 277,
+            "absent": 76,
+            "ambiguous": 4,
+            "ambiguous_correct": 3
+          },
+          "check_state_accuracy": 0.9594594594594594,
+          "wrong_pass_counts": {
+            "unsafe_expected": 17,
+            "wrong_pass": 0,
+            "predicted_pass": 54
+          }
+        },
+        "hybrid_unguarded": {
+          "field_accuracy": 0.9465875370919882,
+          "field_counts": {
+            "all": 413,
+            "provided": 324,
+            "scored": 337,
+            "correct": 319,
+            "present": 333,
+            "present_correct": 316,
+            "absent": 76,
+            "ambiguous": 4,
+            "ambiguous_correct": 3
+          },
+          "check_state_accuracy": 0.9733333333333334,
+          "wrong_pass_counts": {
+            "unsafe_expected": 17,
+            "wrong_pass": 0,
+            "predicted_pass": 56
+          }
+        },
+        "hybrid_guarded": {
+          "field_accuracy": 0.7774480712166172,
+          "field_counts": {
+            "all": 413,
+            "provided": 273,
+            "scored": 337,
+            "correct": 262,
+            "present": 333,
+            "present_correct": 258,
+            "absent": 76,
+            "ambiguous": 4,
+            "ambiguous_correct": 4
+          },
+          "check_state_accuracy": 0.8170731707317073,
+          "wrong_pass_counts": {
+            "unsafe_expected": 17,
+            "wrong_pass": 0,
+            "predicted_pass": 50
+          }
+        }
+      },
+      "labels_sha256": "296c093264ce09b6287be02bc6351adf42aacdf155927107038307643e45d758",
+      "same_inputs_sha256": "e0665c798315c5f5ccebab97085815615e770e8ce61d3da82805527e235d0a41",
+      "baseline_implementation_sha256": {
+        "backend/app/ai/__init__.py": "83c79a5fa311d2cc1bdcef383bec14426de05014b1b7a12ea8f81f57df915197",
+        "backend/app/ai/classifier.py": "4747cf9c9d8d7fa3d18da9a563fe8e5fff4920a25d0ad70bbaab2b87b0a54bb1",
+        "backend/app/ai/extractor.py": "e3c05b5af58d2fdc6163189110410e56659050d50b308003cdb73094294fc5c9",
+        "backend/app/ai/grounding.py": "b94137a16b39ddd5e6ee67f8e2dfdaa2e797ded729683047e9de90222e4614cb",
+        "backend/app/ai/grounding_v4.py": "bb69719a812e1b2b0fa4fc327d047720e83ba148b1edaa107f38b38406746d53",
+        "backend/app/ai/llm_supplement.py": "321ea2465268d92e372abc3b980994170600ca2c75b2cb47fcfdce7ce1e0c064",
+        "backend/app/ai/local_llm.py": "4a5e44b743663a4da3c9f9000dc026b02498a2ab372059850d2a1ba8c2c65419",
+        "backend/app/ai/local_vlm.py": "caee0b5453e4006d58b0063bca108dfa45847c140c09622f891bf0866a5eac77",
+        "backend/app/ai/masking.py": "5ded58e30283f303f20dd78ac7b380533e8d524678e47307fc13859f942ff110",
+        "backend/app/ai/pdf_runtime.py": "a651b5c9a4406aae8908b9aa6f3cd76e4e6868813a2073af659292ab2998b76b",
+        "backend/app/ai/preprocessor.py": "aa6176ad34fa597e73258c12cf37387230be3233a19835223b38597306d4f6ab",
+        "backend/app/ai/visual_masking.py": "60595c0ddefe3290a8e2afd3fb10be821184ba80e43e8aea55fcad70995772b7",
+        "backend/evaluation_core.py": "69ce027289862a39873a01c93dd4d3472105752de2b7570c6d96dff4088b68ef",
+        "backend/prediction_artifacts.py": "07915cda4c2e45eead8121fda9f227e224ed763ad3a3bca1cd8c73aa714f49ff",
+        "backend/prediction_scoring.py": "4a45fe177b3020c3acfd6512738e61c734c7ab62ab6debadb0612cc275ff2c4f",
+        "backend/scripts/compare_llm_modes.py": "123e838c9c46ff8a8ac594a14939144e4d5d7ceb1cdc6737326c47dd8759ae12"
+      },
+      "current_implementation_sha256": {
+        "backend/app/ai/__init__.py": "d697f2a3284c6dfbc8af4ac03921973ae2347fbef93310a368adc3e4e7b55c17",
+        "backend/app/ai/classifier.py": "4747cf9c9d8d7fa3d18da9a563fe8e5fff4920a25d0ad70bbaab2b87b0a54bb1",
+        "backend/app/ai/extractor.py": "e3c05b5af58d2fdc6163189110410e56659050d50b308003cdb73094294fc5c9",
+        "backend/app/ai/grounding.py": "b9b32780ddc80ee2d3913d1dbdfdcb1738df8c27e9cd10660f0f5c9ddc214ec5",
+        "backend/app/ai/grounding_v4.py": "450ecf78f880a05f1c43b07fa57ba7cfe303da877387b32fd96681dc79180e70",
+        "backend/app/ai/llm_supplement.py": "2c7f0825dbfdf67e79f634dab32001e3e20ba3d567c84d47348cc744d34d831d",
+        "backend/app/ai/local_llm.py": "4a5e44b743663a4da3c9f9000dc026b02498a2ab372059850d2a1ba8c2c65419",
+        "backend/app/ai/local_vlm.py": "2d3dac94690cebdb805e93d1b8bed22c01ce361879adb1eb23b9eb9c4534078e",
+        "backend/app/ai/masking.py": "5ded58e30283f303f20dd78ac7b380533e8d524678e47307fc13859f942ff110",
+        "backend/app/ai/pdf_runtime.py": "d2ac5815163933394c22e995209bc42446e452dfeb78ddc63ecf247eecf5d567",
+        "backend/app/ai/preprocessor.py": "286f38a63245d8b916c76e21555f03c517a5b95f205fd528dd76efe001bbcf63",
+        "backend/app/ai/visual_masking.py": "60595c0ddefe3290a8e2afd3fb10be821184ba80e43e8aea55fcad70995772b7",
+        "backend/evaluation_core.py": "69ce027289862a39873a01c93dd4d3472105752de2b7570c6d96dff4088b68ef",
+        "backend/prediction_artifacts.py": "07915cda4c2e45eead8121fda9f227e224ed763ad3a3bca1cd8c73aa714f49ff",
+        "backend/prediction_scoring.py": "4a45fe177b3020c3acfd6512738e61c734c7ab62ab6debadb0612cc275ff2c4f",
+        "backend/scripts/compare_llm_modes.py": "123e838c9c46ff8a8ac594a14939144e4d5d7ceb1cdc6737326c47dd8759ae12"
+      },
+      "raw_report_files": {
+        "baseline-test-cached-replay-verified.json": "152a7a0838eb9ccf311f87c912cebb24e175b3f823d062cc693c380679555734",
+        "current-test-cached-replay-release.json": "96929f3c85051cfe58c13b2af111aed8908c25322dd26c054d4e89a1b49c44fe"
+      }
+    },
+    "test2": {
+      "documents": 36,
+      "guard_policy": "v4",
+      "inputs_identical": true,
+      "field_predictions_identical": true,
+      "full_decisions_identical": true,
+      "guard_outcomes_identical": true,
+      "baseline_field_metrics": {
+        "correct": 195,
+        "scored": 204,
+        "accuracy": 0.9558823529411765,
+        "absent": 48,
+        "false_extraction_on_absent": 0
+      },
+      "current_field_metrics": {
+        "correct": 195,
+        "scored": 204,
+        "accuracy": 0.9558823529411765,
+        "absent": 48,
+        "false_extraction_on_absent": 0
+      },
+      "current_guard_outcomes": {
+        "requested_field_count": 22,
+        "human_referral_field_count": 12,
+        "accepted_gold_matching": 8,
+        "accepted_value_count": 8,
+        "accepted_value_correct": 8,
+        "accepted_gold_mismatching": 4,
+        "rejected_gold_matching": 9,
+        "rejected_human_referral_count": 10,
+        "rejected_gold_mismatching": 1,
+        "accepted_value_precision": 1.0,
+        "human_referral_field_rate": 0.5454545454545454,
+        "guard_auto_validated_field_rate": 0.4545454545454546,
+        "document_count": 36,
+        "called_document_count": 9,
+        "human_referral_document_count": 2,
+        "human_referral_document_rate": 0.05555555555555555,
+        "no_additional_review_document_rate": 0.9444444444444444,
+        "guard_auto_validated_called_document_count": 7,
+        "guard_auto_validated_called_document_rate": 0.7777777777777778,
+        "human_referral_document_ids": [
+          "40302",
+          "40402"
+        ],
+        "definition": "Referral means unresolved requested field (rejected, REVIEW or failed/missing response). Auto validation is machine grounding, not final human confirmation; all AI proposals remain human_confirmed=false. Rejected correctness is an offline gold audit."
+      },
+      "changed_decisions_from_archive": [],
+      "baseline_guard_call_seconds": {
+        "samples": 720,
+        "mean": 6.33659819780203e-05,
+        "p50": 6.799999937356915e-06,
+        "p95": 0.0003132919991912786
+      },
+      "current_guard_call_seconds": {
+        "samples": 720,
+        "mean": 6.602296524660132e-05,
+        "p50": 6.930999916221481e-06,
+        "p95": 0.00034003200016741175
+      },
+      "timing_definition": "Local apply_proposals only, includes empty-target calls and first-call costs; no import/OCR/model/contract-check time. No hardware speedup claim.",
+      "source_unchanged_during_both_runs": true,
+      "frozen_inputs_reverified": true,
+      "official_metrics_exactly_reproduced": true,
+      "official_reproduced_metrics": {
+        "rule": {
+          "field_accuracy": 0.9166666666666666,
+          "field_counts": {
+            "all": 252,
+            "provided": 194,
+            "scored": 204,
+            "correct": 187,
+            "present": 203,
+            "present_correct": 186,
+            "absent": 48,
+            "ambiguous": 1,
+            "ambiguous_correct": 1
+          },
+          "check_state_accuracy": 0.9534883720930233,
+          "wrong_pass_counts": {
+            "unsafe_expected": 7,
+            "wrong_pass": 0,
+            "predicted_pass": 34
+          }
+        },
+        "llm": {
+          "field_accuracy": 0.9019607843137255,
+          "field_counts": {
+            "all": 252,
+            "provided": 189,
+            "scored": 204,
+            "correct": 184,
+            "present": 203,
+            "present_correct": 184,
+            "absent": 48,
+            "ambiguous": 1
+          },
+          "check_state_accuracy": 0.9318181818181818,
+          "wrong_pass_counts": {
+            "unsafe_expected": 7,
+            "wrong_pass": 0,
+            "predicted_pass": 35
+          }
+        },
+        "hybrid_unguarded": {
+          "field_accuracy": 0.9754901960784313,
+          "field_counts": {
+            "all": 252,
+            "provided": 200,
+            "scored": 204,
+            "correct": 199,
+            "present": 203,
+            "present_correct": 199,
+            "absent": 48,
+            "ambiguous": 1
+          },
+          "check_state_accuracy": 0.9318181818181818,
+          "wrong_pass_counts": {
+            "unsafe_expected": 7,
+            "wrong_pass": 0,
+            "predicted_pass": 35
+          }
+        },
+        "hybrid_guarded": {
+          "field_accuracy": 0.9558823529411765,
+          "field_counts": {
+            "all": 252,
+            "provided": 194,
+            "scored": 204,
+            "correct": 195,
+            "present": 203,
+            "present_correct": 194,
+            "absent": 48,
+            "ambiguous": 1,
+            "ambiguous_correct": 1
+          },
+          "check_state_accuracy": 0.9534883720930233,
+          "wrong_pass_counts": {
+            "unsafe_expected": 7,
+            "wrong_pass": 0,
+            "predicted_pass": 34
+          }
+        }
+      },
+      "labels_sha256": "0bb2b985279d7afcf767e8baf79d148dbea72eecd0a27bc20dc5f825d307817b",
+      "same_inputs_sha256": "b0f776df5158e669556793fedf010f5ea80af17d4774292a93dc4dc293f36790",
+      "baseline_implementation_sha256": {
+        "backend/app/ai/__init__.py": "83c79a5fa311d2cc1bdcef383bec14426de05014b1b7a12ea8f81f57df915197",
+        "backend/app/ai/classifier.py": "4747cf9c9d8d7fa3d18da9a563fe8e5fff4920a25d0ad70bbaab2b87b0a54bb1",
+        "backend/app/ai/extractor.py": "e3c05b5af58d2fdc6163189110410e56659050d50b308003cdb73094294fc5c9",
+        "backend/app/ai/grounding.py": "b94137a16b39ddd5e6ee67f8e2dfdaa2e797ded729683047e9de90222e4614cb",
+        "backend/app/ai/grounding_v4.py": "bb69719a812e1b2b0fa4fc327d047720e83ba148b1edaa107f38b38406746d53",
+        "backend/app/ai/llm_supplement.py": "321ea2465268d92e372abc3b980994170600ca2c75b2cb47fcfdce7ce1e0c064",
+        "backend/app/ai/local_llm.py": "4a5e44b743663a4da3c9f9000dc026b02498a2ab372059850d2a1ba8c2c65419",
+        "backend/app/ai/local_vlm.py": "caee0b5453e4006d58b0063bca108dfa45847c140c09622f891bf0866a5eac77",
+        "backend/app/ai/masking.py": "5ded58e30283f303f20dd78ac7b380533e8d524678e47307fc13859f942ff110",
+        "backend/app/ai/pdf_runtime.py": "a651b5c9a4406aae8908b9aa6f3cd76e4e6868813a2073af659292ab2998b76b",
+        "backend/app/ai/preprocessor.py": "aa6176ad34fa597e73258c12cf37387230be3233a19835223b38597306d4f6ab",
+        "backend/app/ai/visual_masking.py": "60595c0ddefe3290a8e2afd3fb10be821184ba80e43e8aea55fcad70995772b7",
+        "backend/evaluation_core.py": "69ce027289862a39873a01c93dd4d3472105752de2b7570c6d96dff4088b68ef",
+        "backend/prediction_artifacts.py": "07915cda4c2e45eead8121fda9f227e224ed763ad3a3bca1cd8c73aa714f49ff",
+        "backend/prediction_scoring.py": "4a45fe177b3020c3acfd6512738e61c734c7ab62ab6debadb0612cc275ff2c4f",
+        "backend/scripts/compare_llm_modes.py": "123e838c9c46ff8a8ac594a14939144e4d5d7ceb1cdc6737326c47dd8759ae12"
+      },
+      "current_implementation_sha256": {
+        "backend/app/ai/__init__.py": "d697f2a3284c6dfbc8af4ac03921973ae2347fbef93310a368adc3e4e7b55c17",
+        "backend/app/ai/classifier.py": "4747cf9c9d8d7fa3d18da9a563fe8e5fff4920a25d0ad70bbaab2b87b0a54bb1",
+        "backend/app/ai/extractor.py": "e3c05b5af58d2fdc6163189110410e56659050d50b308003cdb73094294fc5c9",
+        "backend/app/ai/grounding.py": "b9b32780ddc80ee2d3913d1dbdfdcb1738df8c27e9cd10660f0f5c9ddc214ec5",
+        "backend/app/ai/grounding_v4.py": "450ecf78f880a05f1c43b07fa57ba7cfe303da877387b32fd96681dc79180e70",
+        "backend/app/ai/llm_supplement.py": "2c7f0825dbfdf67e79f634dab32001e3e20ba3d567c84d47348cc744d34d831d",
+        "backend/app/ai/local_llm.py": "4a5e44b743663a4da3c9f9000dc026b02498a2ab372059850d2a1ba8c2c65419",
+        "backend/app/ai/local_vlm.py": "2d3dac94690cebdb805e93d1b8bed22c01ce361879adb1eb23b9eb9c4534078e",
+        "backend/app/ai/masking.py": "5ded58e30283f303f20dd78ac7b380533e8d524678e47307fc13859f942ff110",
+        "backend/app/ai/pdf_runtime.py": "d2ac5815163933394c22e995209bc42446e452dfeb78ddc63ecf247eecf5d567",
+        "backend/app/ai/preprocessor.py": "286f38a63245d8b916c76e21555f03c517a5b95f205fd528dd76efe001bbcf63",
+        "backend/app/ai/visual_masking.py": "60595c0ddefe3290a8e2afd3fb10be821184ba80e43e8aea55fcad70995772b7",
+        "backend/evaluation_core.py": "69ce027289862a39873a01c93dd4d3472105752de2b7570c6d96dff4088b68ef",
+        "backend/prediction_artifacts.py": "07915cda4c2e45eead8121fda9f227e224ed763ad3a3bca1cd8c73aa714f49ff",
+        "backend/prediction_scoring.py": "4a45fe177b3020c3acfd6512738e61c734c7ab62ab6debadb0612cc275ff2c4f",
+        "backend/scripts/compare_llm_modes.py": "123e838c9c46ff8a8ac594a14939144e4d5d7ceb1cdc6737326c47dd8759ae12"
+      },
+      "raw_report_files": {
+        "baseline-test2-cached-replay-verified.json": "65e4ee04a8359e9666995716eeb32d3b977de80e2f9a8409edab1e521c1221cd",
+        "current-test2-cached-replay-release.json": "226fc15f26b4aec846585fd93d45b441c2d6d17a74b0d948bebaadc8d09d9020"
+      }
+    }
+  },
+  "synthetic_smoke": {
+    "summary": {
+      "case_count": 24,
+      "passed": 24,
+      "failed": 0,
+      "result": "passed"
+    },
+    "repeat": 20,
+    "warmup": 2,
+    "source_unchanged_during_run": true,
+    "result_sha256": "2abd36396473ce2eeca1296af287256722245ace53118fff22fb46583c119e73",
+    "actual_stages": [
+      "native_txt_docx_rule_pipeline",
+      "fixed_synthetic_proposal_guard"
+    ],
+    "not_run": [
+      "real_ocr",
+      "real_llm",
+      "real_vlm"
+    ],
+    "result_file": "ai-synthetic-smoke-release.json",
+    "source_sha256": {
+      "backend/app/ai/__init__.py": "d697f2a3284c6dfbc8af4ac03921973ae2347fbef93310a368adc3e4e7b55c17",
+      "backend/app/ai/classifier.py": "4747cf9c9d8d7fa3d18da9a563fe8e5fff4920a25d0ad70bbaab2b87b0a54bb1",
+      "backend/app/ai/extractor.py": "e3c05b5af58d2fdc6163189110410e56659050d50b308003cdb73094294fc5c9",
+      "backend/app/ai/grounding.py": "b9b32780ddc80ee2d3913d1dbdfdcb1738df8c27e9cd10660f0f5c9ddc214ec5",
+      "backend/app/ai/grounding_v4.py": "450ecf78f880a05f1c43b07fa57ba7cfe303da877387b32fd96681dc79180e70",
+      "backend/app/ai/llm_supplement.py": "2c7f0825dbfdf67e79f634dab32001e3e20ba3d567c84d47348cc744d34d831d",
+      "backend/app/ai/local_llm.py": "4a5e44b743663a4da3c9f9000dc026b02498a2ab372059850d2a1ba8c2c65419",
+      "backend/app/ai/local_vlm.py": "2d3dac94690cebdb805e93d1b8bed22c01ce361879adb1eb23b9eb9c4534078e",
+      "backend/app/ai/masking.py": "5ded58e30283f303f20dd78ac7b380533e8d524678e47307fc13859f942ff110",
+      "backend/app/ai/pdf_runtime.py": "d2ac5815163933394c22e995209bc42446e452dfeb78ddc63ecf247eecf5d567",
+      "backend/app/ai/preprocessor.py": "286f38a63245d8b916c76e21555f03c517a5b95f205fd528dd76efe001bbcf63",
+      "backend/app/ai/visual_masking.py": "60595c0ddefe3290a8e2afd3fb10be821184ba80e43e8aea55fcad70995772b7",
+      "backend/evaluation_core.py": "69ce027289862a39873a01c93dd4d3472105752de2b7570c6d96dff4088b68ef",
+      "backend/scripts/ai_synthetic_benchmark.py": "5a083f0d0ad19c627b9404a8760817d3da74632ac99954e89adabcd7fdd26610",
+      "backend/scripts/compare_llm_modes.py": "123e838c9c46ff8a8ac594a14939144e4d5d7ceb1cdc6737326c47dd8759ae12"
+    }
+  },
+  "benchmark_tool_unit_tests": {
+    "passed": 8,
+    "command": "python -m unittest backend.scripts.test_ai_benchmark_tools -v"
+  }
+}

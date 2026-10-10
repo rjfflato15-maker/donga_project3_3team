@@ -205,11 +205,9 @@ def extract_financial_fields(text: str, document_type=None):
     aggregate_document = kind in {"contract", "estimate", "inspection_confirmation"}
     if kind is None:
         aggregate_document = bool(re.search(r"계약서|견적서|검수확인서", compact[:250]))
-    partial_claim = re.search(r"부분(?:청구|지급)|(?:착수금|중도금|선급금|선금|잔금)(?:정산)?청구(?:건|분)?", compact)
-    if partial_claim and not aggregate_document:
-        result["amount_scope"] = "PARTIAL"
-    elif re.search(r"전액(?:청구|지급)|전체금액", compact) or (aggregate_document and result["total_amount"] is not None):
-        result["amount_scope"] = "FULL"
+    from .billing import scope_in_document
+    result['amount_scope'] = scope_in_document(text, kind if kind is not None else 'contract' if aggregate_document else None,
+                                              result['total_amount'] is not None)
     return result
 
 

@@ -1,5 +1,10 @@
 # Claude 화면 담당자용 API 변경 안내
 
+> 상태: 과거 기록 (원본문 보존)
+> 분류 확인일: 2026-10-07
+
+날짜별 설계·담당 인계·통합 기록이다. 본문의 연결 예정·브랜치·시안 설명은 당시 범위로 읽는다. 현재 연결은 [API 입구](README.md)와 [현재 화면 연결](frontend_integration.md)을 우선 확인한다.
+
 ## 10/6 후속 선택: 기존 화면 vs Codex 사이드바안만 비교
 
 사용자는 새 비교 대상으로 Codex 사이드바 디자인을 선택했고 Claude ERP 새 안은 빼 달라고 명시했다. [비교 HTML과 같은 계약 14단계 클릭 시안](../ux/codex_sidebar_example/comparison-README.md)을 만들었다. 이전 앱 구조 재현은 왼쪽 자료로만 읽어 사용했다. 비교 도구의 단계 이동과 앱 사이드바를 구분했고, 대표 전달은 현행 문장 복사 의미를 유지했다. [QA 범위](../ux/codex_sidebar_example/comparison-design-qa.md)는 문서 폴더의 독립 시안만이다. 운영 앱에 반영하거나 서버와 연결한 결과가 아니다.

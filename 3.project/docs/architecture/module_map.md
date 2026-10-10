@@ -1,23 +1,51 @@
-# 소스 역할과 수정 위치
+# 소스 책임과 수정 위치
 
-앱 소스는 이미 기능별로 나뉘어 있다. 필요한 영역부터 읽고, 변경 사항은 해당 담당 문서에 기록한다. 사람 이름 대신 역할로 책임을 정하며 한 사람이 여러 역할을 맡을 수 있다.
+> 상태: 현재 기준
+> 확인일: 2026-10-10
+> 기준: 2026-10-09 구조 정리 소스 사본. 현재 소스와 과거 설치·평가 기록의 검증 범위를 구분한다.
 
-| 담당 영역 | 시작 소스 | 책임 |
+관련 소스: [API 등록](../../backend/app/api/__init__.py) · [DB 모델](../../backend/app/db/models.py) · [ContractDashboard.tsx](../../frontend/src/pages/ContractDashboard.tsx)
+
+## 화면·기능의 연결
+
+앱 진입은 `main.tsx → App.tsx → ContractDashboard.tsx`다. 아래 표는 pilot 업무 화면을 기준으로 하며, 테스트 링크는 해당 책임의 회귀 위치를 나타낸다. 실행 결과와 통과 범위는 [검증 기록](../development/verification_latest.md)에서 별도로 관리한다.
+
+| 화면·동작 | 화면 구성 | 공통 로직·API·저장 책임 | 회귀 테스트 |
+| --- | --- | --- | --- |
+| 할 일·계약 검색 | [ContractDashboard](../../frontend/src/pages/ContractDashboard.tsx), [StageDashboard](../../frontend/src/components/review/StageDashboard.tsx), [ContractSearch](../../frontend/src/components/review/ContractSearch.tsx) | [dashboardModel](../../frontend/src/features/contracts/dashboardModel.ts): 목록 타입·검색·단계 표시. [useAutoRefresh](../../frontend/src/hooks/useAutoRefresh.ts): 갱신·취소. 서버 [contract_service](../../backend/app/services/contract_service.py)·[work_state_service](../../backend/app/services/work_state_service.py): 현재 업무 상태 | [contractDashboard](../../frontend/src/pages/contractDashboard.component.test.tsx), [stageDashboard](../../frontend/src/components/review/stageDashboard.test.ts), [contractSearch](../../frontend/src/components/review/contractSearch.test.ts), [test_contract_dashboard](../../backend/tests/test_contract_dashboard.py) |
+| 새 계약·문서 등록 | [CompareRegistration](../../frontend/src/components/CompareRegistration.tsx) | [api/client](../../frontend/src/api/client.ts) → [auto_contract](../../backend/app/api/auto_contract.py)의 `auto-parse-batch`·`auto-create-batch` → [registration_service](../../backend/app/services/registration_service.py)·[pipeline_service](../../backend/app/services/pipeline_service.py). 문서 종류·요청 키·부분 실패 재시도 | [compareRegistration](../../frontend/src/components/compareRegistration.component.test.tsx), [test_operational_recovery](../../backend/tests/test_operational_recovery.py) |
+| 원문 대조·필드 확인·정정 | [ContractStageView](../../frontend/src/components/review/ContractStageView.tsx) → [DocumentWorkspace](../../frontend/src/components/review/DocumentWorkspace.tsx)·[ReviewFieldTable](../../frontend/src/components/review/ReviewFieldTable.tsx) | [useContractReviewContext](../../frontend/src/hooks/useContractReviewContext.ts)·[reviewFields](../../frontend/src/components/review/reviewFields.ts)·[reviewTasks](../../frontend/src/components/review/reviewTasks.ts). [documents API](../../backend/app/api/documents.py) → [document_correction_service](../../backend/app/services/document_correction_service.py). 필드 확인·되돌리기·보류는 documents API의 별도 동작 | [documentReview](../../frontend/src/components/review/documentReview.component.test.tsx), [test_field_confirmation_scope](../../backend/tests/test_field_confirmation_scope.py), [test_field_confirmation_undo](../../backend/tests/test_field_confirmation_undo.py) |
+| AI 이미지 재판독·후보 저장 | [DocumentWorkspace](../../frontend/src/components/review/DocumentWorkspace.tsx)·[ReviewFieldTable](../../frontend/src/components/review/ReviewFieldTable.tsx) | [useVlmReread](../../frontend/src/hooks/useVlmReread.ts) → [vlm_reread API](../../backend/app/api/vlm_reread.py) → [vlm_reread_service](../../backend/app/services/vlm_reread_service.py). 선택 저장은 [document_correction_service](../../backend/app/services/document_correction_service.py) 재사용 | [vlmReread: 실제 DocumentWorkspace 경로](../../frontend/src/components/review/vlmReread.component.test.tsx), [test_vlm_reread](../../backend/tests/test_vlm_reread.py), [test_service_boundaries](../../backend/tests/test_service_boundaries.py) |
+| 보완 요청·회신 기록 | [ContractStageView](../../frontend/src/components/review/ContractStageView.tsx) → [BundleRequest의 요청·회신 화면](../../frontend/src/components/review/BundleRequest.tsx) | [useRequestDraft](../../frontend/src/hooks/useRequestDraft.ts): 탭 내 초안. [requests/model](../../frontend/src/features/requests/model.ts): 자료 기준·타입·문구. [requests/api](../../frontend/src/features/requests/api.ts) → [request_bundles API](../../backend/app/api/request_bundles.py)·[request_bundle_service](../../backend/app/services/request_bundle_service.py) | [requestPage](../../frontend/src/components/review/requestPage.component.test.tsx), [bundleRequest](../../frontend/src/components/review/bundleRequest.test.ts), [useRequestDraft](../../frontend/src/hooks/useRequestDraft.test.tsx), [test_request_bundles](../../backend/tests/test_request_bundles.py) |
+| 맡은 일·담당자 지정 | [MyAssignmentsStrip](../../frontend/src/components/review/MyAssignmentsStrip.tsx)·[AssignmentPanel](../../frontend/src/components/review/AssignmentPanel.tsx) | [assignments/model](../../frontend/src/features/assignments/model.ts): 타입·상태 이름. [assignments/api](../../frontend/src/features/assignments/api.ts) → [assignments API](../../backend/app/api/assignments.py) | [contractStage](../../frontend/src/components/review/contractStage.component.test.tsx), [test_assignments](../../backend/tests/test_assignments.py) |
+| 결재·반려·지급 기록 | [ApprovalPanel](../../frontend/src/components/review/ApprovalPanel.tsx), [ContractStageView](../../frontend/src/components/review/ContractStageView.tsx), [PaymentCorrectionPanel](../../frontend/src/components/review/PaymentCorrectionPanel.tsx) | [workflow API](../../backend/app/api/workflow.py)·[pilot API](../../backend/app/api/pilot.py) → [contract_review_service](../../backend/app/services/contract_review_service.py): 최종 검토·반려. [company_policy_service](../../backend/app/services/company_policy_service.py): 결재 순서. [payments API](../../backend/app/api/payments.py) → [payment_service](../../backend/app/services/payment_service.py): 지급 사실·재확인·정정 | [approvalPanel](../../frontend/src/components/review/approvalPanel.component.test.tsx), [paymentLifecycle](../../frontend/src/components/review/paymentLifecycle.component.test.tsx), [test_review_workflow_api](../../backend/tests/test_review_workflow_api.py), [test_payment_records](../../backend/tests/test_payment_records.py) |
+| 설정·본인 비밀번호 | [PilotOperations](../../frontend/src/components/PilotOperations.tsx)·[PilotPasswordChange](../../frontend/src/components/PilotPasswordChange.tsx) | [authApi.changeOwnPassword](../../frontend/src/api/auth.ts) → [auth API](../../backend/app/api/auth.py)의 `POST /api/auth/password`. 운영 설정은 pilot 정보가 있을 때 PilotOperations에서 구성 | [contractDashboard](../../frontend/src/pages/contractDashboard.component.test.tsx), [test_api](../../backend/tests/test_api.py) |
+
+비-pilot 화면의 `OverallDashboardView`, `ContractsListView`, `ContractReviewOverview`, `AutoBatchContractModal`, `UploadModal`, `DocumentViewerModal`, `ValidationReportView`는 실행 경로가 있는 별도 화면이다. pilot의 인라인 원문 대조 화면과 혼동해 수정하거나 삭제하지 않는다.
+
+## 백엔드 책임
+
+| 영역 | 소스 | 책임 |
 | --- | --- | --- |
-| 실행·설치 | [launcher/](../../backend/launcher/README.md), [EXE 진입점](../../tools/launcher/Program.cs) | 실행 환경·설정·서버·관리 메뉴 |
-| 계정·권한 | [security.py](../../backend/app/security.py), [api/auth.py](../../backend/app/api/auth.py), [api/pilot.py](../../backend/app/api/pilot.py) | 로그인·세션·역할·퇴사 처리 |
-| 문서 읽기·가리기 | [preprocessor.py](../../backend/app/ai/preprocessor.py), [masking.py](../../backend/app/ai/masking.py), [api/documents.py](../../backend/app/api/documents.py) | 파일 판독·OCR·미리보기·개인정보 처리 |
-| AI 추출·근거 | [extractor.py](../../backend/app/ai/extractor.py), [local_llm.py](../../backend/app/ai/local_llm.py), [grounding.py](../../backend/app/ai/grounding.py) | 규칙값·로컬 LLM·근거 검증 |
-| 최종 검수 | [validation/engine.py](../../backend/app/validation/engine.py), [financial.py](../../backend/app/validation/financial.py) | 누락·불일치·금액 정책과 PASS/FAIL |
-| 처리·업무 흐름 | [pipeline_service.py](../../backend/app/services/pipeline_service.py), [workflow_service.py](../../backend/app/services/workflow_service.py) | 분석·저장 연결·보완 요청·재확인 |
-| 화면용 근거·회신 기록 | [api/workflow.py](../../backend/app/api/workflow.py), [review_context_service.py](../../backend/app/services/review_context_service.py), [review_summary_service.py](../../backend/app/services/review_summary_service.py) | 근거·출처·목록과 상세의 공통 요약·재제출 요청 이력 |
-| 회사 설정·결재 순서 | [company_policy_service.py](../../backend/app/services/company_policy_service.py) | 회사 유형·역할 표시 이름·최대 2단계 결재 |
-| DB·자료·복원 | [db/models.py](../../backend/app/db/models.py), [storage_service.py](../../backend/app/services/storage_service.py), [manage_pilot.py](../../backend/manage_pilot.py) | DB 구조·파일 저장·이주·백업·복원 |
-| 화면 | [frontend/src/](../../frontend/src/) | 화면·사용 흐름·API 연결. 디자인 변경은 시안 승인 후 |
-| 평가·통합 검증 | [backend/tests/](../../backend/tests/), [평가 안내](../eval/local_llm_runbook.md) | 회귀·성능 평가·정답 출처·버전 고정 |
+| 앱·실행기 | [main.py](../../backend/app/main.py), [config.py](../../backend/app/config.py), [launcher/cli.py](../../backend/launcher/cli.py), [launcher/server.py](../../backend/launcher/server.py) | 앱 수명·정적 화면·환경·서버 식별. `pilot_launcher.py`는 유지되는 CLI 진입점 |
+| 요청·데이터 계약 | [api](../../backend/app/api/), [schemas/document.py](../../backend/app/schemas/document.py), [schemas/review.py](../../backend/app/schemas/review.py) | 경로·인증·권한·입출력. 필드 정정의 `Correction`, 검토의 `ReviewRequest`는 schemas에서 정의 |
+| 공통 정정·검토 | [document_correction_service.py](../../backend/app/services/document_correction_service.py), [contract_review_service.py](../../backend/app/services/contract_review_service.py) | 서로 다른 API가 사용하는 저장·revision·감사 이력·검토 로직. 라우터 간 호출 대신 공통 서비스 호출 |
+| 문서 분석 | [ai/__init__.py](../../backend/app/ai/__init__.py), [preprocessor.py](../../backend/app/ai/preprocessor.py), [classifier.py](../../backend/app/ai/classifier.py), [extractor.py](../../backend/app/ai/extractor.py) | 파일/OCR 판독·분류·규칙 필드 추출 |
+| AI 보완·근거 | [llm_supplement.py](../../backend/app/ai/llm_supplement.py), [grounding.py](../../backend/app/ai/grounding.py), [grounding_v4.py](../../backend/app/ai/grounding_v4.py), [local_vlm.py](../../backend/app/ai/local_vlm.py) | 로컬 모델 호출·원문 근거 가드. v3/v4 선택과 공통 헬퍼 의존성 유지 |
+| 검사·문서 버전 | [validation/engine.py](../../backend/app/validation/engine.py), [financial.py](../../backend/app/validation/financial.py), [document_version_service.py](../../backend/app/services/document_version_service.py) | 현재 본·금액 의미·누락·불일치·자동 판정 |
+| 청구 조건·지급 표시 | [billing.py](../../backend/app/validation/billing.py), [BillingSummary.tsx](../../frontend/src/components/review/BillingSummary.tsx) | 판독 시 지급 조건 메타데이터 보존·회차 청구액 비교. 기존 payment 상태를 별도로 표시하며 송금 사실을 추론하지 않음 |
+| 출처·원문 좌표 | [evidence_geometry_service.py](../../backend/app/services/evidence_geometry_service.py), [review_context_service.py](../../backend/app/services/review_context_service.py) | 원문 해시·실제 좌표·사람 확인 범위 |
+| 원문 위치 재사용 | [source_location_cache.py](../../backend/app/services/source_location_cache.py) | 해시 검증 후 읽기 전용 위치 정보만 제한된 메모리에 보관. 저장값·확인·보류는 캐시하지 않음 |
+| 원문 미리보기 재사용 | [preview_image_cache.py](../../backend/app/services/preview_image_cache.py) | 인증·원본 해시·자료 버전·쪽·가림 모드·민감값을 확인한 PNG만 최대 32MiB·16개·120초 메모리에 보관 |
+| 내보내기·저장·복구 | [contract_exports.py](../../backend/app/api/contract_exports.py), [settlement_export_service.py](../../backend/app/services/settlement_export_service.py), [contract_export_service.py](../../backend/app/services/contract_export_service.py), [models.py](../../backend/app/db/models.py), [manage_pilot.py](../../backend/manage_pilot.py) | XLSX·문서 ZIP·DB 구조·백업·새 폴더 복원 |
 
-`api/`는 요청·권한·응답, `services/`는 업무 순서, `ai/`는 문서 분석, `validation/`은 최종 판정, `db/`는 저장 구조, `schemas/`는 데이터 계약을 담당한다. 화면에서 최종 판정 규칙을 중복 구현하지 않는다.
+공통 업무 로직을 분리했지만 모든 API가 ORM 접근과 트랜잭션을 서비스로 위임하는 구조는 아니다. `PipelineService`는 업로드·분석·저장·버전·재검사를 조율한다. 프론트의 기능별 API 분리도 요청·담당자 영역에 적용됐으며 다른 화면에는 직접 `requestJson` 호출이 남아 있다. 프론트 타입과 백엔드 스키마는 수동으로 맞추므로 양쪽 계약과 회귀 테스트를 함께 수정한다.
 
-AI·검수·평가 코드는 가드 v3 최종 평가용으로 고정되어 있다. 이번 정리에서 이동하지 않았다. 변경 제한과 확인 방법은 [개발자 작업 안내](../development/maintenance.md)를 따른다.
+## 유지·제거 경계
 
-test의 정답 확인은 [준비 안내](../eval/test_review_preparation.md)를 따른다. 평가 정답 검증기의 dev 전용 표본 확인 제한만 test로 확장했고, AI·검수 코드 변경 없이 별도 파생 고정 기록을 남겼다. Claude 화면 담당자는 [API 변경 안내](../api/frontend_handoff.md)를 참고한다.
+- 미사용 화면과 종료된 이메일 인증 기반 재설정 화면은 제거했다. 본인 비밀번호 변경은 현재 인증 API를 사용한다. 구 이메일 인증 API의 HTTP 410 응답과 기존 `EmailVerification` 테이블은 호환성 때문에 유지한다.
+- 기존 `api.documents`의 정정 타입·헬퍼 import, `api.pilot`의 검토 타입·HTTP 진입점은 호환성을 유지하되 실제 업무 구현은 공통 서비스에서 관리한다. [서비스 경계 테스트](../../backend/tests/test_service_boundaries.py)가 이 연결을 검사한다.
+- `backend/neutral_test2_review.py`와 `backend/scripts/neutral_test2_review.py`는 구현과 CLI 진입점이다. 평가 snapshot·생성 도구·테스트를 앱 import 부재만으로 미사용 코드로 분류하지 않는다.
+- 화면 스타일의 다섯 전역 계층과 유지된 CSS의 역할은 [UI 변경 범위](../development/recipes/change_ui.md)에 명시한다. 현재 앱 빌드는 누락된 과거 시안 입력에 의존하지 않는다.
+
+[전체 문서](../README.md) · [현재 구현 상태](../progress/current_status.md)

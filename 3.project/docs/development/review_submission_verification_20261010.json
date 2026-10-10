@@ -1,0 +1,134 @@
+{
+  "checked_on": "2026-10-10",
+  "basis": "Latest local source including prior billing fixes; isolated synthetic QA",
+  "backend": {
+    "passed": 944,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 224.99,
+    "final_submission_regression": 13
+  },
+  "frontend": {
+    "files": 37,
+    "passed": 177,
+    "failed": 0,
+    "typecheck": "passed",
+    "build": "passed",
+    "warnings": [
+      "Existing minified JS chunk exceeds 500kB"
+    ]
+  },
+  "schema_changes": false,
+  "persistence": "Existing AuditEvent CONTRACT_SUBMITTED binds revision, fingerprint, review cycle and gate",
+  "cases": [
+    "single representative policy",
+    "two-stage policy",
+    "operator and representative permissions",
+    "normal source review and durable submission",
+    "misread correction",
+    "required missing documents",
+    "partial and remaining replies",
+    "reissued source linkage and re-review",
+    "return and resubmission",
+    "change after approval",
+    "refresh and double-click",
+    "stale review cycle rejected",
+    "explicit business exception reason and representative acknowledgement",
+    "technical failure and mandatory review cannot be bypassed by exception/no-issue text",
+    "read performance regression"
+  ],
+  "browser": {
+    "url": "http://127.0.0.1:8188/",
+    "browser": "Google Chrome through Playwright",
+    "database": "disposable synthetic records only",
+    "viewports": [
+      [
+        1440,
+        1000
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "no_live_customer_browser_used": true,
+    "normal_source_confirmation_count": 8,
+    "normal_submission_refresh": "passed",
+    "return_resubmit_approve": "passed",
+    "misread_correction": "passed",
+    "reading_failure_submission_block": "passed",
+    "explicit_exception_submission_approval": "passed",
+    "partial_remaining_reply_review_submission": "passed",
+    "mobile_horizontal_overflow": false,
+    "approved_reissue_source_review_resubmission": "passed",
+    "successful_run_console_page_errors": {
+      "browser-errors.json": 2,
+      "browser-phase4-errors.json": 3,
+      "browser-final-errors.json": 1
+    },
+    "console_notes": "Recorded console errors are unauthenticated session checks returning HTTP 401 during login/logout. No unexpected console message or JavaScript page error was observed in successful runs.",
+    "unexpected_console_page_errors": 0
+  },
+  "deployment": {
+    "health": "ok",
+    "new_submission_api_live": true,
+    "live_ui_matches_built_source": true,
+    "live_ui_contains_submission": true,
+    "business_tables_checked": 27,
+    "changed_tables": [],
+    "original_files_checked": 47,
+    "all_original_hashes_unchanged": true,
+    "all_settings_hashes_unchanged": true,
+    "status": "applied to current source and live localhost 8000 server",
+    "source_files_applied": 40,
+    "concurrent_source_conflicts": 0
+  },
+  "limits": [
+    "Synthetic misread fixture tests correction workflow, not live OCR accuracy",
+    "No clean-PC installation or Setup EXE build",
+    "No load test or concurrent-user throughput measurement",
+    "No real customer decisions, uploads, payment or external messages"
+  ],
+  "source_hashes": {
+    "backend/tests/test_api.py": "711b577547d440b9fb8343c24127a301fda82c1f823c2f063a91d45a89508c93",
+    "backend/tests/test_document_versions.py": "d0e1090a2ed6eb2d5075e465e45a5124f74556e885a26789bfe53eef4861b2e3",
+    "backend/tests/test_field_confirmation_undo.py": "00d201aa9a43e0d051cf36c519480b164f177c435bbbfd4c91a85cef4005a662",
+    "backend/tests/test_payment_records.py": "59f50475c5c782c92ddabe45acac9ac57e6781a066575842c4304ed3e3808fd2",
+    "backend/tests/test_performance_llm_status.py": "6b4a0274339c774cf73a879d291f223f01b6589d28ab0b4a9080085979775a2f",
+    "backend/tests/test_review_workflow_api.py": "b0bc7e74ad6a56a4d06bf4655a4eef420be38d943a3dac6c45d20465ed2bb415",
+    "backend/tests/test_storage_resolution.py": "c06a63c6c1888f255dc401a86939137764f1771093e88be5cac78a4fbf8cf7bb",
+    "backend/tests/test_work_system.py": "eb0841a7ca7881f4b00b34dc4fe04874cb692c3b86a3175bc671cdb6cc077aba",
+    "backend/app/api/workflow.py": "b5c8fb2d4f6eca96016b165e338ace48d27bccc8fa404f28d7c15b840da2914f",
+    "backend/app/schemas/review.py": "70a8d64ce19f3204d2c5b56e945611a20abce8931894df95b6616172ff5e62ad",
+    "backend/app/services/activity_service.py": "d0ce59c30038a172c7eccfed2a3d87e803b22c959d15e655b2069dd2550ffb5c",
+    "backend/app/services/contract_review_service.py": "1d80bec78dec6d0812bdf144d2a26380a6f468a18d9df3abf609d6c2e9984b5d",
+    "backend/app/services/contract_service.py": "cbf83d9ddf5901be9f4ef1e81d1b3ddeffe58e437234adc01e9a0abc4120c771",
+    "backend/app/services/review_summary_service.py": "d5d81e0de4c0050c594dd0302f39a5b60202e14b88561f2a563da98e8be49c81",
+    "backend/app/services/work_state_service.py": "24ddc80871c57cb3f8326bd4f6fff958e5b84c48dbe994e59b1cd9af5342c5a5",
+    "frontend/src/api/client.ts": "31d6303c75fe07bbfb9c4564429782010766bcb8780187b406a0a6382d040505",
+    "frontend/src/components/review-workspace.css": "0a6f779f48572318ba931ee86849d8861d2b73c0669ad905d1e380c23bdf8741",
+    "frontend/src/types/index.ts": "cd1f235c8d2e3ea636e8d884db5753a646c5f16beaab2a9d4cecfbce0491e7c0",
+    "frontend/src/utils/stage.ts": "6a39b59627458fc4b8d57308cb504094dfaeec3f2f3cb0355aaf744a82ca7a38",
+    "frontend/src/components/review/approvalPanel.component.test.tsx": "190117ae7b60de1cc837b684d10529e339744b7354734490dadd9294f2d72feb",
+    "frontend/src/components/review/ApprovalPanel.tsx": "d49ab84bc2ae73398167cd4f0f19edff651a1b6fee10ac5c8dd3f778e8bc9892",
+    "frontend/src/components/review/BundleRequest.tsx": "01130c8136f141b80757136efac1703f8f0c6f54d125595fed1ce1e6d3eedadd",
+    "frontend/src/components/review/ContractStageView.tsx": "8403e2ec02d3b8c639123f1c4ae5f3b7a2ce0b908555615ca0ab1025bae3a12f",
+    "frontend/src/components/review/DocumentWorkspace.tsx": "a0654029544c51c411426bed7a55dc04982ce66905e519bf0d45d4eb2e7f7d1e",
+    "frontend/src/components/review/reviewFields.ts": "c58062a279782c165e1f5522356dcbffd5c53453703c130ed18e6d26336e043d",
+    "frontend/src/components/review/ReviewOverviewPanel.tsx": "32773d2235e039bed233a500ade929afd2bd9465e2ef726cc1ccb8d204999852",
+    "frontend/src/components/review/reviewTasks.ts": "cde6bb5da4d21ae2df66d56a9111934683edc16ff3bbf1a9badc687e852122ee",
+    "frontend/src/features/contracts/dashboardModel.ts": "f6b60bcf84b2c7ff1a37fbc63c3bba79380c29a5f4472298a808ef72bc614d35",
+    "docs/api/frontend_integration.md": "a457cf86214ab8c526634ad3616f9eb8166e4bb67c280ea91b5ad41e043c131c",
+    "docs/api/work_system.md": "c36ffbaf60707f2c1f95271f7caa46f1c8d46edd95049d0490092415a5fda70e",
+    "docs/development/verification_latest.md": "15025a16b1eb6a1e5a3cb6a34e4b4d63d045548b85fc844517592b0511f178f7",
+    "docs/operations/workflow.md": "5e4bf7f22c3627a023c901a98420c5a2982007193da599b2e8c19a2fa9646d38",
+    "docs/ux/current_review_flow.md": "5927c712ff79f0f3956c7d9da02797f2ddb2d3ab1928cf85255cfe99a757f5fc",
+    "tools/submission/source_policy.json": "e88c297037a8b217d8c8fcd330c73abd8efb232e5033bf80d91d29ad8fa4cae0",
+    "backend/app/services/submission_service.py": "dcd442eaf7f5da149046b18c485722db29281c959fcb7a508fece06d0c4c15a7",
+    "backend/tests/submission_helpers.py": "3a10c3efedb640712a635b6f42cf468c3c8e952e29ac2f8b19db9fb3612ebaed",
+    "backend/tests/test_submission_flow.py": "454bdf95a0ae89623082dd689cefb455a79ff51cdf11b70c36b073c809874782",
+    "frontend/src/components/review/submissionPanel.component.test.tsx": "ddd82257daf3e9c2039abc690d65bab85aa41d8afda0cdfcc2addb43367caf63",
+    "frontend/src/components/review/SubmissionPanel.tsx": "2eb8f5a23dcc818f31f27230287258d87ee75f9fa68eb0c5dffe3fcd5e1e1ee1"
+  }
+}

@@ -24,7 +24,7 @@ def prepare_item(check,data):
         # This preview always uses DisabledNtsClient. Unqueried is a notice,
         # not an actionable defect or a vendor resubmission request.
         action='INFORMATIONAL_NOTICE'
-    elif check.rule_id in {'AMOUNT_EXTRACTION','ORIGINAL_FILE','DOCUMENT_PROCESSING','DOCUMENT_TYPE'} or (check.rule_id=='BUSINESS_NO_MATCH' and check.status.value=='REVIEW'):
+    elif check.rule_id in {'AMOUNT_EXTRACTION','ORIGINAL_FILE','DOCUMENT_PROCESSING','DOCUMENT_TYPE'} or (check.rule_id=='BUSINESS_NO_MATCH' and check.status.value=='REVIEW') or (check.rule_id=='ACCOUNT_HOLDER_MATCH' and check.actual=='미추출'):
         action='VERIFY_EXTRACTION_FIRST'
         internal={'title':'원문에서 읽은 값부터 확인','memo':check.message}
     elif check.rule_id=='AMOUNT_BASIS':

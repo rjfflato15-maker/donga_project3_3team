@@ -86,7 +86,9 @@ def list_assignees(db:Session=Depends(get_db)):
 
 @router.get('/api/pilot/assignments/mine')
 def my_assignments(include_closed:bool=False,db:Session=Depends(get_db),actor:Actor=Depends(get_current_user)):
+    from ..db.models import ContractExclusion
     query=db.query(WorkAssignment).filter_by(assignee_id=actor.user_id)
+    query=query.filter(~WorkAssignment.contract_id.in_(db.query(ContractExclusion.contract_id)))
     if not include_closed:query=query.filter(WorkAssignment.status.in_(['OPEN','IN_PROGRESS']))
     bases={}
     items=[]

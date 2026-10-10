@@ -5,5 +5,6 @@
 $ErrorActionPreference = 'Stop'
 $launcherProject = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 $launcherExecutable = Join-Path $launcherProject 'C-Pilot.exe'
-& $launcherExecutable $Action --no-browser --settings-file ([System.IO.Path]::GetFullPath($SettingsFile))
-if ($LASTEXITCODE -ne 0) { throw '예약된 실행·백업 작업이 실패했습니다. 통합 실행기의 상태 점검을 확인하세요.' }
+$launcherSettingsPath = [System.IO.Path]::GetFullPath($SettingsFile)
+$launcherProcess = Start-Process -FilePath $launcherExecutable -ArgumentList @($Action, '--no-browser', '--settings-file', ('"' + $launcherSettingsPath + '"')) -WorkingDirectory $launcherProject -WindowStyle Hidden -Wait -PassThru
+if ($launcherProcess.ExitCode -ne 0) { throw '예약된 실행·백업 작업이 실패했습니다. 통합 실행기의 상태 점검을 확인하세요.' }

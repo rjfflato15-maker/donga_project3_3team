@@ -5,7 +5,15 @@ from ..schemas.common import DocumentType, ValidationStatus, CORE_6_DOCUMENT_TYP
 from ..schemas.validation import ValidationCheck, ValidationSummary
 from .metrics import calculate_validation_metrics
 from .financial import money, document_total
+from .billing import invoice_scope_checks
 from ..integrations.nts_client import get_nts_client
+
+# 법인 표기·띄어쓰기·문장부호만 다른 이름은 같은 거래처로 본다.
+_ENTITY_MARKS = re.compile(r"주식회사|유한책임회사|유한회사|합자회사|합명회사|사단법인|재단법인|\((?:주|유|합|사|재)\)|㈜")
+
+
+def normalize_party_name(name):
+    return re.sub(r"[\s()\[\]·.,\-_]", "", _ENTITY_MARKS.sub("", name or "")).lower()
 
 
 class RuleEngine:
@@ -46,6 +54,20 @@ class RuleEngine:
                 same = found == expected_no
                 checks.append(self.check("BUSINESS_NO_MATCH", "PASS" if same else "FAIL", str(doc["document_id"]),
                                          expected_biz_no, found, f"{label}: 사업자등록번호가 {'일치합니다' if same else '다릅니다'}."))
+        expected_name = normalize_party_name(expected_vendor_name)
+        for doc in by_type.get("bank_account", []):
+            holder = (doc.get("fields", {}).get("company_name") or "").strip()
+            label = doc.get("file_name", "통장사본")
+            if not expected_name or not normalize_party_name(holder):
+                checks.append(self.check("ACCOUNT_HOLDER_MATCH", "REVIEW", str(doc["document_id"]), expected_vendor_name or "미등록",
+                                         holder if normalize_party_name(holder) else "미추출", f"{label}: 예금주를 원문에서 확인하세요."))
+            elif normalize_party_name(holder) == expected_name:
+                checks.append(self.check("ACCOUNT_HOLDER_MATCH", "PASS", str(doc["document_id"]), expected_vendor_name, holder,
+                                         f"{label}: 예금주가 계약 거래처와 일치합니다."))
+            else:
+                # 개인사업자는 대표자 개인 명의 계좌를 쓰기도 하므로 FAIL이 아니라 사람 확인으로 둔다.
+                checks.append(self.check("ACCOUNT_HOLDER_MATCH", "REVIEW", str(doc["document_id"]), expected_vendor_name, holder,
+                                         f"{label}: 예금주가 계약 거래처와 다릅니다. 개인사업자 대표자 명의인지, 계좌가 바뀐 것은 아닌지 거래처에 확인하세요."))
         nts = self.nts_client.check_business_status(expected_biz_no)
         if not nts.get("verified"):
             checks.append(self.check("BUSINESS_STATUS", "REVIEW", "business_status", "실제 조회", nts.get("status", "확인 불가"),
@@ -83,33 +105,29 @@ class RuleEngine:
                 amounts[dtype].append((doc, total))
                 if expected is None:
                     continue
-                if dtype == "tax_invoice" and policy.get("payment_mode") == "INSTALLMENT":
-                    continue
-                if dtype == "tax_invoice" and fields.get("amount_scope") == "PARTIAL":
-                    checks.append(self.check("PAYMENT_SCOPE", "REVIEW", str(doc["document_id"]), "전체 청구", "부분 청구",
-                                             f"{label}: 분할 지급 여부와 누적 금액을 확인하세요."))
+                if dtype == "tax_invoice" and policy.get("payment_mode") == "INSTALLMENT" and total != expected:
                     continue
                 same = total == expected
                 status = "PASS" if same else "FAIL"
-                if not same and dtype == "tax_invoice" and fields.get("amount_scope") == "UNKNOWN":
+                if not same and dtype == "tax_invoice" and fields.get("amount_scope") != "FULL":
                     status = "REVIEW"
                 checks.append(self.check("AMOUNT_MATCH_" + dtype.upper(), status, str(doc["document_id"]), self.fmt(expected),
                                          self.fmt(total), f"{label}: 합계 기준 {'금액 일치' if same else self.fmt(abs(total - expected)) + ' 차이'}."))
         invoices = amounts.get("tax_invoice", [])
+        if expected is not None:
+            checks.extend(invoice_scope_checks(self, invoices, expected, documents_data, policy))
         if policy.get("payment_mode") == "INSTALLMENT" and invoices and expected is not None:
             hashes = [doc.get("sha256") for doc, _ in invoices if doc.get("sha256")]
             if len(hashes) != len(set(hashes)):
                 checks.append(self.check("DUPLICATE_INVOICE", "REVIEW", "tax_invoice", "서로 다른 문서", "중복 파일", "중복 세금계산서를 제거한 후 누적 금액을 확인하세요."))
-            elif any(d.get("fields", {}).get("amount_scope") != "PARTIAL" for d, _ in invoices):
-                checks.append(self.check("PAYMENT_SCOPE", "REVIEW", "tax_invoice", "부분 청구 확인", "범위 미확인", "각 세금계산서의 부분 청구 여부를 확인하세요."))
-            else:
+            elif len(invoices) > 1 and any(d.get('fields', {}).get('amount_scope') == 'FULL' for d, _ in invoices):
+                checks.append(self.check('PAYMENT_SCOPE', 'REVIEW', 'tax_invoice', '중복되지 않는 회차별 청구', '전액·회차 청구 혼재',
+                    '전액 청구와 다른 계산서가 함께 있습니다. 전체 금액을 담은 계산서와 회차별 계산서가 겹치는지 확인하세요. 확인 전 임의로 합산하지 않습니다.'))
+            elif not any(d.get('fields', {}).get('amount_scope') == 'FULL' and value < expected for d, value in invoices):
                 total = sum((v for _, v in invoices), Decimal("0"))
                 checks.append(self.check("INSTALLMENT_TOTAL", "PASS" if total == expected else ("FAIL" if total > expected else "REVIEW"),
                                          "tax_invoice", self.fmt(expected), self.fmt(total),
-                                         "분할 청구 누적 합계입니다. 계약금액보다 작으면 지급 진행 여부를 확인하세요."))
-                if any(value >= expected for _, value in invoices):
-                    checks.append(self.check("PAYMENT_SCOPE", "REVIEW", "tax_invoice", "부분 청구 금액", "전체 계약금액 이상",
-                                             "부분 청구로 표시된 세금계산서 한 건의 금액이 전체 계약금액 이상입니다. 선금·잔금의 청구 내역과 문구를 확인하세요."))
+                                         "서로 다른 계산서의 청구액 누적 합계입니다. 계약금액보다 작으면 이전·추가 청구 여부를 확인하세요. 지급 완료는 별도 기록입니다."))
         submitted = sum(1 for dtype in required if dtype.value in by_type)
         return calculate_validation_metrics(len(required), submitted, checks), checks
 

@@ -7,7 +7,7 @@ import re
 from decimal import Decimal
 from . import grounding as v3
 
-GUARD_VERSION = 'grounding-v4-dev2'
+GUARD_VERSION = 'grounding-v4-claim-context-20261010'
 LABELS = dict(v3.LABELS)
 LABELS.update(
     supply_amount=r'세전\s*대금|공급\s*가액|공급\s*금액',
@@ -70,7 +70,10 @@ def candidates(pages, field, document_type):
                 else:
                     if re.fullmatch(r'계약서|견적서|검수확인서',label.group()) and not totals:
                         continue
-                    value = 'PARTIAL' if re.search(r'선금|잔금|부분\s*청구|분할',line) else 'FULL'
+                    from ..validation.billing import scope_in_document
+                    value = scope_in_document(line, document_type, bool(totals))
+                    if value == 'UNKNOWN':
+                        continue
                 token = v3.canonical(field,value)
                 if token is not None:
                     found.append({'value':token,'page':page['page'],'line':value_index+1,'label_line':index+1,
@@ -89,6 +92,9 @@ def in_quote(field, token, quote):
 
 
 def guard_proposal(field, proposal, pages, document_type):
+    rejected = v3.proposal_preflight(field, proposal, pages)
+    if rejected:
+        return rejected
     reasons, warnings, anchor = [], [], None
     state, value = proposal.get('state'),proposal.get('value')
     token = v3.canonical(field,value)

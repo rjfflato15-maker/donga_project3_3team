@@ -85,6 +85,7 @@ export const RuleValidationCard: React.FC<RuleValidationCardProps> = ({ checks, 
                     <div className="flex items-center space-x-2">
                       <span className="text-sm font-bold text-slate-900">
                         {check.rule_id === 'BUSINESS_NO_MATCH' && '사업자번호 일치'}
+                        {check.rule_id === 'ACCOUNT_HOLDER_MATCH' && '예금주와 계약 거래처'}
                         {check.rule_id === 'BUSINESS_STATUS' && '계속사업자 / 사업상태'}
                         {check.rule_id === 'AMOUNT_MATCH_TAX_INVOICE' && '금액 대조 (세금계산서)'}
                         {check.rule_id === 'AMOUNT_MATCH_ESTIMATE' && '금액 대조 (견적서)'}

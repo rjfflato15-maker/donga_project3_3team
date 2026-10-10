@@ -63,7 +63,7 @@ def test_reissue_v2_v3_return_and_new_review_keep_history_and_current_state(oper
         assert changed.status_code == 200, changed.text
         detail, work = surfaces(operator_client, cid)
         assert detail['documents'][0]['version']['version_number'] == version
-        assert work['stage'] == 'APPROVAL' and work['approval_status'] == 'STALE'
+        assert work['stage'] == 'CHECK' and work['approval_status'] == 'STALE'
         assert work['next_actions'][0]['role'] == 'operator'  # real first approval step
         assert rep.post(f'/api/contracts/{cid}/reviews', json=body).status_code == 409
     timeline = operator_client.get(f'/api/contracts/{cid}/activity', params={'masked': False}).json()
@@ -72,7 +72,9 @@ def test_reissue_v2_v3_return_and_new_review_keep_history_and_current_state(oper
     assert all(e['data']['previous_fields']['total_amount'] == 110 for e in revisions)
     assert any(e['type'] == 'REPRESENTATIVE_RETURNED' and e['review_id'] for e in timeline['items'])
     assert any(e['type'] == 'RULE_VALIDATION' and e['data']['checks'] for e in timeline['items'])
-    new_body = {**body, 'revision': detail['workflow']['revision'], 'fingerprint': detail['workflow']['fingerprint']}
+    from submission_helpers import complete_source_review
+    detail = complete_source_review(operator_client, cid)
+    new_body = {**body, 'review_cycle':detail['workflow']['reviews'][0]['review_id'] if detail['workflow']['reviews'] else 0, 'revision': detail['workflow']['revision'], 'fingerprint': detail['workflow']['fingerprint']}
     assert operator_client.post(f'/api/pilot/contracts/{cid}/approvals', json={**new_body, 'step': 1}).status_code == 200
     assert rep.post(f'/api/contracts/{cid}/reviews', json=new_body).status_code == 200
     _, final = surfaces(operator_client, cid)
@@ -90,7 +92,7 @@ def test_done_payment_returns_to_current_review_after_reissue_without_another_pa
     old = detail['documents'][0]
     assert reissue(operator_client, cid, old['document_id'], body['revision']).status_code == 200
     changed, work = surfaces(operator_client, cid)
-    assert work['stage'] == 'APPROVAL'
+    assert work['stage'] == 'CHECK'
     assert work['payment_already_recorded'] is True
     assert changed['payment']['status'] == 'RECONFIRMATION_REQUIRED'
     assert changed['payment']['payment_id'] == detail['payment']['payment_id']

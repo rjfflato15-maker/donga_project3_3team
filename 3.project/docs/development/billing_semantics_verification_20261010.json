@@ -1,0 +1,82 @@
+{
+  "checked_on": "2026-10-10",
+  "head": "54a8841",
+  "working_tree_changes_included": true,
+  "backend": {
+    "passed": 931,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 201.91
+  },
+  "frontend": {
+    "files": 36,
+    "passed": 172,
+    "failed": 0,
+    "build": "passed"
+  },
+  "documents": {
+    "maintained": 49,
+    "errors": 0
+  },
+  "semantic_policy": "claim-context-20261010",
+  "cases": [
+    "Bare remainder word cannot prove partial claim",
+    "Explicit 70 percent claim is partial",
+    "Invoice total equals contract but differs from scheduled final amount: REVIEW",
+    "Full invoice can coexist with installment payment plan",
+    "Nonnumeric dates and unlabelled amounts are not payment terms",
+    "No-advance final full settlement: FULL",
+    "Claim amount does not infer payment",
+    "Duplicated or mixed full/partial invoices are not double counted",
+    "Historical eval retains original prompt and guard versions"
+  ],
+  "demo": {
+    "original_hashes_unchanged": true,
+    "old_document_rows_preserved": true,
+    "revision": 24,
+    "payment_mode": "FULL",
+    "payment_rows": 0,
+    "replacement_amounts_and_scope": true,
+    "persisted_billing_context": true,
+    "live_serves_current_billing_ui": true,
+    "live_health": "ok"
+  },
+  "browser": {
+    "url": "http://localhost:8187/",
+    "viewport": [
+      1280,
+      720
+    ],
+    "real_api": true,
+    "database": "isolated copy",
+    "console_errors": 0,
+    "console_warnings": 0,
+    "page_identity": "passed",
+    "blank_page": "passed",
+    "error_overlay": "none",
+    "interaction": "contract -> invoice -> all values -> claim scope -> source highlight",
+    "observed": "38,500,000원 amount match; FULL claim; payment not recorded",
+    "other_viewports_tested": false
+  },
+  "limits": [
+    "Fixed historical evaluation metrics were not rerun with the new policy",
+    "No new LLM/VLM inference accuracy measurement",
+    "Legacy documents without stored payment terms need source review or reissue",
+    "No transfer or representative approval was created",
+    "Clean-PC installation not tested in this change"
+  ],
+  "source_hashes": {
+    "backend/app/validation/billing.py": "f9efadda50c807d5564386721e16041e5c25f38944ab44d4c78061f39b25f255",
+    "backend/app/validation/engine.py": "d47419c6c3ad224ecac68aafb9bb80c6de7393f4a8f96cea1c35391e324aa9d4",
+    "backend/app/validation/financial.py": "2148293564766def5552663db428d23f4e442a0da64d1c567d7d4aba1f6c8ebc",
+    "backend/app/ai/__init__.py": "fd2f03ba0260d2b98e511d93990b997d1129e145e8687740be9ad2257049701b",
+    "backend/app/ai/grounding.py": "4043df18e7f0265450b44b468b4c0ce927f91b171756a14d3c9c3d8babfebd85",
+    "backend/app/ai/grounding_v4.py": "e749ac4f1a6b3cd86d5687484a2e01cc4431d15556d576368a299e71270862c0",
+    "backend/app/ai/local_llm.py": "37f9fd69dd2cfcb7885bc1f6589da1b66cde4f4c27b357d9f1b3d56861bdb2f0",
+    "backend/app/ai/local_vlm.py": "63250b47b88f4ee828425b43016b6dc8c2261b238362661c903ef53ea109b285",
+    "backend/app/services/vlm_reread_service.py": "4e68cde65f4b70456b53abf92cfc1a9b9943bf6e079aa7c67dd033ee7e7b7535",
+    "frontend/src/components/review/BillingSummary.tsx": "ffda186f6ca797356f6c6821d1e46fbc9b066a9b20e2121d78e470993130f90c",
+    "frontend/src/components/review/DocumentWorkspace.tsx": "220f2a2b526e69b7cd67884145b43918801ccb8872766b4b889650855a92fbb0",
+    "frontend/src/components/review/reviewTasks.ts": "4ca437eaad28830c5cb3372a32e5ad5ea07413114989f08f0d77dd6a4193c857"
+  }
+}

@@ -1,7 +1,8 @@
 import copy
 import os
 from .local_llm import OllamaClient
-from .grounding import canonical, guard_proposal, source_pages, supplementation_targets, GUARD_VERSION
+from .grounding import (canonical, guard_proposal, source_pages, source_evidence_complete,
+                        supplementation_targets, GUARD_VERSION)
 
 
 def apply_proposals(rule_fields, run, pages, document_type, targets, *, guarded=True, llm_only=False, guard_policy="v3"):
@@ -44,8 +45,16 @@ def apply_proposals(rule_fields, run, pages, document_type, targets, *, guarded=
 
 
 def supplement_document(file_path, raw_text, fields, document_type, client=None):
+    # Empty evidence selects the bounded expected field set without scanning
+    # unsafe/incomplete candidates. Keep failures resolvable by field review.
+    targets = supplementation_targets(fields, [], document_type)
     try:
         pages = source_pages(file_path, raw_text)
+        if not source_evidence_complete(pages):
+            return fields, {"status": "FAILED", "error": "SOURCE_EVIDENCE_UNAVAILABLE", "decisions": [],
+                            "targets": list(targets), "unresolved_fields": list(targets), "attempts": 0,
+                            "manual_review_required": True, "guard_review_required": True,
+                            "human_confirmed": False}
         targets = supplementation_targets(fields, pages, document_type)
         if not targets:
             return fields, {"status": "NOT_NEEDED", "targets": [], "decisions": [], "manual_review_required": False}
@@ -55,4 +64,5 @@ def supplement_document(file_path, raw_text, fields, document_type, client=None)
                                guard_policy=os.getenv("APP_LLM_GUARD_POLICY", "v3"))
     except Exception:
         return fields, {"status": "FAILED", "error": "LOCAL_LLM_OR_SOURCE_UNAVAILABLE", "decisions": [],
-                        "manual_review_required": True, "human_confirmed": False}
+                        "targets": list(targets), "unresolved_fields": list(targets),
+                        "manual_review_required": True, "guard_review_required": True, "human_confirmed": False}

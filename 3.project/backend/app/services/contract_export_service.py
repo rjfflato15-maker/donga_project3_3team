@@ -13,10 +13,11 @@ from PIL import Image, ImageOps
 
 from ..db.models import (Contract, Document, DocumentFileInfo, ValidationResult,
                          AuditEvent, ContractReview, ApprovalSignoff,
-                         ResubmissionRequest, WorkAssignment, ContractPayment, PaymentConfirmation)
+                         ResubmissionRequest, WorkAssignment, ContractPayment, PaymentConfirmation, PaymentCorrection)
 from ..schemas.document import AnalysisFields
 from .pipeline_service import PipelineService
-from .preview_masking_service import mask_image_with_ocr, mask_export_text, SENSITIVE_KEYS
+from .preview_masking_service import (mask_image_with_ocr, mask_export_text, SENSITIVE_KEYS,
+                                     document_sensitive_values, export_patterns)
 from .storage_service import resolve_path, read_texts, STORAGE_LOCK
 from .workflow_service import policy_for, fingerprint_for, audit
 from .review_context_service import request_response
@@ -88,8 +89,7 @@ def export_snapshot(db, cid, revision=None):
             'fields': AnalysisFields(**fields).model_dump(),
             'human_review': fields.get('human_review'), 'ai_review': fields.get('ai_review'),
             '_path': path, '_text': read_texts(doc)[0],
-            '_sensitive': {**values, 'vendor_name': contract.vendor_name,
-                           'business_number': contract.business_number},
+            '_sensitive': document_sensitive_values(doc, db),
             '_expected_sha256': info.sha256 if info else None,
         })
     history = {}
@@ -115,6 +115,9 @@ def export_snapshot(db, cid, revision=None):
             'contract': {**row_data(contract), 'policy': policy}, 'documents': documents,
             'validation_results': [row_data(row) for row in db.query(ValidationResult).filter_by(contract_id=cid).order_by(ValidationResult.validation_id)],
             'history': history, '_sensitive': sensitive}
+    history['payment_corrections'] = [row_data(row) for row in db.query(PaymentCorrection).join(
+        ContractPayment, ContractPayment.payment_id == PaymentCorrection.payment_id).filter(
+            ContractPayment.contract_id == cid).order_by(PaymentCorrection.correction_id)]
     collect_sensitive(data, sensitive)
     db.rollback()  # OCR and rendering must not hold the company DB transaction.
     return data
@@ -137,14 +140,16 @@ def collect_sensitive(value, output):
             collect_sensitive(item, output)
 
 
-def public_data(value, masked, sensitive):
+def public_data(value, masked, sensitive, _patterns=None):
+    if masked and _patterns is None:
+        _patterns = export_patterns(sensitive)
     if isinstance(value, dict):
-        return {key: item if key in OPAQUE_KEYS else public_data(item, masked, sensitive) for key, item in value.items()
+        return {key: item if key in OPAQUE_KEYS else public_data(item, masked, sensitive, _patterns) for key, item in value.items()
                 if not key.startswith('_') and key not in EXCLUDED_KEYS}
     if isinstance(value, list):
-        return [public_data(item, masked, sensitive) for item in value]
+        return [public_data(item, masked, sensitive, _patterns) for item in value]
     if masked and isinstance(value, str):
-        return mask_export_text(value, sensitive)
+        return mask_export_text(value, sensitive, patterns=_patterns)
     return value
 
 

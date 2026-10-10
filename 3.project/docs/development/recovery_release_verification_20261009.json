@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "installed_same_payload_with_isolated_appid": true,
+  "host_python_node_removed_from_path": true,
+  "runtime_imports": true,
+  "empty_db_and_two_initial_accounts": true,
+  "new_recovery_tables": true,
+  "http_health_ui_assets": true,
+  "update_preserved_data": true,
+  "upgrade_from_old_console_sensitive_entrypoint": true,
+  "installer_visual_wizard": "Not inspected; silent install/update used",
+  "fresh_physical_pc": false,
+  "real_ai_model_setup": false,
+  "qa_appid": "{B732DA3A-92BA-467C-991F-96D235136619}",
+  "payload": "C:\\3조 색인\\3.project\\build\\windows-payload\\C-Pilot-1.0.0-4b530254",
+  "uninstall_preserved_data": true,
+  "checked_at": "2026-10-09T13:06:58.553991+09:00",
+  "workspace_backend_tests": 560,
+  "source_package_backend_tests": 535,
+  "source_package_dependencies": "Reused tested Python environment; backend source hashes match",
+  "frontend_tests": 124,
+  "frontend_test_files": 28,
+  "frontend_build": "TypeScript/Vite passed",
+  "docs_count": 49,
+  "docs_errors": 0,
+  "recovery_tests": [
+    "registration retry",
+    "selected document type",
+    "contract exclusion/restore",
+    "payment correction/void",
+    "reply correction/reopen"
+  ]
+}

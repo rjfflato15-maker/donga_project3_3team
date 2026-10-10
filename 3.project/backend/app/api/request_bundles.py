@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from ..db.database import get_db
 from ..security import Actor, get_current_user
-from ..services.request_bundle_service import bundle_context, create_bundle, resolve_items
+from ..services.request_bundle_service import bundle_context, create_bundle, resolve_items, correct_items
 from .workflow import RequestCreate
 
 router = APIRouter(tags=['Request bundles'])
@@ -60,6 +60,17 @@ class BundleResolution(BaseModel):
         return self
 
 
+class ItemCorrection(BaseModel):
+    item_id: int = Field(ge=1, strict=True)
+    status: Literal['WAITING_RESPONSE', 'RECEIVED', 'CANCELLED']
+    note: str = Field(min_length=3, max_length=2000)
+    model_config = ConfigDict(extra='forbid', str_strip_whitespace=True)
+
+
+class BundleCorrection(BundleResolution):
+    items: list[ItemCorrection] = Field(min_length=1, max_length=30)
+
+
 @router.get('/api/pilot/contracts/{contract_id}/resubmission-bundle-context')
 def get_bundle_context(contract_id: int, db: Session = Depends(get_db)):
     return bundle_context(db, contract_id)
@@ -77,3 +88,9 @@ def record_bundle(contract_id: int, req: BundleCreate, response: Response,
 def receive_items(contract_id: int, request_id: int, req: BundleResolution,
                   db: Session = Depends(get_db), actor: Actor = Depends(get_current_user)):
     return resolve_items(db, contract_id, request_id, req, actor)
+
+
+@router.post('/api/pilot/contracts/{contract_id}/resubmission-bundles/{request_id}/corrections')
+def correct_reply_items(contract_id: int, request_id: int, req: BundleCorrection,
+                        db: Session = Depends(get_db), actor: Actor = Depends(get_current_user)):
+    return correct_items(db, contract_id, request_id, req, actor)

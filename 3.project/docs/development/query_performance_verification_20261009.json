@@ -1,0 +1,27 @@
+{
+  "verified_on": "2026-10-09",
+  "basis": "Current Windows working tree; post-import confirmation/navigation fixes preserved",
+  "input_zip_sha256": "106b2e74cee7ab945503867d43e3025cb65de7fed2d8ecf7c83e3da6f0d095f2",
+  "authentication": "Real login and HTTP routes on an isolated copy of the live DB; same six original PDFs read-only",
+  "live_customer_records_modified_by_measurement": false,
+  "http_seconds": {
+    "detail": {"first": 0.0350, "repeat": 0.0378},
+    "overview": {"first": 0.0724, "repeat": 0.0607},
+    "history_30": {"first": 0.0552, "repeat": 0.0522},
+    "selected_evidence": {"first": 1.4755, "repeat": 0.1388},
+    "masked_preview": {"first": 0.8101, "repeat": 0.0144},
+    "masked_preview_before_cache": {"first": 0.9536, "repeat": 0.9626}
+  },
+  "http_statuses": "All measured responses 200",
+  "source_page_cache": {"max_entries": 16, "max_text_characters": 2000000, "persistent": false},
+  "preview_cache": {"max_entries": 16, "max_bytes": 33554432, "ttl_seconds": 120, "persistent": false, "browser_cache_control": "no-store"},
+  "invalidation_checks": ["actual source SHA-256", "raw extracted text", "storage root", "revision", "page", "masked mode", "current and historical sensitive values", "source/revision changed during processing", "auth/exclusion on every request"],
+  "tests": {
+    "backend_full": {"passed": 912, "failed": 0, "skipped": 0, "seconds": 283.22},
+    "frontend_full": {"files": 35, "passed": 168},
+    "build": "TypeScript and Vite passed; existing 500KB chunk warning",
+    "mask_preview_targeted": {"passed": 155}
+  },
+  "browser": {"environment": "1280x720 Codex in-app browser, isolated QA copy, current production build", "path": "contract -> activity -> documents -> original/field controls", "blank_or_framework_overlay": false, "console_errors_or_warnings": 0},
+  "limitations": ["Single PC and one six-document contract; not a load test", "First PDF/OCR rendering remains necessary", "No real-model accuracy benchmark rerun", "No new PC/Setup installation validation", "No commit made; source hashes identify the final snapshot"]
+}

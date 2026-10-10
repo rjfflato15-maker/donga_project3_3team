@@ -3,6 +3,19 @@
 @tailwind components;
 @tailwind utilities;
 
+.inbox-refresh { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; color: #64748b; }
+.reading-recovery { padding: 14px; margin: 0 0 16px; border: 1px solid #fcd34d; border-radius: 10px; background: #fffbeb; color: #78350f; }
+.reading-recovery p, .reading-recovery ul { margin: 8px 0; font-size: 13px; line-height: 1.6; }
+.reading-recovery ul { padding-left: 18px; list-style: disc; }
+.reading-recovery small { display: block; margin-top: 10px; line-height: 1.5; }
+.vlm-reread { padding: 14px; margin-bottom: 16px; border: 1px solid #bfdbfe; border-radius: 10px; background: #f8fafc; }
+.vlm-reread p, .vlm-reread small { display: block; font-size: 12px; line-height: 1.6; margin: 8px 0; }
+.vlm-reread .story-button-row { flex-wrap: wrap; }
+.vlm-candidate { padding: 10px 0; border-bottom: 1px solid #e2e8f0; }
+.vlm-quote { white-space: pre-wrap; overflow-wrap: anywhere; }
+.vlm-note { display: grid; gap: 6px; margin: 10px 0; font-size: 13px; }
+.vlm-note textarea { padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; width: 100%; }
+
 body {
   font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   background-color: #f8fafc;
@@ -37,20 +50,24 @@ body {
 }
 
 /* Custom scrollbar */
-::-webkit-scrollbar {
+body:not(:has(.cf-app.story-app))::-webkit-scrollbar,
+body:not(:has(.cf-app.story-app)) ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-::-webkit-scrollbar-track {
+body:not(:has(.cf-app.story-app))::-webkit-scrollbar-track,
+body:not(:has(.cf-app.story-app)) ::-webkit-scrollbar-track {
   background: #f1f5f9;
 }
 
-::-webkit-scrollbar-thumb {
+body:not(:has(.cf-app.story-app))::-webkit-scrollbar-thumb,
+body:not(:has(.cf-app.story-app)) ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 9999px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+body:not(:has(.cf-app.story-app))::-webkit-scrollbar-thumb:hover,
+body:not(:has(.cf-app.story-app)) ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }

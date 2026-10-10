@@ -23,8 +23,14 @@ export const STAGE_PILL: Record<Stage, string> = {
   CHECK: 'bg-amber-100 text-amber-800',
   WAITING: 'bg-sky-100 text-sky-800',
   APPROVAL: 'bg-violet-100 text-violet-800',
-  PAYMENT: 'bg-emerald-100 text-emerald-800',
-  DONE: 'bg-slate-100 text-slate-500',
+  PAYMENT: 'bg-blue-100 text-blue-800',
+  DONE: 'bg-emerald-100 text-emerald-800',
+};
+
+/** 업무함·검색·계약 제목의 상태 배지 색. 단계마다 다른 색으로 한눈에 구분한다. */
+export type StageTone = 'amber' | 'sky' | 'violet' | 'blue' | 'green' | 'gray' | 'red';
+export const STAGE_TONE: Record<Stage, StageTone> = {
+  RECEIVING: 'amber', CHECK: 'amber', WAITING: 'sky', APPROVAL: 'violet', PAYMENT: 'blue', DONE: 'green',
 };
 
 const KNOWN = new Set<Stage>(['RECEIVING', 'CHECK', 'WAITING', 'APPROVAL', 'PAYMENT', 'DONE']);

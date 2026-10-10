@@ -31,11 +31,12 @@ describe('앱 셸: 메뉴는 업무 입력과 독립', () => {
     fireEvent.click(screen.getByRole('button', { name: '메뉴 펼치기' }));
     expect(screen.getByRole('dialog', { name: '앱 메뉴' })).toBeTruthy();
     expect((document.querySelector('.main') as HTMLElement).inert).toBe(true);
-    expect(document.activeElement).toBe(screen.getByRole('button',{name:'사이드바 접기'}));
+    expect(document.activeElement).toBe(screen.getByRole('button',{name:'메뉴 접기'}));
     fireEvent.keyDown(document, { key: 'Escape' });
     expect(screen.queryByRole('dialog')).toBeNull();
     expect((document.querySelector('.main') as HTMLElement).inert).toBe(false);
     expect(document.activeElement).toBe(screen.getByRole('button',{name:'메뉴 펼치기'}));
-    expect((document.querySelector('.sidebar') as HTMLElement).inert).toBe(true);
+    expect((document.querySelector('.sidebar') as HTMLElement).inert).not.toBe(true);
+    expect(screen.getByRole('button',{name:'업무함'})).toBeTruthy();
   });
 });

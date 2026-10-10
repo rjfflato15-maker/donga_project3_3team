@@ -306,7 +306,7 @@ def test_audit_and_item_publication_are_atomic_when_commit_fails(operator_client
         assert db.query(AuditEvent).filter_by(action='RESUBMISSION_BUNDLE_RECORDED').count() == 0
 
 
-def test_authentication_roles_and_contract_delete_cascade(operator_client, accounts, db_factory):
+def test_authentication_roles_and_contract_exclusion_preserves_requests(operator_client, accounts, db_factory):
     cid = contract(operator_client)
     payload = body(operator_client, cid, ['missing:bank_account'])
     row = create(operator_client, cid, payload)
@@ -319,7 +319,7 @@ def test_authentication_roles_and_contract_delete_cascade(operator_client, accou
         db.commit()
     assert operator_client.delete(f'/api/contracts/{cid}').status_code == 204
     with db_factory() as db:
-        assert db.query(RequestBundle).count() == db.query(RequestBundleItem).count() == 0
+        assert db.query(RequestBundle).count() == db.query(RequestBundleItem).count() == 1
     operator_client.post('/api/auth/logout')
     assert operator_client.get(f'/api/pilot/contracts/{cid}/resubmission-bundle-context').status_code == 401
     assert operator_client.post(f'/api/pilot/contracts/{cid}/resubmission-bundles', json=payload).status_code == 401

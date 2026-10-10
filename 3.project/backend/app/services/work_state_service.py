@@ -56,19 +56,28 @@ def build_work_state(checks, documents, workflow, approval, waiting_count, payme
             continue
         immediate.append(c)
     approval_status = workflow['approval_status']
+    submission = workflow.get('submission')
+    gate = (submission or {}).get('gate') or {}
     if payment and payment.get('status') == 'RECORDED' and approval_status == 'CONFIRMED':
         stage = 'DONE'
     elif approval_status == 'CONFIRMED':
         stage = 'PAYMENT'
+    elif submission and submission.get('current'):
+        stage = 'APPROVAL'
     elif waiting_count:
         stage = 'WAITING'
     elif external_missing:
         stage = 'RECEIVING'
+    elif submission:
+        stage = 'CHECK'
     elif sum(counts.values()) or ai_pending or approval_status == 'RETURNED':
         stage = 'CHECK'
     else:
         stage = 'APPROVAL'
     actions = []
+    if submission and stage not in {'APPROVAL', 'PAYMENT', 'DONE'}:
+        actions.append({'role': 'operator', 'code': 'COMPLETE_REVIEW_AND_SUBMIT',
+                        'label': '담당자 원문 검토·회신 처리 후 결재 상신'})
     if stage not in {'PAYMENT', 'DONE'} and (immediate or ai_pending or approval_status == 'RETURNED'):
         actions.append({'role': 'operator', 'code': 'REVIEW_CURRENT_EVIDENCE',
                         'label': '현재 서류와 남은 확인 항목 처리'})
@@ -90,7 +99,9 @@ def build_work_state(checks, documents, workflow, approval, waiting_count, payme
         else:
             actions.append({'role': 'operator', 'code': 'RECONFIRM_PAYMENT' if reconfirm else 'RECORD_PAYMENT',
                             'label': '기존 지급 사실 재확인' if reconfirm else '전체 지급 완료 사실 기록'})
-    return {'schema_version': 1, 'stage': stage, 'stage_label': STAGE_LABELS[stage],
+    label = ('대표 결재 대기' if stage == 'APPROVAL' and submission else
+             '검토 완료·상신' if stage == 'CHECK' and gate.get('can_submit') else STAGE_LABELS[stage])
+    return {'schema_version': 2, 'stage': stage, 'stage_label': label,
             'revision': workflow['revision'], 'fingerprint': workflow['fingerprint'],
             'approval_status': approval_status, 'approval_next_step': approval.get('next_step'),
             'counts': {'check_items': sum(counts.values()), 'issue_cards': len(groups),
@@ -98,8 +109,10 @@ def build_work_state(checks, documents, workflow, approval, waiting_count, payme
                        'missing_external_document_types': len(external_missing),
                        'waiting_requests': waiting_count, 'pending_ai_documents': ai_pending,
                        'immediate_check_items': len(immediate)},
-            'next_actions': actions, 'waiting_for': ['VENDOR'] if waiting_count else [],
-            'payment_already_recorded': bool(payment and payment.get('recorded_paid_on')),
+            'submission_status': (submission or {}).get('status'),
+            'review_blockers': gate.get('blockers', []),
+            'next_actions': actions, 'waiting_for': ['VENDOR'] if waiting_count else ['REPRESENTATIVE'] if stage == 'APPROVAL' and submission else [],
+            'payment_already_recorded': bool(payment and payment.get('status') != 'VOIDED' and payment.get('recorded_paid_on')),
             'payment_blocked_reason': payment.get('blocked_reason') if payment else None,
             'rule_results_are_human_confirmation': False,
             'basis': 'CURRENT_SAVED_FIELDS_AND_CURRENT_REVIEW'}

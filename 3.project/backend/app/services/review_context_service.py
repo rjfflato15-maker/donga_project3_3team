@@ -16,6 +16,8 @@ from .review_summary_service import build_action_summary, display_issue_counts, 
 from .evidence_geometry_service import attach_coordinates
 from .document_version_service import active_documents
 from .field_confirmation_service import current_confirmations
+from .field_deferral_service import current_deferrals
+from .source_location_cache import cached_source_pages, invalidate_source_pages
 SOURCE_NAMES = {'RULE': '규칙', 'AI_SUPPLEMENT': 'AI 보완', 'HUMAN_CONFIRMATION': '사람 확인', 'UNAVAILABLE': '미추출'}
 
 
@@ -48,12 +50,15 @@ def request_response(row):
                 'cancelled': sum(i['status'] == 'CANCELLED' for i in items)}}
     return result
 
-def document_provenance(db, doc):
+def document_provenance(db, doc, include_evidence=True):
     fields = json.loads(doc.extract.raw_fields or '{}') if doc.extract else {}
     values = AnalysisFields(**fields).model_dump()
     ai = fields.get('ai_review') or {}
     decisions = {r['field']: r for r in ai.get('decisions', []) if isinstance(r, dict) and r.get('field')}
     confirmations = current_confirmations(db, doc.document_id, fields)
+    recorded = current_deferrals(db, doc.document_id, fields)
+    deferrals = {k: v for k, v in recorded.items() if v.get('kind') != 'NO_ISSUE'}
+    no_issue = {k: v for k, v in recorded.items() if v.get('kind') == 'NO_ISSUE'}
     legacy_scope_unknown = bool(doc.extract and doc.extract.extracted_status == 'MANUALLY_CONFIRMED' and not fields.get('human_review'))
     file_info = db.get(DocumentFileInfo, doc.document_id)
     expected_sha = file_info.sha256 if file_info else None
@@ -61,20 +66,32 @@ def document_provenance(db, doc):
     db.rollback()
     path = resolve_path(doc.storage_path)
     text_only = bool(path and Path(path).suffix.lower() in {'.txt', '.md', '.json', '.csv'})
-    raw, _ = read_texts(doc)
+    raw = read_texts(doc)[0] if include_evidence else None
     pages = []
     source_error = None
     version_verified = False
-    if path and raw:
+    if path:
         try:
             if expected_sha:
                 with path.open('rb') as stream:
                     version_verified = hashlib.file_digest(stream, 'sha256').hexdigest() == expected_sha
                 if not version_verified:
                     source_error = 'ORIGINAL_VERSION_CHANGED'
-            if not source_error:
-                pages = source_pages(path, raw)
+            if not source_error and include_evidence and raw:
+                pages = cached_source_pages(path, raw, expected_sha, source_pages) if version_verified else source_pages(path, raw)
+                # Do not return cached/fresh anchors if the file changed mid-read.
+                if version_verified:
+                    with path.open('rb') as stream:
+                        version_verified = hashlib.file_digest(stream, 'sha256').hexdigest() == expected_sha
+                    if not version_verified:
+                        invalidate_source_pages(path, raw, expected_sha)
+                        pages = []
+                        source_error = 'ORIGINAL_VERSION_CHANGED'
+            elif not source_error:
+                source_error = 'SOURCE_EVIDENCE_NOT_LOADED' if not include_evidence else 'ORIGINAL_OR_TEXT_UNAVAILABLE'
         except Exception:
+            if include_evidence and raw:
+                invalidate_source_pages(path, raw, expected_sha)
             source_error = 'SOURCE_LOCATION_UNAVAILABLE'
     else:
         source_error = 'ORIGINAL_OR_TEXT_UNAVAILABLE'
@@ -125,19 +142,21 @@ def document_provenance(db, doc):
             anchor.update(bbox=None, bboxes=[], coordinate_space='preview_image_normalized_top_left',
                           source_sha256=expected_sha, coordinate_method=None)
     return {'document_id': doc.document_id, 'file_name': doc.file_name, 'source_version_verified': version_verified,
+        'deferrals': deferrals, 'no_issue': no_issue,
         'source_sha256': expected_sha, 'fields': results, 'ai_review': ai or None,
         'human_confirmed_fields': sorted(confirmations), 'legacy_confirmation_scope_unknown': legacy_scope_unknown}
 
-def review_context(db, contract_id):
+def review_context(db, contract_id, include_evidence=True, evidence_document_id=None):
     detail = ContractService().get_contract_detail(db, contract_id)
     if not detail:
         return None
     from ..db.models import Contract
     contract = db.get(Contract, contract_id)
     current_docs = active_documents(contract)
-    documents = [document_provenance(db, d) for d in current_docs]
+    documents = [document_provenance(db, d, include_evidence and (
+        evidence_document_id is None or d.document_id == evidence_document_id)) for d in current_docs]
     by_id = {str(d['document_id']): d for d in documents}
-    keys = {'BUSINESS_NO_MATCH': ['business_registration_no'], 'AMOUNT_COMPONENTS': ['supply_amount', 'tax_amount', 'total_amount'], 'AMOUNT_EXTRACTION': ['supply_amount', 'tax_amount', 'total_amount', 'amount'], 'AMOUNT_MATCH_ESTIMATE': ['total_amount', 'amount'], 'AMOUNT_MATCH_TAX_INVOICE': ['total_amount', 'amount_scope'], 'PAYMENT_SCOPE': ['amount_scope', 'total_amount'], 'INSTALLMENT_TOTAL': ['total_amount', 'amount_scope']}
+    keys = {'BUSINESS_NO_MATCH': ['business_registration_no'], 'ACCOUNT_HOLDER_MATCH': ['company_name'],'AMOUNT_COMPONENTS': ['supply_amount', 'tax_amount', 'total_amount'], 'AMOUNT_EXTRACTION': ['supply_amount', 'tax_amount', 'total_amount', 'amount'], 'AMOUNT_MATCH_ESTIMATE': ['total_amount', 'amount'], 'AMOUNT_MATCH_TAX_INVOICE': ['total_amount', 'amount_scope'], 'PAYMENT_SCOPE': ['amount_scope', 'total_amount'], 'INSTALLMENT_TOTAL': ['total_amount', 'amount_scope']}
     checks = []
     for check in detail.checks:
         targets = [by_id[check.field]] if check.field in by_id else [by_id[str(d.document_id)] for d in current_docs if d.document_type == 'tax_invoice'] if check.rule_id in {'INSTALLMENT_TOTAL', 'PAYMENT_SCOPE'} else []

@@ -80,7 +80,7 @@ def test_active_account_cross_contract_revision_and_completion_contract(operator
     representative=separate_client()
     assert update_task(representative,cid,aid,1,'COMPLETE').status_code==200
     assert operator_client.delete(f'/api/contracts/{cid}').status_code==204
-    with db_factory() as db:assert db.query(WorkAssignment).count()==0
+    with db_factory() as db:assert db.query(WorkAssignment).count()==1
 
 
 @pytest.mark.parametrize('document_task,started,representative_completes',[

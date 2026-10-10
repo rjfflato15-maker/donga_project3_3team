@@ -19,7 +19,10 @@ def configured_contract(operator_client, separate_client, first_role='operator')
     assert result.status_code == 200, result.text
     c = create_contract(operator_client, contract_amount=110, vendor_name='가상 검증업체')
     upload(operator_client, c['contract_id'])
-    detail = operator_client.get(f"/api/contracts/{c['contract_id']}").json()
+    from submission_helpers import complete_source_review, submit_ready
+    detail = complete_source_review(operator_client, c['contract_id'])
+    if first_role == 'representative':
+        detail = submit_ready(operator_client, c['contract_id'])
     body = {'decision': 'CONFIRMED', 'note': '국세청 미연동 항목은 원문으로 직접 검토한 단위 테스트', 'acknowledge_unverified': True, 'revision': detail['workflow']['revision'], 'fingerprint': detail['workflow']['fingerprint']}
     return (representative, c['contract_id'], body)
 

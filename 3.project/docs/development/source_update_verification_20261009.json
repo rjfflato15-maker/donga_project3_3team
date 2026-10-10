@@ -1,0 +1,69 @@
+{
+  "verified_at": "2026-10-09T21:08:15",
+  "input_zip": "3기_3차_3조_소스코드 (7).zip",
+  "input_zip_sha256": "106b2e74cee7ab945503867d43e3025cb65de7fed2d8ecf7c83e3da6f0d095f2",
+  "import": {
+    "modified": 85,
+    "added_source": 30,
+    "added_support": 2,
+    "retired_sources": 13,
+    "restored_existing_local_document_links": 5
+  },
+  "local_adjustment": {
+    "path": "backend/tests/test_upload_input_safety.py",
+    "reason": "Preserve the literal ZIP member path in test fixtures on Windows instead of ZipInfo converting backslashes. Application guard code unchanged.",
+    "original_full_suite": {
+      "passed": 901,
+      "failed": 1
+    },
+    "final_full_suite": {
+      "tests": 902,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 193.25
+    }
+  },
+  "backend": {
+    "tests": 902,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 193.25
+  },
+  "frontend": {
+    "passed": 164,
+    "files": 34,
+    "build": "PASS",
+    "existing_warning": "JS chunk greater than 500kB"
+  },
+  "tools": {
+    "passed": 11
+  },
+  "documentation": {
+    "maintained_documents": 49,
+    "errors": 0
+  },
+  "environment": {
+    "os": "Windows",
+    "python": "3.12.14",
+    "node": "v24.15.0",
+    "execution": "ordinary local process permissions; isolated test DB and writable temporary paths"
+  },
+  "preservation": {
+    "evaluation_files_compared": 1258,
+    "evaluation_files_changed": 0,
+    "customer_database_modified": false,
+    "customer_originals_modified": false,
+    "customer_settings_modified": false
+  },
+  "native_ocr": {
+    "synthetic_korean_image_unit_test": "PASS",
+    "customer_document_benchmark": "NOT_RUN"
+  },
+  "live_models": "NOT_RUN",
+  "installer_rebuilt": false,
+  "browser_visual_qa": "NOT_RUN",
+  "explanation_pdf": "outputs/3기_3차_3조_설명문서_20261009.pdf",
+  "backup": "workspace/_local_archive/incoming_update_20261009/205104/before"
+}

@@ -1,3 +1,3 @@
 import React from 'react';
 export const Surface: React.FC<{ title?: string; sub?: React.ReactNode; action?: React.ReactNode; children: React.ReactNode; className?: string }> = ({ title, sub, action, children, className = '' }) => <section className={`surface ${className}`}>{title && <div className="section-title"><div><h2>{title}</h2>{sub && <span>{sub}</span>}</div>{action}</div>}{children}</section>;
-export const Badge: React.FC<{ children: React.ReactNode; tone?: 'gray' | 'blue' | 'green' | 'amber' | 'red' }> = ({ children, tone = 'gray' }) => <span className={`badge ${tone}`}>{children}</span>;
+export const Badge: React.FC<{ children: React.ReactNode; tone?: 'gray' | 'blue' | 'green' | 'amber' | 'red' | 'sky' | 'violet' }> = ({ children, tone = 'gray' }) => <span className={`badge ${tone}`}>{children}</span>;

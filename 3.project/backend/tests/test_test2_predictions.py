@@ -63,6 +63,10 @@ def test_missing_human_review_blocks_before_source_or_model_work(tmp_path, monke
 
 def test_check_mode_uses_receipts_without_reading_originals_or_extracting(tmp_path, monkeypatch):
     project, dataset, release = fixture_policy(tmp_path)
+    # This test exercises the historical locked policy's receipts. Current
+    # production guard revisions must not masquerade as that frozen release.
+    monkeypatch.setattr("backend.app.ai.grounding_v4.GUARD_VERSION", "grounding-v4-dev2")
+    monkeypatch.setattr("backend.app.ai.local_llm.PROMPT_VERSION", "grounded-fields-v3")
     monkeypatch.setattr(runner, "verify_dataset", lambda *a, **kw: pytest.fail("check must not open sources"))
     monkeypatch.setattr(Path, "home", lambda: tmp_path / "user")
     write_json(tmp_path / "user/.ollama/server.json", {"disable_ollama_cloud": True})
@@ -85,6 +89,15 @@ def test_check_mode_uses_receipts_without_reading_originals_or_extracting(tmp_pa
     result.write_text("changed")
     with pytest.raises(ValueError, match="TEST2_HUMAN_RESULT_PROVENANCE_CHANGED"):
         runner.preflight(project, dataset, release, client=client, check_only=True)
+
+
+def test_current_guard_revision_cannot_use_historical_test2_lock(tmp_path, monkeypatch):
+    project, dataset, release = fixture_policy(tmp_path)
+    monkeypatch.setattr("backend.app.ai.grounding_v4.GUARD_VERSION", "grounding-v4-coverage-20261009")
+    client = Client()
+    with pytest.raises(ValueError, match="TEST2_MODEL_PROMPT_OR_SETTINGS_CHANGED"):
+        runner.preflight(project, dataset, release, client=client, check_only=True)
+    assert client.calls == 0
 
 
 def test_changed_policy_cannot_start_test2(tmp_path):

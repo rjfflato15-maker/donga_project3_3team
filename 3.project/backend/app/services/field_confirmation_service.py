@@ -44,7 +44,7 @@ def confirm_fields(db, document_id, before, after, actor, explicit=None):
     proofs = current_confirmations(db, document_id, before)
     at = datetime.now(timezone.utc).isoformat()
     for key in selected:
-        proofs[key] = {'actor_name': actor.display_name, 'at': at, 'value': after[key],
+        proofs[key] = {'actor_id': actor.user_id, 'actor_name': actor.display_name, 'at': at, 'value': after[key],
             'method': 'CHANGED_VALUE' if key in changed else 'EXPLICIT_CONFIRMATION'}
     return {'field_confirmations': proofs, 'confirmed_fields': sorted(proofs)}, changed, selected
 

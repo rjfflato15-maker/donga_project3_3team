@@ -44,8 +44,11 @@ def test_complete_review_correction_reissue_reapproval_keeps_old_source_and_inva
     assert operator_client.get(f'/api/documents/{did}/download',params={'masked':False}).status_code == 200
     assert operator_client.delete(f'/api/documents/{did}').status_code == 409
     assert operator_client.put(f'/api/documents/{did}/fields',json={'fields':values,'document_type':'contract','revision':current['workflow']['revision'],'note':'이전 값 수정 시도'}).status_code == 409
-    body.update(revision=current['workflow']['revision'],fingerprint=current['workflow']['fingerprint'])
-    assert representative.post(f'/api/contracts/{cid}/reviews',json=body).status_code == 409
+    body.update(revision=current['workflow']['revision'],fingerprint=current['workflow']['fingerprint'],review_cycle=current['workflow']['reviews'][0]['review_id'] if current['workflow']['reviews'] else 0)
+    assert representative.post(f'/api/contracts/{cid}/reviews',json=body).status_code == 400
+    from submission_helpers import complete_source_review
+    current = complete_source_review(operator_client, cid)
+    body.update(revision=current['workflow']['revision'],fingerprint=current['workflow']['fingerprint'],review_cycle=current['workflow']['reviews'][0]['review_id'] if current['workflow']['reviews'] else 0)
     assert operator_client.post(f'/api/pilot/contracts/{cid}/approvals',json={**body,'step':1}).status_code == 200
     assert representative.post(f'/api/contracts/{cid}/reviews',json=body).status_code == 200
 

@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Check, CheckCheck, ArrowUpRight } from 'lucide-react';
 import { ContractDetail } from '../../types';
-import { requestJson } from '../../api/client';
+import { api, requestJson } from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
 import { buildReviewOverview, isUnverifiedBusinessStatus } from '../../utils/reviewSummary';
 import { ActivityItem, fieldChanges, kst } from './ActivityTimeline';
 import { Surface, Badge } from '../ui/Surface';
 import { maskBusinessNumber, maskResidentNumber } from '../../utils/masking';
 import { DOCUMENT_LABEL } from '../../utils/documentLabels';
-import { BundledRequest, currentDocumentFor } from './BundleRequest';
+import { BundledRequest, currentDocumentFor } from '../../features/requests/model';
 
 export interface ApprovalState {
   steps: { role: 'operator' | 'representative'; label: string }[];
@@ -28,8 +28,10 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged, masked = t
   const overview = useMemo(() => buildReviewOverview(contract), [contract]);
   const wf = contract.workflow;
   useEffect(() => { setError(''); }, [contract.contract_id]);
+  useEffect(() => { setNote(''); }, [contract.contract_id]);
+  useEffect(() => { setAck(false); }, [contract.contract_id, wf?.revision, wf?.fingerprint,wf?.reviews[0]?.review_id,wf?.submission?.event_id]);
   useEffect(() => {
-    setNote(''); setAck(false); setState(null); setQueryError('');
+    setState(null); setQueryError('');
     const controller = new AbortController();
     requestJson<ApprovalState>(`/api/pilot/contracts/${contract.contract_id}/approvals`, { signal: controller.signal })
       .then((v) => { if (!controller.signal.aborted) setState(v); })
@@ -50,20 +52,23 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged, masked = t
   const nextIndex = state?.next_step ? state.next_step - 1 : null;
   const nextStep = nextIndex !== null ? steps[nextIndex] : null;
   const isLast = nextIndex !== null && nextIndex === steps.length - 1;
-  const myTurn = !!nextStep && (user?.role === nextStep.role || user?.role === 'admin');
-  const blocked = contract.summary.missing_count > 0 || !contract.documents.length || contract.documents.some((d) => !d.file_available);
+  const submission = wf.submission;
+  const myTurn = !!nextStep && (!submission || submission.current) && (user?.role === nextStep.role || user?.role === 'admin');
+  const blocked = !!submission?.gate?.blockers.length || contract.summary.missing_count > 0 || !contract.documents.length || contract.documents.some((d) => !d.file_available);
   const unverified = contract.checks.some((c) => c.status !== 'PASS');
   const ntsNotRun = contract.checks.some(isUnverifiedBusinessStatus);
   const ackText = `${overview.issues.length ? `남은 확인 항목 ${overview.issues.length}건을 직접 검토했습니다.` : '필수 서류를 검토했습니다.'}${ntsNotRun ? ' 국세청 진위 조회는 이 앱에서 하지 않았음을 확인합니다.' : ''}`;
-  const canSubmit = !busy && !blocked && note.trim().length > 0 && (!unverified || ack && note.trim().length >= 10);
+  const canSubmit = !busy && !blocked && note.trim().length >= 3 && (!unverified || ack && note.trim().length >= 10);
   const submit = async (decision:'CONFIRMED' | 'RETURNED') => {
     if (!state?.next_step || !myTurn) return;
     setBusy(true);setError('');
     try {
-      await requestJson(`/api/pilot/contracts/${contract.contract_id}/approvals`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ step:state.next_step,decision,note:note.trim(),revision:wf.revision,fingerprint:wf.fingerprint,acknowledge_unverified:ack })});
+      const review = {review_cycle:wf.reviews[0]?.review_id??0,submission_event_id:wf.submission?.event_id??undefined,decision,note:note.trim(),revision:wf.revision,fingerprint:wf.fingerprint,acknowledge_unverified:ack};
+      if (decision === 'RETURNED') await api.review(contract.contract_id, review);
+      else await requestJson(`/api/pilot/contracts/${contract.contract_id}/approvals`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:state.next_step,...review})});
       setNote('');setAck(false);setReload((n) => n+1);await onChanged();
     } catch(e) {
-      setError(e instanceof Error ? e.message : '처리하지 못했습니다.');setNote('');setAck(false);
+      setError(e instanceof Error ? e.message : '처리하지 못했습니다.');setAck(false);
       try { await onChanged();setReload((n) => n+1); } catch { setQueryError('최신 상태를 불러오지 못했습니다. 다시 불러오세요.');setState(null); }
     } finally {setBusy(false);}
   };
@@ -92,8 +97,8 @@ export const ApprovalPanel: React.FC<Props> = ({ contract, onChanged, masked = t
     </Surface>
     {currentSignoff&&<Surface title="담당 검토 의견"><div className="review-note"><p>{displayNote(currentSignoff.note)}</p><small>{currentSignoff.actor_name} · {kst(currentSignoff.created_at)}</small></div></Surface>}
     </div><div className="approval-side"><Surface title={nextStep?.role==='representative'?'대표 결재':nextStep?.label||'결재'} action={<Badge tone={myTurn?'blue':'gray'}>{approval==='CONFIRMED'?'완료':myTurn?`${ROLE_KO[nextStep!.role]} 차례`:'대기'}</Badge>} className="decision">
-    <div className="decision-body"><div className="approval-line" aria-label="결재 단계">{steps.map((step,i)=><React.Fragment key={i}>{i>0&&<div className="line"/>}<div><span className={`person ${actors[i].done?'complete':nextIndex===i?'pending':''}`}>{actors[i].done?<Check size={18}/>:actors[i].name?.charAt(0)||i+1}</span><strong>{actors[i].name||ROLE_KO[step.role]}</strong><small>{step.label} {actors[i].done?'완료':nextIndex===i?'대기':'예정'}</small></div></React.Fragment>)}</div>
-    {approval==='CONFIRMED'?<div className="decision-state"><CheckCheck size={26}/><strong>결재 완료</strong><small>자료가 바뀌면 다시 결재합니다.</small></div>:myTurn?<>{blocked&&<p className="story-alert" role="alert">필수 서류나 원본이 없어 승인할 수 없습니다.</p>}<label className="field-label" htmlFor="approval-note">결재 의견 <small>필수</small></label><textarea id="approval-note" rows={3} maxLength={2000} placeholder="검토 내용과 승인·반려 사유" value={note} onChange={e=>setNote(e.target.value)}/><small className="help">{unverified?'미확인 사항 확인 · 의견 10자 이상':'검토 의견을 입력하세요.'}</small>{unverified&&<label className="check-label"><input type="checkbox" checked={ack} onChange={e=>setAck(e.target.checked)}/><span>{ackText}</span></label>}<div className="decision-buttons">{isLast&&<button className="button" disabled={busy||!note.trim()} onClick={()=>void submit('RETURNED')}>반려</button>}<button className="button primary" disabled={!canSubmit} onClick={()=>void submit('CONFIRMED')}><Check size={16}/>{busy?'저장 중…':isLast?'승인':`${nextStep!.label} 완료`}</button></div></>:<div className="decision-state"><CheckCheck size={26}/><strong>{nextStep?`${ROLE_KO[nextStep.role]} ${nextStep.label} 대기`:queryError?'결재 상태 조회 실패':'결재 상태 확인 중'}</strong></div>}
+    <div className="decision-body">{steps.length>0&&<p className="focus-policy">{steps.length===1?'공식 결재: 대표 1단계. 담당자의 준비·결재 요청은 공식 1차 결재가 아닙니다.':'공식 결재: 담당 검토 1차 → 대표 최종 2차.'}</p>}<div className="approval-line" aria-label="결재 단계">{steps.map((step,i)=><React.Fragment key={i}>{i>0&&<div className="line"/>}<div><span className={`person ${actors[i].done?'complete':nextIndex===i?'pending':''}`}>{actors[i].done?<Check size={18}/>:actors[i].name?.charAt(0)||i+1}</span><strong>{actors[i].name||ROLE_KO[step.role]}</strong><small>{step.label} {actors[i].done?'완료':nextIndex===i?'대기':'예정'}</small></div></React.Fragment>)}</div>
+    {approval==='CONFIRMED'?<div className="decision-state"><CheckCheck size={26}/><strong>결재 완료</strong><small>자료가 바뀌면 다시 결재합니다.</small></div>:myTurn?<>{blocked&&<p className="story-alert" role="alert">필수 서류나 원본이 없어 승인할 수 없습니다.</p>}<label className="field-label" htmlFor="approval-note">결재 의견 <small>필수</small></label><textarea id="approval-note" rows={3} maxLength={2000} placeholder="검토 내용과 승인·반려 사유" value={note} onChange={e=>setNote(e.target.value)}/><small className="help">{unverified?'미확인 사항 확인 · 의견 10자 이상':'검토 의견을 입력하세요.'}</small>{unverified&&<label className="check-label"><input type="checkbox" checked={ack} onChange={e=>setAck(e.target.checked)}/><span>{ackText}</span></label>}<div className="decision-buttons">{isLast&&<button className="button" disabled={busy||note.trim().length<3} onClick={()=>void submit('RETURNED')}>반려</button>}<button className="button primary" disabled={!canSubmit} onClick={()=>void submit('CONFIRMED')}><Check size={16}/>{busy?'저장 중…':isLast?(submission?.exception_reason?'예외 승인':'승인'):`${nextStep!.label} 완료`}</button></div></>:<div className="decision-state"><CheckCheck size={26}/><strong>{submission&&!submission.current?'담당자 검토·상신 대기':nextStep?`${ROLE_KO[nextStep.role]} ${nextStep.label} 대기`:queryError?'결재 상태 조회 실패':'결재 상태 확인 중'}</strong></div>}
     {queryError&&<p className="story-alert" role="alert">{queryError}<button className="text-button" onClick={()=>setReload(n=>n+1)}>다시 불러오기</button></p>}{error&&<p className="story-alert" role="alert">저장하지 못했습니다: {error}</p>}
-    </div></Surface><Surface title="검토·결재 의견 이력" className="opinion-panel"><div className="opinions">{opinions.slice(0,3).map(o=><article key={o.id}><div><Badge tone={o.tone}>{o.label}</Badge><small>{kst(o.at)}</small></div><p>{displayNote(o.note)}</p><small>{o.name}</small></article>)}{approval!=='CONFIRMED'&&<article><div><Badge>대표 결재</Badge></div><p>아직 결정된 의견이 없습니다.</p></article>}</div></Surface></div></div>;
+    </div></Surface><Surface title="검토·결재 의견 이력" className="opinion-panel"><div className="opinions">{opinions.slice(0,3).map(o=><article key={o.id}><div><Badge tone={o.tone}>{o.label}</Badge><small>{kst(o.at)}</small></div><p>{displayNote(o.note)}</p><small>{o.name}</small></article>)}{!opinions.length&&<article><div><Badge>대표 결재</Badge></div><p>아직 결정된 의견이 없습니다.</p></article>}</div></Surface></div></div>;
 };

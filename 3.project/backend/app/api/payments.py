@@ -4,13 +4,13 @@ from datetime import date, datetime, timedelta, timezone
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Response
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from sqlalchemy.orm import Session
 
 from ..db.database import get_db
 from ..security import Actor, get_current_user
 from ..services.contract_service import ContractService
-from ..services.payment_service import record_payment, reconfirm_payment
+from ..services.payment_service import record_payment, reconfirm_payment, correct_payment
 
 router = APIRouter(tags=['Payment records'])
 
@@ -20,6 +20,9 @@ class PaymentRequest(BaseModel):
     method: Literal['TRANSFER', 'OTHER']
     note: str = Field(default='', max_length=2000)
     revision: int = Field(ge=1, strict=True)
+    idempotency_key: str = Field(min_length=8, max_length=100)
+    payment_revision: int = Field(ge=0, strict=True)
+    acknowledge_new_payment: bool = Field(default=False, strict=True)
     model_config = ConfigDict(extra='forbid', str_strip_whitespace=True)
 
     @field_validator('paid_on')
@@ -45,6 +48,26 @@ class PaymentReconfirmation(BaseModel):
         if value is not True:
             raise ValueError('기존 지급 사실과 동일함을 확인해야 합니다.')
         return value
+
+
+class PaymentCorrectionRequest(BaseModel):
+    action: Literal['CORRECT', 'VOID']
+    revision: int = Field(ge=1, strict=True)
+    fingerprint: str = Field(pattern=r'^[0-9a-f]{64}$')
+    payment_revision: int = Field(ge=0, strict=True)
+    reason: str = Field(min_length=3, max_length=2000)
+    paid_on: str | None = None
+    method: Literal['TRANSFER', 'OTHER'] | None = None
+    note: str = Field(default='', max_length=2000)
+    model_config = ConfigDict(extra='forbid', str_strip_whitespace=True)
+
+    @model_validator(mode='after')
+    def valid_correction(self):
+        if self.action == 'CORRECT':
+            if not self.paid_on or not self.method:
+                raise ValueError('정정할 지급일과 방법을 입력하세요.')
+            PaymentRequest.validate_day(self.paid_on)
+        return self
 
 
 def payment_actor(actor: Actor = Depends(get_current_user)):
@@ -74,3 +97,9 @@ def confirm_payment(contract_id: int, payment_id: int, req: PaymentReconfirmatio
                     db: Session = Depends(get_db), actor: Actor = Depends(payment_actor)):
     state, _ = reconfirm_payment(db, contract_id, payment_id, req, actor)
     return state
+
+
+@router.post('/api/pilot/contracts/{contract_id}/payment/{payment_id}/corrections')
+def correct_payment_record(contract_id: int, payment_id: int, req: PaymentCorrectionRequest,
+                           db: Session = Depends(get_db), actor: Actor = Depends(payment_actor)):
+    return correct_payment(db, contract_id, payment_id, req, actor)

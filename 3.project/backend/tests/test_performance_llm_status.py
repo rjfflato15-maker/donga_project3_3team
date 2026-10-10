@@ -66,7 +66,10 @@ def test_performance_counts_changed_fields_and_current_approval_not_save_events_
     detail=operator_client.get(f'/api/contracts/{cid}').json()
     assert detail['llm']['applied_value_field_count']==1 and detail['llm']['current_matching_ai_value_field_count']==0
     assert detail['documents'][0]['llm']['configured_enabled_at_analysis'] is False
-    operator_client.post(f'/api/pilot/contracts/{cid}/resubmission-requests',json={'contact_method':'PHONE','memo':'서류 요청 기록'})
+    recorded = operator_client.post(f'/api/pilot/contracts/{cid}/resubmission-requests',json={'contact_method':'PHONE','memo':'서류 요청 기록'}).json()
+    assert operator_client.patch(f'/api/pilot/contracts/{cid}/resubmission-requests/{recorded["request_id"]}', json={'status':'RECEIVED','note':'합성 요청의 회신을 확인했습니다'}).status_code == 200
+    from submission_helpers import submit_ready
+    detail = submit_ready(operator_client, cid)
     assert representative.post(f'/api/contracts/{cid}/reviews',json={'decision':'CONFIRMED','note':'미연동 항목과 값 차이를 원문에서 확인했음','acknowledge_unverified':True,
         'revision':detail['workflow']['revision'],'fingerprint':detail['workflow']['fingerprint']}).status_code==200
     with db_factory() as db:
@@ -75,7 +78,7 @@ def test_performance_counts_changed_fields_and_current_approval_not_save_events_
         db.query(ContractReview).filter_by(contract_id=cid).first().created_at=registered+timedelta(minutes=20)
         db.commit()
     row=operator_client.get('/api/pilot/performance',params={'contract_id':cid}).json()['contracts'][0]
-    assert row['human_correction_save_count']==2 and row['human_field_edit_count']==1 and row['human_changed_unique_field_count']==1
+    assert row['human_correction_save_count']==3 and row['human_field_edit_count']==1 and row['human_changed_unique_field_count']==1
     assert row['resubmission_request_count']==1 and row['registration_to_current_final_confirmation_elapsed_seconds']==1200
     assert row['active_review_seconds'] is None and row['measured_time_saving_seconds'] is None
     assert reissue(operator_client,cid,did,detail['workflow']['revision']).status_code==200

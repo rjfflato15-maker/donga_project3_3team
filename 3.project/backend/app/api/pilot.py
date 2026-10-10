@@ -16,10 +16,11 @@ from ..db.database import get_db
 from ..db.models import (Contract, ContractReview, ContractWorkflow, AuditEvent, CompanySetting,
                          User, UserProfile, AuthSession)
 from ..schemas.common import DocumentType
+from ..schemas.review import ReviewRequest
 from ..security import Actor, get_current_user, require_representative, hash_password, validate_password
-from ..services.workflow_service import audit, required_types, touch_contract, policy_for, fingerprint_for
+from ..services.workflow_service import audit, required_types, touch_contract
 from ..services.storage_service import STORAGE_LOCK
-from ..services.contract_service import ContractService
+from ..services import contract_review_service
 
 router = APIRouter(tags=["C Pilot"])
 
@@ -71,60 +72,10 @@ def update_settings(req: SettingsUpdate, db: Session = Depends(get_db),
     return pilot_info(db)
 
 
-class ReviewRequest(BaseModel):
-    decision: str
-    note: str = Field(min_length=1, max_length=2000)
-    revision: int
-    fingerprint: str
-    acknowledge_unverified: bool = False
-
-
 @router.post("/api/contracts/{contract_id}/reviews")
 def submit_review(contract_id: int, req: ReviewRequest, db: Session = Depends(get_db),
                   actor: Actor = Depends(require_representative)):
-    if req.decision not in {"CONFIRMED", "RETURNED"}:
-        raise HTTPException(400, "확인 완료 또는 보완 요청을 선택하세요.")
-    service = ContractService()
-    # Rule evaluation can perform an enabled NTS lookup. Do it outside the
-    # storage lock, then publish only if the reviewed inputs are still current.
-    detail = service.get_contract_detail(db, contract_id)
-    if not detail:
-        raise HTTPException(404, "계약을 찾을 수 없습니다.")
-    if detail.workflow["revision"] != req.revision or detail.workflow["fingerprint"] != req.fingerprint:
-        raise HTTPException(409, "계약 자료가 변경되었습니다. 최신 자료를 다시 확인하세요.")
-    if req.decision == "CONFIRMED":
-        if any(not doc.file_available for doc in detail.documents) or detail.summary.missing_count:
-            raise HTTPException(400, "누락된 필수 문서와 원본을 보완한 후 최종 확인하세요.")
-        if any(check.status.value in {"FAIL", "REVIEW"} for check in detail.checks):
-            if not req.acknowledge_unverified or len(req.note.strip()) < 10:
-                raise HTTPException(400, "불일치·미확인 항목을 직접 검토했음을 선택하고 확인 근거를 10자 이상 남기세요.")
-    snapshot = {"fingerprint": detail.workflow["fingerprint"],
-                    "contract": {"title": detail.title, "vendor_name": detail.vendor_name,
-                                 "business_number": detail.business_number, "contract_amount": detail.contract_amount},
-                    "policy": {key: detail.workflow[key] for key in ("revision", "amount_basis", "tax_amount", "payment_mode")}, "summary": detail.summary.model_dump(),
-                    "checks": [c.model_dump(mode="json") for c in detail.checks],
-                    "documents": [{"document_id": d.document_id, "file_name": d.original_file_name,
-                                   "file_available": d.file_available, "fields": d.analysis.fields.model_dump()}
-                                  for d in detail.documents]}
-    db.rollback()
-    with STORAGE_LOCK:
-        db.expire_all()
-        contract = db.get(Contract, contract_id)
-        if not contract:
-            raise HTTPException(404, "계약을 찾을 수 없습니다.")
-        inputs = service.pipeline_service.validation_inputs(db, contract)
-        if policy_for(db, contract_id)["revision"] != req.revision or fingerprint_for(db, contract, inputs) != req.fingerprint:
-            raise HTTPException(409, "확인 처리 중 계약 자료가 변경되었습니다. 최신 자료를 다시 확인하세요.")
-        if req.decision == "CONFIRMED":
-            from ..services.company_policy_service import require_prior_approval
-            require_prior_approval(db, contract_id, req.revision, req.fingerprint, actor)
-        review = ContractReview(contract_id=contract_id, revision=req.revision, actor_id=actor.user_id,
-                                actor_name=actor.display_name, decision=req.decision, note=req.note.strip(),
-                                snapshot_json=json.dumps(snapshot, ensure_ascii=False, default=str))
-        db.add(review)
-        db.commit()
-        audit(db, actor, "REPRESENTATIVE_" + req.decision, contract_id, details={"revision": req.revision, "fingerprint": req.fingerprint, "review_id": review.review_id, "note": req.note.strip()})
-    return service.get_contract_detail(db, contract_id)
+    return contract_review_service.submit_review(contract_id, req, db, actor)
 
 
 @router.get("/api/pilot/reviews/{review_id}")

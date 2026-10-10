@@ -178,4 +178,5 @@ def status(settings, state_path):
     return {"runtime_ready": python_path().is_file(), "frontend_ready": (PROJECT / "frontend/dist/index.html").is_file(),
             "database_ready": (Path(settings["storage_root"]) / "pilot.db").is_file(),
             "server_running": bool(state), "server_ready": bool(state and ready_for(state, settings)),
-            "port": settings["port"], "intranet": settings["intranet"], "llm_enabled": False}
+            "port": settings["port"], "intranet": settings["intranet"], "llm_enabled": settings.get('llm_enabled', False),
+            'vlm_enabled': settings.get('vlm_enabled', True)}

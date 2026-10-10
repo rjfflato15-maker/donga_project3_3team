@@ -200,7 +200,8 @@ def test_representative_confirmation_snapshot_and_stale(operator_client, separat
     cid = contract["contract_id"]
     response = operator_client.post(f"/api/contracts/{cid}/documents", files=text_files()[:1])
     assert response.status_code == 200, response.text
-    detail = operator_client.get(f"/api/contracts/{cid}").json()
+    from submission_helpers import submit_ready
+    detail = submit_ready(operator_client, cid)
     request = {"decision": "CONFIRMED", "note": "국세청 미연동 항목과 원문을 직접 확인했습니다.",
                "revision": detail["workflow"]["revision"], "fingerprint": detail["workflow"]["fingerprint"],
                "acknowledge_unverified": True}

@@ -1,22 +1,37 @@
-# 문서 찾아보기
+# 목적별 문서 포털
 
-문서는 **작업 하나에 책임 하나**를 기준으로 나눈다. 첫 페이지는 안내와 링크만, 실행 방법은 운영 문서에, 코드 변경 위치는 개발 문서에, 과거 수치는 작업 기록에 둔다.
+> 상태: 현재 기준
+> 확인일: 2026-10-09
+> 기준: 2026-10-09 구조 정리 소스 사본. 현재 소스와 과거 설치·평가 기록의 검증 범위를 구분한다.
 
-팀 공유: [시범 C안 → 현재 앱 변경 현황 (2026-10-06)](progress/team_share_20261006/index.html) · [공유용 ZIP](progress/팀공유_현재앱_변경현황_20261006.zip). 실제 앱의 신규·개선·기존 기능과 작은 동작, 아직 시안/API 단계인 범위를 구분한다.
+목적별 참조 문서와 현재 구현의 기준을 정리한다. 화면·기능별 수정 위치는 [소스 책임 지도](architecture/module_map.md), 실행 결과는 [검증 기록](development/verification_latest.md)에서 확인한다. 설정·규격·수치는 담당 문서 한 곳에서 관리한다.
 
-| 맡은 역할 | 시작할 문서 | 이 문서에서 찾을 것 |
+| 영역 | 기준 문서 | 관련 문서 |
 | --- | --- | --- |
-| 앱 사용자·설치 담당 | [운영 문서 목록](operations/run_guide.md) | 설치·실행·계정·백업 |
-| 서버·기능 개발 담당 | [소스 역할 표](architecture/module_map.md) | 수정할 파일과 영향 범위 |
-| 화면 개발 담당 | [백엔드 API 인계](api/frontend_handoff.md) | 검사 근거·출처·연락 기록·회사 설정·결재 |
-| 유지보수·통합 담당 | [개발자 작업 안내](development/maintenance.md) | 확인 명령·변경 기록·복구 |
-| 문서 AI·검증 담당 | [LLM·평가 문서 목록](eval/local_llm_runbook.md) | 모델·근거 검증·dev/test 절차 |
-| 프로젝트 담당 | [진행 요약](progress/development_report.md) | 완료 사항·합의 기준·다음 작업 |
-| 시연 담당 | [C업체 프로필](architecture/c_company_profile.md) · [시연 업무함](operations/demo_inbox.md) · [팀원 접속 안내](operations/team_test_network.md) · [작업시간 비교 초안](operations/team_test_measurement.md) | 시범 가정·분리 실행·사내망 테스트·기존 방식과 앱의 측정 절차 |
-| 제출 문서 담당 | [설명 문서 목차](submission/explanation_outline.md) | 문제·구조·평가·결과·한계와 작성 재료 |
-| 배포 담당 | [배포 경계](development/distribution_boundary.md) | 앱·고객 자료·평가 도구 구분 |
-| 폴더 정리 담당 | [보관·삭제 기준](development/folder_guide.md) | 필요한 자료·캐시·로컬 보관함 구분 |
+| 사용·운영 | [운영 문서 목록](operations/run_guide.md) | 설치·계정·AI·내보내기·백업 |
+| 개발·유지보수 | [개발 시작](development/getting_started.md) | [작업표](development/maintenance_cheat_sheet.md) → [검증](development/test_and_verification.md) |
+| 제출·발표 | [설명 문서 구성](submission/explanation_outline.md) | [평가 요약](submission/evaluation_results.md) · [발표 구성](submission/presentation_outline.md) |
+| 제출용 소스 | [ZIP 포함·제외·검증](submission/source_package.md) | 실제 설정·업무 자료 제외, 작업 트리 파일 목록과 SHA-256 |
+| 앱 소개·경쟁 조사 | [앱 소개와 심층 리서치 요청서](submission/app_overview_research_brief.md) | 구현 범위·대체 수단·조사 결과의 발표 기준 |
+| 연구·기록 | [보존 자료 찾아보기](archive_index.md) | 당시 기록·고정 평가·조사·시안 |
 
-참고 설계는 [서비스 개요](architecture/overview.md), [기존 ERD](architecture/erd_v0.1.md), [초기 검수 규칙](validation/validation_rules_v0.1.md), [개인정보 전처리](ai/privacy_preprocessing_v0.1.md)에 있다. 오래된 설계 문서보다 현재 소스와 진행 요약을 우선 확인한다.
+| 기준 내용 | 담당 문서 |
+| --- | --- |
+| 현재 구현·검증·미완료 | [현재 상태](progress/current_status.md) |
+| 전체 구성·호출 흐름 | [아키텍처](architecture/overview.md) |
+| 화면 → 소스 → 공통 로직/API → 회귀 테스트 | [소스 책임 지도](architecture/module_map.md) |
+| 현재 DB 구조 | [ERD](architecture/erd.md) |
+| 화면과 API의 연결 계약 | [API 입구](api/README.md) |
+| 현재 원문 대조 사용자 흐름 | [문제 항목 처리 흐름](ux/current_review_flow.md) |
+| 판독·LLM·VLM·사람 확인 | [문서 분석 흐름](ai/pipeline.md) |
+| 실행 모드·AI 설정 | [설정 기준](ai/runtime_settings.md) |
+| 자동 검사 정책 | [현재 검수 규칙](validation/current_rules.md) |
+| 문서 작성·lint·보존 | [문서 유지보수](development/documentation.md) |
+| 배포 범위 | [배포 경계](development/distribution_boundary.md) |
+| 자료·캐시 보관 | [폴더 안내](development/folder_guide.md) |
+| 작업 공간 바깥 자료 | [작업 공간·공유본·보관함](development/workspace_layout.md) |
+| 개발·운영 도구 | [tools 안내](../tools/README.md) |
 
-문서를 추가할 때는 목적·관련 소스·작업 절차·확인 방법·관련 문서를 남긴다. 같은 수치나 설정을 여러 안내에 복사하기보다 담당 문서에 링크한다. 작업 역할은 팀 분담 기준이며 앱 사용자 권한과 별개다.
+기존 폴더를 일괄 이동하지 않는다. `eval/`, `docs/eval/`, `docs/progress/history/`와 연구·시안 원본의 경로·해시는 보존한다. 날짜가 있는 과거 공유 HTML/ZIP은 당시 상태의 설명이며 최신 앱의 완료 근거로 사용하지 않는다.
+
+[전체 문서](README.md) · [현재 구현 상태](progress/current_status.md)

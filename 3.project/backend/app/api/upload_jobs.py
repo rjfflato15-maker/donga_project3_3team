@@ -7,7 +7,7 @@ from ..db.models import DocumentUploadJob
 from ..schemas.common import DocumentType
 from ..security import Actor,require_operator
 from ..services.storage_service import read_upload,STORAGE_LOCK
-from ..services.upload_job_service import enqueue,response,retry,run_upload_job
+from ..services.upload_job_service import enqueue,response,retry,run_upload_job,require_visible_contract
 
 router=APIRouter(tags=['Document upload jobs'])
 
@@ -34,6 +34,7 @@ def create_job(contract_id:int,background_tasks:BackgroundTasks,file:UploadFile=
 def get_job(job_id:str,db:Session=Depends(get_db)):
     row=db.get(DocumentUploadJob,job_id)
     if not row:raise HTTPException(404,'등록 작업을 찾을 수 없습니다.')
+    require_visible_contract(db,row.contract_id)
     return response(row,db)
 
 

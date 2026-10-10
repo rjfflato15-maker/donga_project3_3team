@@ -30,16 +30,8 @@ def union(boxes):
 
 
 def ocr_boxes(image, quotes, page_number):
-    from PIL import Image
-    from ..ai.preprocessor import _safe_winocr_recognize
-    width, height = image.size
-    target = image
-    if (width < 1200 or height < 600) and max(width, height) * 2 <= 2500:
-        scale = max(2, min(3, 1600 // max(width, 1)))
-        target = image.resize((min(2400, width * scale), min(2400, height * scale)), Image.Resampling.LANCZOS)
-    elif max(width, height) > 2500:
-        scale = 2400 / max(width, height)
-        target = image.resize((int(width * scale), int(height * scale)), Image.Resampling.LANCZOS)
+    from ..ai.preprocessor import _safe_winocr_recognize, prepare_winocr_image
+    target = prepare_winocr_image(image)
     try:
         result = _safe_winocr_recognize(target, lang="ko") or {}
         output = {}

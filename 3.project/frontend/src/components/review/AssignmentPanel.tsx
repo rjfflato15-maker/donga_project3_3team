@@ -1,25 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { ContractDetail } from '../../types';
-import { requestJson } from '../../api/client';
+import { assignmentApi } from '../../features/assignments/api';
+import { Assignment, Assignee, ASSIGNMENT_STATUS_KO } from '../../features/assignments/model';
 import { useAuth } from '../../context/AuthContext';
 import { DOCUMENT_TYPE_KO } from '../../utils/reviewSummary';
 import { UserPlus } from 'lucide-react';
 
-export interface Assignment {
-  assignment_id: number; contract_id: number; document_id: number | null; contract_revision: number; assignment_revision: number;
-  assigner_id: number; assigner_name: string; assignee_id: number; assignee_name: string;
-  title: string; memo: string; due_on: string | null; status: 'OPEN' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
-  is_stale: boolean; overdue: boolean; created_at: string; completed_at: string | null;
-}
-interface Assignee { user_id: number; display_name: string; role: string }
-
-export const ASSIGNMENT_STATUS_KO: Record<Assignment['status'], string> = { OPEN: '맡김', IN_PROGRESS: '하는 중', COMPLETED: '끝남', CANCELLED: '취소' };
 const ROLE_KO: Record<string, string> = { operator: '담당자', representative: '대표', admin: '관리자' };
 const isOpen = (a: Assignment) => a.status === 'OPEN' || a.status === 'IN_PROGRESS';
-
-export const assignmentApi = {
-  mine: () => requestJson<{ assignments: Assignment[]; count: number }>('/api/pilot/assignments/mine'),
-};
 
 /** 계약 화면 '사내 담당자에게 맡기기': 맡겨도 결재·수정 권한은 바뀌지 않는다 */
 export const AssignmentPanel: React.FC<{ contract: ContractDetail; prefill?: { title: string; memo: string; document_id: number | null; key: number } | null; hideWhenEmpty?: boolean }> = ({ contract, prefill, hideWhenEmpty = false }) => {
@@ -35,14 +23,13 @@ export const AssignmentPanel: React.FC<{ contract: ContractDetail; prefill?: { t
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const revision = contract.workflow?.revision ?? 1;
-  const base = `/api/pilot/contracts/${contract.contract_id}/assignments`;
 
   const load = async () => {
-    try { setItems((await requestJson<{ assignments: Assignment[] }>(base)).assignments); setError(''); }
+    try { setItems((await assignmentApi.list(contract.contract_id)).assignments); setError(''); }
     catch (e) { setError(e instanceof Error ? e.message : '맡긴 일을 불러오지 못했습니다.'); }
   };
   useEffect(() => { void load(); setActing(null); }, [contract.contract_id, contract.updated_at]);
-  useEffect(() => { requestJson<Assignee[]>('/api/pilot/assignees').then(setPeople).catch(() => setPeople([])); }, []);
+  useEffect(() => { assignmentApi.assignees().then(setPeople).catch(() => setPeople([])); }, []);
   const panelRef = React.useRef<HTMLElement>(null);
   useEffect(() => {
     if (!prefill) return;
@@ -57,17 +44,11 @@ export const AssignmentPanel: React.FC<{ contract: ContractDetail; prefill?: { t
     catch (e) { setError(e instanceof Error ? e.message : '처리하지 못했습니다.'); await load(); return false; }
     finally { setBusy(false); }
   };
-  const create = () => run(() => requestJson(base, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
+  const create = () => run(() => assignmentApi.create(contract.contract_id, {
       assignee_id: Number(form.assignee_id), contract_revision: revision, title: form.title.trim(), memo: form.memo.trim(),
       due_on: form.due_on || null, document_id: form.document_id ? Number(form.document_id) : null,
-    }),
   })).then((ok) => { if (ok) { setOpen(false); setForm({ assignee_id: '', title: '', memo: '', due_on: '', document_id: '' }); } });
-  const change = (a: Assignment, action: string, noteText: string, extra: Record<string, unknown> = {}) => run(() => requestJson(`${base}/${a.assignment_id}`, {
-    method: 'PATCH', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action, assignment_revision: a.assignment_revision, note: noteText, ...extra }),
-  })).then((ok) => { if (ok) { setActing(null); setNote(''); } });
+  const change = (a: Assignment, action: string, noteText: string, extra: Record<string, unknown> = {}) => run(() => assignmentApi.change(contract.contract_id, a.assignment_id, { action, assignment_revision: a.assignment_revision, note: noteText, ...extra })).then((ok) => { if (ok) { setActing(null); setNote(''); } });
 
   const active = items.filter(isOpen);
   const closed = items.filter((a) => !isOpen(a));

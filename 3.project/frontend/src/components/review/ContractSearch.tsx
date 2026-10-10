@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { requestJson } from '../../api/client';
 import { maskVendorName } from '../../utils/masking';
 import { createLatestGuard } from '../../utils/latest';
-import { Stage } from '../../utils/stage';
+import { Stage, STAGE_TONE } from '../../utils/stage';
 import { Badge } from '../ui/Surface';
-import { DashboardItem, stageOfItem } from './StageDashboard';
+import { DashboardItem, stageOfItem } from '../../features/contracts/dashboardModel';
 import { Search } from 'lucide-react';
+import { useAutoRefresh } from '../../hooks/useAutoRefresh';
+import {ExcludedContracts} from './ExcludedContracts';
 
 interface SearchResult { items: DashboardItem[]; total: number; limit: number; offset: number }
 
@@ -41,6 +43,18 @@ export const ContractSearch: React.FC<Props> = ({ isMaskingEnabled, onOpen, comp
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const guard = useRef(createLatestGuard()).current;
+  const autoRefresh = useAutoRefresh(async signal => {
+    const token = guard.next();
+    const pages = Math.max(1, Math.ceil(rows.length / PAGE));
+    const results = await Promise.all(Array.from({ length: pages }, (_, page) =>
+      requestJson<SearchResult>(`/api/contracts/search?${searchQuery({ q, completion, from, to }, page * PAGE)}`, { signal })));
+    return { token, results };
+  }, ({ token, results }) => {
+    if (!guard.isLatest(token)) return;
+    setRows(results.flatMap(result => result.items));
+    setTotal(results[0].total);
+    setError('');
+  }, !loading);
 
   const run = async (offset: number) => {
     const t = guard.next();
@@ -68,9 +82,11 @@ export const ContractSearch: React.FC<Props> = ({ isMaskingEnabled, onOpen, comp
     {!compact&&<div className="heading"><div><small className="eyebrow">CONTRACT WORKSPACE</small><h1>계약 찾기</h1><p>등록일과 진행 상태로 지난 계약까지 찾습니다.</p></div></div>}
     <div className="toolbar"><label className="search"><Search size={17}/><input aria-label="검색어" value={q} onChange={e=>setQ(e.target.value)} placeholder="계약명, 거래처, 금액 검색"/></label><small>{loading?'조회 중…':`${total}건`}</small></div>
     {!compact&&<div className="search-period"><label>진행<select value={completion} onChange={e=>setCompletion(e.target.value as typeof completion)}><option value="ALL">전체</option><option value="OPEN">진행 중</option><option value="DONE">완료</option></select></label><label>등록일부터<input type="date" value={from} onChange={e=>setFrom(e.target.value)}/></label><label>등록일까지<input type="date" value={to} min={from||undefined} onChange={e=>setTo(e.target.value)}/></label></div>}
+    {!compact&&<ExcludedContracts masked={isMaskingEnabled} onOpen={onOpen}/>}
     {error&&<p className="story-alert" role="alert">{error}</p>}
-    <div className="desktop-list table-wrap"><table className="contracts"><thead><tr><th>계약</th><th>거래처</th><th className="right">계약 금액</th><th>상태</th><th>다음 할 일</th></tr></thead><tbody>{rows.map(c=>{const s=stageOfItem(c);return <tr key={c.contract_id}><td><button className="contract-link" onClick={()=>onOpen(c.contract_id)}>{c.title}</button><small className="sub">계약 #{c.contract_id} · {kstDate(c.created_at)}</small></td><td>{maskVendorName(c.vendor_name,isMaskingEnabled)}</td><td className="right number">{Math.round(c.contract_amount).toLocaleString('ko-KR')}원</td><td><Badge tone={s==='DONE'?'green':s==='APPROVAL'?'blue':'amber'}>{LABEL[s]}</Badge></td><td className="next">{c.payment?.status==='RECONFIRMATION_REQUIRED'?`이미 ${c.payment.recorded_paid_on} 지급 · 재확인 필요`:c.payment?.paid_on?`${c.payment.paid_on} 지급 완료`:c.action_summary||LABEL[s]}</td></tr>;})}</tbody></table></div>
-    <div className="mobile-list">{rows.map(c=><button key={c.contract_id} onClick={()=>onOpen(c.contract_id)}><div><Badge>{LABEL[stageOfItem(c)]}</Badge><small>계약 #{c.contract_id}</small></div><strong>{c.title}</strong><span>{maskVendorName(c.vendor_name,isMaskingEnabled)}</span><div><b>{Math.round(c.contract_amount).toLocaleString('ko-KR')}원</b></div></button>)}</div>
+    {autoRefresh.error&&<p className="story-alert" role="status">{autoRefresh.error} · 현재 목록은 유지됩니다.</p>}
+    <div className="desktop-list table-wrap"><table className="contracts"><thead><tr><th>계약</th><th>거래처</th><th className="right">계약 금액</th><th>상태</th><th>다음 할 일</th></tr></thead><tbody>{rows.map(c=>{const s=stageOfItem(c);return <tr key={c.contract_id}><td><button className="contract-link" onClick={()=>onOpen(c.contract_id)}>{c.title}</button><small className="sub">계약 #{c.contract_id} · {kstDate(c.created_at)}</small></td><td>{maskVendorName(c.vendor_name,isMaskingEnabled)}</td><td className="right number">{Math.round(c.contract_amount).toLocaleString('ko-KR')}원</td><td><Badge tone={STAGE_TONE[s]}>{LABEL[s]}</Badge></td><td className="next">{c.payment?.status==='RECONFIRMATION_REQUIRED'?`이미 ${c.payment.recorded_paid_on} 지급 · 재확인 필요`:c.payment?.paid_on?`${c.payment.paid_on} 지급 완료`:c.action_summary||LABEL[s]}</td></tr>;})}</tbody></table></div>
+    <div className="mobile-list">{rows.map(c=><button key={c.contract_id} onClick={()=>onOpen(c.contract_id)}><div><Badge tone={STAGE_TONE[stageOfItem(c)]}>{LABEL[stageOfItem(c)]}</Badge><small>계약 #{c.contract_id}</small></div><strong>{c.title}</strong><span>{maskVendorName(c.vendor_name,isMaskingEnabled)}</span><div><b>{Math.round(c.contract_amount).toLocaleString('ko-KR')}원</b></div></button>)}</div>
     {!loading&&!rows.length&&<div className="empty">검색 결과가 없습니다.</div>}
     <div className="panel-footer"><span>{total}건 중 {rows.length}건</span>{rows.length<total&&<button className="text-button" disabled={loading} onClick={()=>void run(rows.length)}>더 보기</button>}</div>
   </>;

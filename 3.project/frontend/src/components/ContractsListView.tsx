@@ -15,7 +15,7 @@ import {
   Plus,
 } from 'lucide-react';
 import { maskBusinessNumber, maskVendorName } from '../utils/masking';
-import { approvalLabels } from './PilotReviewPanel';
+import { approvalLabels } from '../features/approvals/labels';
 
 interface ContractsListViewProps {
   contracts: ContractListItem[];

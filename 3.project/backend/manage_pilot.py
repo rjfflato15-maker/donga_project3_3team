@@ -5,6 +5,7 @@ import json
 import os
 import secrets
 import sqlite3
+import stat
 import sys
 import tempfile
 import uuid
@@ -178,6 +179,13 @@ def backup(destination):
     print(json.dumps({"result": "backup_created", "file_name": target.name}, ensure_ascii=False))
 
 
+MAX_BACKUP_MEMBERS = 100_000
+MAX_BACKUP_EXPANDED_BYTES = 10 * 1024**3
+MAX_BACKUP_MANIFEST_BYTES = 64 * 1024
+_WINDOWS_DEVICES = {"CON", "PRN", "AUX", "NUL", "CLOCK$", "CONIN$", "CONOUT$"} | {
+    prefix + str(number) for prefix in ("COM", "LPT") for number in range(1, 10)}
+
+
 def restore(archive, destination):
     root = Path(destination).resolve()
     if root.exists():
@@ -189,17 +197,22 @@ def restore(archive, destination):
             raise RuntimeError("백업에는 DB와 백업 설명 파일이 각각 하나씩 있어야 합니다.")
         if len({name.casefold() for name in names}) != len(names):
             raise RuntimeError("백업에 중복된 파일 경로가 있습니다.")
-        manifest = json.loads(bundle.read("manifest.json"))
-        if manifest.get("format") != "c-pilot-v1" or manifest.get("database") != "pilot.db":
-            raise RuntimeError("지원하는 시범환경 백업 형식이 아닙니다.")
-        if len(members) > 100_000 or sum(item.file_size for item in members) > 10 * 1024**3:
+        if len(members) > MAX_BACKUP_MEMBERS or sum(item.file_size for item in members) > MAX_BACKUP_EXPANDED_BYTES:
             raise RuntimeError("백업 크기 제한(10GB)을 초과했습니다. 운영 담당자의 복원 절차가 필요합니다.")
+        if bundle.getinfo("manifest.json").file_size > MAX_BACKUP_MANIFEST_BYTES:
+            raise RuntimeError("백업 설명 파일의 크기 제한을 초과했습니다.")
         for member in members:
             path = PurePosixPath(member.filename)
             # Windows ZipInfo may normalize backslashes in filename; inspect
             # the original archive name as well, before creating any files.
             original_name = getattr(member, "orig_filename", member.filename)
-            if not path.parts or path.is_absolute() or ".." in path.parts or "\\" in original_name or ":" in original_name or "\x00" in original_name:
+            if (not path.parts or path.is_absolute() or ".." in path.parts
+                    or any(character in original_name for character in ('\\', ':', '\x00'))
+                    or path.as_posix() != member.filename.rstrip('/')
+                    or any(part.endswith((' ', '.')) or part.split('.')[0].upper() in _WINDOWS_DEVICES
+                           or any(character < ' ' or character in '<>"|?*' for character in part)
+                           for part in path.parts)
+                    or stat.S_ISLNK(member.external_attr >> 16) or member.flag_bits & 1):
                 raise RuntimeError("백업에 허용되지 않는 경로가 있습니다.")
             if path.parts[0] not in {"pilot.db", "manifest.json", "raw", "masked", "text"}:
                 raise RuntimeError("백업에 허용되지 않는 파일이 있습니다.")
@@ -209,6 +222,16 @@ def restore(archive, destination):
                 raise RuntimeError("DB와 백업 설명 파일은 일반 파일이어야 합니다.")
             if not (root / member.filename).resolve().is_relative_to(root):
                 raise RuntimeError("백업 경로가 복원 폴더를 벗어납니다.")
+        file_names = {member.filename.casefold() for member in members if not member.is_dir()}
+        for member in members:
+            if any(parent.as_posix().casefold() in file_names for parent in PurePosixPath(member.filename).parents):
+                raise RuntimeError("백업에 파일과 폴더가 충돌하는 경로가 있습니다.")
+        try:
+            manifest = json.loads(bundle.read("manifest.json"))
+        except (ValueError, UnicodeError) as error:
+            raise RuntimeError("백업 설명 파일을 읽을 수 없습니다.") from error
+        if not isinstance(manifest, dict) or manifest.get("format") != "c-pilot-v1" or manifest.get("database") != "pilot.db":
+            raise RuntimeError("지원하는 시범환경 백업 형식이 아닙니다.")
         root.mkdir(parents=True)
         for member in members:
             if member.is_dir():
@@ -228,8 +251,13 @@ def restore(archive, destination):
                 path = (root / key).resolve()
                 if not path.is_relative_to(root):
                     raise RuntimeError("원본 경로가 복원 폴더를 벗어납니다.")
-                if path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() != expected:
-                    raise RuntimeError("복원한 원본 내용이 저장 당시와 다릅니다. 복원 폴더를 사용하지 마세요.")
+                if path.is_file():
+                    digest = hashlib.sha256()
+                    with path.open('rb') as source:
+                        while chunk := source.read(1024 * 1024):
+                            digest.update(chunk)
+                    if digest.hexdigest() != expected:
+                        raise RuntimeError("복원한 원본 내용이 저장 당시와 다릅니다. 복원 폴더를 사용하지 마세요.")
     print(json.dumps({"result": "restored", "sessions": "expired", "next": "APP_STORAGE_ROOT를 복원 폴더로 지정하고 실행하세요."}, ensure_ascii=False))
 
 

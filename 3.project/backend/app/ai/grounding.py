@@ -1,12 +1,10 @@
 """Evidence anchors and conservative field/party checks. Never consult gold labels."""
-import contextlib
-import io
 import re
 from datetime import date
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
-GUARD_VERSION = "grounding-v3-dev-audit"
+GUARD_VERSION = "grounding-v3-claim-context-20261010"
 
 # A space is a thousands separator only in complete groups of three digits.
 MONEY_TOKEN = r"(?:\d{1,3}(?:[ ,]\d{3})+|\d+)(?:\.\d+)?"
@@ -18,7 +16,7 @@ LABELS = {
     "tax_amount": r"부가\s*가치세|부가세|세액",
     "total_amount": r"합계\s*금액|총\s*금액|총액|합계|계약\s*대금|계약\s*금액|견적\s*금액|검수\s*금액|청구\s*금액",
     "issue_date": r"발행\s*일|발급\s*일|작성\s*일",
-    "amount_scope": r"전액|전체\s*계약|계약\s*전체|선금|잔금|부분\s*청구|분할|계약서|견적서|검수확인서"
+    "amount_scope": r"전액|전체\s*계약|계약\s*전체|선금|선급금|착수금|중도금|잔금|계약금액의|부분\s*청구|분할|계약서|견적서|검수확인서"
 }
 BUYER = re.compile(r"공급\s*받는\s*자|매입자|발주자")
 SUPPLIER = re.compile(r"공급자|매출자|수급인|계약상대자")
@@ -117,25 +115,56 @@ def source_pages(file_path, raw_text):
     if path.suffix.lower() != ".pdf":
         physical = path.suffix.lower() in {".png", ".jpg", ".jpeg", ".bmp", ".webp"}
         return [{"page": 1 if physical else None, "location_kind": "page" if physical else "document_block", "text": body}]
-    from pypdf import PdfReader
-    from .preprocessor import run_ocr_on_image
-    from .pdf_runtime import open_pdf, open_page, render_page_image
-    reader = PdfReader(str(path))
-    if len(reader.pages) > 50:
-        return []
-    pages = []
-    for i, page in enumerate(reader.pages):
-        text = page.extract_text() or ""
-        if not text.strip():
-            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-                with open_pdf(str(path)) as pdf, open_page(pdf, i) as rendered:
-                    image = render_page_image(rendered, 2)
-                    try:
-                        text = run_ocr_on_image(image)
-                    finally:
-                        image.close()
-        pages.append({"page": i + 1, "location_kind": "page", "text": text})
+    # One pagewise extraction path owns PDF native/OCR coverage and raster
+    # budgets. Missing evidence must retain its page slot and completeness flag.
+    from .preprocessor import extract_pdf_pages
+    pages = extract_pdf_pages(path)
+    extracted = "\n\n".join(page["text"] for page in pages if page["text"]).strip()
+    if extracted != body.strip():
+        # A fresh OCR pass can differ from the rule extraction. Do not apply
+        # proposals from that different text to the earlier field snapshot.
+        for page in pages:
+            page["evidence_complete"] = False
+            page["extraction_warnings"] = list(dict.fromkeys(
+                [*page.get("extraction_warnings", []), "SOURCE_TEXT_CHANGED"]))
     return pages
+
+
+def source_evidence_complete(pages):
+    """Coverage, not model confidence: unreadable text cannot prove absence.
+
+    Older text-only/evaluation callers have no coverage metadata, but must still
+    provide nonempty text. DOCX also needs verified native structural locations.
+    """
+    readable = any(isinstance(page, dict) and isinstance(page.get("text"), str)
+                   and bool(page["text"].strip()) for page in pages)
+    return readable and all(
+        isinstance(page, dict) and isinstance(page.get("text"), str)
+        and (bool(page["text"].strip()) or page.get("verified_blank") is True)
+        and page.get("evidence_complete", True) is True
+        and (page.get("document_format") != "docx" or bool(page.get("line_locations")))
+        for page in pages)
+
+
+def proposal_preflight(field, proposal, pages):
+    from .local_llm import valid_answer
+    reasons = []
+    try:
+        valid = field in LABELS and valid_answer(proposal)
+    except (TypeError, ValueError):
+        valid = False
+    if not valid:
+        reasons.append("INVALID_FORMAT")
+    if not source_evidence_complete(pages):
+        reasons.append("SOURCE_EVIDENCE_UNAVAILABLE")
+        if any(isinstance(page, dict) and page.get("document_format") == "docx"
+               and not page.get("line_locations") for page in pages):
+            reasons.append("DOCX_LOCATION_UNVERIFIED")
+    if reasons:
+        return {"field": field, "proposal": proposal, "accepted": False,
+                "reasons": reasons, "warnings": [], "anchor": None,
+                "human_confirmed": False}
+    return None
 
 
 def party_at(lines, index, document_type):
@@ -187,7 +216,10 @@ def candidates(pages, field, document_type):
                 else:
                     if re.fullmatch(r"계약서|견적서|검수확인서", label.group()) and not candidates(pages, "total_amount", document_type):
                         continue
-                    value = "PARTIAL" if re.search(r"선금|잔금|부분\s*청구|분할", line) else "FULL"
+                    from ..validation.billing import scope_in_document
+                    value = scope_in_document(line, document_type, bool(candidates(pages, 'total_amount', document_type)))
+                    if value == 'UNKNOWN':
+                        continue
                 token = canonical(field, value)
                 if token is not None:
                     found.append({"value": token, "page": page["page"], "line": value_index + 1,
@@ -224,6 +256,9 @@ def evidence_anchor(page, line_no, quote):
 
 
 def guard_proposal(field, proposal, pages, document_type):
+    rejected = proposal_preflight(field, proposal, pages)
+    if rejected:
+        return rejected
     reasons, warnings = [], []
     state, value = proposal.get("state"), proposal.get("value")
     token = canonical(field, value)
