@@ -718,6 +718,37 @@ html:has(.cf-app.story-app),body:has(.cf-app.story-app){overflow:clip}
 .cf-app.story-app .flow-routine-head strong{font-size:12px;color:#40597f}.cf-app.story-app .flow-routine-head small{font-size:11px;color:#7d8ea8;line-height:1.5}
 .cf-app.story-app .flow-routine-item strong{color:#4f6688;font-weight:600}
 .cf-app.story-app .flow-group-note{padding:12px 14px;font-size:12px;color:#5d7a68;margin:0}
+
+/* 계약 전체 결과에서 현재 할 일만 시작하고, 원문 대조는 선택한 뒤 연다. */
+.cf-app.story-app .flow-guided-overview{display:flex;flex-direction:column;gap:14px;max-width:1100px;margin:0 auto}
+.cf-app.story-app .flow-guided-overview>.surface{width:100%}
+.cf-app.story-app .flow-route-head{padding:20px 22px 16px}
+.cf-app.story-app .flow-route-head strong{font-size:17px;line-height:1.5;color:#334e75}
+.cf-app.story-app .flow-route-head p{font-size:13px;line-height:1.6;color:#71829a;margin:6px 0 0;word-break:keep-all}
+.cf-app.story-app .flow-route-problem{background:#fff9ec;border-bottom:1px solid #f0e6cc}
+.cf-app.story-app .flow-route-problem strong{color:#83601c}
+.cf-app.story-app .flow-after-problems{padding:12px 22px;margin:0;color:#71829a;font-size:12px;line-height:1.6}
+.cf-app.story-app .flow-guided-overview .flow-routine-group{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;border:0;margin:0;padding:0 22px 22px}
+.cf-app.story-app .flow-guided-overview .flow-routine-item{flex-direction:column;align-items:stretch;gap:16px;border:1px solid #dde6f3;border-radius:7px;padding:17px;min-height:140px;background:#f9fbff}
+.cf-app.story-app .flow-guided-overview .flow-routine-item:hover{background:#f1f5ff;border-color:#9bb0d2}
+.cf-app.story-app .flow-guided-overview .flow-task-item strong{font-size:14px;line-height:1.5}
+.cf-app.story-app .flow-guided-overview .flow-task-item small{font-size:12px;line-height:1.6}
+.cf-app.story-app .flow-guided-overview .flow-open-label{font-size:12px}
+.cf-app.story-app .flow-guided-overview .flow-routine-item .flow-open-label{align-self:flex-end;margin-top:auto}
+.cf-app.story-app .flow-documents-disclosure{background:#fff;border:1px solid #dfe7f3;border-radius:8px;min-width:0}
+.cf-app.story-app .flow-documents-disclosure>summary{padding:16px 20px;font-size:13px;font-weight:600;color:#647a9d;cursor:pointer;word-break:keep-all}
+.cf-app.story-app .flow-documents-disclosure[open]>summary{border-bottom:1px solid #e6edf7}
+.cf-app.story-app .flow-documents-disclosure>.surface{border:0;box-shadow:none}
+@media(max-width:760px){
+ .cf-app.story-app .flow-guided-overview .flow-routine-group{grid-template-columns:1fr;padding:0 12px 14px;gap:8px}
+ .cf-app.story-app .flow-guided-overview .flow-routine-item{flex-direction:row;align-items:center;min-height:84px;padding:13px;gap:10px}
+ .cf-app.story-app .flow-guided-overview .flow-routine-item .flow-open-label{align-self:center;margin-top:0}
+ .cf-app.story-app .flow-route-head{padding:16px 13px 12px}
+ .cf-app.story-app .flow-route-head strong{font-size:15px}
+ .cf-app.story-app .flow-route-head p,.cf-app.story-app .flow-after-problems{font-size:12px}
+ .cf-app.story-app .flow-after-problems{padding:12px 13px}
+ .cf-app.story-app .flow-documents-disclosure>summary{padding:15px 13px}
+}
 .cf-app.story-app .flow-batch{padding:14px 16px;background:#f6f9fd;border-bottom:1px solid #dfe8f5}
 .cf-app.story-app .flow-batch h3{font-size:14px;color:#2f4a73;margin:0 0 4px}
 .cf-app.story-app .flow-batch>p{font-size:12px;color:#5c6f8c;line-height:1.6;margin:0 0 10px}

@@ -335,7 +335,7 @@ AuditEvent의 contract_id/document_id, ContractReview의 actor/contract, payment
 
 Base.metadata.create_all은 신규 테이블을 생성하지만 기존 컬럼 변경을 위한 버전 이주 체계가 아니다. 스키마 변경은 [필드 작업](../development/recipes/add_field.md)·[복구](../development/recipes/recovery.md)에서 별도 검증한다.
 
-[갱신 명령](../development/documentation.md#erd-갱신) · [초기 ERD 기록](erd_v0.1.md) · [문서 포털](../README.md)
+[갱신 명령](../development/documentation.md#erd-갱신) · [초기 ERD 기록](../submission/omitted_records.md) · [문서 포털](../README.md)
 
 
 ## 업무 복구 테이블 (2026-10-09)

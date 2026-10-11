@@ -52,3 +52,17 @@ it('브라우저 보관 실패를 알리면서 현재 선택은 사용할 수 �
   const view=mount();act(()=>view.result.current.setDraft(new Map([['missing:estimate',{snapshot:'',reviewed:false}]])));
   expect(view.result.current.draft.size).toBe(1);expect(view.result.current.notice).toContain('보관하지 못했어요');
 });
+it('원문 확인 후 이어진 담기는 재조회한 최신 기준으로 저장한다',()=>{
+  const view=mount(),queueAfterSave=view.result.current.setDraft;
+  view.rerender({...props,context:{...context,revision:4,fingerprint:'basis4'}});
+  act(()=>queueAfterSave(old=>new Map(old).set('missing:estimate',{snapshot:'',reviewed:true})));
+  expect(view.result.current.draft.size).toBe(1);
+  expect(JSON.parse(sessionStorage.getItem('c-pilot:request-draft:v1:1:1')!)).toMatchObject({revision:4,fingerprint:'basis4'});
+});
+it('다른 계약으로 이동한 뒤 끝난 이전 저장은 현재 초안을 바꾸지 않는다',()=>{
+  const view=mount(),oldQueue=view.result.current.setDraft;
+  view.rerender({...props,cid:2,context:{...context,contract_id:2}});
+  act(()=>view.result.current.setDraft(new Map([['missing:bank_account',{snapshot:'',reviewed:false}]])));
+  act(()=>oldQueue(new Map([['missing:estimate',{snapshot:'',reviewed:true}]])));
+  expect([...view.result.current.draft.keys()]).toEqual(['missing:bank_account']);
+});

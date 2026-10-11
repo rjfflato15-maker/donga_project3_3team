@@ -15,12 +15,17 @@ export function SubmissionPanel({contract,masked,onChanged,onOpen,onApproval}:Pr
   const {user}=useAuth();
   const wf=contract.workflow,submission=wf?.submission,gate=submission?.gate;
   const [note,setNote]=useState(''),[exception,setException]=useState(''),[ack,setAck]=useState(false);
+  const [workCompleted,setWorkCompleted]=useState(false);
   const [busy,setBusy]=useState(false),[saved,setSaved]=useState(false),[error,setError]=useState('');
   const [steps,setSteps]=useState<ApprovalState['steps']|null>(null),[policyError,setPolicyError]=useState('');
   const lock=useRef(false),attempt=useRef<{signature:string;key:string}|null>(null);
   const active=useRef(contract.contract_id);active.current=contract.contract_id;
+  const previousContract=useRef(contract.contract_id);
   const basis=[contract.contract_id,wf?.revision,wf?.fingerprint,gate?.fingerprint,submission?.status].join('|');
-  useEffect(()=>{setNote('');setException('');setAck(false);setError('');setSaved(false);attempt.current=null;},[basis]);
+  useEffect(()=>{
+    if(previousContract.current!==contract.contract_id){setNote('');setException('');setError('');previousContract.current=contract.contract_id;}
+    setAck(false);setWorkCompleted(false);setSaved(false);attempt.current=null;
+  },[basis]);
   useEffect(()=>{
     const controller=new AbortController();setSteps(null);setPolicyError('');
     void requestJson<ApprovalState>(`/api/pilot/contracts/${contract.contract_id}/approvals`,{signal:controller.signal}).then(value=>{if(!controller.signal.aborted&&Array.isArray(value.steps))setSteps(value.steps);}).catch(()=>{if(!controller.signal.aborted)setPolicyError('결재 단계 설정을 조회하지 못했습니다. 결재 화면에서 최신 설정을 확인하세요.');});
@@ -37,11 +42,13 @@ export function SubmissionPanel({contract,masked,onChanged,onOpen,onApproval}:Pr
   const send=async()=>{
     if(lock.current||saved||!canEdit||gate.blockers.length||note.trim().length<3)return;
     if(gate.exception_items.length&&(!ack||exception.trim().length<10))return;
+    if(gate.requires_work_confirmation&&!workCompleted)return;
     lock.current=true;setBusy(true);setError('');
     const cid=contract.contract_id;
     const body={review_cycle:wf.reviews[0]?.review_id??0,revision:wf.revision,fingerprint:wf.fingerprint,note:note.trim(),
       exception_reason:gate.exception_items.length?exception.trim():'',
       acknowledge_exception:gate.exception_items.length?ack:false,
+      acknowledge_work_completed:gate.requires_work_confirmation?workCompleted:false,
       exception_items:gate.exception_items.map(item=>item.key)};
     const signature=JSON.stringify({...body,gate:gate.fingerprint});
     if(attempt.current?.signature!==signature)attempt.current={signature,key:typeof crypto.randomUUID==='function'?crypto.randomUUID():`${Date.now()}-${Math.random().toString(36).slice(2)}`};
@@ -70,9 +77,11 @@ export function SubmissionPanel({contract,masked,onChanged,onOpen,onApproval}:Pr
         {stale&&<p className="story-alert">이전 상신·결재는 변경 전 자료의 기록입니다. 변경된 원문과 아래 항목을 확인한 후 재상신하세요.</p>}
         <p>{gate.completion}</p>
         {gate.blockers.length>0&&<div className="submission-blockers"><strong>지금 상신할 수 없는 이유 · {gate.blockers.length}건</strong><ul>{gate.blockers.slice(0,1).map((item,i)=><li key={`${item.code}:${item.document_id}:${item.field}:${i}`}><div><strong>{item.label}</strong><small>{item.reason}</small></div><button className="button" onClick={()=>onOpen(item)}>{item.action}<ArrowRight size={13}/></button></li>)}</ul>{gate.blockers.length>1&&<details><summary>남은 {gate.blockers.length-1}건 보기</summary><ul>{gate.blockers.slice(1).map((item,i)=><li key={i}><div><strong>{item.label}</strong><small>{item.reason}</small></div><button className="button" onClick={()=>onOpen(item)}>{item.action}</button></li>)}</ul></details>}</div>}
-        {canEdit&&gate.blockers.length===0&&<div className="submission-form"><label>담당자 검토 의견<textarea rows={2} maxLength={2000} value={note} onChange={e=>setNote(e.target.value)} placeholder="원문 대조·회신 확인 결과와 대표에게 전달할 내용 (3자 이상)"/></label>
+        {canEdit&&gate.blockers.length===0&&<div className="submission-form">
+          {gate.requires_work_confirmation&&<label className="check-label"><input type="checkbox" checked={workCompleted} disabled={busy||saved} onChange={e=>setWorkCompleted(e.target.checked)}/>실제 납품·용역 검수가 완료된 것을 확인했습니다.</label>}
+          <label>담당자 검토 의견<textarea rows={2} maxLength={2000} value={note} onChange={e=>setNote(e.target.value)} placeholder="실제 업무 확인 근거와 대표에게 전달할 내용 (3자 이상)"/></label>
           {gate.exception_items.length>0&&<details className="submission-exception"><summary>일반 상신을 막는 불일치·미확인 {gate.exception_items.length}건 · 예외 검토 요청</summary><p>먼저 오독 정정·실제 보완을 진행하세요. 근거가 있어도 해결할 수 없는 업무상 예외만 사유를 남겨 대표 판단을 요청합니다. 판독 실패·필수 검토 누락은 이 경로로 넘길 수 없습니다.</p><ul>{gate.exception_items.map(item=><li key={item.key}>{display(item.reason)}</li>)}</ul><label>예외 상신 사유<textarea rows={3} maxLength={2000} value={exception} onChange={e=>setException(e.target.value)} placeholder="남은 각 항목의 사유와 확인 근거 (10자 이상)"/></label><label className="check-label"><input type="checkbox" checked={ack} onChange={e=>setAck(e.target.checked)}/>위 항목이 미해결임을 확인했고 대표의 예외 판단을 요청합니다.</label></details>}
-          <div className="submission-footer"><span>{gate.blockers.length?'위 필수 검토·회신 처리를 먼저 완료하세요.':gate.exception_items.length?'불일치·미확인은 자동으로 해결되지 않습니다.':'상신하면 대표 결재 대기로 바뀝니다.'}</span><button className="button primary" disabled={busy||saved||note.trim().length<3||gate.blockers.length>0||gate.exception_items.length>0&&(!ack||exception.trim().length<10)} onClick={()=>void send()}><Send size={15}/>{busy?'상신 저장 중…':saved?'상신 저장 완료':gate.exception_items.length?'예외 검토 요청·상신':returned||stale?'검토 완료·재상신':'검토 완료·결재 상신'}</button></div>
+          <div className="submission-footer"><span>{gate.blockers.length?'위 필수 검토·회신 처리를 먼저 완료하세요.':gate.exception_items.length?'불일치·미확인은 자동으로 해결되지 않습니다.':'상신하면 대표 결재 대기로 바뀝니다.'}</span><button className="button primary" disabled={busy||saved||note.trim().length<3||gate.blockers.length>0||gate.requires_work_confirmation&&!workCompleted||gate.exception_items.length>0&&(!ack||exception.trim().length<10)} onClick={()=>void send()}><Send size={15}/>{busy?'상신 저장 중…':saved?'상신 저장 완료':gate.exception_items.length?'예외 검토 요청·상신':returned||stale?'검토 완료·재상신':'검토 완료·결재 상신'}</button></div>
         </div>}
         {!canEdit&&<p className="review-note">담당자가 원문 검토와 상신을 완료해야 대표가 결재할 수 있습니다.</p>}
       </>}

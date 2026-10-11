@@ -33,6 +33,11 @@ export const STAGE_TONE: Record<Stage, StageTone> = {
   RECEIVING: 'amber', CHECK: 'amber', WAITING: 'sky', APPROVAL: 'violet', PAYMENT: 'blue', DONE: 'green',
 };
 
+/** Display only: an unresolved problem or missing server evidence is never labelled judgement-only. */
+export function isJudgementPending(blockers:readonly {code:string;category?:string|null}[]|null|undefined,issues:number|undefined):boolean {
+  return issues===0&&!!blockers?.length&&blockers.every(item=>item.code==='HUMAN_REVIEW_REQUIRED'&&item.category==='RISK');
+}
+
 const KNOWN = new Set<Stage>(['RECEIVING', 'CHECK', 'WAITING', 'APPROVAL', 'PAYMENT', 'DONE']);
 
 export interface StageInput {

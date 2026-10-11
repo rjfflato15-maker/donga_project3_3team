@@ -31,7 +31,7 @@
 
 규칙 ID와 기대값·실제값·메시지는 `RuleEngine`이 반환한다. 화면용 카드 수·미연동 안내 제외 정책은 업무 요약 서비스에서 처리한다. 화면 집계 개선으로 평가 판정이나 원래 검사 결과를 변경하지 않는다.
 
-정책 변경 전에는 [규칙 변경 절차](../development/recipes/change_rule.md)를 따른다. 초기 정책 문서는 [v0.1 설계](validation_rules_v0.1.md)로 보존하며 현재 구현 설명으로 사용하지 않는다.
+정책 변경 전에는 [규칙 변경 절차](../development/recipes/change_rule.md)를 따른다. 초기 정책 문서는 [v0.1 설계](../submission/omitted_records.md)로 보존하며 현재 구현 설명으로 사용하지 않는다.
 
 
 [전체 문서](../README.md) · [현재 구현 상태](../progress/current_status.md)

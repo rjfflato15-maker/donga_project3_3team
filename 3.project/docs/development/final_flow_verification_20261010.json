@@ -1,0 +1,44 @@
+{
+  "verified_at": "2026-10-10",
+  "baseline_commit": "5527657272c40b960c9d1001e894f6e4b77f6188",
+  "scope": "Working tree: final user flow stabilization, existing APIs and business rules preserved",
+  "backend": {"passed": 945, "failed": 0, "skipped": 0, "seconds": 324.46, "encoding": "UTF-8"},
+  "frontend": {"files": 39, "passed": 193, "failed": 0},
+  "build": {"typescript": "passed", "vite": "passed", "existing_large_chunk_warning": true},
+  "reproduced_and_fixed": [
+    "Unconfirmed mismatching document could not be confirmed from the request action",
+    "New draft queued after asynchronous confirmation used stale revision and was discarded"
+  ],
+  "actual_browser_synthetic_flow": [
+    "Register contract and four documents",
+    "Find amount mismatch and two missing documents",
+    "Confirm source and queue three request items",
+    "Reload and re-enter same contract with draft preserved",
+    "Record bundled request without external sending",
+    "Receive one document; two items remain waiting",
+    "Upload corrected version and remaining document; record receipts",
+    "Compare and confirm six current documents",
+    "Operator submission",
+    "Representative return",
+    "Operator resubmission",
+    "Representative approval",
+    "Separate synthetic payment fact recorded without money transfer",
+    "Masked settlement XLSX downloaded"
+  ],
+  "authenticated_export_api": [
+    {"kind": "actual_value_xlsx", "status": 200, "seconds": 0.281, "bytes": 13486, "vendor_and_total_verified": true},
+    {"kind": "masked_zip", "status": 200, "seconds": 0.500, "bytes": 143852, "documents": 7, "crc_pass": true},
+    {"kind": "original_zip", "status": 200, "seconds": 0.125, "bytes": 202199, "documents": 7, "crc_pass": true}
+  ],
+  "browser": {"desktop": [1440, 1000], "mobile_overflow_check": [390, 844], "mobile_horizontal_overflow": false, "unexpected_console_errors": 0},
+  "current_demo": {"contract_id": 14, "vendor": "시연용 가상거래처", "business_number": "000-00-00000", "account_number": "000-000-000000", "fictional_current_documents": 6, "revision": 31, "amount": 38500000, "payment_mode": "FULL", "payment_record": null, "approval_status": "PENDING", "preserved_original_files": 10, "original_hashes_unchanged": true},
+  "live_runtime": {"port": 8000, "verified_project_server_restarted": true, "bulk_confirm_fields_api_present": true},
+  "limits": [
+    "Synthetic workflow verification, not a novice usability study or measured labor saving",
+    "No live AI inference, NTS query, external sending or actual bank transaction",
+    "Actual-value XLSX and ZIP browser download events were not reliably delivered by the automation tool; file/API validation is separate",
+    "Current PC with existing dependencies; no clean-PC installation or rebuilt Setup verified",
+    "Prior demo originals are preserved locally and excluded from the submission source ZIP",
+    "Old submission ZIPs and baseline snapshot are preserved outside the app project"
+  ]
+}

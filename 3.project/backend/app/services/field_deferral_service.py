@@ -44,8 +44,12 @@ def current_deferrals(db, document_id, stored=None):
             'at': event.created_at.replace(tzinfo=timezone.utc).isoformat(),
         }
     result = {}
+    from .field_confirmation_service import contract_basis
+    basis=contract_basis(db,document_id)
     for key, item in decisions.items():
         if not item or item.get('source_sha256') != source_hash:
+            continue
+        if item.get('kind')=='NO_ISSUE' and item.get('basis')!=basis:
             continue
         expected = values if key == DOCUMENT_SCOPE else values.get(key)
         if item.get('value') != expected:
@@ -58,8 +62,9 @@ def current_deferrals(db, document_id, stored=None):
 def deferral_details(db, doc, field, note, kind='DEFER'):
     values = AnalysisFields(**json.loads(doc.extract.raw_fields or '{}') if doc.extract else {}).model_dump()
     info = db.get(DocumentFileInfo, doc.document_id)
+    from .field_confirmation_service import contract_basis
     return {'field': field, 'note': note, 'value': values if field == DOCUMENT_SCOPE else values[field],
-        'source_sha256': info.sha256 if info else None, 'kind': kind}
+        'source_sha256': info.sha256 if info else None, 'kind': kind,'basis':contract_basis(db,doc.document_id)}
 
 
 # 검사 규칙별로 사람이 원문에서 판단하는 항목. 화면의 확인 항목 연결과 같은 기준이다.

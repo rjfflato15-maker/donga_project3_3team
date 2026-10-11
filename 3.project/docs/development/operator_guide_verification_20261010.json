@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-10",
+  "baseline_commit": "5527657272c40b960c9d1001e894f6e4b77f6188",
+  "app_change_scope": "Two state-aware labels only; existing callbacks, APIs, DB and business conditions preserved",
+  "labels": {
+    "completed_contract": "결재·완료 기록 보기",
+    "confirmed_problem_free_value": "원문 확인을 완료한 값입니다.",
+    "mismatch_warning_preserved": true,
+    "stale_payment_review_guidance_preserved": true
+  },
+  "frontend": {"files": 39, "passed": 195, "failed": 0, "seconds": 7.31},
+  "backend": {"changed": false, "latest_prior_passed": 945, "full_suite_rerun_for_label_change": false},
+  "build": {"typescript": "passed", "vite": "passed", "existing_large_chunk_warning": true},
+  "browser": {"url": "http://127.0.0.1:8190/", "role": "operator", "desktop": [1440,1000], "unexpected_console_errors": 0},
+  "new_click_checks": [
+    "Completed contract label opens existing completed-record tab",
+    "Confirmed corrected values show completion guidance",
+    "Other amount problems remain visible after correcting total alone",
+    "Synthetic wrong reading: original 38.5m versus prepared extracted 39.6m",
+    "Concurrent contract update: save rejected with 409, inputs retained, original value unchanged",
+    "Close editor, return to document list, load latest and resave successfully",
+    "Correct supply, tax and total against actual synthetic source",
+    "Normal-source batch confirmation and next-document navigation",
+    "Unknown claim scope blocks batch confirmation; direct scope correction then remaining values confirmed",
+    "Operator submission and representative handoff"
+  ],
+  "guide": {
+    "screen_sections": 9,
+    "main_scenario": {"qa_contract_id": 1, "contract_amount": 38500000, "wrong_estimate": 39600000, "missing_types": 2, "request_items": 3},
+    "separate_normal_example": 3,
+    "separate_recovery_example": 2,
+    "old_20261008_screenshots_used": 0,
+    "production_demo_history_used": false,
+    "source_guide_original_preserved": true
+  },
+  "limits": [
+    "Synthetic guide-only extraction and concurrency fixtures; not measured real AI failures",
+    "Classification and deferral forms inspected; save not repeated",
+    "No new damaged-document or real VLM inference test",
+    "Previous same-day representative return/approval/payment evidence reused only within clearly identified QA case 1",
+    "No clean-PC installation, rebuilt Setup, actual external sending or bank transaction"
+  ]
+}

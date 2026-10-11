@@ -8,7 +8,7 @@
 
 ## 현재 사용할 수 있는 방식
 
-앱 소스 폴더와 준비된 Python 환경을 함께 사용한다. Windows의 Python 3.12, Node.js/npm을 준비하고 PATH와 `py -3.12`를 확인한다. `start_pilot.bat`이 .NET Framework 컴파일러로 C-Pilot.exe를 만들고 실행한다. 이후에는 같은 앱 폴더 안의 EXE를 더블클릭하면 CMD 창 없이 앱을 연다. BAT는 개발·빌드용이라 CMD가 열릴 수 있다. 실행기와 관리 작업이 끝난 뒤 다시 빌드한다.
+앱 소스 폴더와 준비된 Python 환경을 함께 사용한다. Windows의 Python 3.12, Node.js/npm을 준비하고 PATH와 `py -3.12`를 확인한다. 2026-10-11 소스 ZIP에는 `C-Pilot.exe`가 들어 있다. 환경이 준비된 PC에서는 이 파일을 더블클릭한다. 실행기를 다시 만들 때는 `start_pilot.bat`이 .NET Framework 컴파일러로 C-Pilot.exe를 만들고 실행한다. 이후에는 같은 앱 폴더 안의 EXE를 더블클릭하면 CMD 창 없이 앱을 연다. BAT는 개발·빌드용이라 CMD가 열릴 수 있다. 실행기와 관리 작업이 끝난 뒤 다시 빌드한다.
 
 ## 처음 준비
 
@@ -22,7 +22,7 @@
 
 기본 텍스트 AI는 꺼져 있고 이미지 재판독은 사용자가 호출한다. Ollama·모델·실행 계정의 클라우드 비활성 설정이 있어야 동작한다. 설정은 [AI 설정](../ai/runtime_settings.md)이 기준이다.
 
-이번 배포는 소스 전용이며 Setup EXE를 포함하지 않는다. 이전 버전의 격리 설치·업데이트·제거 기록은 [Windows 설치 범위](customer_package.md)에 보존한다. 현재 소스의 Windows 실행·Setup 재빌드·실제 AI 다운로드는 이번 구조 정리에서 검증하지 않았다.
+이번 배포는 앱 소스와 GUI 실행기 C-Pilot.exe를 포함하며, Python 환경·화면 빌드·모델을 묶은 Setup 설치 파일은 포함하지 않는다. 이전 버전의 격리 설치·업데이트·제거 기록은 [Windows 설치 범위](customer_package.md)에 보존한다. 2026-10-10에는 현재 PC의 기존 환경에서 공식 실행기로 서버를 재시작하고 최신 API 제공을 확인했다. 새 PC 설치·Setup 재빌드·실제 AI 다운로드는 이번 최종 점검에서 검증하지 않았다. 소스나 빌드를 바꾼 뒤에는 서버 종료·재실행과 브라우저 새로고침을 함께 해야 한다.
 
 
 [전체 문서](../README.md) · [현재 구현 상태](../progress/current_status.md)

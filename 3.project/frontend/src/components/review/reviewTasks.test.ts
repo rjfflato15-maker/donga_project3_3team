@@ -1,7 +1,26 @@
 import {expect,it} from 'vitest';
-import {buildReviewTasks,pendingReviewTasks} from './reviewTasks';
+import {buildReviewTasks,pendingReviewTasks,reviewStartTask} from './reviewTasks';
 import {DocumentResponse,ValidationCheck} from '../../types';
+import {nextAction,DashboardItem} from '../../features/contracts/dashboardModel';
 const doc={document_id:4,document_type:'estimate',file_available:true,processing_status:'COMPLETED',analysis:{fields:{total_amount:100,supply_amount:90,tax_amount:10},warnings:[]}} as unknown as DocumentResponse;
+it('비교 PASS여도 원문과 다른 값은 구체적인 이유로 문제 목록에 남긴다',()=>{
+ const tasks=buildReviewTasks([doc],[{field:'4',rule_id:'AMOUNT_MATCH_ESTIMATE',status:'PASS',message:'기준 일치'},{field:'4',rule_id:'SOURCE_VALUE_MATCH_TOTAL_AMOUNT',status:'REVIEW',expected:'50',actual:'100',message:'원본과 다름'}]);
+ expect(tasks).toHaveLength(1);expect(tasks[0].reason).toBe('원문에서 읽은 값과 저장값이 달라요');expect(tasks[0].expected).toBe('50');expect(tasks[0].routine).not.toBe(true);
+});
+it('청구 UNKNOWN은 정상 묶음에 포함하지 않고 기존 값 입력으로 연결한다',()=>{
+ const invoice={...doc,document_type:'tax_invoice' as const,analysis:{...doc.analysis,fields:{...doc.analysis.fields,amount_scope:'UNKNOWN' as const}}};
+ const tasks=buildReviewTasks([invoice],[],{revision:1,documents:[{document_id:4,fields:{}}]},[{code:'FIELD_VALUE_REQUIRED',document_id:4,document_type:'tax_invoice',field:'amount_scope',label:'청구 범위',reason:'범위를 입력하세요',action:'정정',owner:'operator'}]);
+ expect(tasks).toHaveLength(1);expect(tasks[0].routine).not.toBe(true);expect(tasks[0].field).toBe('amount_scope');expect(tasks[0].reason).toContain('전액·일부');
+});
+it('업무함도 UNKNOWN 입력 의무를 원문 대조 수와 구분해 안내한다',()=>{
+ const row={work_state:{review_blockers:[{code:'FIELD_VALUE_REQUIRED',field:'amount_scope'},{code:'HUMAN_REVIEW_REQUIRED'}]}} as unknown as DashboardItem;
+ expect(nextAction(row,'CHECK',false)).toBe('청구 범위 확인·입력 1항목');
+});
+it('문제 확인은 저장된 정상값 위치보다 실제 문제를 먼저 연다',()=>{
+ const routine={id:'4:total_amount',routine:true} as ReturnType<typeof buildReviewTasks>[number];
+ const problem={id:'5:amount_scope'} as ReturnType<typeof buildReviewTasks>[number];
+ expect(reviewStartTask([routine,problem],routine)).toBe(problem);expect(reviewStartTask([routine],routine)).toBe(routine);
+});
 it('회차 청구 문제는 해당 계산서에만 붙이고 누적 문제만 전체 계산서에 붙인다',()=>{
   const invoices=[{...doc,document_id:4,document_type:'tax_invoice' as const},{...doc,document_id:5,document_type:'tax_invoice' as const}];
   expect(buildReviewTasks(invoices,[{rule_id:'PAYMENT_SCOPE',field:'4',status:'REVIEW',message:'잔금 금액 확인'}]).map(t=>t.document?.document_id)).toEqual([4]);

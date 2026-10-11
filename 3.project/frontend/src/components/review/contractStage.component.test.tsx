@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { useState } from 'react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ContractStageView } from './ContractStageView';
 import { ContractDetail } from '../../types';
 import { requestJson } from '../../api/client';
@@ -21,6 +21,19 @@ beforeEach(() => {closed=false; sessionStorage.clear(); vi.mocked(requestJson).m
   return {text:'가상 계약 요약'};
 });});
 afterEach(() => {cleanup(); vi.resetAllMocks();});
+it('첫 화면에서는 할 일을 먼저 보이고 전체 서류는 원할 때 펼친다', async () => {
+  const doc={document_id:4,contract_id:1,document_type:'estimate',original_file_name:'가상.pdf',file_available:true,processing_status:'COMPLETED',analysis:{fields:{total_amount:110},warnings:[]}} as unknown as ContractDetail['documents'][number];
+  const open=vi.fn();
+  render(<ContractStageView {...props} onOpenDocument={open} contract={{...fixture,stage:'CHECK',documents:[doc]}} onChanged={async()=>{}}/>);
+  await waitFor(()=>expect(screen.queryByText('계약 전체 결과를 불러오는 중이에요.')).toBeNull());
+  expect(screen.getByRole('heading',{name:'담당자 할 일'})).toBeTruthy();
+  const toggle=screen.getByText('전체 서류·원문 보기'),panel=toggle.closest('details')!;
+  // jsdom does not model the accessibility visibility of a closed native details.
+  // Verify its closed/open state here and rendered visibility in browser QA.
+  expect(panel.open).toBe(false);
+  fireEvent.click(toggle);expect(panel.open).toBe(true);
+  fireEvent.click(screen.getByRole('button',{name:/견적서 1차본/}));expect(open).toHaveBeenCalledWith(doc,'view');
+});
 it('마지막 회신 저장 충돌 후 결재 단계와 다른 탭에서도 실패 이유가 남는다', async () => {
   function Wrapper() {const [contract,setContract]=useState({...fixture,stage:'WAITING'} as ContractDetail);return <ContractStageView {...props} contract={contract} onChanged={async()=>{setContract({...fixture,stage:'APPROVAL'} as ContractDetail);}}/>;}
   render(<Wrapper/>);

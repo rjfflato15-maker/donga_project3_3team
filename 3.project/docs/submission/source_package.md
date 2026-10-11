@@ -47,6 +47,6 @@ ZIP을 풀어 문서 링크와 소스 해시를 검사하고 필요한 환경을
 
 ## 선택 사항: Setup을 함께 넣는 ZIP
 
-이번 배포에는 아래 옵션을 사용하지 않으며 설치 EXE를 포함하지 않는다. 소스 전용 구조 정리는 Setup 재빌드를 요구하지 않는다.
+2026-10-11 배포에는 앱 폴더 안에 재빌드한 GUI 실행기 C-Pilot.exe를 포함한다. Python 실행 환경과 화면 빌드는 별도 준비한다. 아래 옵션은 사용하지 않으며 Setup 설치 EXE는 포함하지 않는다. 소스 전용 구조 정리는 Setup 재빌드를 요구하지 않는다.
 
 `build_source_zip.py --installer dist/C-Pilot-Setup-1.0.0.exe`는 검증한 Setup 파일을 앱 소스와 분리된 installer/ 폴더에 포함한다. 소스는 C-Pilot-source/3.project 아래에, Setup·SHA-256·사용안내는 C-Pilot-source/installer 아래에 있다. 고객 DB·계정·원문·로그·모델은 포함하지 않는다. Setup은 Python 런타임과 빌드된 프런트엔드를 포함해 고객 PC에서 Python·Node를 따로 준비하지 않아도 된다. AI 모델은 선택 다운로드이며 설치 검증 범위는 고객 패키지 안내에 기록한다. 기존 ZIP은 현재 작업 폴더의 자동 동기화 사본이 아니므로 코드 수정 후 새 ZIP을 만들어야 한다.

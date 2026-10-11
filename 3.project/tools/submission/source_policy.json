@@ -20,6 +20,7 @@
     ".dockerignore",
     "package.json",
     "package-lock.json",
+    "C-Pilot.exe",
     "start_pilot.bat"
   ],
   "frontend_files": [
@@ -54,7 +55,11 @@
     "docs/development/query_performance_verification_20261009.json",
     "docs/development/billing_semantics_verification_20261010.json",
     "docs/development/review_submission_verification_20261010.json",
-    "docs/development/focused_review_verification_20261010.json"
+    "docs/development/focused_review_verification_20261010.json",
+    "docs/development/final_flow_verification_20261010.json",
+    "docs/development/operator_guide_verification_20261010.json",
+    "docs/development/review_result_verification_20261010.json",
+    "docs/development/business_identity_verification_20261011.json"
   ],
   "skip_directories": [
     ".git",

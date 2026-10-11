@@ -114,6 +114,9 @@ def test_real_mismatch_requires_explicit_exception_then_representative_ack(opera
     changed = operator_client.put(f'/api/contracts/{cid}', json={'contract_amount': 220,
         'revision': detail['workflow']['revision'], 'change_note': '예외 검토할 합성 금액 변경'}).json()
     gate = changed['workflow']['submission']['gate']
+    assert any(b['field']=='total_amount' for b in gate['blockers'])  # changed contract/payment basis must be reaffirmed
+    changed=complete_source_review(operator_client,cid)
+    gate=changed['workflow']['submission']['gate']
     assert not gate['blockers'] and gate['exception_items']
     assert operator_client.post(f'/api/pilot/contracts/{cid}/submission', json=submission_body(changed, acknowledge_exception=False)).status_code == 400
     assert operator_client.post(f'/api/pilot/contracts/{cid}/submission', json=submission_body(changed, exception_items=[])).status_code == 400

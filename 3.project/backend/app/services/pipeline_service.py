@@ -112,6 +112,22 @@ class PipelineService:
             raw_text, masked_text = "", ""
             analysis = DocumentAnalysisResponse(document_type=DocumentType.UNKNOWN, confidence=0,
                 mask=MaskInfo(status=MaskStatus.FAILED), fields=AnalysisFields(), warnings=["문서 인식 실패"])
+        if not failed:
+            from .business_identity_service import build_scan_review
+            scan_review=build_scan_review(raw_path,digest,analysis.document_type.value)
+            if scan_review is not None:
+                source=(scan_review.get('identity') or {}).get('values') or {}
+                current=analysis.fields.model_dump();filled=[]
+                for field in scan_review.get('verified_fields') or []:
+                    # Supplement a missing extraction only. Conflicting existing
+                    # values remain visible source-mismatch problems to resolve.
+                    if field in current and current[field] in (None,'') and source.get(field) is not None:
+                        current[field]=source[field];filled.append(field)
+                if 'total_amount' in filled and current.get('amount_basis')=='UNKNOWN':current['amount_basis']='TOTAL'
+                if filled:
+                    analysis.fields=AnalysisFields.model_validate(current)
+                    scan_review['completed_missing_fields']=filled
+                analysis.extraction_metadata={**(analysis.extraction_metadata or {}),'automatic_source_review':scan_review}
         masked_key = store_text(raw_key, raw_text, masked_text)
         if (replaces_document_id is not None or require_readable) and failed:
             raise HTTPException(422,"재발행본을 읽지 못했습니다. 이전 버전은 유지됩니다. 파일을 확인하세요." if replaces_document_id is not None else "문서 내용을 읽지 못했습니다. 문서를 게시하지 않았습니다. 파일을 확인하세요.")

@@ -11,7 +11,7 @@ API 등록은 api/__init__.py, 실제 타입·권한·응답은 연결된 소스
 | 작업 | 규격 | 화면 시작 |
 | --- | --- | --- |
 | 목록·상세·자동 갱신 | [공통 상태·검색·이력](work_system.md) | ContractDashboard · ContractSearch |
-| 원문·정정·근거·버전 | [현재 화면 연결](frontend_integration.md) · [이전 세부 규격 기록](frontend_handoff.md) | DocumentWorkspace |
+| 원문·정정·근거·버전 | [현재 화면 연결](frontend_integration.md) · [이전 세부 규격 기록](../submission/omitted_records.md) | DocumentWorkspace |
 | 묶음 요청·부분 회신 | [요청 규격](bundled_requests.md) | BundleRequestPage · BundleReplyPanel |
 | 결재·지급 재확인 | [지급 기록 규격](payment_record.md) | ContractStageView · ApprovalPanel |
 | 정산 XLSX | [추가 API](work_system.md) | 계약 더 보기 메뉴 |

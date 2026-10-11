@@ -55,6 +55,26 @@ class RuleEngine:
                 checks.append(self.check("BUSINESS_NO_MATCH", "PASS" if same else "FAIL", str(doc["document_id"]),
                                          expected_biz_no, found, f"{label}: 사업자등록번호가 {'일치합니다' if same else '다릅니다'}."))
         expected_name = normalize_party_name(expected_vendor_name)
+        for doc in documents_data:
+            fields=doc.get('fields',{});name=fields.get('company_name')
+            if expected_name and name and normalize_party_name(name)!=expected_name and doc.get('document_type')!='bank_account':
+                checks.append(self.check('VENDOR_NAME_MATCH','REVIEW',str(doc['document_id']),expected_vendor_name,name,
+                    f"{doc.get('file_name','문서')}: 상호가 등록된 계약 거래처와 다릅니다. 오독·다른 거래처·등록 기준 오류를 확인하세요."))
+            scan=(fields.get('extraction_metadata') or {}).get('automatic_source_review') or {}
+            from ..services.business_identity_service import POLICY
+            if scan.get('policy')!=POLICY or scan.get('source_sha256')!=doc.get('sha256') or scan.get('kind')!=doc.get('document_type') or scan.get('method')!='RASTER_OCR_ROW_CROP':continue
+            source=scan.get('identity') or {}
+            for field in scan.get('verified_fields') or []:
+                expected_value=source.get('name') if field=='company_name' else source.get('number') if field=='business_registration_no' else (source.get('financial') or {}).get(field)
+                current_value=fields.get(field)
+                if expected_value is None:continue
+                if field=='company_name':same=normalize_party_name(current_value)==expected_value;expected_display=expected_value
+                elif field=='business_registration_no':same=re.sub(r'[\s-]','',str(current_value or ''))==expected_value;expected_display=expected_value
+                else:same=money(current_value)==money(expected_value);expected_display=self.fmt(money(expected_value))
+                if not same:
+                    actual_display=self.fmt(money(current_value)) if field.endswith('amount') and money(current_value) is not None else str(current_value or '미추출')
+                    checks.append(self.check('SOURCE_VALUE_MATCH_'+field.upper(),'REVIEW',str(doc['document_id']),expected_display,actual_display,
+                        f"{doc.get('file_name','문서')}: 스캔 원문 행 재판독과 저장값이 다릅니다. 해당 원문을 확인해 오독을 정정하세요."))
         for doc in by_type.get("bank_account", []):
             holder = (doc.get("fields", {}).get("company_name") or "").strip()
             label = doc.get("file_name", "통장사본")

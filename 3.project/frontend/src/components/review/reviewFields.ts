@@ -30,12 +30,14 @@ export function displayValue(key: string, value: unknown, masked: boolean): stri
 const priority = ['total_amount','supply_amount','tax_amount','company_name','business_registration_no','account_number','bank_name','amount_scope','issue_date'];
 export function reviewRows(doc: DocumentResponse) {
   return [...fieldsForDocument(doc.document_type)].map(row=>row.key==='total_amount'&&doc.analysis.fields.total_amount==null&&doc.analysis.fields.amount!=null?{...row,key:'amount',label:'금액 (기존 추출값)'}:row).sort((a,b) => priority.indexOf(a.key) - priority.indexOf(b.key)).map(row => ({...row,
-    label: ({total_amount:'합계',tax_amount:'부가세',company_name:'거래처',business_registration_no:'사업자번호',account_number:'입금 계좌',issue_date:doc.document_type === 'contract' ? '계약일' : '발행일'} as Record<string,string>)[row.key] || row.label}));
+    label: ({total_amount:'합계',tax_amount:'부가세',company_name:doc.document_type==='bank_account'?'예금주':'거래처',business_registration_no:'사업자번호',account_number:'입금 계좌',issue_date:doc.document_type === 'contract' ? '계약일' : '발행일'} as Record<string,string>)[row.key] || row.label}));
 }
 export function checksForField(key: string, checks: ValidationCheck[]) {
   const amount = ['supply_amount','tax_amount','total_amount'].includes(key);
   return checks.filter(check => check.rule_id === 'BUSINESS_NO_MATCH' && key === 'business_registration_no'
     || check.rule_id === 'ACCOUNT_HOLDER_MATCH' && key === 'company_name'
+    || check.rule_id === 'VENDOR_NAME_MATCH' && key === 'company_name'
+    || check.rule_id === `SOURCE_VALUE_MATCH_${key.toUpperCase()}`
     || ['AMOUNT_COMPONENTS','AMOUNT_EXTRACTION'].includes(check.rule_id) && amount
     || check.rule_id.startsWith('AMOUNT_MATCH_') && key === (check.message.includes('공급가액 기준') ? 'supply_amount' : 'total_amount')
     || check.rule_id === 'PAYMENT_SCOPE' && key === 'amount_scope'

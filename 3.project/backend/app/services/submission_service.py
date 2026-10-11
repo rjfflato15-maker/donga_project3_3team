@@ -1,7 +1,7 @@
 """Operator review and submission, separate from inference and final approval.
 
-Persist in the existing append-only audit log so upgrading does not rewrite
-customer data, policy, schema, or completed approvals. Each submission binds to
+Persist in the existing append-only audit log without rewriting customer data,
+the DB schema, or completed approvals. Each submission binds to
 the saved revision, evidence fingerprint, and the final-review cycle.
 """
 import hashlib
@@ -17,6 +17,10 @@ from .document_version_service import active_documents
 from .field_confirmation_service import current_confirmations
 from .field_deferral_service import current_deferrals, unsettled_checks
 from .storage_service import STORAGE_LOCK, resolve_path
+from .business_identity_service import automatic_field_review, number, POLICY
+from ..validation.engine import normalize_party_name
+from ..validation.financial import money
+from .workflow_service import policy_for, required_types
 
 FIELD_LABELS = {'company_name': '업체명', 'business_registration_no': '사업자번호',
                 'account_number': '계좌번호', 'bank_name': '은행명', 'amount': '금액',
@@ -35,6 +39,7 @@ class SubmissionRequest(BaseModel):
     note: str = Field(min_length=3, max_length=2000)
     exception_reason: str = Field(default='', max_length=2000)
     acknowledge_exception: bool = False
+    acknowledge_work_completed: bool = Field(default=False, strict=True)
     exception_items: list[str] = Field(default_factory=list, max_length=100)
     model_config = ConfigDict(extra='forbid', str_strip_whitespace=True)
 
@@ -74,31 +79,70 @@ def review_gate(db, contract, checks, document_responses=()):
     """No raw customer values in the gate; expose target, reason and action only."""
     blockers = []
     responses = {d.document_id: d for d in document_responses}
-    def block(code, reason, action, doc=None, field=None):
+    def block(code, reason, action, doc=None, field=None, category=None):
         kind = getattr(doc.document_type, 'value', doc.document_type) if doc else None
         blockers.append({'code': code, 'document_id': doc.document_id if doc else None,
                          'document_type': kind, 'field': field,
                          'label': f'{DOC_LABELS.get(kind, "계약")} · {FIELD_LABELS.get(field, "원문")}',
-                         'reason': reason, 'action': action, 'owner': 'operator'})
+                         'reason': reason, 'action': action, 'owner': 'operator', 'category': category})
     for check in checks:
         if check.rule_id == 'REQUIRED_DOCUMENTS' and check.status == 'MISSING':
             block('MISSING_DOCUMENT', f'{DOC_LABELS.get(check.field, check.field)} 미등록 상태입니다.', '서류 받기·보완 요청')
             blockers[-1].update(document_type=check.field, label=DOC_LABELS.get(check.field, check.field))
     documents = active_documents(contract)
+    policy = policy_for(db, contract.contract_id)
+    requires_work = any(t.value == 'inspection_confirmation' for t in required_types(db))
     if not documents and not blockers:
         block('MISSING_DOCUMENT', '검토할 서류가 없습니다.', '서류 등록')
     bindings = []
+    automatic = []
+    anchor = None
+    verified_files = {}
+    def source_verified(doc):
+        if doc.document_id not in verified_files:
+            path, info = resolve_path(doc.storage_path), db.get(DocumentFileInfo, doc.document_id)
+            verified = False
+            try:
+                if path and info:
+                    with path.open('rb') as stream:
+                        verified = hashlib.file_digest(stream, 'sha256').hexdigest() == info.sha256
+            except OSError:
+                pass
+            verified_files[doc.document_id] = (path, info, verified)
+        return verified_files[doc.document_id]
+    # Source-backed comparison can be shown before the operator checks the
+    # contract basis. That basis remains mandatory; it cannot be auto-exempted.
+    for doc in documents:
+        if getattr(doc.document_type, 'value', doc.document_type) != 'contract' or not doc.extract:
+            continue
+        _, _, verified = source_verified(doc)
+        stored = json.loads(doc.extract.raw_fields or '{}')
+        proofs = current_confirmations(db, doc.document_id, stored)
+        ai = stored.get('ai_review') or {}
+        if (not verified or str(getattr(doc.processing_status, 'value', doc.processing_status)) not in {'COMPLETED','REVIEW'}
+                or doc.extract.extracted_status == 'FAILED'
+                or (stored.get('extraction_metadata') or {}).get('evidence_complete') is False
+                or ai.get('manual_review_required') and not ai.get('targets') or current_deferrals(db, doc.document_id, stored)):
+            continue
+        if (number(stored.get('business_registration_no')) == number(contract.business_number)
+                and normalize_party_name(stored.get('company_name')) == normalize_party_name(contract.vendor_name)):
+            anchor = {'document_id': doc.document_id, 'number': number(contract.business_number),
+                      'name': normalize_party_name(contract.vendor_name), 'total': None,
+                      'payment_mode': policy['payment_mode'],
+                      'confirmed': all(key in proofs for key in ('company_name','business_registration_no'))}
+            amount_field = 'total_amount' if stored.get('total_amount') is not None else 'amount'
+            expected = money(contract.contract_amount)
+            if policy['amount_basis'] == 'SUPPLY':
+                tax = money(policy['tax_amount'])
+                expected = expected + tax if expected is not None and tax is not None else None
+            elif policy['amount_basis'] != 'TOTAL':
+                expected = None
+            if money(stored.get(amount_field)) == expected:
+                anchor['total'] = expected
+            break
     for doc in documents:
         response = responses.get(doc.document_id)
-        path = resolve_path(doc.storage_path)
-        info = db.get(DocumentFileInfo, doc.document_id)
-        verified = False
-        try:
-            if path and info:
-                with path.open('rb') as stream:
-                    verified = hashlib.file_digest(stream, 'sha256').hexdigest() == info.sha256
-        except OSError:
-            pass
+        path, info, verified = source_verified(doc)
         if (response and not response.file_available) or not verified:
             block('SOURCE_UNVERIFIED', '원본이 없거나 등록한 원본과 다릅니다.', '원본 복구·재등록', doc)
             continue
@@ -129,11 +173,36 @@ def review_gate(db, contract, checks, document_responses=()):
             fields |= {'supply_amount', 'tax_amount', 'amount_scope'}
         ai = stored.get('ai_review') or {}
         fields |= set(ai.get('targets') or []) & set(FIELD_LABELS)
+        critical = ({'company_name','business_registration_no','total_amount' if values.get('total_amount') is not None else 'amount'} if kind=='contract'
+                    else {'company_name','account_number','bank_name'} if kind=='bank_account'
+                    else {'amount_scope'} if kind=='tax_invoice' else set())
         for field in sorted(fields):
             if field not in values or values[field] is None or values[field] == '':
+                if field in critical:
+                    block('FIELD_VALUE_REQUIRED', '필수 지급·계약 정보를 읽지 못했습니다. 원문을 확인하고 값을 입력하세요.', '원문 확인·값 입력', doc, field, 'RISK')
                 continue  # Missing/unusable values stay in the rule results below.
+            if field == 'amount_scope' and values[field] == 'UNKNOWN':
+                block('FIELD_VALUE_REQUIRED', '청구 범위를 확정하지 못했습니다. 계약 조건과 청구액을 확인해 전액·일부를 입력하세요.', '청구 범위 정정', doc, field,'RISK')
+                continue
             if field not in proofs:
-                block('HUMAN_REVIEW_REQUIRED', '자동으로 읽은 값을 담당자가 아직 원문과 대조하지 않았습니다.', '원문 대조·값 확인 또는 오독 정정', doc, field)
+                if field not in critical:
+                    basis = automatic_field_review(doc, field, values, stored, checks, path, info.sha256, anchor, decisions,human_fields=proofs)
+                    if basis:
+                        automatic.append(basis)
+                        continue
+                reason = ('계약 거래처·금액과 지급 기준은 담당자가 직접 확인합니다.' if kind=='contract'
+                          else '송금 은행·계좌·예금주는 지급 사고 위험 때문에 직접 확인합니다.' if kind=='bank_account' and field in critical
+                          else '청구 범위와 계약 지급 조건은 담당자가 직접 판단합니다.' if field=='amount_scope'
+                          else '원본 근거로 자동 확인하지 못했습니다. 해당 값만 원문과 확인하거나 정정하세요.')
+                scan=(stored.get('extraction_metadata') or {}).get('automatic_source_review')
+                if field not in critical and isinstance(scan,dict):
+                    reason={'SCAN_PARTY_OR_LAYOUT_AMBIGUOUS':'스캔에서 공급자·필드 위치를 구분하지 못했습니다. 이 항목의 원문을 확인하세요.',
+                            'SCAN_PARTY_CROP_DISAGREES':'스캔의 공급자 표기를 다시 읽은 결과가 달라 귀속을 확인해야 합니다.',
+                            'SCAN_FIELD_CROP_DISAGREES':'원문 행 재판독이 일부 값과 일치하지 않습니다. 확인하지 못한 이 항목을 대조하세요.',
+                            'SCAN_SOURCE_UNVERIFIED':'스캔 원문의 읽을 수 있는 위치·재판독 근거가 없습니다. 이 항목을 확인하세요.'}.get(scan.get('reason'),
+                            '스캔 원문 재판독·저장값·계약 기준이 일치하는지 확인하거나 오독을 정정하세요.')
+                block('HUMAN_REVIEW_REQUIRED', reason, '필수 확인' if field in critical else '근거 확인·오독 정정', doc, field,
+                      'RISK' if field in critical else 'EVIDENCE')
     waiting = db.query(ResubmissionRequest).filter_by(contract_id=contract.contract_id, status='WAITING_RESPONSE').count()
     if waiting:
         block('WAITING_VENDOR', f'거래처 회신 대기 요청이 {waiting}건 남았습니다.', '받은 항목만 수령 기록·재검사, 미회신은 계속 대기')
@@ -144,12 +213,17 @@ def review_gate(db, contract, checks, document_responses=()):
                   for c in unsettled if c.status in {'FAIL', 'REVIEW'}
                   and not (c.rule_id == 'BUSINESS_STATUS' and NTS_MODE == 'disabled')]
     exceptions = list({item['key']: item for item in exceptions}.values())
-    binding = {'cycle': current_cycle(db, contract.contract_id), 'review': bindings, 'blockers': blockers, 'exceptions': exceptions}
+    binding = {'cycle': current_cycle(db, contract.contract_id), 'review': bindings, 'blockers': blockers, 'exceptions': exceptions,
+               'review_policy': POLICY, 'requires_work_confirmation': requires_work}
+    if automatic:
+        binding['automatic_review'] = automatic
+        binding['review_policy'] = POLICY
     digest = hashlib.sha256(json.dumps(binding, sort_keys=True, ensure_ascii=False, default=str).encode()).hexdigest()
-    return {'blockers': blockers, 'exception_items': exceptions, 'fingerprint': digest,
+    return {'blockers': blockers, 'exception_items': exceptions, 'fingerprint': digest, 'automatic_review': automatic,
+            'review_policy': POLICY, 'requires_work_confirmation': requires_work,
             'can_submit': not blockers and not exceptions,
             'can_submit_exception': not blockers and bool(exceptions),
-            'completion': '필수 원본·담당자 원문 대조·회신 처리를 끝내고 검토 의견을 기록하면 대표에게 상신합니다.'}
+            'completion': '계약 기준·송금 정보·청구 범위의 필수 확인과 미해결 문제를 정리한 후, 실제 용역 완료 여부와 검토 의견을 기록해 상신합니다.'}
 
 
 def require_current_submission(db, contract_id, workflow):
@@ -177,7 +251,7 @@ def submit_contract(contract_id, req, db, actor):
         row = latest_submission(db, contract_id, req.idempotency_key)
         previous = json.loads(row.details) if row else {}
         if previous.get('idempotency_key') == req.idempotency_key:
-            if row.actor_id != actor.user_id or any(previous.get(k) != getattr(req, k) for k in ('revision', 'fingerprint', 'review_cycle', 'note', 'exception_reason', 'exception_items', 'acknowledge_exception')):
+            if row.actor_id != actor.user_id or any(previous.get(k) != getattr(req, k) for k in ('revision', 'fingerprint', 'review_cycle', 'note', 'exception_reason', 'exception_items', 'acknowledge_exception','acknowledge_work_completed')):
                 raise HTTPException(409, '같은 상신 요청 키에 다른 내용을 보낼 수 없습니다.')
         else:
             from ..db.models import ContractExclusion
@@ -198,6 +272,10 @@ def submit_contract(contract_id, req, db, actor):
                 raise HTTPException(409, '현재 자료는 이미 상신하거나 승인했습니다. 최신 상태를 확인하세요.')
             if gate['blockers']:
                 raise HTTPException(400, '상신 전에 필수 검토를 완료하세요. ' + ' · '.join(i['label'] + ': ' + i['reason'] for i in gate['blockers'][:3]))
+            if gate['requires_work_confirmation'] and not req.acknowledge_work_completed:
+                raise HTTPException(400, '검수확인서 존재만으로 실제 용역 완료를 판단하지 않습니다. 납품·용역 검수 완료 사실을 확인하고 상신하세요.')
+            if any(not item['anchor_confirmed'] for item in gate['automatic_review']):
+                raise HTTPException(400, '자동 대조의 기준인 계약 거래처 정보를 먼저 직접 확인하세요.')
             expected = sorted(i['key'] for i in gate['exception_items'])
             if expected:
                 if not req.acknowledge_exception or len(req.exception_reason) < 10 or sorted(set(req.exception_items)) != expected:
@@ -206,6 +284,8 @@ def submit_contract(contract_id, req, db, actor):
                 raise HTTPException(409, '예외 항목이 바뀌었습니다. 최신 검토 결과를 확인하세요.')
             data = req.model_dump()
             data['gate_fingerprint'] = gate['fingerprint']
+            if gate['automatic_review']:
+                data['automatic_review'] = gate['automatic_review']
             data['cycle_review_id'] = current_cycle(db, contract_id)
             db.add(AuditEvent(actor_id=actor.user_id, actor_name=actor.display_name, action='CONTRACT_SUBMITTED',
                               contract_id=contract_id, details=json.dumps(data, ensure_ascii=False)))

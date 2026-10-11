@@ -7,6 +7,11 @@ const doc={document_id:4,contract_id:1,document_type:'estimate',analysis:{fields
 const contract={contract_id:1,workflow:{revision:3,fingerprint:'v3',submission:{gate:{fingerprint:'gate3'}}}} as unknown as ContractDetail;
 const context:ReviewContext={revision:3,documents:[{document_id:4,fields:{total_amount:{value:110,source:'RULE',evidence:[],human_confirmation:{actor_name:'synthetic',at:'2026-10-10'}}}}]};
 beforeEach(()=>sessionStorage.clear());
+it('원본 검증으로 확인을 생략한 번호는 필수 항목 이동에서 빠진다',()=>{
+ const proof={...context,workflow:{submission:{gate:{automatic_review:[{document_id:4,field:'business_registration_no'}]}}}} as unknown as ReviewContext;
+ expect(focusItems([doc],[],proof).map(item=>item.field)).toEqual(['total_amount','company_name']);
+ expect(focusItems([doc],[],context).some(item=>item.field==='business_registration_no')).toBe(true);
+});
 it('completed required fields stay available to revisit while optional blank fields do not fill the queue',()=>{
  const items=focusItems([doc],[],context);
  expect(items.map(i=>i.id)).toEqual(['4:total_amount','4:company_name','4:business_registration_no']);

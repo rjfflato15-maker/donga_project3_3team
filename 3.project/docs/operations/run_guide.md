@@ -20,7 +20,7 @@
 | 백업·복원 | [자료 복구](backup_restore.md) |
 | 업데이트·장애 대응 | [운영 유지보수](maintenance.md) |
 | 고객용 설치·판매 범위 | [Setup 소스와 검증 범위](customer_package.md) · [판매 검토](distribution.md) |
-| 실제 자료와 분리한 시연 | [시연 업무함](demo_inbox.md) · [기존 시연 대본](demo_rehearsal_script.md) |
+| 실제 자료와 분리한 시연 | [시연 업무함](../submission/omitted_records.md) · [기존 시연 대본](../submission/omitted_records.md) |
 
 시연·측정 안내는 작성 당시 자료와 빌드를 사용한다. 화면 공유 자료와 실제 앱, 실시간 모델과 고정 응답 재생, 기계 처리시간과 사람 작업시간을 구분한다. 새 XLSX·VLM 기능의 완료 상태는 현재 상태에서 확인한다.
 

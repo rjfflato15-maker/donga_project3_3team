@@ -229,6 +229,7 @@ export interface Workflow {
 export interface ReviewBlocker {
   code: string; document_id: number | null; document_type: DocumentType | null;
   field: string | null; label: string; reason: string; action: string; owner: string;
+  category?: 'RISK'|'EVIDENCE'|null;
 }
 export interface SubmissionState {
   status: 'NOT_SUBMITTED' | 'SUBMITTED' | 'RETURNED' | 'STALE' | 'APPROVED';
@@ -236,7 +237,9 @@ export interface SubmissionState {
   submitted_at: string | null; note: string | null; exception_reason: string | null;
   exception_items: string[]; next_owner: string; legacy_completed_approval: boolean;
   gate: { blockers: ReviewBlocker[]; exception_items: {key:string;rule_id:string;document_id:number|null;reason:string;status:string}[];
-    can_submit: boolean; can_submit_exception: boolean; completion: string; fingerprint: string } | null;
+    can_submit: boolean; can_submit_exception: boolean; completion: string; fingerprint: string;
+    review_policy?:string; requires_work_confirmation?:boolean;
+    automatic_review?: {document_id:number;document_type:DocumentType;field:string;source_sha256:string;anchor_document_id:number;anchor_confirmed?:boolean;policy:string;page:number;reason:string;source_method?:string}[] } | null;
 }
 
 export interface PilotInfo {

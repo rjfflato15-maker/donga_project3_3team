@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { stageOf } from './stage';
+import { stageOf,isJudgementPending } from './stage';
+
+it('필수 판단만 남은 표시와 실제 문제·검증 불가를 구분한다',()=>{
+ const risk={code:'HUMAN_REVIEW_REQUIRED',category:'RISK'};
+ expect(isJudgementPending([risk],0)).toBe(true);
+ expect(isJudgementPending([risk],1)).toBe(false);
+ expect(isJudgementPending([{...risk,category:'EVIDENCE'}],0)).toBe(false);
+ expect(isJudgementPending([{code:'FIELD_VALUE_REQUIRED',category:'RISK'}],0)).toBe(false);
+ expect(isJudgementPending(undefined,0)).toBe(false);
+});
 
 describe('계약 단계', () => {
   it('백엔드가 준 단계를 그대로 쓴다', () => {

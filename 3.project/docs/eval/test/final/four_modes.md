@@ -43,4 +43,4 @@ AI 채택 VALUE 정확도: 10/10 (100.00%).
 모델: qwen3:latest, 프롬프트: grounded-fields-v3, 가드: grounding-v3-dev-audit.
 예측 시도: `e40c42cf-cc17-4939-8f11-d8df9452f954`. 정답 SHA256: `296c093264ce09b6287be02bc6351adf42aacdf155927107038307643e45d758`.
 
-[진행 요약](../../../progress/development_report.md) · [고정 예측](../v3_predictions/receipt.json)
+[진행 요약](../../../submission/omitted_records.md) · [고정 예측](../../../submission/omitted_records.md)

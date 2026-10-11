@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-10",
+  "baseline_source_zip_sha256": "74243f6b81e8443b3efd2cb7ee675c01d8d1c0025feea32c7d2eda948a172efd",
+  "automatic_exemptions_approved": 0,
+  "normal_required_readings": 20,
+  "changes": [
+    "contract result before document list",
+    "UNKNOWN input separate from routine confirmation",
+    "problem CTA prioritizes actual problems over a routine cursor",
+    "continue decision only on same successful confirmation revision/value/time",
+    "unknown legacy proof cannot satisfy gate or appear as confirmed"
+  ],
+  "frontend": {
+    "files": 39,
+    "passed": 202,
+    "build": "passed"
+  },
+  "backend": {
+    "full_passed": 946,
+    "full_seconds": 333.93,
+    "last_confirmation_filter_delta_passed": 25,
+    "overlapping_tests_not_added_to_total": true
+  },
+  "browser": {
+    "url": "http://127.0.0.1:8190/",
+    "role": "operator",
+    "scenario": {
+      "qa_contract_id": 5,
+      "amount": 38500000,
+      "source_scope": "UNKNOWN",
+      "before_human_requirements": 20,
+      "after_manual_scope_entry": 19,
+      "automatic_reduction": 0
+    },
+    "actual_clicks": "problem CTA -> scope input -> FULL + reason -> save -> problem 0, remaining 19",
+    "desktop": [
+      1440,
+      1000
+    ],
+    "mobile": [
+      390,
+      844
+    ],
+    "horizontal_overflow": false,
+    "unexpected_console_errors": 0
+  },
+  "selection_continuity": "two component cases: unchanged proof continues; changed value resets",
+  "candidate_experiment": {
+    "outside_app": true,
+    "functional_tests": 18,
+    "included_in_source_zip": false,
+    "not_independent_OCR_accuracy_or_approval_evidence": true
+  },
+  "limits": [
+    "no approved human-review exemption",
+    "no real customer or novice-user/time measurement",
+    "no new independent OCR/LLM/VLM evaluation",
+    "no new installer test"
+  ]
+}

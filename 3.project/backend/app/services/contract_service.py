@@ -73,6 +73,8 @@ def get_document_response(doc: Document) -> DocumentResponse:
     warnings = [message for message in stored_fields.get('registration_type_warnings', []) if isinstance(message, str)]
     extraction_metadata = stored_fields.get("extraction_metadata")
     extraction_metadata = extraction_metadata if isinstance(extraction_metadata, dict) else None
+    if extraction_metadata:
+        extraction_metadata={key:value for key,value in extraction_metadata.items() if key!='automatic_source_review'}
     if extraction_metadata and extraction_metadata.get("evidence_complete") is False:
         if INCOMPLETE_EXTRACTION_WARNING not in warnings:
             warnings.append(INCOMPLETE_EXTRACTION_WARNING)

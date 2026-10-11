@@ -8,12 +8,12 @@
 
 | 자료 | 취급 |
 | --- | --- |
-| [이전 개발 보고](progress/development_report.md) · [개발 일지](progress/history/) | 당시 완료·미완료·검증 기록. 과거 테스트 숫자·담당 분리를 현재 사실로 일괄 치환하지 않음 |
-| [평가 안내](eval/local_llm_runbook.md) · [평가 도구](../eval/README.md) | 고정 구현·자료·정답·예측·receipt·캐시 보존 |
-| [시장·기술 조사](research/) | 조사 시점과 출처를 확인. 현재 구현의 완료 증거와 구분 |
+| [이전 개발 보고](submission/omitted_records.md) · [개발 일지](submission/omitted_records.md) | 당시 완료·미완료·검증 기록. 과거 테스트 숫자·담당 분리를 현재 사실로 일괄 치환하지 않음 |
+| [평가 안내](submission/omitted_records.md) · [평가 도구](submission/omitted_records.md) | 고정 구현·자료·정답·예측·receipt·캐시 보존 |
+| [시장·기술 조사](submission/omitted_records.md) | 조사 시점과 출처를 확인. 현재 구현의 완료 증거와 구분 |
 | [UX 설계](ux/) | 승인 시안·참고 구현. 실제 연결 상태는 코드와 현재 상태에서 확인 |
-| [초기 ERD](architecture/erd_v0.1.md) · [초기 전처리](ai/privacy_preprocessing_v0.1.md) · [초기 규칙](validation/validation_rules_v0.1.md) | 초기 설계. 현재 구조로 잘못 읽지 않음 |
-| [2026-10-06 공유 화면](progress/team_share_20261006/index.html) | 당시 공유본. 이후 XLSX·폴링·VLM·설치 초안 상태와 차이가 있음 |
+| [초기 ERD](submission/omitted_records.md) · [초기 전처리](submission/omitted_records.md) · [초기 규칙](submission/omitted_records.md) | 초기 설계. 현재 구조로 잘못 읽지 않음 |
+| [2026-10-06 공유 화면](submission/omitted_records.md) | 당시 공유본. 이후 XLSX·폴링·VLM·설치 초안 상태와 차이가 있음 |
 
 문서 정리로 기록 이름·숫자·원문을 일괄 바꾸지 않는다. 공개·배포용 사본에 민감정보가 있는지는 별도로 확인하고, 보호된 원본의 출처·해시를 임의로 다시 고정하지 않는다. 보존 문서의 오래된 링크는 lint의 별도 참고 결과로 기록한다.
 

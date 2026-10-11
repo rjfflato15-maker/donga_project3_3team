@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import {BundleContext} from '../features/requests/model';
 
 type Selection = {snapshot:string; reviewed:boolean};
@@ -35,6 +35,8 @@ export function useRequestDraft(userId:number|undefined, contractId:number, cont
   const [state,setState]=useState(()=>({scope,saved:read(storageKey)}));
   const [notice,setNotice]=useState('');
   const activeContext=context?.contract_id===contractId?context:null;
+  // 저장 후 재조회가 끝난 콜백도 현재 기준을 사용하며 다른 계약에는 쓰지 않는다.
+  const latest=useRef({scope,context:activeContext});latest.current={scope,context:activeContext};
   const saved=state.scope===scope?state.saved:null;
   const draft=useMemo(()=>restore(saved,activeContext),[saved,activeContext]);
   useEffect(()=>{setState({scope,saved:read(storageKey)});setNotice('');},[scope,storageKey]);
@@ -55,11 +57,12 @@ export function useRequestDraft(userId:number|undefined, contractId:number, cont
     } catch {setNotice('이 브라우저에서 초안을 보관하지 못했어요. 계약을 나가기 전에 요청 내용을 작성해 주세요.');}
   },[scope,storageKey,state]);
   const setDraft=(update:Draft|((previous:Draft)=>Draft))=>{
-    if(!activeContext)return;
+    if(latest.current.scope!==scope||!latest.current.context)return;
+    const currentContext=latest.current.context;
     setState(previous=>{
-      const current=restore(previous.scope===scope?previous.saved:read(storageKey),activeContext);
+      const current=restore(previous.scope===scope?previous.saved:read(storageKey),currentContext);
       const next=typeof update==='function'?update(current):update;
-      return {scope,saved:{version:1,revision:activeContext.revision,fingerprint:activeContext.fingerprint,
+      return {scope,saved:{version:1,revision:currentContext.revision,fingerprint:currentContext.fingerprint,
         items:[...next].map(([key,item])=>({key,reviewed:item.reviewed}))}};
     });
   };

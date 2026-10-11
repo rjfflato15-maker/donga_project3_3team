@@ -23,6 +23,7 @@ const RULE_KO: Record<string, string> = {
   REQUIRED_DOCUMENTS: '필수 서류 제출',
   BUSINESS_NO_MATCH: '사업자번호 대조',
   ACCOUNT_HOLDER_MATCH: '예금주와 계약 거래처',
+  VENDOR_NAME_MATCH: '서류 상호와 계약 거래처',
   BUSINESS_STATUS: '사업자 영업 상태',
   AMOUNT_BASIS: '계약 금액 기준',
   AMOUNT_COMPONENTS: '서류 안의 금액 계산',
@@ -38,7 +39,7 @@ const RULE_KO: Record<string, string> = {
   DOCUMENT_PROCESSING: '글자 인식',
 };
 
-export const ruleLabel = (ruleId: string) => RULE_KO[ruleId] ?? ruleId;
+export const ruleLabel = (ruleId: string) => ruleId.startsWith('SOURCE_VALUE_MATCH_')?'스캔 원문과 읽은 값':RULE_KO[ruleId] ?? ruleId;
 
 /** 회사 안에서 만드는 서류라 거래처에 요청할 대상이 아닌 종류 */
 export const INTERNAL_DOCUMENT_TYPES: DocumentType[] = ['inspection_confirmation'];
@@ -59,7 +60,7 @@ export const isUnverifiedBusinessStatus = (check: ValidationCheck) =>
 /** 거래처 서류의 문제가 아니라, 앱이 원문을 제대로 읽지 못해 사람이 값을 확인해야 하는 검사 */
 const READING_RULES = new Set(['AMOUNT_EXTRACTION', 'DOCUMENT_TYPE', 'DOCUMENT_PROCESSING', 'ORIGINAL_FILE']);
 export const isReadingCheck = (c: ValidationCheck) =>
-  READING_RULES.has(c.rule_id) || (c.rule_id === 'BUSINESS_NO_MATCH' && c.status === 'REVIEW') ||
+  READING_RULES.has(c.rule_id) || c.rule_id.startsWith('SOURCE_VALUE_MATCH_') || (c.rule_id === 'BUSINESS_NO_MATCH' && c.status === 'REVIEW') ||
   (c.rule_id === 'ACCOUNT_HOLDER_MATCH' && c.actual === '미추출');
 
 export type IssueKind = 'missing' | 'vendor' | 'reading' | 'contract';

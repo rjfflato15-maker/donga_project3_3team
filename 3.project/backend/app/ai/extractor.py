@@ -245,7 +245,7 @@ def clean_name(val: str) -> str:
     # Remove trailing metadata like 대표자, 성명, etc.
     val = re.sub(r"\s*(?:대\s*표\s*자?|대\s*표\s*이\s*사|성\s*명|귀\s*하|보\s*관\s*용|직\s*인\s*생\s*략|인|이\s*하|등).*$", "", val)
     val = re.sub(r"[\[\<『「“'\"`\]\>』」”]", "", val)
-    # Reconnect broken OCR syllable at the end (e.g. '뉴로비전랩 스' -> '뉴로비전랩스')
+    # Reconnect an OCR syllable split from the end of a company name.
     val = re.sub(r"([가-힣]{2,})\s+([가-힣])$", r"\1\2", val.strip())
     # Collapse multiple spaces
     val = re.sub(r"\s+", " ", val)

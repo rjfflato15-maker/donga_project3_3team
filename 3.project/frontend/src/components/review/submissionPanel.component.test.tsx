@@ -21,6 +21,22 @@ const props=()=>({masked:true,onChanged:vi.fn(async()=>{}),onOpen:vi.fn(),onAppr
 beforeEach(()=>{role='operator';vi.mocked(requestJson).mockResolvedValue({});});
 afterEach(()=>{cleanup();vi.resetAllMocks();});
 describe('담당자 검토와 대표 결재 인계',()=>{
+  it('문서 존재와 실제 용역 완료는 분리하고, 재진입·차수 변경 뒤 업무 판단을 다시 받는다',async()=>{
+    const contract=fixture();contract.workflow!.submission!.gate!.requires_work_confirmation=true;
+    const p=props();const view=render(<SubmissionPanel contract={contract} {...p}/>);
+    fireEvent.change(screen.getByLabelText('담당자 검토 의견'),{target:{value:'합성 용역의 결과물을 확인했습니다.'}});
+    expect(screen.getByRole('button',{name:'검토 완료·결재 상신'})).toHaveProperty('disabled',true);
+    fireEvent.click(screen.getByRole('checkbox',{name:'실제 납품·용역 검수가 완료된 것을 확인했습니다.'}));
+    expect(screen.getByRole('button',{name:'검토 완료·결재 상신'})).toHaveProperty('disabled',false);
+    view.rerender(<SubmissionPanel contract={{...contract,workflow:{...contract.workflow!,revision:2}}} {...p}/>);
+    expect(screen.getByLabelText('담당자 검토 의견')).toHaveProperty('value','합성 용역의 결과물을 확인했습니다.');
+    expect(screen.getByRole('checkbox',{name:'실제 납품·용역 검수가 완료된 것을 확인했습니다.'})).toHaveProperty('checked',false);
+    fireEvent.click(screen.getByRole('checkbox',{name:'실제 납품·용역 검수가 완료된 것을 확인했습니다.'}));
+    fireEvent.click(screen.getByRole('button',{name:'검토 완료·결재 상신'}));
+    await act(async()=>{});
+    const body=vi.mocked(requestJson).mock.calls.find(([,args])=>args?.method==='POST')?.[1]?.body;
+    expect(JSON.parse(String(body)).acknowledge_work_completed).toBe(true);
+  });
   it('확인 이유와 필드·행동을 표시하고 필수 원문 검토가 남으면 상신하지 않는다',()=>{
     const p=props();render(<SubmissionPanel contract={fixture([blocker])} {...p}/>);
     expect(screen.getByText('계약서 · 합계금액')).toBeTruthy();

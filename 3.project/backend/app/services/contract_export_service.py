@@ -25,7 +25,7 @@ from .review_context_service import request_response
 RASTERS = {'.png', '.jpg', '.jpeg', '.bmp', '.webp', '.gif', '.tif', '.tiff'}
 MAX_SOURCE_BYTES = 250 * 1024 * 1024
 MAX_EXPORT_BYTES = 250 * 1024 * 1024
-EXCLUDED_KEYS = {'storage_path', 'raw_text', 'masked_text', 'password', 'token', 'prompt', 'response', 'idempotency_key'}
+EXCLUDED_KEYS = {'storage_path', 'raw_text', 'masked_text', 'password', 'token', 'prompt', 'response', 'idempotency_key', 'automatic_source_review'}
 OPAQUE_KEYS = {'fingerprint', 'contract_fingerprint', 'source_sha256', 'export_sha256', 'sha256', 'payload_sha256'}
 
 

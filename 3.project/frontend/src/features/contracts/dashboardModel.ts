@@ -47,7 +47,11 @@ export function nextAction(c: DashboardItem, s: Stage, representative: boolean):
       if(blockers){
         if(blockers.some(b=>['READING_FAILED','READING_INCOMPLETE','SOURCE_UNVERIFIED'].includes(b.code)))return '원본·판독 복구 후 원문 확인';
         const n=blockers.filter(b=>b.code==='HUMAN_REVIEW_REQUIRED').length;
-        if(n)return `원문 대조 ${n}항목 · 검토 후 상신`;
+        const input=blockers.filter(b=>b.code==='FIELD_VALUE_REQUIRED');
+        if(input.length)return `${input.every(b=>b.field==='amount_scope')?'청구 범위':'필수 정보'} 확인·입력 ${input.length}항목`;
+        const evidence=blockers.filter(b=>b.code==='HUMAN_REVIEW_REQUIRED'&&b.category==='EVIDENCE').length;
+        if(evidence)return `원문 근거 확인 ${evidence}항목 · 문제 해결 후 상신`;
+        if(n)return '계약·송금·청구의 필수 확인 · 검토 후 상신';
         if(c.approval_status==='RETURNED')return '반려 사유 재검토·결재 재상신';
         if(c.open_issue_count)return `불일치·미확인 ${c.open_issue_count}건 · 보완 판단`;
         return '검토 의견 기록·결재 상신';

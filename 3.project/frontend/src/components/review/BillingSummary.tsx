@@ -11,6 +11,7 @@ export function BillingSummary({contract,doc}:{contract:ContractDetail;doc:Docum
   const payment=contract.payment;
   const state=!payment?'지급 완료 미기록':payment.status==='RECONFIRMATION_REQUIRED'?'이전 지급 기록 있음 · 재확인 필요':payment.status==='VOIDED'?'지급 기록 취소됨':`지급 기록 완료${payment.paid_on?` · ${payment.paid_on}`:''}`;
   return <div className="billing-summary" aria-label="청구액과 지급 기록">
+    <p><strong>등록 지급 방식</strong> {contract.workflow?.payment_mode==='INSTALLMENT'?'분할 지급':contract.workflow?.payment_mode==='FULL'?'전액 일괄 정산':'미확인'}</p>
     <p><strong>청구액</strong> {won(amount)} · 계약 총액 {won(expected)}{amount!=null&&expected!=null&&amount===expected?' · 금액 일치':''}</p>
     <p><strong>지급 기록</strong> {state}</p>
     <small>청구액·외상미수금·잔금 문구만으로 지급 완료를 판단하지 않아요.</small>

@@ -1,6 +1,6 @@
 import json
 import hashlib
-from datetime import datetime
+from datetime import datetime, timedelta
 from ..db.models import CompanySetting, ContractWorkflow, ContractReview, AuditEvent
 from ..schemas.common import CORE_6_DOCUMENT_TYPES, DocumentType
 from ..config import NTS_MODE
@@ -54,9 +54,14 @@ def review_state(db, contract_id: int, fingerprint=None):
 
 
 def audit(db, actor, action: str, contract_id=None, document_id=None, details=None):
+    created_at=datetime.utcnow()
+    if action=='FIELD_DEFERRED' and document_id is not None:
+        previous=db.query(AuditEvent).filter_by(document_id=document_id,action=action).order_by(AuditEvent.event_id.desc()).first()
+        if previous and created_at<=previous.created_at:
+            created_at=previous.created_at+timedelta(microseconds=1)
     db.add(AuditEvent(actor_id=actor.user_id if actor else None,
                       actor_name=actor.display_name if actor else "시스템", action=action,
                       contract_id=contract_id, document_id=document_id,
                       details=json.dumps(details or {}, ensure_ascii=False, default=str),
-                      created_at=datetime.utcnow()))
+                      created_at=created_at))
     db.commit()

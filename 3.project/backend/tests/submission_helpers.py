@@ -23,6 +23,7 @@ def submission_body(detail, **overrides):
     wf = detail['workflow']
     exceptions = wf['submission']['gate']['exception_items']
     return {'review_cycle':wf['reviews'][0]['review_id'] if wf['reviews'] else 0, 'revision': wf['revision'], 'fingerprint': wf['fingerprint'],
+            'acknowledge_work_completed': True,  # explicitly completed in synthetic workflow fixtures
             'idempotency_key': str(uuid4()), 'note': '합성 자료의 원문 대조와 회신을 검토했습니다.',
             'acknowledge_exception': bool(exceptions),
             'exception_reason': '합성 사례의 남은 업무상 예외 항목을 대표에게 명시해서 요청합니다.' if exceptions else '',

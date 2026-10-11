@@ -53,7 +53,7 @@ $env:APP_OLLAMA_URL='http://127.0.0.1:11434'
 
 관리 메뉴 10번/`setup-ai`는 Ollama·모델 준비 후 활성화를 저장하도록 작성된 초안이다. 부분 단위 테스트만 확인했으며 새 PC의 다운로드·클라우드 설정 적용·재시작·복구 검증은 남았다. 현재 고객용 설치 완료 절차로 사용하지 않는다. 개발자는 승인된 Ollama 설치와 모델 준비를 별도로 확인한다.
 
-시연·회귀 테스트에서는 APP_LLM_ENABLED=false, APP_VLM_ENABLED=false, APP_NTS_MODE=disabled를 명시하여 실시간 추론을 섞지 않는다. 기존 평가의 모델·프롬프트·설정은 [고정 평가 문서](../eval/local_llm_runbook.md)에서 당시 기준으로 보존한다.
+시연·회귀 테스트에서는 APP_LLM_ENABLED=false, APP_VLM_ENABLED=false, APP_NTS_MODE=disabled를 명시하여 실시간 추론을 섞지 않는다. 기존 평가의 모델·프롬프트·설정은 [고정 평가 문서](../submission/omitted_records.md)에서 당시 기준으로 보존한다.
 
 
 [전체 문서](../README.md) · [현재 구현 상태](../progress/current_status.md)
